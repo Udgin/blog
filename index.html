@@ -211,3 +211,46 @@ Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced 
 <p>Choosing a <a href="https://en.wikipedia.org/wiki/Linux_distribution">Linux Distribution</a></p>
 <p><img src="./images/linux_foundation_choose.jpg" alt="Choose"></p>
 <hr>
+<h2 id="task-show-information-about-types-in-tooltip-the-value-of-a-point-is-the-sum-of-values-of-types-one-two-link-http-jsfiddle-net-yo4l215v-">Task: Show information about types in tooltip. The value of a point is the sum of values of types (&#39;one&#39;, &#39;two&#39;). <a href="http://jsfiddle.net/yo4L215v/">Link</a>.</h2>
+<p><a href="http://api.highcharts.com/highcharts#tooltip.formatter">Additional info</a></p>
+<p><img src="./images/highchart_add_info.png" alt="image"></p>
+<p>The code:</p>
+<pre><code class="lang-javascript">$(function () {
+    $(&#39;#container&#39;).highcharts({
+        chart: {
+            type: &#39;column&#39;
+        },
+
+        tooltip: {
+            formatter: function () {
+                var typeInf = &#39;&#39;;
+                var types = this.point.Types;
+                $.each(types, function (index) {
+                    typeInf += &#39;&lt;b&gt;&#39; + types[index][0] + &#39;&lt;/b&gt; &#39; + types[index][1] + &#39;&lt;br/&gt;&#39;;
+                });
+
+                return &#39;The value for &lt;b&gt;&#39; + this.x +
+                    &#39;&lt;/b&gt; is &lt;b&gt;&#39; + this.y + &#39;&lt;/b&gt;&lt;br/&gt;&#39; + typeInf;
+            }
+        },
+
+        xAxis: {
+            categories: [&#39;Green&#39;, &#39;Pink&#39;]
+        },
+
+        series: [{
+            data: [{
+                name: &#39;Point 1&#39;,
+                Types: [[&quot;one&quot;, 1], [&quot;two&quot;, 1]],
+                color: &#39;#00FF00&#39;,
+                y: 2
+            }, {
+                name: &#39;Point 2&#39;,
+                Types: [[&quot;one&quot;, 2], [&quot;two&quot;, 3]],
+                color: &#39;#FF00FF&#39;,
+                y: 5
+            }]
+        }]
+    });
+});
+</code></pre>
