@@ -279,3 +279,39 @@ Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced 
    }
   }
 </code></pre>
+<hr>
+<h2 id="fuelux-tree-additional-behavior-14-july-2014">FuelUX Tree additional behavior - 14 July, 2014</h2>
+<p>Add &quot;Show All&quot; to the FuelUX Tree like this.</p>
+<p><img src="./images/fuelux-tree.gif" alt="example"></p>
+<p>There is the <a href="https://exacttarget.github.io/fuelux/#tree">tree plugin</a>. You can add the next code after initialization of the tree:</p>
+<pre><code class="lang-javascript">scope.find(&#39;#MyTree&#39;).on(&#39;selected&#39;, function (event, data) {
+    if (data.target.additionalParameters.id == 0) {
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item:eq(1)&#39;).addClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;tree-dot&#39;).addClass(&#39;icon-ok&#39;);
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-folder-header&gt; i.icon-ok&#39;).remove();
+    }
+    else {
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item:eq(1)&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
+        if (data.target.additionalParameters.type == &#39;anyOther&#39;) {
+            data.element.closest(&#39;.tree-folder-content&#39;).find(&#39;.tree-item:gt(0)&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
+        }
+    }
+
+});
+</code></pre>
+<hr>
+<h2 id="fixed-header-column-for-html-table-using-jquery-07-july-2014">Fixed header/column for HTML table using JQuery - 07 July, 2014</h2>
+<p>I have created one more plugin for HTML table. It fixes the head of a table on the page. <a href="https://bitbucket.org/upyl/fixedheader">Please see it</a>. The main feature is supporting of overflow parent element.</p>
+<p>Some images of plugin:</p>
+<p><img src="./images/fixed_header1.png" alt="example1"></p>
+<p>And another plugin <a href="https://bitbucket.org/upyl/fixedcolumn">https://bitbucket.org/upyl/fixedcolumn</a> to fix column of table.</p>
+<h2 id="-example2-images-fixed_header2-png-"><img src="./images/fixed_header2.png" alt="example2"></h2>
+<h2 id="light-version-of-monodruid-04-june-2014">Light version of Monodruid - 04 June, 2014</h2>
+<p>I have created the light version of <a href="https://bitbucket.org/mayastudios/monodroid-unittest/wiki/Home">MonoDroid Unit Testing framework</a>.</p>
+<h2 id="please-look-https-bitbucket-org-upyl-mono-unitetsting-light-and-use-if-you-need-">Please <a href="https://bitbucket.org/upyl/mono-unitetsting-light">look</a> and use if you need.</h2>
+<h2 id="bootstrap-recaptcha-css-problem-07-june-2013">Bootstrap + Recaptcha. Css problem - 07 June, 2013</h2>
+<p>If you use bootstrap and recaptcha, you may face a problem like wrong padding|margin:</p>
+<p>You should add next css style to yours:</p>
+<pre><code class="lang-css">body{ line-height:1}
+</code></pre>
+<h2 id="and-all-will-be-ok-enjoy-">And all will be OK ! Enjoy!</h2>

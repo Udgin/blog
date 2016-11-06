@@ -291,3 +291,58 @@ Also there is a code. I have used MD5 algorithm for my purposes.
    }
   }
 ```
+---
+## FuelUX Tree additional behavior - 14 July, 2014
+
+Add "Show All" to the FuelUX Tree like this.
+
+![example](./images/fuelux-tree.gif)
+
+There is the [tree plugin](https://exacttarget.github.io/fuelux/#tree). You can add the next code after initialization of the tree:
+```javascript
+scope.find('#MyTree').on('selected', function (event, data) {
+    if (data.target.additionalParameters.id == 0) {
+        scope.find('#MyTree').find('.tree-item').removeClass('tree-selected').find('i').removeClass('icon-ok').addClass('tree-dot');
+        scope.find('#MyTree').find('.tree-item:eq(1)').addClass('tree-selected').find('i').removeClass('tree-dot').addClass('icon-ok');
+        scope.find('#MyTree').find('.tree-folder-header> i.icon-ok').remove();
+    }
+    else {
+        scope.find('#MyTree').find('.tree-item:eq(1)').removeClass('tree-selected').find('i').removeClass('icon-ok').addClass('tree-dot');
+        if (data.target.additionalParameters.type == 'anyOther') {
+            data.element.closest('.tree-folder-content').find('.tree-item:gt(0)').removeClass('tree-selected').find('i').removeClass('icon-ok').addClass('tree-dot');
+        }
+    }
+    
+});
+```
+---
+## Fixed header/column for HTML table using JQuery - 07 July, 2014
+
+I have created one more plugin for HTML table. It fixes the head of a table on the page. [Please see it](https://bitbucket.org/upyl/fixedheader). The main feature is supporting of overflow parent element.
+
+Some images of plugin:
+
+![example1](./images/fixed_header1.png)
+
+And another plugin https://bitbucket.org/upyl/fixedcolumn to fix column of table.
+
+![example2](./images/fixed_header2.png)
+---
+## Light version of Monodruid - 04 June, 2014
+
+I have created the light version of [MonoDroid Unit Testing framework](https://bitbucket.org/mayastudios/monodroid-unittest/wiki/Home).
+
+Please [look](https://bitbucket.org/upyl/mono-unitetsting-light) and use if you need.
+---
+## Bootstrap + Recaptcha. Css problem - 07 June, 2013
+
+If you use bootstrap and recaptcha, you may face a problem like wrong padding|margin:
+
+You should add next css style to yours:
+
+```css
+body{ line-height:1}
+```
+
+And all will be OK ! Enjoy!
+---
