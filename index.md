@@ -161,6 +161,7 @@ There are a list of references and interesting information about Xamarin. Thank 
 * https://confluence.infusion.com/pages/viewpage.action?pageId=28582107
 * https://confluence.infusion.com/display/innovationpractices/Xamarin+Bootcamp+Training
 * https://developer.xamarin.com/
+
 ---
 ## GitVersion + TC - 04 February, 2016
 
@@ -180,7 +181,6 @@ Trigger:
 ![Image Three](./images/git_version_step3_3.PNG)
 
 ---
-
 ## Notes from [Introduction to Linux] - 21 May, 2015(https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0)
 
 Linux [Filesystem](http://www.tldp.org/LDP/sag/html/filesystems.html)
@@ -214,6 +214,7 @@ The Boot Process
 Choosing a [Linux Distribution](https://en.wikipedia.org/wiki/Linux_distribution)
 
 ![Choose](./images/linux_foundation_choose.jpg)
+
 ---
 ## Task: Show information about types in tooltip. The value of a point is the sum of values of types ('one', 'two'). [Link](http://jsfiddle.net/yo4L215v/) - 26 December, 2014
 
@@ -262,6 +263,7 @@ $(function () {
     });
 });
 ```
+
 ---
 ## WinRT Checksum for large files - 29 September, 2014
 
@@ -291,6 +293,7 @@ Also there is a code. I have used MD5 algorithm for my purposes.
    }
   }
 ```
+
 ---
 ## FuelUX Tree additional behavior - 14 July, 2014
 
@@ -315,6 +318,7 @@ scope.find('#MyTree').on('selected', function (event, data) {
     
 });
 ```
+
 ---
 ## Fixed header/column for HTML table using JQuery - 07 July, 2014
 
@@ -327,6 +331,7 @@ Some images of plugin:
 And another plugin https://bitbucket.org/upyl/fixedcolumn to fix column of table.
 
 ![example2](./images/fixed_header2.png)
+
 ---
 ## Light version of Monodruid - 04 June, 2014
 
@@ -346,6 +351,7 @@ body{ line-height:1}
 ```
 
 And all will be OK ! Enjoy!
+
 ---
 ## Bootstrap datepicker Week mode view - 28 July, 2013
 I have updated bootstrap datepicker to new view mode: week.
@@ -353,4 +359,323 @@ I have updated bootstrap datepicker to new view mode: week.
 The source code is [here](./code/bootstrap-datepicker.js)
 
 ---
+## ASP.NET MVC and Html.Hidden - 01 April, 2013
 
+There is interesting bug connected with Html.Hidden.
+There are two model:
+```csharp
+public class  Model1{
+public int ID{get;set;}
+public Model2 Model2Model{get;set;}
+}
+public class Model2{
+public int ID{get;set;}
+}
+```
+Page:
+```html
+<html>
+...
+<body>
+@Html.Partial("partial"
+<body>
+</html>
+```
+
+---
+## SMO Scripter. Create script of DB - 25 June, 2013
+
+It is possible to create script of MSSQL using SMO: ([link](http://pastebin.com/AQkprTS7#))
+
+```csharp
+private static void Main(string[] args)
+{
+    var arguments = args.Select(x => x.ToLower()).ToList();
+    if (arguments.Count == 0 || arguments.Contains("-help"))
+    {
+        Console.WriteLine("-d - Database Name");
+        Console.WriteLine("-i - Output Sql File Name");
+        Console.WriteLine("-s - Server Instance");
+        Console.WriteLine("-u - User Name");
+        Console.WriteLine("-p - Password");
+        Console.WriteLine("It should be 'tables.txt' file in folder with names of tables to script; if it does not exist the application scripts all tables with prefix 'GMP_'");
+        Console.ReadKey();
+    }
+    else if (arguments.Count > 1 && arguments.Contains("-d") && args.Contains("-i"))
+    {
+        if (arguments.Count <= arguments.IndexOf("-d") + 1)
+        {
+            throw new ArgumentException("Database Name");
+        }
+        if (arguments.Count <= argumSMO Scripter. Create script of DBents.IndexOf("-i") + 1)
+        {
+            throw new ArgumentException("Output Sql File Name");
+        }
+        var dbName = arguments[arguments.IndexOf("-d") + 1];
+        var outputFileName = arguments[arguments.IndexOf("-i") + 1];
+        var srv = new Server();
+        if (arguments.Contains("-s") && args.Contains("-u") && arguments.Contains("-p"))
+        {
+            if (arguments.Count <= arguments.IndexOf("-s") + 1)
+            {
+                throw new ArgumentException("Server Instance");
+            }
+            if (arguments.Count <= arguments.IndexOf("-u") + 1)
+            {
+                throw new ArgumentException("User Name");
+            }
+            if (arguments.Count <= arguments.IndexOf("-p") + 1)
+            {
+                throw new ArgumentException("Password");
+            }
+            var connection = new ServerConnection(arguments[arguments.IndexOf("-s") + 1], arguments[arguments.IndexOf("-u") + 1], arguments[arguments.IndexOf("-p") + 1]);
+            srv = new Server(connection);
+        }
+        // read names of tables
+        var tablesFromFile = new List<string>();
+        if (File.Exists("tables.txt"))
+        {
+            using (var file = File.OpenText("tables.txt"))
+            {
+                while (file.Peek() > 0)
+                {
+                    tablesFromFile.Add(file.ReadLine());
+                }
+            }
+        }
+        Database db = srv.Databases[dbName];
+        var dropKeys = new Scripter(srv) {Options = {ScriptDrops = true, IncludeIfNotExists = true, DriForeignKeys = true}};
+        var listOfScripts = new List<Scripter>
+                            {
+                                new Scripter(srv) {Options = {ScriptDrops = true, IncludeIfNotExists =true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {ScriptDrops = false, ScriptSchema = true, WithDependencies = false, DriIndexes = true, DriClustered = true, IncludeIfNotExists = true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {ScriptDrops = false, ScriptSchema = true, DriDefaults = false, DriIndexes = false, DriPrimaryKey = false, DriClustered = false, Default = false, DriAll =false, DriForeignKeys = true, IncludeIfNotExists = true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {DriIndexes = true, Default = true, DriDefaults = true, DriClustered = false, IncludeIfNotExists = true, DriAll = true, DriAllConstraints = true, DriAllKeys = true, SchemaQualify = true, SchemaQualifyForeignKeysReferences = true, NoCollation = true}}
+                            };
+        using (var file = File.CreateText(outputFileName))
+        {
+            foreach (Table tb in db.Tables)
+            {
+                if ((tablesFromFile.Count > 0 && tablesFromFile.Contains(tb.Name) || (tablesFromFile.Count== 0 && tb.Name.StartsWith("GMP_"))))
+                {
+                    if (tb.IsSystemObject == false)
+                    {
+                        foreach (ForeignKey foreignKey in tb.ForeignKeys)
+                        {
+                            System.Collections.Specialized.StringCollection scd = dropKeys.Script(new[] {foreignKey.Urn });
+                            foreach (string st in scd)
+                            {
+                                file.WriteLine(st);
+                                file.WriteLine("GO");
+                            }
+                        }
+                        file.WriteLine();
+                    }
+                }
+            }
+            foreach (var script in listOfScripts)
+            {
+                foreach (Table tb in db.Tables)
+                {
+                    if ((tablesFromFile.Count > 0 && tablesFromFile.Contains(tb.Name) ||(tablesFromFile.Count == 0 && tb.Name.StartsWith("GMP_"))))
+                    {
+                        if (tb.IsSystemObject == false)
+                        {
+                            System.Collections.Specialized.StringCollection scd = script.Script(new[] {tb.Urn });
+                            foreach (string st in scd)
+                            {
+                                file.WriteLine(st);
+                                file.WriteLine("GO");
+                            }
+                            file.WriteLine();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+---
+## TFS Exclude binding from solution - 24 April, 2013
+
+It is not easy command to unbind solution/project of TFS.
+
+But there is manual actions to do that:
+1. Remove all *.vssscc and etc(Source Control files near your solution and projects file);
+2. Remove all nodes in solution and project file with tag <scc />
+
+---
+## [Structure of presentation](http://burba.pro/presentation_structure/)
+
+![image](./images/presentation_structure.png)
+
+---
+## Persistence.js insert empty values in web sql - 04 April, 2013
+
+I am starting to work with persistence.js library and open the problem to me: it saves empty data to web sql
+
+![example1](./images/persistance1.png)
+
+After investigating the problem i have found this question  and just want to clear and reproduce it in my notes. Thanks guys from this question :)
+The problem connected with this js file: persistence.jquery. If it used, we should rewrite code such as:
+
+![example2](./images/persistance2.png)
+
+Thanks.
+
+---
+## Useful LINQ extensions - 26 April, 2013
+
+After reading a lot of articles about this theme, I start to use the next [extensions](http://pastebin.com/As5as2pE)
+
+```csharp
+public static class Linq
+{
+    public static IEnumerable<T> Except<T>(this IEnumerable<T> source, IEnumerable<T> target, Func<T, T, bool> func)
+    {
+        return source.Except(target, new LambdaComparer<T>(func));
+    }
+
+    public static TResult With<TInput, TResult>(this TInput o, Func<TInput, TResult> evaluator)
+        where TInput : class
+    {
+        if (o == null) return default(TResult);
+        return evaluator(o);
+    }
+
+    public static TResult Return<TInput, TResult>(this TInput o, Func<TInput, TResult> evaluator, TResult failure_value) where TInput : class
+    {
+        if (o == null) return failure_value;
+        return evaluator(o);
+    }
+
+    public static bool Check<TInput>(this TInput o, Func<TInput, bool> evaluator) where TInput : class
+    {
+        if (o == null) return false;
+        return evaluator(o);
+    }
+
+    public static TInput If<TInput>(this TInput o, Func<TInput, bool> evaluator) where TInput : class
+    {
+        if (o == null) return null;
+        return evaluator(o) ? o : null;
+    }
+
+    public static TInput Unless<TInput>(this TInput o, Func<TInput, bool> evaluator) where TInput : class
+    {
+        if (o == null) return null;
+        return evaluator(o) ? null : o;
+    }
+
+    public static TInput Do<TInput>(this TInput o, Action<TInput> action) where TInput : class
+    {
+        if (o == null) return null;
+        action(o);
+        return o;
+    }
+
+    public static List<TInput> Delete<TInput>(this List<TInput> o, Func<TInput, bool> evaluator) where TInput : class
+    {
+        var listToDelete = o.Where(evaluator).ToList();
+        foreach (var input in listToDelete)
+        {
+            o.Remove(input);
+        }
+        return o;
+    }
+}
+
+
+public class LambdaComparer<T> : IEqualityComparer<T>
+{
+    private readonly Func<T, T, bool> _lambdaComparer;
+    private readonly Func<T, int> _lambdaHash;
+
+    public LambdaComparer(Func<T, T, bool> lambdaComparer) :
+        this(lambdaComparer, o => 0)
+    {
+    }
+
+    public LambdaComparer(Func<T, T, bool> lambdaComparer, Func<T, int> lambdaHash)
+    {
+        if (lambdaComparer == null)
+            throw new ArgumentNullException("lambdaComparer");
+        if (lambdaHash == null)
+            throw new ArgumentNullException("lambdaHash");
+
+        _lambdaComparer = lambdaComparer;
+        _lambdaHash = lambdaHash;
+    }
+
+    public bool Equals(T x, T y)
+    {
+        return _lambdaComparer(x, y);
+    }
+
+    public int GetHashCode(T obj)
+    {
+        return _lambdaHash(obj);
+    }
+}
+```
+
+---
+## Log2Console with IISExpress and log4net - 25 April, 2013
+
+Log2Console with IISExpress and log4net
+I have found that log4net and log2console don't work correctly (using IISExpress) with each other after trying using default configuration from [http://log2console.codeplex.com/wikipage?title=ClientConfiguration](http://log2console.codeplex.com/wikipage?title=ClientConfiguration.).
+
+But i have found new configuration for log4net and log2console ([log4net](http://logging.apache.org/log4net/release/config-examples.html#udpappender)) and
+
+![example1](./images/log2net1.png)
+
+Seems work fine:
+
+![example2](./images/log2net2.png)
+
+---
+## jQuery / Twitter Bootstrap List Tree Plugin Editable version - 20 April, 2013
+
+JQuery / Twitter Bootstrap List Tree Plugin is a great plugin, but it does not allow to edit and sort tree elements. I have created an editable version of plugin: The view of tree:
+
+![example](./images/bootstrap_tree.png)
+
+You can find the source code [there](http://pastebin.com/BTA4nL1c) or [here](./code/tree.js).
+
+Also see it [below](http://jsfiddle.net/QD8Hs/1060/).
+
+---
+## TFS Delete Team Project - 30 January, 2013
+
+It is not so easy to find the steps to delete project from TFS.
+
+So, according to [http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service](http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service).
+
+You can use the following command from the "Developer Command Prompt":
+
+```
+TfsDeleteProject /collection:https://mytfs.visualstudio.com/DefaultCollection MyProject
+```
+
+Thank you
+
+---
+## Avoid "Ambiguous invocation" for extension methods - 14 September, 2012
+
+I m using ASP.NET MVC. And work with my view, where I have the View 
+
+![example](./images/invocation.png)
+
+It gives me the exception
+
+```
+The call is ambiguous between the following methods or properties: 'GMP.MvcWebSite.StringExtensions.TrimOrEmpty(string)' and 'System.StringHelper.TrimOrEmpty(string)'
+```
+
+So i just rebuild my view as
+
+![example2](./images/invocation2.png)
+
+---

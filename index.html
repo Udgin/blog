@@ -209,7 +209,8 @@ Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced 
 <p>The Boot Process</p>
 <p><img src="./images/linux_foundation_boot_process.jpg" alt="Boot Process"></p>
 <p>Choosing a <a href="https://en.wikipedia.org/wiki/Linux_distribution">Linux Distribution</a></p>
-<h2 id="-choose-images-linux_foundation_choose-jpg-"><img src="./images/linux_foundation_choose.jpg" alt="Choose"></h2>
+<p><img src="./images/linux_foundation_choose.jpg" alt="Choose"></p>
+<hr>
 <h2 id="task-show-information-about-types-in-tooltip-the-value-of-a-point-is-the-sum-of-values-of-types-one-two-link-http-jsfiddle-net-yo4l215v-26-december-2014">Task: Show information about types in tooltip. The value of a point is the sum of values of types (&#39;one&#39;, &#39;two&#39;). <a href="http://jsfiddle.net/yo4L215v/">Link</a> - 26 December, 2014</h2>
 <p><a href="http://api.highcharts.com/highcharts#tooltip.formatter">Additional info</a></p>
 <p><img src="./images/highchart_add_info.png" alt="image"></p>
@@ -305,7 +306,8 @@ Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced 
 <p>Some images of plugin:</p>
 <p><img src="./images/fixed_header1.png" alt="example1"></p>
 <p>And another plugin <a href="https://bitbucket.org/upyl/fixedcolumn">https://bitbucket.org/upyl/fixedcolumn</a> to fix column of table.</p>
-<h2 id="-example2-images-fixed_header2-png-"><img src="./images/fixed_header2.png" alt="example2"></h2>
+<p><img src="./images/fixed_header2.png" alt="example2"></p>
+<hr>
 <h2 id="light-version-of-monodruid-04-june-2014">Light version of Monodruid - 04 June, 2014</h2>
 <p>I have created the light version of <a href="https://bitbucket.org/mayastudios/monodroid-unittest/wiki/Home">MonoDroid Unit Testing framework</a>.</p>
 <p>Please <a href="https://bitbucket.org/upyl/mono-unitetsting-light">look</a> and use if you need.</p>
@@ -315,8 +317,280 @@ Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced 
 <p>You should add next css style to yours:</p>
 <pre><code class="lang-css">body{ line-height:1}
 </code></pre>
-<h2 id="and-all-will-be-ok-enjoy-">And all will be OK ! Enjoy!</h2>
+<p>And all will be OK ! Enjoy!</p>
+<hr>
 <h2 id="bootstrap-datepicker-week-mode-view-28-july-2013">Bootstrap datepicker Week mode view - 28 July, 2013</h2>
 <p>I have updated bootstrap datepicker to new view mode: week.</p>
 <p>The source code is <a href="./code/bootstrap-datepicker.js">here</a></p>
+<hr>
+<h2 id="asp-net-mvc-and-html-hidden-01-april-2013">ASP.NET MVC and Html.Hidden - 01 April, 2013</h2>
+<p>There is interesting bug connected with Html.Hidden.
+There are two model:</p>
+<pre><code class="lang-csharp">public class  Model1{
+public int ID{get;set;}
+public Model2 Model2Model{get;set;}
+}
+public class Model2{
+public int ID{get;set;}
+}
+</code></pre>
+<p>Page:</p>
+<pre><code class="lang-html">&lt;html&gt;
+...
+&lt;body&gt;
+@Html.Partial(&quot;partial&quot;
+&lt;body&gt;
+&lt;/html&gt;
+</code></pre>
+<hr>
+<h2 id="smo-scripter-create-script-of-db-25-june-2013">SMO Scripter. Create script of DB - 25 June, 2013</h2>
+<p>It is possible to create script of MSSQL using SMO: (<a href="http://pastebin.com/AQkprTS7#">link</a>)</p>
+<pre><code class="lang-csharp">private static void Main(string[] args)
+{
+    var arguments = args.Select(x =&gt; x.ToLower()).ToList();
+    if (arguments.Count == 0 || arguments.Contains(&quot;-help&quot;))
+    {
+        Console.WriteLine(&quot;-d - Database Name&quot;);
+        Console.WriteLine(&quot;-i - Output Sql File Name&quot;);
+        Console.WriteLine(&quot;-s - Server Instance&quot;);
+        Console.WriteLine(&quot;-u - User Name&quot;);
+        Console.WriteLine(&quot;-p - Password&quot;);
+        Console.WriteLine(&quot;It should be &#39;tables.txt&#39; file in folder with names of tables to script; if it does not exist the application scripts all tables with prefix &#39;GMP_&#39;&quot;);
+        Console.ReadKey();
+    }
+    else if (arguments.Count &gt; 1 &amp;&amp; arguments.Contains(&quot;-d&quot;) &amp;&amp; args.Contains(&quot;-i&quot;))
+    {
+        if (arguments.Count &lt;= arguments.IndexOf(&quot;-d&quot;) + 1)
+        {
+            throw new ArgumentException(&quot;Database Name&quot;);
+        }
+        if (arguments.Count &lt;= argumSMO Scripter. Create script of DBents.IndexOf(&quot;-i&quot;) + 1)
+        {
+            throw new ArgumentException(&quot;Output Sql File Name&quot;);
+        }
+        var dbName = arguments[arguments.IndexOf(&quot;-d&quot;) + 1];
+        var outputFileName = arguments[arguments.IndexOf(&quot;-i&quot;) + 1];
+        var srv = new Server();
+        if (arguments.Contains(&quot;-s&quot;) &amp;&amp; args.Contains(&quot;-u&quot;) &amp;&amp; arguments.Contains(&quot;-p&quot;))
+        {
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-s&quot;) + 1)
+            {
+                throw new ArgumentException(&quot;Server Instance&quot;);
+            }
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-u&quot;) + 1)
+            {
+                throw new ArgumentException(&quot;User Name&quot;);
+            }
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-p&quot;) + 1)
+            {
+                throw new ArgumentException(&quot;Password&quot;);
+            }
+            var connection = new ServerConnection(arguments[arguments.IndexOf(&quot;-s&quot;) + 1], arguments[arguments.IndexOf(&quot;-u&quot;) + 1], arguments[arguments.IndexOf(&quot;-p&quot;) + 1]);
+            srv = new Server(connection);
+        }
+        // read names of tables
+        var tablesFromFile = new List&lt;string&gt;();
+        if (File.Exists(&quot;tables.txt&quot;))
+        {
+            using (var file = File.OpenText(&quot;tables.txt&quot;))
+            {
+                while (file.Peek() &gt; 0)
+                {
+                    tablesFromFile.Add(file.ReadLine());
+                }
+            }
+        }
+        Database db = srv.Databases[dbName];
+        var dropKeys = new Scripter(srv) {Options = {ScriptDrops = true, IncludeIfNotExists = true, DriForeignKeys = true}};
+        var listOfScripts = new List&lt;Scripter&gt;
+                            {
+                                new Scripter(srv) {Options = {ScriptDrops = true, IncludeIfNotExists =true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {ScriptDrops = false, ScriptSchema = true, WithDependencies = false, DriIndexes = true, DriClustered = true, IncludeIfNotExists = true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {ScriptDrops = false, ScriptSchema = true, DriDefaults = false, DriIndexes = false, DriPrimaryKey = false, DriClustered = false, Default = false, DriAll =false, DriForeignKeys = true, IncludeIfNotExists = true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {DriIndexes = true, Default = true, DriDefaults = true, DriClustered = false, IncludeIfNotExists = true, DriAll = true, DriAllConstraints = true, DriAllKeys = true, SchemaQualify = true, SchemaQualifyForeignKeysReferences = true, NoCollation = true}}
+                            };
+        using (var file = File.CreateText(outputFileName))
+        {
+            foreach (Table tb in db.Tables)
+            {
+                if ((tablesFromFile.Count &gt; 0 &amp;&amp; tablesFromFile.Contains(tb.Name) || (tablesFromFile.Count== 0 &amp;&amp; tb.Name.StartsWith(&quot;GMP_&quot;))))
+                {
+                    if (tb.IsSystemObject == false)
+                    {
+                        foreach (ForeignKey foreignKey in tb.ForeignKeys)
+                        {
+                            System.Collections.Specialized.StringCollection scd = dropKeys.Script(new[] {foreignKey.Urn });
+                            foreach (string st in scd)
+                            {
+                                file.WriteLine(st);
+                                file.WriteLine(&quot;GO&quot;);
+                            }
+                        }
+                        file.WriteLine();
+                    }
+                }
+            }
+            foreach (var script in listOfScripts)
+            {
+                foreach (Table tb in db.Tables)
+                {
+                    if ((tablesFromFile.Count &gt; 0 &amp;&amp; tablesFromFile.Contains(tb.Name) ||(tablesFromFile.Count == 0 &amp;&amp; tb.Name.StartsWith(&quot;GMP_&quot;))))
+                    {
+                        if (tb.IsSystemObject == false)
+                        {
+                            System.Collections.Specialized.StringCollection scd = script.Script(new[] {tb.Urn });
+                            foreach (string st in scd)
+                            {
+                                file.WriteLine(st);
+                                file.WriteLine(&quot;GO&quot;);
+                            }
+                            file.WriteLine();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<hr>
+<h2 id="tfs-exclude-binding-from-solution-24-april-2013">TFS Exclude binding from solution - 24 April, 2013</h2>
+<p>It is not easy command to unbind solution/project of TFS.</p>
+<p>But there is manual actions to do that:</p>
+<ol>
+<li>Remove all *.vssscc and etc(Source Control files near your solution and projects file);</li>
+<li>Remove all nodes in solution and project file with tag <scc /></li>
+</ol>
+<hr>
+<h2 id="-structure-of-presentation-http-burba-pro-presentation_structure-"><a href="http://burba.pro/presentation_structure/">Structure of presentation</a></h2>
+<p><img src="./images/presentation_structure.png" alt="image"></p>
+<hr>
+<h2 id="persistence-js-insert-empty-values-in-web-sql-04-april-2013">Persistence.js insert empty values in web sql - 04 April, 2013</h2>
+<p>I am starting to work with persistence.js library and open the problem to me: it saves empty data to web sql</p>
+<p><img src="./images/persistance1.png" alt="example1"></p>
+<p>After investigating the problem i have found this question  and just want to clear and reproduce it in my notes. Thanks guys from this question :)
+The problem connected with this js file: persistence.jquery. If it used, we should rewrite code such as:</p>
+<p><img src="./images/persistance2.png" alt="example2"></p>
+<p>Thanks.</p>
+<hr>
+<h2 id="useful-linq-extensions-26-april-2013">Useful LINQ extensions - 26 April, 2013</h2>
+<p>After reading a lot of articles about this theme, I start to use the next <a href="http://pastebin.com/As5as2pE">extensions</a></p>
+<pre><code class="lang-csharp">public static class Linq
+{
+    public static IEnumerable&lt;T&gt; Except&lt;T&gt;(this IEnumerable&lt;T&gt; source, IEnumerable&lt;T&gt; target, Func&lt;T, T, bool&gt; func)
+    {
+        return source.Except(target, new LambdaComparer&lt;T&gt;(func));
+    }
+
+    public static TResult With&lt;TInput, TResult&gt;(this TInput o, Func&lt;TInput, TResult&gt; evaluator)
+        where TInput : class
+    {
+        if (o == null) return default(TResult);
+        return evaluator(o);
+    }
+
+    public static TResult Return&lt;TInput, TResult&gt;(this TInput o, Func&lt;TInput, TResult&gt; evaluator, TResult failure_value) where TInput : class
+    {
+        if (o == null) return failure_value;
+        return evaluator(o);
+    }
+
+    public static bool Check&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return false;
+        return evaluator(o);
+    }
+
+    public static TInput If&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return null;
+        return evaluator(o) ? o : null;
+    }
+
+    public static TInput Unless&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return null;
+        return evaluator(o) ? null : o;
+    }
+
+    public static TInput Do&lt;TInput&gt;(this TInput o, Action&lt;TInput&gt; action) where TInput : class
+    {
+        if (o == null) return null;
+        action(o);
+        return o;
+    }
+
+    public static List&lt;TInput&gt; Delete&lt;TInput&gt;(this List&lt;TInput&gt; o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        var listToDelete = o.Where(evaluator).ToList();
+        foreach (var input in listToDelete)
+        {
+            o.Remove(input);
+        }
+        return o;
+    }
+}
+
+
+public class LambdaComparer&lt;T&gt; : IEqualityComparer&lt;T&gt;
+{
+    private readonly Func&lt;T, T, bool&gt; _lambdaComparer;
+    private readonly Func&lt;T, int&gt; _lambdaHash;
+
+    public LambdaComparer(Func&lt;T, T, bool&gt; lambdaComparer) :
+        this(lambdaComparer, o =&gt; 0)
+    {
+    }
+
+    public LambdaComparer(Func&lt;T, T, bool&gt; lambdaComparer, Func&lt;T, int&gt; lambdaHash)
+    {
+        if (lambdaComparer == null)
+            throw new ArgumentNullException(&quot;lambdaComparer&quot;);
+        if (lambdaHash == null)
+            throw new ArgumentNullException(&quot;lambdaHash&quot;);
+
+        _lambdaComparer = lambdaComparer;
+        _lambdaHash = lambdaHash;
+    }
+
+    public bool Equals(T x, T y)
+    {
+        return _lambdaComparer(x, y);
+    }
+
+    public int GetHashCode(T obj)
+    {
+        return _lambdaHash(obj);
+    }
+}
+</code></pre>
+<hr>
+<h2 id="log2console-with-iisexpress-and-log4net-25-april-2013">Log2Console with IISExpress and log4net - 25 April, 2013</h2>
+<p>Log2Console with IISExpress and log4net
+I have found that log4net and log2console don&#39;t work correctly (using IISExpress) with each other after trying using default configuration from <a href="http://log2console.codeplex.com/wikipage?title=ClientConfiguration.">http://log2console.codeplex.com/wikipage?title=ClientConfiguration</a>.</p>
+<p>But i have found new configuration for log4net and log2console (<a href="http://logging.apache.org/log4net/release/config-examples.html#udpappender">log4net</a>) and</p>
+<p><img src="./images/log2net1.png" alt="example1"></p>
+<p>Seems work fine:</p>
+<p><img src="./images/log2net2.png" alt="example2"></p>
+<hr>
+<h2 id="jquery-twitter-bootstrap-list-tree-plugin-editable-version-20-april-2013">jQuery / Twitter Bootstrap List Tree Plugin Editable version - 20 April, 2013</h2>
+<p>JQuery / Twitter Bootstrap List Tree Plugin is a great plugin, but it does not allow to edit and sort tree elements. I have created an editable version of plugin: The view of tree:</p>
+<p><img src="./images/bootstrap_tree.png" alt="example"></p>
+<p>You can find the source code <a href="http://pastebin.com/BTA4nL1c">there</a> or <a href="./code/tree.js">here</a>.</p>
+<p>Also see it <a href="http://jsfiddle.net/QD8Hs/1060/">below</a>.</p>
+<hr>
+<h2 id="tfs-delete-team-project-30-january-2013">TFS Delete Team Project - 30 January, 2013</h2>
+<p>It is not so easy to find the steps to delete project from TFS.</p>
+<p>So, according to <a href="http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service">http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service</a>.</p>
+<p>You can use the following command from the &quot;Developer Command Prompt&quot;:</p>
+<pre><code>TfsDeleteProject /collection:https://mytfs.visualstudio.com/DefaultCollection MyProject
+</code></pre><p>Thank you</p>
+<hr>
+<h2 id="avoid-ambiguous-invocation-for-extension-methods-14-september-2012">Avoid &quot;Ambiguous invocation&quot; for extension methods - 14 September, 2012</h2>
+<p>I m using ASP.NET MVC. And work with my view, where I have the View </p>
+<p><img src="./images/invocation.png" alt="example"></p>
+<p>It gives me the exception</p>
+<pre><code>The call is ambiguous between the following methods or properties: &#39;GMP.MvcWebSite.StringExtensions.TrimOrEmpty(string)&#39; and &#39;System.StringHelper.TrimOrEmpty(string)&#39;
+</code></pre><p>So i just rebuild my view as</p>
+<p><img src="./images/invocation2.png" alt="example2"></p>
 <hr>
