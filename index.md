@@ -35,13 +35,13 @@ The last one is about distributing and monitoring. I can’t say a lot about dis
 
 ### Approaches:
 * Separate solutions for each platform (Android, IOS, Windows)
-    1. Many projects, many languages, many teams
+    * Many projects, many languages, many teams
 * One universal solution (JS + HTML + CSS) - Cordova
-    2. Slow performance, limited native API
+    * Slow performance, limited native API
 * Xamarin approach (shared code + platform specific UI)
-    3. Good performance, almost all native API
+    * Good performance, almost all native API
 * ReactNative and NativeScript
-    4. Only Android and IOS (UWP in future)
+    * Only Android and IOS (UWP in future)
 
 Here I want to show the main ways to build mobile application.
     
