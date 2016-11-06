@@ -333,6 +333,7 @@ And another plugin https://bitbucket.org/upyl/fixedcolumn to fix column of table
 I have created the light version of [MonoDroid Unit Testing framework](https://bitbucket.org/mayastudios/monodroid-unittest/wiki/Home).
 
 Please [look](https://bitbucket.org/upyl/mono-unitetsting-light) and use if you need.
+
 ---
 ## Bootstrap + Recaptcha. Css problem - 07 June, 2013
 
@@ -346,3 +347,10 @@ body{ line-height:1}
 
 And all will be OK ! Enjoy!
 ---
+## Bootstrap datepicker Week mode view - 28 July, 2013
+I have updated bootstrap datepicker to new view mode: week.
+
+The source code is [here](./code/bootstrap-datepicker.js)
+
+---
+
