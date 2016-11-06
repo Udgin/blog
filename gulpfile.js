@@ -22,5 +22,5 @@ gulp.task('replace', function () {
 });
 
 gulp.task('default', ['markdown', 'replace'], function () {
-    gulp.watch('./blog.md', ['markdown', 'replace']);
+    gulp.watch(['./blog.md', './template.html'], ['markdown', 'replace']);
 });
