@@ -28,7 +28,7 @@ The last one is about distributing and monitoring. I can’t say a lot about dis
 * see advanced reporting and filtering of aggregate exception statistics
 * setup webhooks for triggering actions on certain Insights events
 * integrate with third-party services (Campire, Github, HipChat, Jira, PIvotalTracker, and Visual Studio Online)
-       
+
 * Separate solutions for each platform (Android, IOS, Windows)
     * Many projects, many languages, many teams
 * One universal solution (JS + HTML + CSS) - Cordova
