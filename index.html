@@ -1,280 +1,264 @@
-<!DOCTYPE html>
-<html>
-<xmp id="markdown" theme="united" style="display:none;">
-# [Eugene Pyl](www.linkedin.com/in/eugenepyl) - Notes
-
-## Xamarin Dev Days in Warsaw - 24 September, 2016
-
-Hi All, it is my overview of Xamarin Dev Days - short summary. Hope it will be useful to create an  impression what you can expect from this event.
-
-My stream technology is server-side .NET or ASP.NET MVC. My current project is on .NET platform, the main technology is Windows Workflow Foundation and I am not using Xamarin platform. But I had a small experience in Xamarin that I got during working on my previous project.
-
-Some time ago I had a chance to visit Xamarin Dev Days event in Warsaw. It was one day event in Warsaw Microsoft office. There were two part: the first one is generic information about Xamarin ecosystem and Azure Mobile Apps. The second one is hands on lab. So this presentation has been created to summarize and do a short recap mentioned event.
-
-### Agenda:
-* Introduction to Xamarin
-* Xamarin.Forms
-* Azure Mobile Apps
-* Sample application
-* Resources
-
-![Xamarin Platform](./images/xam_dev_days_platform.png "Xamarin Platform")
-
-The first thing that you should keep in mind when you are talking about Xamarin is that you are able to write application not using Visual Studio on Windows only, but also [Xamarin Studio](https://www.xamarin.com/studio) on Mac. Basically, as I understand, usually people are using Visual Studio to develop Android and Phone applications and Xamarin Studio on Mac to develop IOS application. But, of course, the team is using one code base. The reason of this approach, that it is much more quicker to build IOS application on MAC directly, without remote building using Visual Studio on Windows.
-
-The second thing is that Xamarin is not only about developing cross-platform applications using Visual Studio or Xamarin Studio, but Xamarin also provides possibility to test you application on various number of devices using [Xamarin Cloud](https://www.xamarin.com/test-cloud). As you can imagine, it is very expensive to buy all set of mobile devices for testing, so this cloud allows you to run your application on thousand of real devices in the cloud, analyze detailed test reports with results, screenshots, and performance metrics. Also it allows you to measure performance of your application. Sounds very cool, but there was a question from Xamarin Dev Days presenter about if there is someone who is using this cloud and nobody answered.
-
-The third thing is about building and continuous integration. Actually it is not about Xamarin but about[TFS](https://www.visualstudio.com/tfs/)(Team Foundation Server). You are able to install it on your private server or it is possible to use [Visual Studio Online](https://www.visualstudio.com/) service from Microsoft. It is free for small teams. It provides opportunity to work with your code (git), use agile board to organize your work, set up your continuous integration project (pure version of team city), create test cases.
-
-The last one is about distributing and monitoring. I can’t say a lot about distributing as I have never put any application to stores. As for monitoring, there is Xamarin Insight. It is the same approach as [Visual Studio Application Insights](https://www.visualstudio.com/en-us/docs/insights/application-insights). It is an extensible analytics service that helps you understand the performance and usage of your live mobile application. It's designed for developers, to help you continuously improve the performance and usability of your app. It [allows](http://www.joesauve.com/xamarin-insights-after-only-5-minutes-its-already-saving-my-arse/):
-
-* see user sessions in real time
-* see which users are being affected by which errors
-* see stacktraces for each exception
-* see device stats for each exception (operating system, app version, network status, device orientation, jalbreak status, and bluetooth status)
-* see advanced reporting and filtering of aggregate exception statistics
-* setup webhooks for triggering actions on certain Insights events
-* integrate with third-party services (Campire, Github, HipChat, Jira, PivotalTracker, and Visual Studio Online)
-
-### Approaches:
-* Separate solutions for each platform (Android, IOS, Windows)
-    * Many projects, many languages, many teams
-* One universal solution (JS + HTML + CSS) - Cordova
-    * Slow performance, limited native API
-* Xamarin approach (shared code + platform specific UI)
-    * Good performance, almost all native API
-* ReactNative and NativeScript
-    * Only Android and IOS (UWP in future)
-
-Here I want to show the main ways to build mobile application.
-    
-1. Of course, firstly it is native apps. It is clear. Swift, object-C for IOS, java is for Android, C# is  for Windows Phone. It means you should have and support many projects and many teams. It is a good option if you are planning to build complex and big mobile application. The best scenario is if this application has only mobile version.
-2. Universal solution. You are able to use Cordova and build you application using JavaScript. Personally I really like this approach as you are able to build almost any type of application using Javascript now. To execute javascript on server - NodeJs. For desktop application there is Electron framework. Cordova is to create mobile applications.The problem here is performance. The resulting applications are hybrid, meaning that they are neither truly native mobile application (because all layout rendering is done via Web views instead of the platform's native UI framework) nor purely Web-based (because they are not just Web apps, but are packaged as apps for distribution and have access to native device APIs). [[link](https://en.wikipedia.org/wiki/Apache_Cordova)]
-3. And Xamarin. It looks like win-win strategy if you already have web or desktop application written on .NET. You are able to share code, get native performance (almost, depends how you are creating application, Xamarin.Forms, for example, can create non the best implementation), access to all native API (almost). If there is a new version of OS, need to wait implementation in Xamarin up to one month.
-4. [ReactNative](https://www.reactnative.com/) and [NativeScript](https://www.nativescript.org/) created and supported by Facebook and Telerik. ReactNative hasn’t final version still, but NativeScript has version 2.0. They are the most young libraries in the list. JavaScript is the language to write a code. But unlike Cordova transform Javascript elements to native UI elements. Support Android and IOS now. Microsoft is working to add UWP here (NativeScript). Looks like the most perspective platforms. You are able to use [Angular2 + Typescript + NativeScript or ReactJs + ReactNative](https://www.quora.com/What-are-the-key-difference-between-ReactNative-and-NativeScript/answer/Valentin-Stoychev) to write mobile applications and share code also with your web version of application. Probably it is the best frameworks if your application is web first.
-
-### [Xamarin features](https://www.xamarin.com/download-it)
-
-* Produce ARM binary for Apple store
-* Produce APK for Android
-* Possibility to use only one IDE (Visual Studio)
-* [Android Hyper-V]("https://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/debug-on-emulator/visual-studio-android-emulator/) and [IOS Remote emulators](https://developer.xamarin.com/guides/cross-platform/windows/ios-simulator/)
-* Designers for IOS, Android and Windows Phone in Visual Studio
-* Xamarin Studio for Mac
-* [MVVM pattern](https://msdn.microsoft.com/en-us/library/hh848246.aspx) (XAML)
-
-Here I put the main interesting features of Xamarin:
-
-1. Xamarin [allows](https://www.xamarin.com/download-it#ios) to ship native app bundles on the App Store. Ahead-of-Time (AOT) compiler compiles Xamarin.iOS apps directly to native ARM assembly code, meaning your app is a native platform binary.
-2. As for Android, Xamarin.Android uses just-in-time compilation for sophisticated runtime optimization of your app’s performance, meaning your app is a native Android APK.
-3. Also I talked that we are able to use only one IDE to develop applications in theory. 
-4. Microsoft Visual Studio 2015 includes an Android emulator that you can use as a target for debugging your Xamarin.Android app: Visual Studio Emulator for Android. This emulator uses the Hyper-V capabilities of your development computer, resulting in faster launch and execution times than the default emulator that comes with the Android SDK. Also it is possible to debug IOS in Windows using remote simulator.
-5. Visual Studio supports also visual designers to build UI. It works almost the same like it works for WPF.
-6. The Model-View-ViewModel (MVVM) architectural pattern was invented with XAML in mind. The pattern enforces a separation of the XAML user interface (the View) from the underlying data (the Model) through a class that serves as an intermediary between the View and the Model (the ViewModel). The View and the ViewModel are often connected through data bindings defined in the XAML file. The BindingContext for the View is usually an instance of the ViewModel. [link](https://developer.xamarin.com/guides/xamarin-forms/xaml/xaml-basics/data_bindings_to_mvvm/)
-
-### [Sharing code](https://developer.xamarin.com/guides/cross-platform/application_fundamentals/building_cross_platform_applications/sharing_code_options/)
-* Portable class library
-* Shared projects
-* Upcoming [.NET Standard 2.0](https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/)
-
-Currently there are two ways to write shared code in Xamarin:
-
-1. Shared project. Unlike most other project types, a Shared Project has no 'output' assembly. During compilation, the files are treated as part of the referencing project and compiled into that DLL. If you wish to share your code as a DLL then Portable Class Libraries are a better solution. Shared code can be branched based on the platform using compiler directives (eg. using #if \__ANDROID__ , as discussed in the Building Cross Platform Applications document).
-2. Portable library. Only a subset of the .NET framework is available to use, determined by the profile selected (see the Introduction to PCL for more info).
-Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced a new [.NET Standard Library](https://docs.microsoft.com/en-us/dotnet/articles/standard/library). The .NET Standard Library is a formal specification of .NET APIs that are intended to be available on all .NET runtimes. The motivation behind the Standard Library is establishing greater uniformity in the .NET ecosystem.
-
-### [Xamarin plugins](https://developer.xamarin.com/guides/xamarin-forms/platform-features/plugins/) (nuget)
-* Battery
-* Connectivity
-* Geolocation
-* Media
-* Settings
-* Text to speech
-* ...
-
-Another one nice feature of Xamarin is Xamarin [plugins](https://github.com/xamarin/XamarinComponents) that can be downloaded using nuget. These libraries allow you to use functionality that adds cross-platform functionality or abstracts platform specific functionality to a common API, like battery, geolocation, media and so on.
-
-You are able to find the whole list of plugins [here](https://components.xamarin.com/?category=plugins).
-
-### [Xamarin.Forms](https://developer.xamarin.com/guides/xamarin-forms/)
-* Shared UI 
-* [Pages, layouts, controls](https://developer.xamarin.com/guides/xamarin-forms/controls/)
-* [Two-ways data binding](https://blog.xamarin.com/introduction-to-data-binding/)
-* [Navigation](https://developer.xamarin.com/guides/xamarin-forms/user-interface/navigation/)
-* [Animation](https://blog.xamarin.com/creating-animations-with-xamarin-forms/)
-* [Dependency service](https://developer.xamarin.com/guides/xamarin-forms/dependency-service/), [messaging center](https://developer.xamarin.com/guides/xamarin-forms/messaging-center/)
-* [Xamarin.Forms 2.0](https://developer.xamarin.com/releases/xamarin-forms/xamarin-forms-2.0/2.0.0/) - Performance
-* [Themes](https://developer.xamarin.com/guides/xamarin-forms/themes/)
-* [Data pages](https://developer.xamarin.com/guides/xamarin-forms/datapages/)
-* [Native embedding](https://developer.xamarin.com/guides/xamarin-forms/user-interface/layouts/add-platform-controls/)
-
-Use the Xamarin.Forms API provides a way to quickly build native apps for iOS, Android and Windows completely in C#. Xamarin.Forms is included with Visual Studio.
-
-1. Xamarin allows sharing not only code between platforms, but also UI. During compilation created abstract XAML is transformed to platform specific. For example, there is the next XAML element: Entry, what is TextBox in Windows Phone. So we have an platform-specific equivalent for every control from Xamarin.Form.
-2. There are three main groups in Xamarin.Form:
-    * A Xamarin.Forms.Page represents a View Controller in iOS or a Page in Windows Phone. On Android each page takes up the screen like an Activity, but Xamarin.Forms Pages are not Activities.
-    * The Layout class in Xamarin.Forms is a specialized subtype of View, which acts as a container for other Layouts or Views. It typically contains logic to set the position and size of child elements in Xamarin.Forms applications.
-    * Xamarin.Forms uses the word View to refer to visual objects such as buttons, labels or text entry boxes - which may be more commonly known as controls of widgets.
-3. Data binding connects two objects, called the source and the target. The source object provides the data. The target object, which must be a bindable property, will consume (and often display) data from the source object.
-4. Xamarin.Forms provides a number of different page navigation experiences, depending upon the Page type being used: Tabbed Page, Hierarchical Navigation, CarouselPage and so on.
-5. Xamarin.Forms includes its own animation infrastructure that allows for easy creation of simple animations, while also being versatile enough to create complex animations. The Xamarin.Forms animation classes target different properties of visual elements, with a typical animation progressively changing a property from one value to another over a period of time.
-6. Xamarin.Forms allows developers to define behavior in platform-specific projects. DependencyService then finds the right platform implementation, allowing shared code to access the native functionality.
-7. Xamarin.Forms MessagingCenter enables view models and other components to communicate with without having to know anything about each other besides a simple Message contract.
-8. Native Embedding. Platform-specific controls can be directly added to a Xamarin.Forms layout. It is possible to add platform-specific controls to a Xamarin.Forms layout, and how to override the layout of custom controls in order to correct their measurement API usage.
-
-### [Azure Mobile Apps](https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-value-prop/)
-
-![Azure Mobile](./images/azure_mob_structure.png)
-
-* Stable backend
-* Shared server/client code
-* Offline sync
-* Data storage (tables, sql)
-* Authentication (Microsoft, Google, Facebook, Twitter)
-* Push notifications
-
-Azure App Service is a fully managed Platform as a Service (PaaS) that brings a rich set of capabilities to web, mobile and integration scenarios.
-
-1. Build offline-ready apps with data sync.
-2. Push Notifications allows you to engage your clients with instant push notifications on any device.
-3. Authorization using different approaches
-4. Save data.
-
-### Take a look
-* [App Service Helpers](https://github.com/MikeCodesDotNet/App-Service-Helpers)
-* [Contoso Moments](https://github.com/azure-appservice-samples/ContosoMoments)
-
-Want to mention two nice libraries/ applications:
-
-1. App Service Helpers (ASH) makes it as easy as possible to add data storage and authentication to your mobile app with Microsoft's Azure App Service Platform. ASH was built with the mobile developer in mind, and requires no previous experience with backends as a service (BaaS). This lib was developed as a supplemental library to Microsoft's Azure Client SDK. Rather than replacing this library, ASH extends it by lowering the barrier to entry for developers who wish to build cloud-connected mobile apps in C#.
-2. It is a good example how to use Azure Mobile services. Contoso Moments is a photo sharing application that demonstrates the following features of Azure App Service:
-    * App Service authentication/authorization
-    * Continuous Integration and deployment
-    * Mobile app server SDK
-    * Mobile offline sync client SDK
-    * Mobile file sync SDK
-    * Mobile push notifications
-
-### References:
-There are a list of references and interesting information about Xamarin. Thank you for reading. [Please feel free to ask](mailto:gromkaktus@gmail.com) any questions, I will try to answer.
-
-* https://github.com/xamarin/dev-days-labs
-* https://www.xamarin.com/dev-days
-* http://www.meetup.com/warsawmobiledevelopers/
-* https://confluence.infusion.com/pages/viewpage.action?pageId=28582107
-* https://confluence.infusion.com/display/innovationpractices/Xamarin+Bootcamp+Training
-* https://developer.xamarin.com/
-
----
-## GitVersion + TC - 04 February, 2016
-
-GitVersion is the utility to set up version of deployed assemblies using information from Git.
-
-There is an easy way to set up it on your TC build server. Go to MetaRunner and download MR_GitVersion3.xml file. You should put this file to your build server. The path is C:\ProgramData\JetBrains\TeamCity\config\projects\{Project}\pluginData\metaRunners. The first part of this part you can find in Global settings of Team City. Also you have to restart your server after this.
-
-So you will be able to set up GitVersion build step which just gran information about your version from Git tags and put it to your assemblies.
-
-TC to build only commits with tags (RC-*). VCS Root set up:
-
-![Image One](./images/git_version_step3.PNG)
-![Image Two](./images/git_version_step3_2.PNG)
-
-Trigger:
-
-![Image Three](./images/git_version_step3_3.PNG)
-
----
-## Notes from [Introduction to Linux] - 21 May, 2015(https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0)
-
-Linux [Filesystem](http://www.tldp.org/LDP/sag/html/filesystems.html)
-
-* Conventional disk filesystems: ext2, ext3, ext4, XFS, Btrfs, JFS,NTFS, etc.
-* Flash storage filesystems: ubifs, JFFS2, YAFFS, etc.
-* Database filesystems
-* Special purpose filesystems: procfs, sysfs, tmpfs, debugfs, etc.
-
-[Partitions](https://en.wikipedia.org/wiki/Disk_partitioning)
-
-1. Windows
-    * Partition: Disk1 
-    * Filesystem type: NTFS/FAT32
-    * Mounting Parameters: DriveLetter 
-    * Base Folder of OS: C drive
-2. Linux
-    * Partition: /dev/sda1
-    * Filesystem type: EXT3/EXT4/XFS
-    * Mounting Parameters: MountPoint
-    * Base Folder of OS: /
-
-[The Filesystem Hierarchy Standard](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
-
-![File System](./images/linux_foundation_filesystem.jpg)
-
-The Boot Process
-
-![Boot Process](./images/linux_foundation_boot_process.jpg)
-
-Choosing a [Linux Distribution](https://en.wikipedia.org/wiki/Linux_distribution)
-
-![Choose](./images/linux_foundation_choose.jpg)
-
----
-## Task: Show information about types in tooltip. The value of a point is the sum of values of types ('one', 'two'). [Link](http://jsfiddle.net/yo4L215v/) - 26 December, 2014
-
-[Additional info](http://api.highcharts.com/highcharts#tooltip.formatter)
-
-![image](./images/highchart_add_info.png)
-
-The code:
-```javascript
-$(function () {
-    $('#container').highcharts({
+<h1 id="-eugene-pyl-www-linkedin-com-in-eugenepyl-notes"><a href="www.linkedin.com/in/eugenepyl">Eugene Pyl</a> - Notes</h1>
+<h2 id="xamarin-dev-days-in-warsaw-24-september-2016">Xamarin Dev Days in Warsaw - 24 September, 2016</h2>
+<p>Hi All, it is my overview of Xamarin Dev Days - short summary. Hope it will be useful to create an  impression what you can expect from this event.</p>
+<p>My stream technology is server-side .NET or ASP.NET MVC. My current project is on .NET platform, the main technology is Windows Workflow Foundation and I am not using Xamarin platform. But I had a small experience in Xamarin that I got during working on my previous project.</p>
+<p>Some time ago I had a chance to visit Xamarin Dev Days event in Warsaw. It was one day event in Warsaw Microsoft office. There were two part: the first one is generic information about Xamarin ecosystem and Azure Mobile Apps. The second one is hands on lab. So this presentation has been created to summarize and do a short recap mentioned event.</p>
+<h3 id="agenda-">Agenda:</h3>
+<ul>
+<li>Introduction to Xamarin</li>
+<li>Xamarin.Forms</li>
+<li>Azure Mobile Apps</li>
+<li>Sample application</li>
+<li>Resources</li>
+</ul>
+<p><img src="./images/xam_dev_days_platform.png" alt="Xamarin Platform" title="Xamarin Platform"></p>
+<p>The first thing that you should keep in mind when you are talking about Xamarin is that you are able to write application not using Visual Studio on Windows only, but also <a href="https://www.xamarin.com/studio">Xamarin Studio</a> on Mac. Basically, as I understand, usually people are using Visual Studio to develop Android and Phone applications and Xamarin Studio on Mac to develop IOS application. But, of course, the team is using one code base. The reason of this approach, that it is much more quicker to build IOS application on MAC directly, without remote building using Visual Studio on Windows.</p>
+<p>The second thing is that Xamarin is not only about developing cross-platform applications using Visual Studio or Xamarin Studio, but Xamarin also provides possibility to test you application on various number of devices using <a href="https://www.xamarin.com/test-cloud">Xamarin Cloud</a>. As you can imagine, it is very expensive to buy all set of mobile devices for testing, so this cloud allows you to run your application on thousand of real devices in the cloud, analyze detailed test reports with results, screenshots, and performance metrics. Also it allows you to measure performance of your application. Sounds very cool, but there was a question from Xamarin Dev Days presenter about if there is someone who is using this cloud and nobody answered.</p>
+<p>The third thing is about building and continuous integration. Actually it is not about Xamarin but about<a href="https://www.visualstudio.com/tfs/">TFS</a>(Team Foundation Server). You are able to install it on your private server or it is possible to use <a href="https://www.visualstudio.com/">Visual Studio Online</a> service from Microsoft. It is free for small teams. It provides opportunity to work with your code (git), use agile board to organize your work, set up your continuous integration project (pure version of team city), create test cases.</p>
+<p>The last one is about distributing and monitoring. I can’t say a lot about distributing as I have never put any application to stores. As for monitoring, there is Xamarin Insight. It is the same approach as <a href="https://www.visualstudio.com/en-us/docs/insights/application-insights">Visual Studio Application Insights</a>. It is an extensible analytics service that helps you understand the performance and usage of your live mobile application. It&#39;s designed for developers, to help you continuously improve the performance and usability of your app. It <a href="http://www.joesauve.com/xamarin-insights-after-only-5-minutes-its-already-saving-my-arse/">allows</a>:</p>
+<ul>
+<li>see user sessions in real time</li>
+<li>see which users are being affected by which errors</li>
+<li>see stacktraces for each exception</li>
+<li>see device stats for each exception (operating system, app version, network status, device orientation, jalbreak status, and bluetooth status)</li>
+<li>see advanced reporting and filtering of aggregate exception statistics</li>
+<li>setup webhooks for triggering actions on certain Insights events</li>
+<li>integrate with third-party services (Campire, Github, HipChat, Jira, PivotalTracker, and Visual Studio Online)</li>
+</ul>
+<h3 id="approaches-">Approaches:</h3>
+<ul>
+<li>Separate solutions for each platform (Android, IOS, Windows)<ul>
+<li>Many projects, many languages, many teams</li>
+</ul>
+</li>
+<li>One universal solution (JS + HTML + CSS) - Cordova<ul>
+<li>Slow performance, limited native API</li>
+</ul>
+</li>
+<li>Xamarin approach (shared code + platform specific UI)<ul>
+<li>Good performance, almost all native API</li>
+</ul>
+</li>
+<li>ReactNative and NativeScript<ul>
+<li>Only Android and IOS (UWP in future)</li>
+</ul>
+</li>
+</ul>
+<p>Here I want to show the main ways to build mobile application.</p>
+<ol>
+<li>Of course, firstly it is native apps. It is clear. Swift, object-C for IOS, java is for Android, C# is  for Windows Phone. It means you should have and support many projects and many teams. It is a good option if you are planning to build complex and big mobile application. The best scenario is if this application has only mobile version.</li>
+<li>Universal solution. You are able to use Cordova and build you application using JavaScript. Personally I really like this approach as you are able to build almost any type of application using Javascript now. To execute javascript on server - NodeJs. For desktop application there is Electron framework. Cordova is to create mobile applications.The problem here is performance. The resulting applications are hybrid, meaning that they are neither truly native mobile application (because all layout rendering is done via Web views instead of the platform&#39;s native UI framework) nor purely Web-based (because they are not just Web apps, but are packaged as apps for distribution and have access to native device APIs). [<a href="https://en.wikipedia.org/wiki/Apache_Cordova">link</a>]</li>
+<li>And Xamarin. It looks like win-win strategy if you already have web or desktop application written on .NET. You are able to share code, get native performance (almost, depends how you are creating application, Xamarin.Forms, for example, can create non the best implementation), access to all native API (almost). If there is a new version of OS, need to wait implementation in Xamarin up to one month.</li>
+<li><a href="https://www.reactnative.com/">ReactNative</a> and <a href="https://www.nativescript.org/">NativeScript</a> created and supported by Facebook and Telerik. ReactNative hasn’t final version still, but NativeScript has version 2.0. They are the most young libraries in the list. JavaScript is the language to write a code. But unlike Cordova transform Javascript elements to native UI elements. Support Android and IOS now. Microsoft is working to add UWP here (NativeScript). Looks like the most perspective platforms. You are able to use <a href="https://www.quora.com/What-are-the-key-difference-between-ReactNative-and-NativeScript/answer/Valentin-Stoychev">Angular2 + Typescript + NativeScript or ReactJs + ReactNative</a> to write mobile applications and share code also with your web version of application. Probably it is the best frameworks if your application is web first.</li>
+</ol>
+<h3 id="-xamarin-features-https-www-xamarin-com-download-it-"><a href="https://www.xamarin.com/download-it">Xamarin features</a></h3>
+<ul>
+<li>Produce ARM binary for Apple store</li>
+<li>Produce APK for Android</li>
+<li>Possibility to use only one IDE (Visual Studio)</li>
+<li><a href="&quot;https://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/debug-on-emulator/visual-studio-android-emulator/">Android Hyper-V</a> and <a href="https://developer.xamarin.com/guides/cross-platform/windows/ios-simulator/">IOS Remote emulators</a></li>
+<li>Designers for IOS, Android and Windows Phone in Visual Studio</li>
+<li>Xamarin Studio for Mac</li>
+<li><a href="https://msdn.microsoft.com/en-us/library/hh848246.aspx">MVVM pattern</a> (XAML)</li>
+</ul>
+<p>Here I put the main interesting features of Xamarin:</p>
+<ol>
+<li>Xamarin <a href="https://www.xamarin.com/download-it#ios">allows</a> to ship native app bundles on the App Store. Ahead-of-Time (AOT) compiler compiles Xamarin.iOS apps directly to native ARM assembly code, meaning your app is a native platform binary.</li>
+<li>As for Android, Xamarin.Android uses just-in-time compilation for sophisticated runtime optimization of your app’s performance, meaning your app is a native Android APK.</li>
+<li>Also I talked that we are able to use only one IDE to develop applications in theory. </li>
+<li>Microsoft Visual Studio 2015 includes an Android emulator that you can use as a target for debugging your Xamarin.Android app: Visual Studio Emulator for Android. This emulator uses the Hyper-V capabilities of your development computer, resulting in faster launch and execution times than the default emulator that comes with the Android SDK. Also it is possible to debug IOS in Windows using remote simulator.</li>
+<li>Visual Studio supports also visual designers to build UI. It works almost the same like it works for WPF.</li>
+<li>The Model-View-ViewModel (MVVM) architectural pattern was invented with XAML in mind. The pattern enforces a separation of the XAML user interface (the View) from the underlying data (the Model) through a class that serves as an intermediary between the View and the Model (the ViewModel). The View and the ViewModel are often connected through data bindings defined in the XAML file. The BindingContext for the View is usually an instance of the ViewModel. <a href="https://developer.xamarin.com/guides/xamarin-forms/xaml/xaml-basics/data_bindings_to_mvvm/">link</a></li>
+</ol>
+<h3 id="-sharing-code-https-developer-xamarin-com-guides-cross-platform-application_fundamentals-building_cross_platform_applications-sharing_code_options-"><a href="https://developer.xamarin.com/guides/cross-platform/application_fundamentals/building_cross_platform_applications/sharing_code_options/">Sharing code</a></h3>
+<ul>
+<li>Portable class library</li>
+<li>Shared projects</li>
+<li>Upcoming <a href="https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/">.NET Standard 2.0</a></li>
+</ul>
+<p>Currently there are two ways to write shared code in Xamarin:</p>
+<ol>
+<li>Shared project. Unlike most other project types, a Shared Project has no &#39;output&#39; assembly. During compilation, the files are treated as part of the referencing project and compiled into that DLL. If you wish to share your code as a DLL then Portable Class Libraries are a better solution. Shared code can be branched based on the platform using compiler directives (eg. using #if __ANDROID__ , as discussed in the Building Cross Platform Applications document).</li>
+<li>Portable library. Only a subset of the .NET framework is available to use, determined by the profile selected (see the Introduction to PCL for more info).
+Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced a new <a href="https://docs.microsoft.com/en-us/dotnet/articles/standard/library">.NET Standard Library</a>. The .NET Standard Library is a formal specification of .NET APIs that are intended to be available on all .NET runtimes. The motivation behind the Standard Library is establishing greater uniformity in the .NET ecosystem.</li>
+</ol>
+<h3 id="-xamarin-plugins-https-developer-xamarin-com-guides-xamarin-forms-platform-features-plugins-nuget-"><a href="https://developer.xamarin.com/guides/xamarin-forms/platform-features/plugins/">Xamarin plugins</a> (nuget)</h3>
+<ul>
+<li>Battery</li>
+<li>Connectivity</li>
+<li>Geolocation</li>
+<li>Media</li>
+<li>Settings</li>
+<li>Text to speech</li>
+<li>...</li>
+</ul>
+<p>Another one nice feature of Xamarin is Xamarin <a href="https://github.com/xamarin/XamarinComponents">plugins</a> that can be downloaded using nuget. These libraries allow you to use functionality that adds cross-platform functionality or abstracts platform specific functionality to a common API, like battery, geolocation, media and so on.</p>
+<p>You are able to find the whole list of plugins <a href="https://components.xamarin.com/?category=plugins">here</a>.</p>
+<h3 id="-xamarin-forms-https-developer-xamarin-com-guides-xamarin-forms-"><a href="https://developer.xamarin.com/guides/xamarin-forms/">Xamarin.Forms</a></h3>
+<ul>
+<li>Shared UI </li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/controls/">Pages, layouts, controls</a></li>
+<li><a href="https://blog.xamarin.com/introduction-to-data-binding/">Two-ways data binding</a></li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/user-interface/navigation/">Navigation</a></li>
+<li><a href="https://blog.xamarin.com/creating-animations-with-xamarin-forms/">Animation</a></li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/dependency-service/">Dependency service</a>, <a href="https://developer.xamarin.com/guides/xamarin-forms/messaging-center/">messaging center</a></li>
+<li><a href="https://developer.xamarin.com/releases/xamarin-forms/xamarin-forms-2.0/2.0.0/">Xamarin.Forms 2.0</a> - Performance</li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/themes/">Themes</a></li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/datapages/">Data pages</a></li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/user-interface/layouts/add-platform-controls/">Native embedding</a></li>
+</ul>
+<p>Use the Xamarin.Forms API provides a way to quickly build native apps for iOS, Android and Windows completely in C#. Xamarin.Forms is included with Visual Studio.</p>
+<ol>
+<li>Xamarin allows sharing not only code between platforms, but also UI. During compilation created abstract XAML is transformed to platform specific. For example, there is the next XAML element: Entry, what is TextBox in Windows Phone. So we have an platform-specific equivalent for every control from Xamarin.Form.</li>
+<li>There are three main groups in Xamarin.Form:<ul>
+<li>A Xamarin.Forms.Page represents a View Controller in iOS or a Page in Windows Phone. On Android each page takes up the screen like an Activity, but Xamarin.Forms Pages are not Activities.</li>
+<li>The Layout class in Xamarin.Forms is a specialized subtype of View, which acts as a container for other Layouts or Views. It typically contains logic to set the position and size of child elements in Xamarin.Forms applications.</li>
+<li>Xamarin.Forms uses the word View to refer to visual objects such as buttons, labels or text entry boxes - which may be more commonly known as controls of widgets.</li>
+</ul>
+</li>
+<li>Data binding connects two objects, called the source and the target. The source object provides the data. The target object, which must be a bindable property, will consume (and often display) data from the source object.</li>
+<li>Xamarin.Forms provides a number of different page navigation experiences, depending upon the Page type being used: Tabbed Page, Hierarchical Navigation, CarouselPage and so on.</li>
+<li>Xamarin.Forms includes its own animation infrastructure that allows for easy creation of simple animations, while also being versatile enough to create complex animations. The Xamarin.Forms animation classes target different properties of visual elements, with a typical animation progressively changing a property from one value to another over a period of time.</li>
+<li>Xamarin.Forms allows developers to define behavior in platform-specific projects. DependencyService then finds the right platform implementation, allowing shared code to access the native functionality.</li>
+<li>Xamarin.Forms MessagingCenter enables view models and other components to communicate with without having to know anything about each other besides a simple Message contract.</li>
+<li>Native Embedding. Platform-specific controls can be directly added to a Xamarin.Forms layout. It is possible to add platform-specific controls to a Xamarin.Forms layout, and how to override the layout of custom controls in order to correct their measurement API usage.</li>
+</ol>
+<h3 id="-azure-mobile-apps-https-azure-microsoft-com-en-us-documentation-articles-app-service-mobile-value-prop-"><a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-value-prop/">Azure Mobile Apps</a></h3>
+<p><img src="./images/azure_mob_structure.png" alt="Azure Mobile"></p>
+<ul>
+<li>Stable backend</li>
+<li>Shared server/client code</li>
+<li>Offline sync</li>
+<li>Data storage (tables, sql)</li>
+<li>Authentication (Microsoft, Google, Facebook, Twitter)</li>
+<li>Push notifications</li>
+</ul>
+<p>Azure App Service is a fully managed Platform as a Service (PaaS) that brings a rich set of capabilities to web, mobile and integration scenarios.</p>
+<ol>
+<li>Build offline-ready apps with data sync.</li>
+<li>Push Notifications allows you to engage your clients with instant push notifications on any device.</li>
+<li>Authorization using different approaches</li>
+<li>Save data.</li>
+</ol>
+<h3 id="take-a-look">Take a look</h3>
+<ul>
+<li><a href="https://github.com/MikeCodesDotNet/App-Service-Helpers">App Service Helpers</a></li>
+<li><a href="https://github.com/azure-appservice-samples/ContosoMoments">Contoso Moments</a></li>
+</ul>
+<p>Want to mention two nice libraries/ applications:</p>
+<ol>
+<li>App Service Helpers (ASH) makes it as easy as possible to add data storage and authentication to your mobile app with Microsoft&#39;s Azure App Service Platform. ASH was built with the mobile developer in mind, and requires no previous experience with backends as a service (BaaS). This lib was developed as a supplemental library to Microsoft&#39;s Azure Client SDK. Rather than replacing this library, ASH extends it by lowering the barrier to entry for developers who wish to build cloud-connected mobile apps in C#.</li>
+<li>It is a good example how to use Azure Mobile services. Contoso Moments is a photo sharing application that demonstrates the following features of Azure App Service:<ul>
+<li>App Service authentication/authorization</li>
+<li>Continuous Integration and deployment</li>
+<li>Mobile app server SDK</li>
+<li>Mobile offline sync client SDK</li>
+<li>Mobile file sync SDK</li>
+<li>Mobile push notifications</li>
+</ul>
+</li>
+</ol>
+<h3 id="references-">References:</h3>
+<p>There are a list of references and interesting information about Xamarin. Thank you for reading. <a href="mailto:gromkaktus@gmail.com">Please feel free to ask</a> any questions, I will try to answer.</p>
+<ul>
+<li><a href="https://github.com/xamarin/dev-days-labs">https://github.com/xamarin/dev-days-labs</a></li>
+<li><a href="https://www.xamarin.com/dev-days">https://www.xamarin.com/dev-days</a></li>
+<li><a href="http://www.meetup.com/warsawmobiledevelopers/">http://www.meetup.com/warsawmobiledevelopers/</a></li>
+<li><a href="https://confluence.infusion.com/pages/viewpage.action?pageId=28582107">https://confluence.infusion.com/pages/viewpage.action?pageId=28582107</a></li>
+<li><a href="https://confluence.infusion.com/display/innovationpractices/Xamarin+Bootcamp+Training">https://confluence.infusion.com/display/innovationpractices/Xamarin+Bootcamp+Training</a></li>
+<li><a href="https://developer.xamarin.com/">https://developer.xamarin.com/</a></li>
+</ul>
+<hr>
+<h2 id="gitversion-tc-04-february-2016">GitVersion + TC - 04 February, 2016</h2>
+<p>GitVersion is the utility to set up version of deployed assemblies using information from Git.</p>
+<p>There is an easy way to set up it on your TC build server. Go to MetaRunner and download MR_GitVersion3.xml file. You should put this file to your build server. The path is C:\ProgramData\JetBrains\TeamCity\config\projects{Project}\pluginData\metaRunners. The first part of this part you can find in Global settings of Team City. Also you have to restart your server after this.</p>
+<p>So you will be able to set up GitVersion build step which just gran information about your version from Git tags and put it to your assemblies.</p>
+<p>TC to build only commits with tags (RC-*). VCS Root set up:</p>
+<p><img src="./images/git_version_step3.PNG" alt="Image One">
+<img src="./images/git_version_step3_2.PNG" alt="Image Two"></p>
+<p>Trigger:</p>
+<p><img src="./images/git_version_step3_3.PNG" alt="Image Three"></p>
+<hr>
+<h2 id="notes-from-introduction-to-linux-21-may-2015-https-www-edx-org-course-introduction-linux-linuxfoundationx-lfs101x-0-">Notes from [Introduction to Linux] - 21 May, 2015(<a href="https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0">https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0</a>)</h2>
+<p>Linux <a href="http://www.tldp.org/LDP/sag/html/filesystems.html">Filesystem</a></p>
+<ul>
+<li>Conventional disk filesystems: ext2, ext3, ext4, XFS, Btrfs, JFS,NTFS, etc.</li>
+<li>Flash storage filesystems: ubifs, JFFS2, YAFFS, etc.</li>
+<li>Database filesystems</li>
+<li>Special purpose filesystems: procfs, sysfs, tmpfs, debugfs, etc.</li>
+</ul>
+<p><a href="https://en.wikipedia.org/wiki/Disk_partitioning">Partitions</a></p>
+<ol>
+<li>Windows<ul>
+<li>Partition: Disk1 </li>
+<li>Filesystem type: NTFS/FAT32</li>
+<li>Mounting Parameters: DriveLetter </li>
+<li>Base Folder of OS: C drive</li>
+</ul>
+</li>
+<li>Linux<ul>
+<li>Partition: /dev/sda1</li>
+<li>Filesystem type: EXT3/EXT4/XFS</li>
+<li>Mounting Parameters: MountPoint</li>
+<li>Base Folder of OS: /</li>
+</ul>
+</li>
+</ol>
+<p><a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">The Filesystem Hierarchy Standard</a></p>
+<p><img src="./images/linux_foundation_filesystem.jpg" alt="File System"></p>
+<p>The Boot Process</p>
+<p><img src="./images/linux_foundation_boot_process.jpg" alt="Boot Process"></p>
+<p>Choosing a <a href="https://en.wikipedia.org/wiki/Linux_distribution">Linux Distribution</a></p>
+<p><img src="./images/linux_foundation_choose.jpg" alt="Choose"></p>
+<hr>
+<h2 id="task-show-information-about-types-in-tooltip-the-value-of-a-point-is-the-sum-of-values-of-types-one-two-link-http-jsfiddle-net-yo4l215v-26-december-2014">Task: Show information about types in tooltip. The value of a point is the sum of values of types (&#39;one&#39;, &#39;two&#39;). <a href="http://jsfiddle.net/yo4L215v/">Link</a> - 26 December, 2014</h2>
+<p><a href="http://api.highcharts.com/highcharts#tooltip.formatter">Additional info</a></p>
+<p><img src="./images/highchart_add_info.png" alt="image"></p>
+<p>The code:</p>
+<pre><code class="lang-javascript">$(function () {
+    $(&#39;#container&#39;).highcharts({
         chart: {
-            type: 'column'
+            type: &#39;column&#39;
         },
- 
+
         tooltip: {
             formatter: function () {
-                var typeInf = '';
+                var typeInf = &#39;&#39;;
                 var types = this.point.Types;
                 $.each(types, function (index) {
-                    typeInf += '<b>' + types[index][0] + '</b> ' + types[index][1] + '<br/>';
+                    typeInf += &#39;&lt;b&gt;&#39; + types[index][0] + &#39;&lt;/b&gt; &#39; + types[index][1] + &#39;&lt;br/&gt;&#39;;
                 });
- 
-                return 'The value for <b>' + this.x +
-                    '</b> is <b>' + this.y + '</b><br/>' + typeInf;
+
+                return &#39;The value for &lt;b&gt;&#39; + this.x +
+                    &#39;&lt;/b&gt; is &lt;b&gt;&#39; + this.y + &#39;&lt;/b&gt;&lt;br/&gt;&#39; + typeInf;
             }
         },
- 
+
         xAxis: {
-            categories: ['Green', 'Pink']
+            categories: [&#39;Green&#39;, &#39;Pink&#39;]
         },
- 
+
         series: [{
             data: [{
-                name: 'Point 1',
-                Types: [["one", 1], ["two", 1]],
-                color: '#00FF00',
+                name: &#39;Point 1&#39;,
+                Types: [[&quot;one&quot;, 1], [&quot;two&quot;, 1]],
+                color: &#39;#00FF00&#39;,
                 y: 2
             }, {
-                name: 'Point 2',
-                Types: [["one", 2], ["two", 3]],
-                color: '#FF00FF',
+                name: &#39;Point 2&#39;,
+                Types: [[&quot;one&quot;, 2], [&quot;two&quot;, 3]],
+                color: &#39;#FF00FF&#39;,
                 y: 5
             }]
         }]
     });
 });
-```
-
----
-## WinRT Checksum for large files - 29 September, 2014
-
-There is a good [question](http://stackoverflow.com/questions/13534334/how-to-compute-hash-md5-or-sha-of-a-large-file-with-c-sharp-in-windows-store-a) about this.
-
-Also there is a code. I have used MD5 algorithm for my purposes.
-```csharp
-  public async Task<string> GetFileChecksumAsync(string fileName)
+</code></pre>
+<hr>
+<h2 id="winrt-checksum-for-large-files-29-september-2014">WinRT Checksum for large files - 29 September, 2014</h2>
+<p>There is a good <a href="http://stackoverflow.com/questions/13534334/how-to-compute-hash-md5-or-sha-of-a-large-file-with-c-sharp-in-windows-store-a">question</a> about this.</p>
+<p>Also there is a code. I have used MD5 algorithm for my purposes.</p>
+<pre><code class="lang-csharp">  public async Task&lt;string&gt; GetFileChecksumAsync(string fileName)
   {
    HashAlgorithmProvider alg = Windows.Security.Cryptography.Core.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
    IStorageFile stream = await openFile(fileName);
@@ -286,7 +270,7 @@ Also there is a code. I have used MD5 algorithm for my purposes.
     while (true)
     {
      await inputStream.ReadAsync(buffer, BUFFER_SIZE, InputStreamOptions.None);
-     if (buffer.Length > 0)
+     if (buffer.Length &gt; 0)
       hash.Append(buffer);
      else
       break;
@@ -295,152 +279,122 @@ Also there is a code. I have used MD5 algorithm for my purposes.
     return CryptographicBuffer.EncodeToHexString(hash.GetValueAndReset()).ToUpper();
    }
   }
-```
-
----
-## FuelUX Tree additional behavior - 14 July, 2014
-
-Add "Show All" to the FuelUX Tree like this.
-
-![example](./images/fuelux-tree.gif)
-
-There is the [tree plugin](https://exacttarget.github.io/fuelux/#tree). You can add the next code after initialization of the tree:
-```javascript
-scope.find('#MyTree').on('selected', function (event, data) {
+</code></pre>
+<hr>
+<h2 id="fuelux-tree-additional-behavior-14-july-2014">FuelUX Tree additional behavior - 14 July, 2014</h2>
+<p>Add &quot;Show All&quot; to the FuelUX Tree like this.</p>
+<p><img src="./images/fuelux-tree.gif" alt="example"></p>
+<p>There is the <a href="https://exacttarget.github.io/fuelux/#tree">tree plugin</a>. You can add the next code after initialization of the tree:</p>
+<pre><code class="lang-javascript">scope.find(&#39;#MyTree&#39;).on(&#39;selected&#39;, function (event, data) {
     if (data.target.additionalParameters.id == 0) {
-        scope.find('#MyTree').find('.tree-item').removeClass('tree-selected').find('i').removeClass('icon-ok').addClass('tree-dot');
-        scope.find('#MyTree').find('.tree-item:eq(1)').addClass('tree-selected').find('i').removeClass('tree-dot').addClass('icon-ok');
-        scope.find('#MyTree').find('.tree-folder-header> i.icon-ok').remove();
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item:eq(1)&#39;).addClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;tree-dot&#39;).addClass(&#39;icon-ok&#39;);
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-folder-header&gt; i.icon-ok&#39;).remove();
     }
     else {
-        scope.find('#MyTree').find('.tree-item:eq(1)').removeClass('tree-selected').find('i').removeClass('icon-ok').addClass('tree-dot');
-        if (data.target.additionalParameters.type == 'anyOther') {
-            data.element.closest('.tree-folder-content').find('.tree-item:gt(0)').removeClass('tree-selected').find('i').removeClass('icon-ok').addClass('tree-dot');
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item:eq(1)&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
+        if (data.target.additionalParameters.type == &#39;anyOther&#39;) {
+            data.element.closest(&#39;.tree-folder-content&#39;).find(&#39;.tree-item:gt(0)&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
         }
     }
-    
+
 });
-```
-
----
-## Fixed header/column for HTML table using JQuery - 07 July, 2014
-
-I have created one more plugin for HTML table. It fixes the head of a table on the page. [Please see it](https://bitbucket.org/upyl/fixedheader). The main feature is supporting of overflow parent element.
-
-Some images of plugin:
-
-![example1](./images/fixed_header1.png)
-
-And another plugin https://bitbucket.org/upyl/fixedcolumn to fix column of table.
-
-![example2](./images/fixed_header2.png)
-
----
-## Light version of Monodruid - 04 June, 2014
-
-I have created the light version of [MonoDroid Unit Testing framework](https://bitbucket.org/mayastudios/monodroid-unittest/wiki/Home).
-
-Please [look](https://bitbucket.org/upyl/mono-unitetsting-light) and use if you need.
-
----
-## Bootstrap + Recaptcha. Css problem - 07 June, 2013
-
-If you use bootstrap and recaptcha, you may face a problem like wrong padding|margin:
-
-You should add next css style to yours:
-
-```css
-body{ line-height:1}
-```
-
-And all will be OK ! Enjoy!
-
----
-## Bootstrap datepicker Week mode view - 28 July, 2013
-I have updated bootstrap datepicker to new view mode: week.
-
-The source code is [here](./code/bootstrap-datepicker.js)
-
----
-## ASP.NET MVC and Html.Hidden - 01 April, 2013
-
-There is interesting bug connected with Html.Hidden.
-There are two model:
-```csharp
-public class  Model1{
+</code></pre>
+<hr>
+<h2 id="fixed-header-column-for-html-table-using-jquery-07-july-2014">Fixed header/column for HTML table using JQuery - 07 July, 2014</h2>
+<p>I have created one more plugin for HTML table. It fixes the head of a table on the page. <a href="https://bitbucket.org/upyl/fixedheader">Please see it</a>. The main feature is supporting of overflow parent element.</p>
+<p>Some images of plugin:</p>
+<p><img src="./images/fixed_header1.png" alt="example1"></p>
+<p>And another plugin <a href="https://bitbucket.org/upyl/fixedcolumn">https://bitbucket.org/upyl/fixedcolumn</a> to fix column of table.</p>
+<p><img src="./images/fixed_header2.png" alt="example2"></p>
+<hr>
+<h2 id="light-version-of-monodruid-04-june-2014">Light version of Monodruid - 04 June, 2014</h2>
+<p>I have created the light version of <a href="https://bitbucket.org/mayastudios/monodroid-unittest/wiki/Home">MonoDroid Unit Testing framework</a>.</p>
+<p>Please <a href="https://bitbucket.org/upyl/mono-unitetsting-light">look</a> and use if you need.</p>
+<hr>
+<h2 id="bootstrap-recaptcha-css-problem-07-june-2013">Bootstrap + Recaptcha. Css problem - 07 June, 2013</h2>
+<p>If you use bootstrap and recaptcha, you may face a problem like wrong padding|margin:</p>
+<p>You should add next css style to yours:</p>
+<pre><code class="lang-css">body{ line-height:1}
+</code></pre>
+<p>And all will be OK ! Enjoy!</p>
+<hr>
+<h2 id="bootstrap-datepicker-week-mode-view-28-july-2013">Bootstrap datepicker Week mode view - 28 July, 2013</h2>
+<p>I have updated bootstrap datepicker to new view mode: week.</p>
+<p>The source code is <a href="./code/bootstrap-datepicker.js">here</a></p>
+<hr>
+<h2 id="asp-net-mvc-and-html-hidden-01-april-2013">ASP.NET MVC and Html.Hidden - 01 April, 2013</h2>
+<p>There is interesting bug connected with Html.Hidden.
+There are two model:</p>
+<pre><code class="lang-csharp">public class  Model1{
 public int ID{get;set;}
 public Model2 Model2Model{get;set;}
 }
 public class Model2{
 public int ID{get;set;}
 }
-```
-Page:
-```html
-<html>
+</code></pre>
+<p>Page:</p>
+<pre><code class="lang-html">&lt;html&gt;
 ...
-<body>
-@Html.Partial("partial"
-<body>
-</html>
-```
-
----
-## SMO Scripter. Create script of DB - 25 June, 2013
-
-It is possible to create script of MSSQL using SMO: ([link](http://pastebin.com/AQkprTS7#))
-
-```csharp
-private static void Main(string[] args)
+&lt;body&gt;
+@Html.Partial(&quot;partial&quot;
+&lt;body&gt;
+&lt;/html&gt;
+</code></pre>
+<hr>
+<h2 id="smo-scripter-create-script-of-db-25-june-2013">SMO Scripter. Create script of DB - 25 June, 2013</h2>
+<p>It is possible to create script of MSSQL using SMO: (<a href="http://pastebin.com/AQkprTS7#">link</a>)</p>
+<pre><code class="lang-csharp">private static void Main(string[] args)
 {
-    var arguments = args.Select(x => x.ToLower()).ToList();
-    if (arguments.Count == 0 || arguments.Contains("-help"))
+    var arguments = args.Select(x =&gt; x.ToLower()).ToList();
+    if (arguments.Count == 0 || arguments.Contains(&quot;-help&quot;))
     {
-        Console.WriteLine("-d - Database Name");
-        Console.WriteLine("-i - Output Sql File Name");
-        Console.WriteLine("-s - Server Instance");
-        Console.WriteLine("-u - User Name");
-        Console.WriteLine("-p - Password");
-        Console.WriteLine("It should be 'tables.txt' file in folder with names of tables to script; if it does not exist the application scripts all tables with prefix 'GMP_'");
+        Console.WriteLine(&quot;-d - Database Name&quot;);
+        Console.WriteLine(&quot;-i - Output Sql File Name&quot;);
+        Console.WriteLine(&quot;-s - Server Instance&quot;);
+        Console.WriteLine(&quot;-u - User Name&quot;);
+        Console.WriteLine(&quot;-p - Password&quot;);
+        Console.WriteLine(&quot;It should be &#39;tables.txt&#39; file in folder with names of tables to script; if it does not exist the application scripts all tables with prefix &#39;GMP_&#39;&quot;);
         Console.ReadKey();
     }
-    else if (arguments.Count > 1 && arguments.Contains("-d") && args.Contains("-i"))
+    else if (arguments.Count &gt; 1 &amp;&amp; arguments.Contains(&quot;-d&quot;) &amp;&amp; args.Contains(&quot;-i&quot;))
     {
-        if (arguments.Count <= arguments.IndexOf("-d") + 1)
+        if (arguments.Count &lt;= arguments.IndexOf(&quot;-d&quot;) + 1)
         {
-            throw new ArgumentException("Database Name");
+            throw new ArgumentException(&quot;Database Name&quot;);
         }
-        if (arguments.Count <= argumSMO Scripter. Create script of DBents.IndexOf("-i") + 1)
+        if (arguments.Count &lt;= argumSMO Scripter. Create script of DBents.IndexOf(&quot;-i&quot;) + 1)
         {
-            throw new ArgumentException("Output Sql File Name");
+            throw new ArgumentException(&quot;Output Sql File Name&quot;);
         }
-        var dbName = arguments[arguments.IndexOf("-d") + 1];
-        var outputFileName = arguments[arguments.IndexOf("-i") + 1];
+        var dbName = arguments[arguments.IndexOf(&quot;-d&quot;) + 1];
+        var outputFileName = arguments[arguments.IndexOf(&quot;-i&quot;) + 1];
         var srv = new Server();
-        if (arguments.Contains("-s") && args.Contains("-u") && arguments.Contains("-p"))
+        if (arguments.Contains(&quot;-s&quot;) &amp;&amp; args.Contains(&quot;-u&quot;) &amp;&amp; arguments.Contains(&quot;-p&quot;))
         {
-            if (arguments.Count <= arguments.IndexOf("-s") + 1)
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-s&quot;) + 1)
             {
-                throw new ArgumentException("Server Instance");
+                throw new ArgumentException(&quot;Server Instance&quot;);
             }
-            if (arguments.Count <= arguments.IndexOf("-u") + 1)
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-u&quot;) + 1)
             {
-                throw new ArgumentException("User Name");
+                throw new ArgumentException(&quot;User Name&quot;);
             }
-            if (arguments.Count <= arguments.IndexOf("-p") + 1)
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-p&quot;) + 1)
             {
-                throw new ArgumentException("Password");
+                throw new ArgumentException(&quot;Password&quot;);
             }
-            var connection = new ServerConnection(arguments[arguments.IndexOf("-s") + 1], arguments[arguments.IndexOf("-u") + 1], arguments[arguments.IndexOf("-p") + 1]);
+            var connection = new ServerConnection(arguments[arguments.IndexOf(&quot;-s&quot;) + 1], arguments[arguments.IndexOf(&quot;-u&quot;) + 1], arguments[arguments.IndexOf(&quot;-p&quot;) + 1]);
             srv = new Server(connection);
         }
         // read names of tables
-        var tablesFromFile = new List<string>();
-        if (File.Exists("tables.txt"))
+        var tablesFromFile = new List&lt;string&gt;();
+        if (File.Exists(&quot;tables.txt&quot;))
         {
-            using (var file = File.OpenText("tables.txt"))
+            using (var file = File.OpenText(&quot;tables.txt&quot;))
             {
-                while (file.Peek() > 0)
+                while (file.Peek() &gt; 0)
                 {
                     tablesFromFile.Add(file.ReadLine());
                 }
@@ -448,7 +402,7 @@ private static void Main(string[] args)
         }
         Database db = srv.Databases[dbName];
         var dropKeys = new Scripter(srv) {Options = {ScriptDrops = true, IncludeIfNotExists = true, DriForeignKeys = true}};
-        var listOfScripts = new List<Scripter>
+        var listOfScripts = new List&lt;Scripter&gt;
                             {
                                 new Scripter(srv) {Options = {ScriptDrops = true, IncludeIfNotExists =true, DriAllKeys = false}},
                                 new Scripter(srv) {Options = {ScriptDrops = false, ScriptSchema = true, WithDependencies = false, DriIndexes = true, DriClustered = true, IncludeIfNotExists = true, DriAllKeys = false}},
@@ -459,7 +413,7 @@ private static void Main(string[] args)
         {
             foreach (Table tb in db.Tables)
             {
-                if ((tablesFromFile.Count > 0 && tablesFromFile.Contains(tb.Name) || (tablesFromFile.Count== 0 && tb.Name.StartsWith("GMP_"))))
+                if ((tablesFromFile.Count &gt; 0 &amp;&amp; tablesFromFile.Contains(tb.Name) || (tablesFromFile.Count== 0 &amp;&amp; tb.Name.StartsWith(&quot;GMP_&quot;))))
                 {
                     if (tb.IsSystemObject == false)
                     {
@@ -469,7 +423,7 @@ private static void Main(string[] args)
                             foreach (string st in scd)
                             {
                                 file.WriteLine(st);
-                                file.WriteLine("GO");
+                                file.WriteLine(&quot;GO&quot;);
                             }
                         }
                         file.WriteLine();
@@ -480,7 +434,7 @@ private static void Main(string[] args)
             {
                 foreach (Table tb in db.Tables)
                 {
-                    if ((tablesFromFile.Count > 0 && tablesFromFile.Contains(tb.Name) ||(tablesFromFile.Count == 0 && tb.Name.StartsWith("GMP_"))))
+                    if ((tablesFromFile.Count &gt; 0 &amp;&amp; tablesFromFile.Contains(tb.Name) ||(tablesFromFile.Count == 0 &amp;&amp; tb.Name.StartsWith(&quot;GMP_&quot;))))
                     {
                         if (tb.IsSystemObject == false)
                         {
@@ -488,7 +442,7 @@ private static void Main(string[] args)
                             foreach (string st in scd)
                             {
                                 file.WriteLine(st);
-                                file.WriteLine("GO");
+                                file.WriteLine(&quot;GO&quot;);
                             }
                             file.WriteLine();
                         }
@@ -498,88 +452,75 @@ private static void Main(string[] args)
         }
     }
 }
-```
-
----
-## TFS Exclude binding from solution - 24 April, 2013
-
-It is not easy command to unbind solution/project of TFS.
-
-But there is manual actions to do that:
-1. Remove all *.vssscc and etc(Source Control files near your solution and projects file);
-2. Remove all nodes in solution and project file with tag <scc />
-
----
-## [Structure of presentation](http://burba.pro/presentation_structure/)
-
-![image](./images/presentation_structure.png)
-
----
-## Persistence.js insert empty values in web sql - 04 April, 2013
-
-I am starting to work with persistence.js library and open the problem to me: it saves empty data to web sql
-
-![example1](./images/persistance1.png)
-
-After investigating the problem i have found this question  and just want to clear and reproduce it in my notes. Thanks guys from this question :)
-The problem connected with this js file: persistence.jquery. If it used, we should rewrite code such as:
-
-![example2](./images/persistance2.png)
-
-Thanks.
-
----
-## Useful LINQ extensions - 26 April, 2013
-
-After reading a lot of articles about this theme, I start to use the next [extensions](http://pastebin.com/As5as2pE)
-
-```csharp
-public static class Linq
+</code></pre>
+<hr>
+<h2 id="tfs-exclude-binding-from-solution-24-april-2013">TFS Exclude binding from solution - 24 April, 2013</h2>
+<p>It is not easy command to unbind solution/project of TFS.</p>
+<p>But there is manual actions to do that:</p>
+<ol>
+<li>Remove all *.vssscc and etc(Source Control files near your solution and projects file);</li>
+<li>Remove all nodes in solution and project file with tag <scc /></li>
+</ol>
+<hr>
+<h2 id="-structure-of-presentation-http-burba-pro-presentation_structure-"><a href="http://burba.pro/presentation_structure/">Structure of presentation</a></h2>
+<p><img src="./images/presentation_structure.png" alt="image"></p>
+<hr>
+<h2 id="persistence-js-insert-empty-values-in-web-sql-04-april-2013">Persistence.js insert empty values in web sql - 04 April, 2013</h2>
+<p>I am starting to work with persistence.js library and open the problem to me: it saves empty data to web sql</p>
+<p><img src="./images/persistance1.png" alt="example1"></p>
+<p>After investigating the problem i have found this question  and just want to clear and reproduce it in my notes. Thanks guys from this question :)
+The problem connected with this js file: persistence.jquery. If it used, we should rewrite code such as:</p>
+<p><img src="./images/persistance2.png" alt="example2"></p>
+<p>Thanks.</p>
+<hr>
+<h2 id="useful-linq-extensions-26-april-2013">Useful LINQ extensions - 26 April, 2013</h2>
+<p>After reading a lot of articles about this theme, I start to use the next <a href="http://pastebin.com/As5as2pE">extensions</a></p>
+<pre><code class="lang-csharp">public static class Linq
 {
-    public static IEnumerable<T> Except<T>(this IEnumerable<T> source, IEnumerable<T> target, Func<T, T, bool> func)
+    public static IEnumerable&lt;T&gt; Except&lt;T&gt;(this IEnumerable&lt;T&gt; source, IEnumerable&lt;T&gt; target, Func&lt;T, T, bool&gt; func)
     {
-        return source.Except(target, new LambdaComparer<T>(func));
+        return source.Except(target, new LambdaComparer&lt;T&gt;(func));
     }
 
-    public static TResult With<TInput, TResult>(this TInput o, Func<TInput, TResult> evaluator)
+    public static TResult With&lt;TInput, TResult&gt;(this TInput o, Func&lt;TInput, TResult&gt; evaluator)
         where TInput : class
     {
         if (o == null) return default(TResult);
         return evaluator(o);
     }
 
-    public static TResult Return<TInput, TResult>(this TInput o, Func<TInput, TResult> evaluator, TResult failure_value) where TInput : class
+    public static TResult Return&lt;TInput, TResult&gt;(this TInput o, Func&lt;TInput, TResult&gt; evaluator, TResult failure_value) where TInput : class
     {
         if (o == null) return failure_value;
         return evaluator(o);
     }
 
-    public static bool Check<TInput>(this TInput o, Func<TInput, bool> evaluator) where TInput : class
+    public static bool Check&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
     {
         if (o == null) return false;
         return evaluator(o);
     }
 
-    public static TInput If<TInput>(this TInput o, Func<TInput, bool> evaluator) where TInput : class
+    public static TInput If&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
     {
         if (o == null) return null;
         return evaluator(o) ? o : null;
     }
 
-    public static TInput Unless<TInput>(this TInput o, Func<TInput, bool> evaluator) where TInput : class
+    public static TInput Unless&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
     {
         if (o == null) return null;
         return evaluator(o) ? null : o;
     }
 
-    public static TInput Do<TInput>(this TInput o, Action<TInput> action) where TInput : class
+    public static TInput Do&lt;TInput&gt;(this TInput o, Action&lt;TInput&gt; action) where TInput : class
     {
         if (o == null) return null;
         action(o);
         return o;
     }
 
-    public static List<TInput> Delete<TInput>(this List<TInput> o, Func<TInput, bool> evaluator) where TInput : class
+    public static List&lt;TInput&gt; Delete&lt;TInput&gt;(this List&lt;TInput&gt; o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
     {
         var listToDelete = o.Where(evaluator).ToList();
         foreach (var input in listToDelete)
@@ -591,22 +532,22 @@ public static class Linq
 }
 
 
-public class LambdaComparer<T> : IEqualityComparer<T>
+public class LambdaComparer&lt;T&gt; : IEqualityComparer&lt;T&gt;
 {
-    private readonly Func<T, T, bool> _lambdaComparer;
-    private readonly Func<T, int> _lambdaHash;
+    private readonly Func&lt;T, T, bool&gt; _lambdaComparer;
+    private readonly Func&lt;T, int&gt; _lambdaHash;
 
-    public LambdaComparer(Func<T, T, bool> lambdaComparer) :
-        this(lambdaComparer, o => 0)
+    public LambdaComparer(Func&lt;T, T, bool&gt; lambdaComparer) :
+        this(lambdaComparer, o =&gt; 0)
     {
     }
 
-    public LambdaComparer(Func<T, T, bool> lambdaComparer, Func<T, int> lambdaHash)
+    public LambdaComparer(Func&lt;T, T, bool&gt; lambdaComparer, Func&lt;T, int&gt; lambdaHash)
     {
         if (lambdaComparer == null)
-            throw new ArgumentNullException("lambdaComparer");
+            throw new ArgumentNullException(&quot;lambdaComparer&quot;);
         if (lambdaHash == null)
-            throw new ArgumentNullException("lambdaHash");
+            throw new ArgumentNullException(&quot;lambdaHash&quot;);
 
         _lambdaComparer = lambdaComparer;
         _lambdaHash = lambdaHash;
@@ -622,150 +563,108 @@ public class LambdaComparer<T> : IEqualityComparer<T>
         return _lambdaHash(obj);
     }
 }
-```
-
----
-## Log2Console with IISExpress and log4net - 25 April, 2013
-
-Log2Console with IISExpress and log4net
-I have found that log4net and log2console don't work correctly (using IISExpress) with each other after trying using default configuration from [http://log2console.codeplex.com/wikipage?title=ClientConfiguration](http://log2console.codeplex.com/wikipage?title=ClientConfiguration.).
-
-But i have found new configuration for log4net and log2console ([log4net](http://logging.apache.org/log4net/release/config-examples.html#udpappender)) and
-
-![example1](./images/log2net1.png)
-
-Seems work fine:
-
-![example2](./images/log2net2.png)
-
----
-## jQuery / Twitter Bootstrap List Tree Plugin Editable version - 20 April, 2013
-
-JQuery / Twitter Bootstrap List Tree Plugin is a great plugin, but it does not allow to edit and sort tree elements. I have created an editable version of plugin: The view of tree:
-
-![example](./images/bootstrap_tree.png)
-
-You can find the source code [there](http://pastebin.com/BTA4nL1c) or [here](./code/tree.js).
-
-Also see it [below](http://jsfiddle.net/QD8Hs/1060/).
-
----
-## TFS Delete Team Project - 30 January, 2013
-
-It is not so easy to find the steps to delete project from TFS.
-
-So, according to [http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service](http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service).
-
-You can use the following command from the "Developer Command Prompt":
-
-```
-TfsDeleteProject /collection:https://mytfs.visualstudio.com/DefaultCollection MyProject
-```
-
-Thank you
-
----
-## Avoid "Ambiguous invocation" for extension methods - 14 September, 2012
-
-I m using ASP.NET MVC. And work with my view, where I have the View 
-
-![example](./images/invocation.png)
-
-It gives me the exception
-
-```
-The call is ambiguous between the following methods or properties: 'GMP.MvcWebSite.StringExtensions.TrimOrEmpty(string)' and 'System.StringHelper.TrimOrEmpty(string)'
-```
-
-So i just rebuild my view as
-
-![example2](./images/invocation2.png)
-
----
-## API Facebook на С# - 28 September, 2012
-
-I know there are a lot of information about working with Facebook API, but... I just think more information is better then less.
-
-I need to post different types of context to Facebook pages (user create his own page, give us the name of page). OK, let's go!
-
-I m using ASP.NET MVC, you know...
-Link to the project.
-
-All events has been shown on the main page.
-
-1. Create our application in facebook.
-
-![example](./images/facebook1.png)
-
-You see there is secret key and application key. We need them to working with facebook through our application.
-
-2. Authorization (OAuth 2.0).
-
-![example](./images/facebook2.png)
-
-* Ask user to permission.
-* User will be redirected to facebook access page.
-* User give us needed permission.
-* User has been redirected back to our web site with special code.
-
-There is the step 4 (we get the code from redirecting response).
-
-```csharp
-public void GetAccessToken()
+</code></pre>
+<hr>
+<h2 id="log2console-with-iisexpress-and-log4net-25-april-2013">Log2Console with IISExpress and log4net - 25 April, 2013</h2>
+<p>Log2Console with IISExpress and log4net
+I have found that log4net and log2console don&#39;t work correctly (using IISExpress) with each other after trying using default configuration from <a href="http://log2console.codeplex.com/wikipage?title=ClientConfiguration.">http://log2console.codeplex.com/wikipage?title=ClientConfiguration</a>.</p>
+<p>But i have found new configuration for log4net and log2console (<a href="http://logging.apache.org/log4net/release/config-examples.html#udpappender">log4net</a>) and</p>
+<p><img src="./images/log2net1.png" alt="example1"></p>
+<p>Seems work fine:</p>
+<p><img src="./images/log2net2.png" alt="example2"></p>
+<hr>
+<h2 id="jquery-twitter-bootstrap-list-tree-plugin-editable-version-20-april-2013">jQuery / Twitter Bootstrap List Tree Plugin Editable version - 20 April, 2013</h2>
+<p>JQuery / Twitter Bootstrap List Tree Plugin is a great plugin, but it does not allow to edit and sort tree elements. I have created an editable version of plugin: The view of tree:</p>
+<p><img src="./images/bootstrap_tree.png" alt="example"></p>
+<p>You can find the source code <a href="http://pastebin.com/BTA4nL1c">there</a> or <a href="./code/tree.js">here</a>.</p>
+<p>Also see it <a href="http://jsfiddle.net/QD8Hs/1060/">below</a>.</p>
+<hr>
+<h2 id="tfs-delete-team-project-30-january-2013">TFS Delete Team Project - 30 January, 2013</h2>
+<p>It is not so easy to find the steps to delete project from TFS.</p>
+<p>So, according to <a href="http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service">http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service</a>.</p>
+<p>You can use the following command from the &quot;Developer Command Prompt&quot;:</p>
+<pre><code>TfsDeleteProject /collection:https://mytfs.visualstudio.com/DefaultCollection MyProject
+</code></pre><p>Thank you</p>
+<hr>
+<h2 id="avoid-ambiguous-invocation-for-extension-methods-14-september-2012">Avoid &quot;Ambiguous invocation&quot; for extension methods - 14 September, 2012</h2>
+<p>I m using ASP.NET MVC. And work with my view, where I have the View </p>
+<p><img src="./images/invocation.png" alt="example"></p>
+<p>It gives me the exception</p>
+<pre><code>The call is ambiguous between the following methods or properties: &#39;GMP.MvcWebSite.StringExtensions.TrimOrEmpty(string)&#39; and &#39;System.StringHelper.TrimOrEmpty(string)&#39;
+</code></pre><p>So i just rebuild my view as</p>
+<p><img src="./images/invocation2.png" alt="example2"></p>
+<hr>
+<h2 id="api-facebook-28-september-2012">API Facebook на С# - 28 September, 2012</h2>
+<p>I know there are a lot of information about working with Facebook API, but... I just think more information is better then less.</p>
+<p>I need to post different types of context to Facebook pages (user create his own page, give us the name of page). OK, let&#39;s go!</p>
+<p>I m using ASP.NET MVC, you know...
+Link to the project.</p>
+<p>All events has been shown on the main page.</p>
+<ol>
+<li>Create our application in facebook.</li>
+</ol>
+<p><img src="./images/facebook1.png" alt="example"></p>
+<p>You see there is secret key and application key. We need them to working with facebook through our application.</p>
+<ol>
+<li>Authorization (OAuth 2.0).</li>
+</ol>
+<p><img src="./images/facebook2.png" alt="example"></p>
+<ul>
+<li>Ask user to permission.</li>
+<li>User will be redirected to facebook access page.</li>
+<li>User give us needed permission.</li>
+<li>User has been redirected back to our web site with special code.</li>
+</ul>
+<p>There is the step 4 (we get the code from redirecting response).</p>
+<pre><code class="lang-csharp">public void GetAccessToken()
 {
-    if (HttpContext.Current.Request.Params.AllKeys.Contains("code"))
+    if (HttpContext.Current.Request.Params.AllKeys.Contains(&quot;code&quot;))
     {
-        code = HttpContext.Current.Request.Params["code"];
+        code = HttpContext.Current.Request.Params[&quot;code&quot;];
         //get the short-lived user access_toke
         string request = string.Format(_tokenEndpoint, _applicationId, _redirectTo, _applicationSecret, code);
         var webClient = new WebClient();
         string response = webClient.DownloadString(request);
-        string[] pairResponse = response.Split('&');
-        accessToken = pairResponse[0].Split('=')[1];
+        string[] pairResponse = response.Split(&#39;&amp;&#39;);
+        accessToken = pairResponse[0].Split(&#39;=&#39;)[1];
         //get the long-lived user access_toke
         request = string.Format(_exchangeAccessToken, _applicationId, _applicationSecret, accessToken);
         webClient = new WebClient();
         response = webClient.DownloadString(request);
-        if (!accessToken.Equals(response.Split('=')[1]))
+        if (!accessToken.Equals(response.Split(&#39;=&#39;)[1]))
         {
             throw new AccessViolationException();
         }
         GetUserInformation();
     }
-    else if (HttpContext.Current.Request.Params.AllKeys.Contains("error"))
+    else if (HttpContext.Current.Request.Params.AllKeys.Contains(&quot;error&quot;))
     {
-        error = HttpContext.Current.Request.Params["error"];
+        error = HttpContext.Current.Request.Params[&quot;error&quot;];
         throw new AccessViolationException(error);
     }
     throw new HttpException();
 }
-```
-
-That is my facebook controller
-
-```csharp
-public ActionResult Index()
+</code></pre>
+<p>That is my facebook controller</p>
+<pre><code class="lang-csharp">public ActionResult Index()
 {
     if (!Client.IsAuthorizated)
     {
         return Redirect(Client.UriToAuth);
     }
-    return View(new FacebookModel {Name = ""});
+    return View(new FacebookModel {Name = &quot;&quot;});
 }
 
 public ActionResult Authorizate()
 {
     Client.GetAccessToken();
-    return RedirectToAction("Index");
+    return RedirectToAction(&quot;Index&quot;);
 }
-```
-
-After getting code we need to get the id of the page:
-
-```csharp
-private void GetUserInformation()
+</code></pre>
+<p>After getting code we need to get the id of the page:</p>
+<pre><code class="lang-csharp">private void GetUserInformation()
 {
-    string request = "https://graph.facebook.com/me?access_token=" + accessToken;
+    string request = &quot;https://graph.facebook.com/me?access_token=&quot; + accessToken;
     var webClient = new WebClient();
     string response = webClient.DownloadString(request);
     user = JObject.Parse(response);
@@ -774,56 +673,52 @@ private void GetUserInformation()
 
 private void GetPagesInformation()
 {
-    string request = "https://graph.facebook.com/" + user.SelectToken("id") + "/accounts?access_token=" +
+    string request = &quot;https://graph.facebook.com/&quot; + user.SelectToken(&quot;id&quot;) + &quot;/accounts?access_token=&quot; +
                         accessToken;
     var webClient = new WebClient();
     string response = webClient.DownloadString(request);
     userPages = JObject.Parse(response);
-    page = userPages.SelectToken("data").First(x => x.SelectToken("name").ToString().Equals(_pageName));
+    page = userPages.SelectToken(&quot;data&quot;).First(x =&gt; x.SelectToken(&quot;name&quot;).ToString().Equals(_pageName));
 }
-```
-
-3. OK, let's start to posting something. Here is my configuration:
-
-```csharp
-private static readonly Dictionary<string, string> Config = new Dictionary<string, string>
+</code></pre>
+<ol>
+<li>OK, let&#39;s start to posting something. Here is my configuration:</li>
+</ol>
+<pre><code class="lang-csharp">private static readonly Dictionary&lt;string, string&gt; Config = new Dictionary&lt;string, string&gt;
 {
-    {"AuthorizationEndpoint", "https://graph.facebook.com/oauth/authorize?client_id={0}&redirect_uri={1}&scope=manage_pages,create_event,publish_stream"},
-    {"TokenEndpoint", "https://graph.facebook.com/oauth/access_token?client_id={0}&redirect_uri={1}&client_secret={2}&code={3}"},
-    {"ApplicationId", "387222228001291"},
-    {"ApplicationSecret", "3a177e2231e2966733771775b42"},
-    {"RedirectTo", "http://localhost:4769/Facebook/Authorizate"},
-    {"PageName", "TesterMyRest Community"}
+    {&quot;AuthorizationEndpoint&quot;, &quot;https://graph.facebook.com/oauth/authorize?client_id={0}&amp;redirect_uri={1}&amp;scope=manage_pages,create_event,publish_stream&quot;},
+    {&quot;TokenEndpoint&quot;, &quot;https://graph.facebook.com/oauth/access_token?client_id={0}&amp;redirect_uri={1}&amp;client_secret={2}&amp;code={3}&quot;},
+    {&quot;ApplicationId&quot;, &quot;387222228001291&quot;},
+    {&quot;ApplicationSecret&quot;, &quot;3a177e2231e2966733771775b42&quot;},
+    {&quot;RedirectTo&quot;, &quot;http://localhost:4769/Facebook/Authorizate&quot;},
+    {&quot;PageName&quot;, &quot;TesterMyRest Community&quot;}
 };
-```
-
-Posting video.
-
-```csharp
-public string CreateVideo(MemoryStream imageMemoryStream, string title, string fileName)
+</code></pre>
+<p>Posting video.</p>
+<pre><code class="lang-csharp">public string CreateVideo(MemoryStream imageMemoryStream, string title, string fileName)
 {
-    string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+    string boundary = &quot;---------------------------&quot; + DateTime.Now.Ticks.ToString(&quot;x&quot;);
     var uploadRequest =
         (HttpWebRequest)
-        WebRequest.Create("https://graph.facebook.com/" + page.SelectToken("id") + "/videos?access_token=" +
-                            page.SelectToken("access_token"));
+        WebRequest.Create(&quot;https://graph.facebook.com/&quot; + page.SelectToken(&quot;id&quot;) + &quot;/videos?access_token=&quot; +
+                            page.SelectToken(&quot;access_token&quot;));
     uploadRequest.ServicePoint.Expect100Continue = false;
-    uploadRequest.Method = "POST";
-    uploadRequest.UserAgent = "Mozilla/4.0 (compatible; Windows NT)";
-    uploadRequest.ContentType = "multipart/form-data; boundary=" + boundary;
+    uploadRequest.Method = &quot;POST&quot;;
+    uploadRequest.UserAgent = &quot;Mozilla/4.0 (compatible; Windows NT)&quot;;
+    uploadRequest.ContentType = &quot;multipart/form-data; boundary=&quot; + boundary;
     uploadRequest.KeepAlive = false;
 
     var sb = new StringBuilder();
 
-    const string formdataTemplate = "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}\r\n";
-    sb.AppendFormat(formdataTemplate, boundary, "title", HttpContext.Current.Server.HtmlEncode(title));
+    const string formdataTemplate = &quot;--{0}\r\nContent-Disposition: form-data; name=\&quot;{1}\&quot;\r\n\r\n{2}\r\n&quot;;
+    sb.AppendFormat(formdataTemplate, boundary, &quot;title&quot;, HttpContext.Current.Server.HtmlEncode(title));
 
-    const string headerTemplate = "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n";
-    sb.AppendFormat(headerTemplate, boundary, "source", fileName, @"application/octet-stream");
+    const string headerTemplate = &quot;--{0}\r\nContent-Disposition: form-data; name=\&quot;{1}\&quot;; filename=\&quot;{2}\&quot;\r\nContent-Type: {3}\r\n\r\n&quot;;
+    sb.AppendFormat(headerTemplate, boundary, &quot;source&quot;, fileName, @&quot;application/octet-stream&quot;);
 
     string formString = sb.ToString();
     byte[] formBytes = Encoding.UTF8.GetBytes(formString);
-    byte[] trailingBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
+    byte[] trailingBytes = Encoding.UTF8.GetBytes(&quot;\r\n--&quot; + boundary + &quot;--\r\n&quot;);
 
     long imageLength = imageMemoryStream.Length;
     long contentLength = formBytes.Length + imageLength + trailingBytes.Length;
@@ -854,28 +749,27 @@ public string CreateVideo(MemoryStream imageMemoryStream, string title, string f
         if (stream != null)
         {
             var loResponseStream = new StreamReader(stream, enc);
-            return "https://graph.facebook.com/" + loResponseStream.ReadToEnd();
+            return &quot;https://graph.facebook.com/&quot; + loResponseStream.ReadToEnd();
         }
     }
     return string.Empty;
 }
-```
-
-4. Change the information about the page.
-
-WebHelper class:
-```csharp
-public static class WebWorker
+</code></pre>
+<ol>
+<li>Change the information about the page.</li>
+</ol>
+<p>WebHelper class:</p>
+<pre><code class="lang-csharp">public static class WebWorker
 {
-    private static void AddPostParameter(Dictionary<string, string> values, StringBuilder postBody)
+    private static void AddPostParameter(Dictionary&lt;string, string&gt; values, StringBuilder postBody)
     {
         foreach (string key in values.Keys)
         {
-            if (postBody.Length > 0)
+            if (postBody.Length &gt; 0)
             {
-                postBody.Append("&");
+                postBody.Append(&quot;&amp;&quot;);
             }
-            postBody.Append(string.Format("{0}={1}", key, values[key]));
+            postBody.Append(string.Format(&quot;{0}={1}&quot;, key, values[key]));
         }
     }
 
@@ -886,7 +780,7 @@ public static class WebWorker
         return JObject.Parse(response);
     }
 
-    public static string UploadString(string requstUrl, Dictionary<string, string> values)
+    public static string UploadString(string requstUrl, Dictionary&lt;string, string&gt; values)
     {
         var webClient = new WebClient();
         var postBody = new StringBuilder();
@@ -894,38 +788,26 @@ public static class WebWorker
         return webClient.UploadString(requstUrl, postBody.ToString());
     }
 }
-```
-```csharp
-private string CreateStatus(Dictionary<string, string> values)
+</code></pre>
+<pre><code class="lang-csharp">private string CreateStatus(Dictionary&lt;string, string&gt; values)
 {
-    string request = "https://graph.facebook.com/" + page.SelectToken("id") + "/feed?access_token=" +
-                        page.SelectToken("access_token");
+    string request = &quot;https://graph.facebook.com/&quot; + page.SelectToken(&quot;id&quot;) + &quot;/feed?access_token=&quot; +
+                        page.SelectToken(&quot;access_token&quot;);
     return WebWorker.UploadString(request, values);
 }
-```
-
----
-## ASP.NET MVC Bundle Minification - Not Found 404 - 06 September, 2012
-
-If you try to add Bundle from Web.Optimization library to your existing project and your Web.config file
-
-![example](./images/bundle1.png)
-
-so runAllManagedModulesForAllRequests="false".
-
-You start to get 404- Not found response to your bundle requests.
-
-![example](./images/bundle2.png)
-
-Just enable BundleModule and all will be OK ! ;)
-
----
-## VS 2010 Attach to process w3wp.exe - 20 July, 2012
-
-Need to create the macros:
-
-```
-Public Module AttachToProcess
+</code></pre>
+<hr>
+<h2 id="asp-net-mvc-bundle-minification-not-found-404-06-september-2012">ASP.NET MVC Bundle Minification - Not Found 404 - 06 September, 2012</h2>
+<p>If you try to add Bundle from Web.Optimization library to your existing project and your Web.config file</p>
+<p><img src="./images/bundle1.png" alt="example"></p>
+<p>so runAllManagedModulesForAllRequests=&quot;false&quot;.</p>
+<p>You start to get 404- Not found response to your bundle requests.</p>
+<p><img src="./images/bundle2.png" alt="example"></p>
+<p>Just enable BundleModule and all will be OK ! ;)</p>
+<hr>
+<h2 id="vs-2010-attach-to-process-w3wp-exe-20-july-2012">VS 2010 Attach to process w3wp.exe - 20 July, 2012</h2>
+<p>Need to create the macros:</p>
+<pre><code>Public Module AttachToProcess
 Public Function AttachToProcess(ByVal ProcessName As String) As Boolean
 Dim proc As EnvDTE.Process
 Dim attached As Boolean
@@ -940,136 +822,100 @@ Return attached
 End Function
 
 Sub AttachToW3WP()
-If Not AttachToProcess("w3wp.exe") Then
-System.Windows.Forms.MessageBox.Show("Cannot attach to process")
+If Not AttachToProcess(&quot;w3wp.exe&quot;) Then
+System.Windows.Forms.MessageBox.Show(&quot;Cannot attach to process&quot;)
 End If
 End Sub
 End Module
-```
+</code></pre><p><a href="http://habrahabr.ru/post/131937/">Link</a></p>
+<hr>
+<h2 id="powershell-replace-physical-path-of-web-sites-in-iis7-17-july-2012">PowerShell, Replace physical path of web sites in IIS7 - 17 July, 2012</h2>
+<pre><code class="lang-PowerShell">param([String]$numb)
 
-[Link](http://habrahabr.ru/post/131937/)
+[Void][Reflection.Assembly]::LoadWithPartialName(&quot;Microsoft.Web.Administration&quot;)
 
----
-## PowerShell, Replace physical path of web sites in IIS7 - 17 July, 2012
-
-```PowerShell
-param([String]$numb)
-
-[Void][Reflection.Assembly]::LoadWithPartialName("Microsoft.Web.Administration")
-
-$siteName = "graph.vrpinc.com"
-##$serverIP = "your ip address"
-$newPath = "D:\Projects\gmp"+$numb+"\GMP.WebSite"
+$siteName = &quot;graph.vrpinc.com&quot;
+##$serverIP = &quot;your ip address&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.WebSite&quot;
 
 $serverManager = New-Object Microsoft.Web.Administration.ServerManager
 ## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
 $site = $serverManager.Sites | where { $_.Name -eq $siteName }
-$rootApp = $site.Applications | where { $_.Path -eq "/" }
-$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq "/" }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
 $rootVdir.PhysicalPath = $newPath
 $serverManager.CommitChanges()
 
-$siteName = "gmp3.vrpinc.com"
-$newPath = "D:\Projects\gmp"+$numb+"\GMP.MvcWebSite"
+$siteName = &quot;gmp3.vrpinc.com&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.MvcWebSite&quot;
 
 $serverManager = New-Object Microsoft.Web.Administration.ServerManager
 ## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
 $site = $serverManager.Sites | where { $_.Name -eq $siteName }
-$rootApp = $site.Applications | where { $_.Path -eq "/" }
-$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq "/" }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
 $rootVdir.PhysicalPath = $newPath
 $serverManager.CommitChanges()
 
-$siteName = "GMPServices"
-$newPath = "D:\Projects\gmp"+$numb+"\GMP.Services"
+$siteName = &quot;GMPServices&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.Services&quot;
 
 $serverManager = New-Object Microsoft.Web.Administration.ServerManager
 ## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
 $site = $serverManager.Sites | where { $_.Name -eq $siteName }
-$rootApp = $site.Applications | where { $_.Path -eq "/" }
-$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq "/" }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
 $rootVdir.PhysicalPath = $newPath
 $serverManager.CommitChanges()
-```
-
-Bat file to call PowerShell file
-
-```
-@echo off
+</code></pre>
+<p>Bat file to call PowerShell file</p>
+<pre><code>@echo off
 
 set /p delBuild=Enter the number of gmp project?
 powershell -noprofile Set-ExecutionPolicy Unrestricted
 powershell .\setUpSite.ps1 -numb %delBuild%
-```
-
-One variable to set current version of projects!
-Thanks!
-
----
-## MVC indefinitely loads the page and call the controller cyclical - 31 January, 2012
-
-I have found that the page load indefinitely. And the reason was I add @Html.RenderAction to my default layout.
-
-So the solution of the problem to add the next code to rendered view:
-
-```
-@{
+</code></pre><p>One variable to set current version of projects!
+Thanks!</p>
+<hr>
+<h2 id="mvc-indefinitely-loads-the-page-and-call-the-controller-cyclical-31-january-2012">MVC indefinitely loads the page and call the controller cyclical - 31 January, 2012</h2>
+<p>I have found that the page load indefinitely. And the reason was I add @Html.RenderAction to my default layout.</p>
+<p>So the solution of the problem to add the next code to rendered view:</p>
+<pre><code>@{
       Layout = null;
 }
-```
- 
-As I understand, MVC try to load the next without this code:
-
-Layout -> MyView -> Layout -> MyView -> ....
-
-With code above:
-
-Layout -> MyView { -> null}
-
-So it's happens.
-
----
-## 0x80004005: Failed to Execute URL - 12 December, 2011
-
-The error was connected with GET requests. ApplicationPool was set in Classic mode.
-There is HttpModule, which throws this type of exceptions:
-
-```
-System.Web.HttpException (0x80004005): Failed to Execute URL.
+</code></pre><p>As I understand, MVC try to load the next without this code:</p>
+<p>Layout -&gt; MyView -&gt; Layout -&gt; MyView -&gt; ....</p>
+<p>With code above:</p>
+<p>Layout -&gt; MyView { -&gt; null}</p>
+<p>So it&#39;s happens.</p>
+<hr>
+<h2 id="0x80004005-failed-to-execute-url-12-december-2011">0x80004005: Failed to Execute URL - 12 December, 2011</h2>
+<p>The error was connected with GET requests. ApplicationPool was set in Classic mode.
+There is HttpModule, which throws this type of exceptions:</p>
+<pre><code>System.Web.HttpException (0x80004005): Failed to Execute URL.
 at System.Web.Hosting.ISAPIWorkerRequestInProcForIIS6.BeginExecuteUrl(String url, String method, String childHeaders, Boolean sendHeaders, Boolean addUserIndo, IntPtr token, String name, String authType, Byte[] entity, AsyncCallback cb, Object state)
 at System.Web.HttpResponse.BeginExecuteUrlForEntireResponse(String pathOverride, NameValueCollection requestHeaders, AsyncCallback cb, Object state)
 at System.Web.DefaultHttpHandler.BeginProcessRequest(HttpContext context, AsyncCallback callback, Object state)
 at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
-at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
-```
-
-contained the next source code in event context.BeginRequest:
-
-```
-app.Context.RewritePath(app.Context.Request.Path);
-```
-
-The solve of the problem is:
-
-```
-app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, string.Empty);
-```
-
----
-## PowerShell How to ... ? - 9 December, 2011
-
-1. How to set folder's permission?
-
-```powershell
- #set owner and principals for %SystemRoot%\TEMP
+at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)
+</code></pre><p>contained the next source code in event context.BeginRequest:</p>
+<pre><code>app.Context.RewritePath(app.Context.Request.Path);
+</code></pre><p>The solve of the problem is:</p>
+<pre><code>app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, string.Empty);
+</code></pre><hr>
+<h2 id="powershell-how-to-9-december-2011">PowerShell How to ... ? - 9 December, 2011</h2>
+<ol>
+<li>How to set folder&#39;s permission?</li>
+</ol>
+<pre><code class="lang-powershell"> #set owner and principals for %SystemRoot%\TEMP
  #http://channel9.msdn.com/Forums/Coffeehouse/Powershell-subinacl-ownership-of-directories
- Write-Host -ForegroundColor green "Set owner and principals for %SystemRoot%\TEMP"
+ Write-Host -ForegroundColor green &quot;Set owner and principals for %SystemRoot%\TEMP&quot;
  $pathToSystemRoot = get-content env:systemroot
  $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
  $Principal = new-object security.principal.ntaccount $currentUser
  $path = Join-Path $pathToSystemRoot \temp
- 
- $code = @"
+
+ $code = @&quot;
 using System;
 using System.Runtime.InteropServices;
 
@@ -1078,21 +924,21 @@ namespace WSG.Utils
 public class PermissionsSetter
 {
 
-  [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
+  [DllImport(&quot;advapi32.dll&quot;, ExactSpelling = true, SetLastError = true)]
   internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall,
   ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
 
 
-  [DllImport("kernel32.dll", ExactSpelling = true)]
+  [DllImport(&quot;kernel32.dll&quot;, ExactSpelling = true)]
   internal static extern IntPtr GetCurrentProcess();
 
 
-  [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
+  [DllImport(&quot;advapi32.dll&quot;, ExactSpelling = true, SetLastError = true)]
   internal static extern bool OpenProcessToken(IntPtr h, int acc, ref IntPtr
   phtok);
 
 
-  [DllImport("advapi32.dll", SetLastError = true)]
+  [DllImport(&quot;advapi32.dll&quot;, SetLastError = true)]
   internal static extern bool LookupPrivilegeValue(string host, string name,
   ref long pluid);
 
@@ -1112,41 +958,41 @@ public class PermissionsSetter
   internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;
 
 
-  public const string SE_ASSIGNPRIMARYTOKEN_NAME = "SeAssignPrimaryTokenPrivilege";
-  public const string SE_AUDIT_NAME = "SeAuditPrivilege";
-  public const string SE_BACKUP_NAME = "SeBackupPrivilege";
-  public const string SE_CHANGE_NOTIFY_NAME = "SeChangeNotifyPrivilege";
-  public const string SE_CREATE_GLOBAL_NAME = "SeCreateGlobalPrivilege";
-  public const string SE_CREATE_PAGEFILE_NAME = "SeCreatePagefilePrivilege";
-  public const string SE_CREATE_PERMANENT_NAME = "SeCreatePermanentPrivilege";
-  public const string SE_CREATE_SYMBOLIC_LINK_NAME = "SeCreateSymbolicLinkPrivilege";
-  public const string SE_CREATE_TOKEN_NAME = "SeCreateTokenPrivilege";
-  public const string SE_DEBUG_NAME = "SeDebugPrivilege";
-  public const string SE_ENABLE_DELEGATION_NAME = "SeEnableDelegationPrivilege";
-  public const string SE_IMPERSONATE_NAME = "SeImpersonatePrivilege";
-  public const string SE_INC_BASE_PRIORITY_NAME = "SeIncreaseBasePriorityPrivilege";
-  public const string SE_INCREASE_QUOTA_NAME = "SeIncreaseQuotaPrivilege";
-  public const string SE_INC_WORKING_SET_NAME = "SeIncreaseWorkingSetPrivilege";
-  public const string SE_LOAD_DRIVER_NAME = "SeLoadDriverPrivilege";
-  public const string SE_LOCK_MEMORY_NAME = "SeLockMemoryPrivilege";
-  public const string SE_MACHINE_ACCOUNT_NAME = "SeMachineAccountPrivilege";
-  public const string SE_MANAGE_VOLUME_NAME = "SeManageVolumePrivilege";
-  public const string SE_PROF_SINGLE_PROCESS_NAME = "SeProfileSingleProcessPrivilege";
-  public const string SE_RELABEL_NAME = "SeRelabelPrivilege";
-  public const string SE_REMOTE_SHUTDOWN_NAME = "SeRemoteShutdownPrivilege";
-  public const string SE_RESTORE_NAME = "SeRestorePrivilege";
-  public const string SE_SECURITY_NAME = "SeSecurityPrivilege";
-  public const string SE_SHUTDOWN_NAME = "SeShutdownPrivilege";
-  public const string SE_SYNC_AGENT_NAME = "SeSyncAgentPrivilege";
-  public const string SE_SYSTEM_ENVIRONMENT_NAME = "SeSystemEnvironmentPrivilege";
-  public const string SE_SYSTEM_PROFILE_NAME = "SeSystemProfilePrivilege";
-  public const string SE_SYSTEMTIME_NAME = "SeSystemtimePrivilege";
-  public const string SE_TAKE_OWNERSHIP_NAME = "SeTakeOwnershipPrivilege";
-  public const string SE_TCB_NAME = "SeTcbPrivilege";
-  public const string SE_TIME_ZONE_NAME = "SeTimeZonePrivilege";
-  public const string SE_TRUSTED_CREDMAN_ACCESS_NAME = "SeTrustedCredManAccessPrivilege";
-  public const string SE_UNDOCK_NAME = "SeUndockPrivilege";
-  public const string SE_UNSOLICITED_INPUT_NAME = "SeUnsolicitedInputPrivilege";       
+  public const string SE_ASSIGNPRIMARYTOKEN_NAME = &quot;SeAssignPrimaryTokenPrivilege&quot;;
+  public const string SE_AUDIT_NAME = &quot;SeAuditPrivilege&quot;;
+  public const string SE_BACKUP_NAME = &quot;SeBackupPrivilege&quot;;
+  public const string SE_CHANGE_NOTIFY_NAME = &quot;SeChangeNotifyPrivilege&quot;;
+  public const string SE_CREATE_GLOBAL_NAME = &quot;SeCreateGlobalPrivilege&quot;;
+  public const string SE_CREATE_PAGEFILE_NAME = &quot;SeCreatePagefilePrivilege&quot;;
+  public const string SE_CREATE_PERMANENT_NAME = &quot;SeCreatePermanentPrivilege&quot;;
+  public const string SE_CREATE_SYMBOLIC_LINK_NAME = &quot;SeCreateSymbolicLinkPrivilege&quot;;
+  public const string SE_CREATE_TOKEN_NAME = &quot;SeCreateTokenPrivilege&quot;;
+  public const string SE_DEBUG_NAME = &quot;SeDebugPrivilege&quot;;
+  public const string SE_ENABLE_DELEGATION_NAME = &quot;SeEnableDelegationPrivilege&quot;;
+  public const string SE_IMPERSONATE_NAME = &quot;SeImpersonatePrivilege&quot;;
+  public const string SE_INC_BASE_PRIORITY_NAME = &quot;SeIncreaseBasePriorityPrivilege&quot;;
+  public const string SE_INCREASE_QUOTA_NAME = &quot;SeIncreaseQuotaPrivilege&quot;;
+  public const string SE_INC_WORKING_SET_NAME = &quot;SeIncreaseWorkingSetPrivilege&quot;;
+  public const string SE_LOAD_DRIVER_NAME = &quot;SeLoadDriverPrivilege&quot;;
+  public const string SE_LOCK_MEMORY_NAME = &quot;SeLockMemoryPrivilege&quot;;
+  public const string SE_MACHINE_ACCOUNT_NAME = &quot;SeMachineAccountPrivilege&quot;;
+  public const string SE_MANAGE_VOLUME_NAME = &quot;SeManageVolumePrivilege&quot;;
+  public const string SE_PROF_SINGLE_PROCESS_NAME = &quot;SeProfileSingleProcessPrivilege&quot;;
+  public const string SE_RELABEL_NAME = &quot;SeRelabelPrivilege&quot;;
+  public const string SE_REMOTE_SHUTDOWN_NAME = &quot;SeRemoteShutdownPrivilege&quot;;
+  public const string SE_RESTORE_NAME = &quot;SeRestorePrivilege&quot;;
+  public const string SE_SECURITY_NAME = &quot;SeSecurityPrivilege&quot;;
+  public const string SE_SHUTDOWN_NAME = &quot;SeShutdownPrivilege&quot;;
+  public const string SE_SYNC_AGENT_NAME = &quot;SeSyncAgentPrivilege&quot;;
+  public const string SE_SYSTEM_ENVIRONMENT_NAME = &quot;SeSystemEnvironmentPrivilege&quot;;
+  public const string SE_SYSTEM_PROFILE_NAME = &quot;SeSystemProfilePrivilege&quot;;
+  public const string SE_SYSTEMTIME_NAME = &quot;SeSystemtimePrivilege&quot;;
+  public const string SE_TAKE_OWNERSHIP_NAME = &quot;SeTakeOwnershipPrivilege&quot;;
+  public const string SE_TCB_NAME = &quot;SeTcbPrivilege&quot;;
+  public const string SE_TIME_ZONE_NAME = &quot;SeTimeZonePrivilege&quot;;
+  public const string SE_TRUSTED_CREDMAN_ACCESS_NAME = &quot;SeTrustedCredManAccessPrivilege&quot;;
+  public const string SE_UNDOCK_NAME = &quot;SeUndockPrivilege&quot;;
+  public const string SE_UNSOLICITED_INPUT_NAME = &quot;SeUnsolicitedInputPrivilege&quot;;       
 
 
   public static bool AddPrivilege(string privilege)
@@ -1197,13 +1043,13 @@ public class PermissionsSetter
   }
 }
 }
-"@
- 
+&quot;@
+
  add-type $code
- 
+
  $acl = Get-Acl $Path
  $acl.psbase.SetOwner($principal)
- $Ar = New-Object  system.security.accesscontrol.filesystemaccessrule("IIS_IUSRS","FullControl", "Allow")
+ $Ar = New-Object  system.security.accesscontrol.filesystemaccessrule(&quot;IIS_IUSRS&quot;,&quot;FullControl&quot;, &quot;Allow&quot;)
 
  ## Check if Access already exists.
  #see http://cyrusbuilt.net/wordpress/?p=158
@@ -1219,62 +1065,60 @@ public class PermissionsSetter
  [void][WSG.Utils.PermissionsSetter]::AddPrivilege([WSG.Utils.PermissionsSetter]::SE_RESTORE_NAME)
  set-acl -Path $Path -AclObject $acl
  [void][WSG.Utils.PermissionsSetter]::RemovePrivilege([WSG.Utils.PermissionsSetter]::SE_RESTORE_NAME)
-```
-
-2. How to register Asp.Net & WCF in IIS?
-
-```powershell
- $pathToFramework = "$env:windir\Microsoft.NET\Framework"
- if (test-path "$env:windir\Microsoft.NET\Framework64")
+</code></pre>
+<ol>
+<li>How to register Asp.Net &amp; WCF in IIS?</li>
+</ol>
+<pre><code class="lang-powershell"> $pathToFramework = &quot;$env:windir\Microsoft.NET\Framework&quot;
+ if (test-path &quot;$env:windir\Microsoft.NET\Framework64&quot;)
  {
-  $pathToFramework = "$env:windir\Microsoft.NET\Framework64"
+  $pathToFramework = &quot;$env:windir\Microsoft.NET\Framework64&quot;
  }
- 
+
  #start aspnet_regiis and ServiceModelReg
- $aspNet2 = Test-Path "$pathToFramework\v2.0.50727\aspnet_regiis.exe" -pathType leaf
+ $aspNet2 = Test-Path &quot;$pathToFramework\v2.0.50727\aspnet_regiis.exe&quot; -pathType leaf
  if (($aspNet2 -eq $true) -and ($aspNet2Reg -eq $false))
  {
-  Write-Host -ForegroundColor green "`r`nInstall aspnet_regiis.exe v2.0.50727"
-  & "$pathToFramework\v2.0.50727\aspnet_regiis.exe" -i -enable
+  Write-Host -ForegroundColor green &quot;`r`nInstall aspnet_regiis.exe v2.0.50727&quot;
+  &amp; &quot;$pathToFramework\v2.0.50727\aspnet_regiis.exe&quot; -i -enable
  }
 
- $ServModReg3 = Test-Path "$pathToFramework\v3.0\Windows Communication Foundation\ServiceModelReg.exe" -pathType leaf
+ $ServModReg3 = Test-Path &quot;$pathToFramework\v3.0\Windows Communication Foundation\ServiceModelReg.exe&quot; -pathType leaf
  if ($ServModReg3 -eq $true)
  {
-  Write-Host -ForegroundColor green "`r`nInstall ServiceModelReg.exe v3.0"
-  & "$pathToFramework\v3.0\Windows Communication Foundation\ServiceModelReg.exe" -iru
+  Write-Host -ForegroundColor green &quot;`r`nInstall ServiceModelReg.exe v3.0&quot;
+  &amp; &quot;$pathToFramework\v3.0\Windows Communication Foundation\ServiceModelReg.exe&quot; -iru
  }
-  
- $ServModReg4 = Test-Path "$pathToFramework\v4.0.30319\ServiceModelReg.exe" -pathType leaf
+
+ $ServModReg4 = Test-Path &quot;$pathToFramework\v4.0.30319\ServiceModelReg.exe&quot; -pathType leaf
  if ($ServModReg4 -eq $true)
  {
-  Write-Host -ForegroundColor green "`r`nInstall ServiceModelReg.exe v4.0.30319"
-  & "$pathToFramework\v4.0.30319\ServiceModelReg.exe" -ia -q -nologo
+  Write-Host -ForegroundColor green &quot;`r`nInstall ServiceModelReg.exe v4.0.30319&quot;
+  &amp; &quot;$pathToFramework\v4.0.30319\ServiceModelReg.exe&quot; -ia -q -nologo
  }
 
- $AspNetRegIis4 = Test-Path "$pathToFramework\v4.0.30319\aspnet_regiis.exe" -pathType leaf
+ $AspNetRegIis4 = Test-Path &quot;$pathToFramework\v4.0.30319\aspnet_regiis.exe&quot; -pathType leaf
  if (($AspNetRegIis4 -eq $true) -and ($aspNet4Reg -eq $false))
  {
-  Write-Host -ForegroundColor green "`r`nInstall aspnet_regiis.exe v4.0.30319"
-  & "$pathToFramework\v4.0.30319\aspnet_regiis.exe" -ir -enable
+  Write-Host -ForegroundColor green &quot;`r`nInstall aspnet_regiis.exe v4.0.30319&quot;
+  &amp; &quot;$pathToFramework\v4.0.30319\aspnet_regiis.exe&quot; -ir -enable
  }
-```
+</code></pre>
+<ol>
+<li>How to enable windows features?</li>
+</ol>
+<pre><code class="lang-powershell"> #check the windows features
+ $features = @((&quot;IIS-ASPNET&quot;, &quot;unknown&quot;), (&quot;IIS-HttpCompressionDynamic&quot;, &quot;unknown&quot;), (&quot;IIS-ManagementScriptingTools&quot;, &quot;unknown&quot;), (&quot;IIS-IIS6ManagementCompatibility&quot;, &quot;unknown&quot;), (&quot;IIS-Metabase&quot;, &quot;unknown&quot;), (&quot;IIS-WMICompatibility&quot;, &quot;unknown&quot;), (&quot;IIS-LegacyScripts&quot;, &quot;unknown&quot;), (&quot;IIS-LegacySnapIn&quot;, &quot;unknown&quot;))
 
-3. How to enable windows features?
-
-```powershell
- #check the windows features
- $features = @(("IIS-ASPNET", "unknown"), ("IIS-HttpCompressionDynamic", "unknown"), ("IIS-ManagementScriptingTools", "unknown"), ("IIS-IIS6ManagementCompatibility", "unknown"), ("IIS-Metabase", "unknown"), ("IIS-WMICompatibility", "unknown"), ("IIS-LegacyScripts", "unknown"), ("IIS-LegacySnapIn", "unknown"))
- 
- $dismPath = "$env:windir\System32\Dism.exe"
- if(test-path "$env:windir\Sysnative\Dism.exe")
+ $dismPath = &quot;$env:windir\System32\Dism.exe&quot;
+ if(test-path &quot;$env:windir\Sysnative\Dism.exe&quot;)
  {
-  $dismPath = "$env:windir\Sysnative\Dism.exe"
+  $dismPath = &quot;$env:windir\Sysnative\Dism.exe&quot;
  }
- 
- Write-Host -ForegroundColor green "`r`nGet windows features"
- $res = & "$dismPath" /online /Get-Features
- #take feature's states
+
+ Write-Host -ForegroundColor green &quot;`r`nGet windows features&quot;
+ $res = &amp; &quot;$dismPath&quot; /online /Get-Features
+ #take feature&#39;s states
  $writeNextStr = $false
  for ($i = 0; $i -lt $res.Count; $i++)
  {
@@ -1288,34 +1132,33 @@ public class PermissionsSetter
    }
   }
  }
- 
+
  #show results
- Write-Host -ForegroundColor green "`r`nPlease see the states of features`r`n"
+ Write-Host -ForegroundColor green &quot;`r`nPlease see the states of features`r`n&quot;
  foreach($feature in $features)
  {
-  Write-Host -ForegroundColor yellow "$feature"
+  Write-Host -ForegroundColor yellow &quot;$feature&quot;
  }
- Write-Host -ForegroundColor green "`r`n"
- 
+ Write-Host -ForegroundColor green &quot;`r`n&quot;
+
  #enable features
  $needToRestart = $false
- Write-Host -ForegroundColor green "Started to enable all features`r`n"
+ Write-Host -ForegroundColor green &quot;Started to enable all features`r`n&quot;
  foreach($feature in $features)
  {
-  if ($feature[1] -ne "State : Enabled")
+  if ($feature[1] -ne &quot;State : Enabled&quot;)
   {
    $needToRestart  = $true
    $temp = $feature[0]
-   Write-Host -ForegroundColor green "Try to enable $temp"
-   & "$dismPath" /online /Enable-Feature /FeatureName:$temp /NoRestart
+   Write-Host -ForegroundColor green &quot;Try to enable $temp&quot;
+   &amp; &quot;$dismPath&quot; /online /Enable-Feature /FeatureName:$temp /NoRestart
   }
  }
-```
-
-4. How to avoid exception "The OS handle’s position is not what FileStream expected"?
-
-```powershell
-#this code is for exception such as The OS handle’s position is not what FileStream expected
+</code></pre>
+<ol>
+<li>How to avoid exception &quot;The OS handle’s position is not what FileStream expected&quot;?</li>
+</ol>
+<pre><code class="lang-powershell">#this code is for exception such as The OS handle’s position is not what FileStream expected
 #see http://www.leeholmes.com/blog/2008/07/30/workaround-the-os-handles-position-is-not-what-filestream-expected/
 $bindingFlags = [Reflection.BindingFlags] “Instance,NonPublic,GetField”
 $objectRef = $host.GetType().GetField(“externalHostRef”, $bindingFlags).GetValue($host)
@@ -1327,107 +1170,90 @@ $field = $consoleHost.GetType().GetField(“standardOutputWriter”, $bindingFla
 $field.SetValue($consoleHost, [Console]::Out)
 $field2 = $consoleHost.GetType().GetField(“standardErrorWriter”, $bindingFlags)
 $field2.SetValue($consoleHost, [Console]::Out)
-```
-
-5. How to load module?
-
-```powershell
-Import-Module WebAdministration
-```
-
-6. How to load another script file?
-
-```powershell
-#load external functions
+</code></pre>
+<ol>
+<li>How to load module?</li>
+</ol>
+<pre><code class="lang-powershell">Import-Module WebAdministration
+</code></pre>
+<ol>
+<li>How to load another script file?</li>
+</ol>
+<pre><code class="lang-powershell">#load external functions
 . (Join-Path $curFolder \Functions\DevSetupFunctions.ps1)
-```
-
----
-## Style Cop / I don't like SA 1201 - 8 December, 2011
-
-[StyleCop]() is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...
-
-Unfortunately, the rule SA1201 is not so good for me. So i just want to create the similar rule, but a little else.
-
-You can see the rule that changes the order of document's element to the next:
-
-```xml
-<element name="File" order="0"></element>
-<element name="Root" order="1"></element>
-<element name="ExternAliasDirective" order="2"></element>
-<element name="UsingDirective" order="3"></element>
-<element name="AssemblyAttribute" order="4"></element>
-<element name="Namespace" order="5"></element>
-<element name="Field" order="6"></element>
-<element name="Constructor" order="10"></element>
-<element name="Destructor" order="11"></element>
-<element name="Delegate" order="8"></element>
-<element name="Event" order="9"></element>
-<element name="Enum" order="13"></element>
-<element name="Interface" order="14"></element>
-<element name="Property" order="7"></element>
-<element name="Accessor" order="15"></element>
-<element name="Indexer" order="16"></element>
-<element name="Method" order="12"></element>
-<element name="Struct" order="17"></element>
-<element name="EnumItem" order="18"></element>
-<element name="ConstructorInitializer" order="19"></element>
-<element name="EmptyElement" order="20"></element>
-```
-
-It saves in configuration file, so it is possible to change it in any time. 
-Further the source code of my rule. You can see the original source code of SA1201 using the [DotPeek](http://www.jetbrains.com/decompiler/) for [example](./code/code.cs).
-
-Methods AnalyzeDocument и DoAnalysis are the most important, so i suggest to start the learning code from them. The project in VS2010 is StyleCopOrder.Thanks.
-
----
-## Fiddler Zip extension - 8 December, 2011
-
-Extension for [Fiddler](http://www.fiddler2.com/Fiddler/dev/).
-
-![example](./images/zip_fiddler.jpg)
-
-The source code: [FiddlerZip](https://drive.google.com/file/d/0BwVmorgjT-W1NDFlZDZkMDItMWMxMS00NzU2LTg3NDUtYTYzOWVhOGMyMzRj/view).
-
-The main code:
-
-```csharp
-using System;
+</code></pre>
+<hr>
+<h2 id="style-cop-i-don-t-like-sa-1201-8-december-2011">Style Cop / I don&#39;t like SA 1201 - 8 December, 2011</h2>
+<p><a href="">StyleCop</a> is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...</p>
+<p>Unfortunately, the rule SA1201 is not so good for me. So i just want to create the similar rule, but a little else.</p>
+<p>You can see the rule that changes the order of document&#39;s element to the next:</p>
+<pre><code class="lang-xml">&lt;element name=&quot;File&quot; order=&quot;0&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Root&quot; order=&quot;1&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;ExternAliasDirective&quot; order=&quot;2&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;UsingDirective&quot; order=&quot;3&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;AssemblyAttribute&quot; order=&quot;4&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Namespace&quot; order=&quot;5&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Field&quot; order=&quot;6&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Constructor&quot; order=&quot;10&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Destructor&quot; order=&quot;11&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Delegate&quot; order=&quot;8&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Event&quot; order=&quot;9&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Enum&quot; order=&quot;13&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Interface&quot; order=&quot;14&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Property&quot; order=&quot;7&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Accessor&quot; order=&quot;15&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Indexer&quot; order=&quot;16&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Method&quot; order=&quot;12&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Struct&quot; order=&quot;17&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;EnumItem&quot; order=&quot;18&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;ConstructorInitializer&quot; order=&quot;19&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;EmptyElement&quot; order=&quot;20&quot;&gt;&lt;/element&gt;
+</code></pre>
+<p>It saves in configuration file, so it is possible to change it in any time. 
+Further the source code of my rule. You can see the original source code of SA1201 using the <a href="http://www.jetbrains.com/decompiler/">DotPeek</a> for <a href="./code/code.cs">example</a>.</p>
+<p>Methods AnalyzeDocument и DoAnalysis are the most important, so i suggest to start the learning code from them. The project in VS2010 is StyleCopOrder.Thanks.</p>
+<hr>
+<h2 id="fiddler-zip-extension-8-december-2011">Fiddler Zip extension - 8 December, 2011</h2>
+<p>Extension for <a href="http://www.fiddler2.com/Fiddler/dev/">Fiddler</a>.</p>
+<p><img src="./images/zip_fiddler.jpg" alt="example"></p>
+<p>The source code: <a href="https://drive.google.com/file/d/0BwVmorgjT-W1NDFlZDZkMDItMWMxMS00NzU2LTg3NDUtYTYzOWVhOGMyMzRj/view">FiddlerZip</a>.</p>
+<p>The main code:</p>
+<pre><code class="lang-csharp">using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fiddler;
 using System.Windows.Forms;
- 
+
 // It is important !!! see the current version of fiddler
-[assembly: Fiddler.RequiredVersion("2.3.4.4")]
- 
+[assembly: Fiddler.RequiredVersion(&quot;2.3.4.4&quot;)]
+
 namespace FiddlerZip
 {
-    /// <summary>
+    /// &lt;summary&gt;
     /// Zip extension
-    /// </summary>
+    /// &lt;/summary&gt;
     public class Zip : IFiddlerExtension 
     {
-        /// <summary>
+        /// &lt;summary&gt;
         /// page for extesnion
-        /// </summary>
+        /// &lt;/summary&gt;
         private TabPage oPage;
-        /// <summary>
+        /// &lt;summary&gt;
         /// Control that presented extension
-        /// </summary>
+        /// &lt;/summary&gt;
         private ZipControl oAppConsole;
         #region IFiddlerExtension Members
- 
+
         public void OnBeforeUnload()
         {
-            
+
         }
- 
+
         public void OnLoad()
         {
-            // create tab with name "Zip"
-            oPage = new TabPage("Zip");
+            // create tab with name &quot;Zip&quot;
+            oPage = new TabPage(&quot;Zip&quot;);
             // it is possible to add icon to your tab
             oPage.ImageIndex = (int)Fiddler.SessionIcons.FilterBrowsers;
             oAppConsole = new ZipControl();
@@ -1436,19 +1262,15 @@ namespace FiddlerZip
             oAppConsole.Dock = DockStyle.Fill;
             FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
         }
- 
+
         #endregion
     }
 }
-```
-
----
-## IIS 7 HttpModule Logger - 6 December, 2011
-
-Простой модуль-лог для IIS 7 (Classic mode)
-
-```csharp
-using System;
+</code></pre>
+<hr>
+<h2 id="iis-7-httpmodule-logger-6-december-2011">IIS 7 HttpModule Logger - 6 December, 2011</h2>
+<p>Простой модуль-лог для IIS 7 (Classic mode)</p>
+<pre><code class="lang-csharp">using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1460,18 +1282,18 @@ using System.Net;
 using ReutersKnowledge.Web.Services.Util;
 using System.Collections.Specialized;
 using System.Reflection;
- 
+
 namespace IISWsgLogger
 {
     public class IISLoggerModule : IHttpModule
     {
-        private static string fileName = "D:\\Log.txt";
- 
-        private static ConcurrentQueue<string> logRecords = new ConcurrentQueue<string>();
- 
+        private static string fileName = &quot;D:\\Log.txt&quot;;
+
+        private static ConcurrentQueue&lt;string&gt; logRecords = new ConcurrentQueue&lt;string&gt;();
+
         private static object syncTask = new object();
         private static Task taskLog;
- 
+
         public void Init(HttpApplication context)
         {
             if (taskLog == null)
@@ -1480,18 +1302,18 @@ namespace IISWsgLogger
                 {
                     if (taskLog == null)
                     {
-                        taskLog = Task.Factory.StartNew(() => StartLog(), TaskCreationOptions.LongRunning);
+                        taskLog = Task.Factory.StartNew(() =&gt; StartLog(), TaskCreationOptions.LongRunning);
                     }
                 }
             }
             context.BeginRequest += new EventHandler(OnPreRequestHandlerExecute);
             context.EndRequest += new EventHandler(OnPostReleaseRequestState);
         }
- 
+
         private void StartLog()
         {
             var t = File.AppendText(fileName);
-            t.WriteLine("date time wsg-guid s-port cs-method reuters-uuid cs(Host) cs-uri-stem cs-uri-query sc-status sc-substatus cs(User-Agent) cs(Cookie) TimeTakenMS sc-bytes");
+            t.WriteLine(&quot;date time wsg-guid s-port cs-method reuters-uuid cs(Host) cs-uri-stem cs-uri-query sc-status sc-substatus cs(User-Agent) cs(Cookie) TimeTakenMS sc-bytes&quot;);
             int waitMil = 1000;
             string res = null;
             try
@@ -1509,20 +1331,20 @@ namespace IISWsgLogger
             {
                 t.Close();
             }
- 
+
         }
- 
+
         public void Dispose()
         {
         }
- 
+
         public void OnPreRequestHandlerExecute(Object source, EventArgs e)
         {
             HttpApplication app = (HttpApplication)source;
             var guid = Guid.NewGuid().ToString();
-            app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, "guid=" + guid);
+            app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, &quot;guid=&quot; + guid);
         }
- 
+
         public void OnPostReleaseRequestState(Object source, EventArgs e)
         {
             HttpApplication app = (HttpApplication)source;
@@ -1541,72 +1363,59 @@ namespace IISWsgLogger
             {
                 cookies += cookies;
             }
- 
-            logRecords.Enqueue(string.Format("{0} {1} {3} {4} {5} {6} {7} {8} {9} {10}", time, guid, port, typeOfRequest, host, rawUrl, status, agent, timeStamp, contentRequestLength));
+
+            logRecords.Enqueue(string.Format(&quot;{0} {1} {3} {4} {5} {6} {7} {8} {9} {10}&quot;, time, guid, port, typeOfRequest, host, rawUrl, status, agent, timeStamp, contentRequestLength));
         }
- 
+
     }
 }
-```
-
-web.config :
-
-```xml
-<?xml version="1.0"?>
-<configuration>
- <configSections>
+</code></pre>
+<p>web.config :</p>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+ &lt;configSections&gt;
   ...
- </configSections>
- <system.web>
+ &lt;/configSections&gt;
+ &lt;system.web&gt;
   ...
-   <httpModules>
+   &lt;httpModules&gt;
    ...
-  </httpModules>
- </system.web>
- <system.webServer>
-  <modules>
-   <add name="IISLoggerModule" type="IISLogger.IISLoggerModule, IISLogger.IISLoggerNamespace.IISLogger"/>
-```
-
----
-## WCF/ Response without root element - 21 June, 2011
-
-Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service should expose 1 operation (let it be "GetResponse_1") with the following structure (just an example, please combine schema for the service):
-
-```xml
-<GetResponse_Request_1>
-    <element1>text1</element1><!-- at least 1 "element1" -->
-    <element1>text2</element1>
-    <element1>text3</element1>
-    <element2>textn</element2><!-- at least 1 "element2" -->
-    <element2>textn+1</element2>
-    <element2>textn+2</element2>     
-</GetResponse_Request_1>
-```
-
-Response should contain "planed" element1 and element2 sets, just comma separated values:
-
-```xml
-<GetResponse_Response_1>
-    <element1_plane>text1, text2, text3</element1>
-    <element2_plane>textn, textn+1, textn+2</element2>
-</GetResponse_Response_1>
-```
----
-## Create line chart use .net 2.0 - 06 May, 2011
-
-See please [ChatBuilder](https://drive.google.com/file/d/0BwVmorgjT-W1YzVhNmNmYzktOWM3Yy00OGUyLWExNzYtNTZkOGU0NmVkZTdi/view). There are 4 files of simple source code.
-
----
-## Use LogParser - 5 May, 2011
-
-1. Download LogParser 2.2.
-2. C:\>tlbimp LogParser.dll /out:Interop.MSUtil.dll
-3. Include Interop.MSUtil.dll in a project.
-4.
-
-```csharp
-using LogQuery = Interop.MSUtil.LogQueryClassClass;
+  &lt;/httpModules&gt;
+ &lt;/system.web&gt;
+ &lt;system.webServer&gt;
+  &lt;modules&gt;
+   &lt;add name=&quot;IISLoggerModule&quot; type=&quot;IISLogger.IISLoggerModule, IISLogger.IISLoggerNamespace.IISLogger&quot;/&gt;
+</code></pre>
+<hr>
+<h2 id="wcf-response-without-root-element-21-june-2011">WCF/ Response without root element - 21 June, 2011</h2>
+<p>Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service should expose 1 operation (let it be &quot;GetResponse_1&quot;) with the following structure (just an example, please combine schema for the service):</p>
+<pre><code class="lang-xml">&lt;GetResponse_Request_1&gt;
+    &lt;element1&gt;text1&lt;/element1&gt;&lt;!-- at least 1 &quot;element1&quot; --&gt;
+    &lt;element1&gt;text2&lt;/element1&gt;
+    &lt;element1&gt;text3&lt;/element1&gt;
+    &lt;element2&gt;textn&lt;/element2&gt;&lt;!-- at least 1 &quot;element2&quot; --&gt;
+    &lt;element2&gt;textn+1&lt;/element2&gt;
+    &lt;element2&gt;textn+2&lt;/element2&gt;     
+&lt;/GetResponse_Request_1&gt;
+</code></pre>
+<p>Response should contain &quot;planed&quot; element1 and element2 sets, just comma separated values:</p>
+<pre><code class="lang-xml">&lt;GetResponse_Response_1&gt;
+    &lt;element1_plane&gt;text1, text2, text3&lt;/element1&gt;
+    &lt;element2_plane&gt;textn, textn+1, textn+2&lt;/element2&gt;
+&lt;/GetResponse_Response_1&gt;
+</code></pre>
+<hr>
+<h2 id="create-line-chart-use-net-2-0-06-may-2011">Create line chart use .net 2.0 - 06 May, 2011</h2>
+<p>See please <a href="https://drive.google.com/file/d/0BwVmorgjT-W1YzVhNmNmYzktOWM3Yy00OGUyLWExNzYtNTZkOGU0NmVkZTdi/view">ChatBuilder</a>. There are 4 files of simple source code.</p>
+<hr>
+<h2 id="use-logparser-5-may-2011">Use LogParser - 5 May, 2011</h2>
+<ol>
+<li>Download LogParser 2.2.</li>
+<li>C:>tlbimp LogParser.dll /out:Interop.MSUtil.dll</li>
+<li>Include Interop.MSUtil.dll in a project.
+4.</li>
+</ol>
+<pre><code class="lang-csharp">using LogQuery = Interop.MSUtil.LogQueryClassClass;
 using IISW3CInputFormat = Interop.MSUtil.COMIISW3CInputContextClassClass;
 using CsvOutputFormat = Interop.MSUtil.COMCSVOutputContextClassClass;
 using LogRecordSet = Interop.MSUtil.ILogRecordset;
@@ -1616,23 +1425,19 @@ LogQuery oLogQuery = new LogQuery();
 // Instantiate the Event Log Input Format object
 IISW3CInputFormat oW3CInputFormat = new IISW3CInputFormat();
 
-string query = String.Format(_queryPostOverall, _pathToLog, "200", _date);
+string query = String.Format(_queryPostOverall, _pathToLog, &quot;200&quot;, _date);
 var oRecordSet = oLogQuery.Execute(query, oW3CInputFormat);
 for (; !oRecordSet.atEnd(); oRecordSet.moveNext())
 {
-   double count = Convert.ToDouble(oRecordSet.getRecord().getValue("count1"));
+   double count = Convert.ToDouble(oRecordSet.getRecord().getValue(&quot;count1&quot;));
    _postCountOverall.overall += count;
 }
 oRecordSet.close();
-```
-
----
-## Use ZadGraph - 5 May, 2011
-
-Library can be downloaded. License is LPGL 2.1.
-
-```csharp
-if (dates.Count > 0 && dates.Count == values.Count)
+</code></pre>
+<hr>
+<h2 id="use-zadgraph-5-may-2011">Use ZadGraph - 5 May, 2011</h2>
+<p>Library can be downloaded. License is LPGL 2.1.</p>
+<pre><code class="lang-csharp">if (dates.Count &gt; 0 &amp;&amp; dates.Count == values.Count)
 {
     double max = FindMax(values);
     if (!Directory.Exists(_imageFolderName))
@@ -1642,12 +1447,12 @@ if (dates.Count > 0 && dates.Count == values.Count)
     GraphPane myPane = new GraphPane();
 
     // Set the titles and axis labels
-    myPane.Title.Text = "Statistic of errors";
-    myPane.XAxis.Title.Text = "Day";
-    myPane.YAxis.Title.Text = "Percent";
+    myPane.Title.Text = &quot;Statistic of errors&quot;;
+    myPane.XAxis.Title.Text = &quot;Day&quot;;
+    myPane.YAxis.Title.Text = &quot;Percent&quot;;
     // Make up some data points based on the Sine function
     PointPairList list = new PointPairList();
-    for (int i = 0; i < dates.Count; i++)
+    for (int i = 0; i &lt; dates.Count; i++)
     {
         double x = dates[i].Date.ToOADate();
         double y = values[i];
@@ -1657,7 +1462,7 @@ if (dates.Count > 0 && dates.Count == values.Count)
     myPane.XAxis.Type = AxisType.Date;
     myPane.XAxis.Scale.MinorStep = 1;
     myPane.XAxis.Scale.MajorStep = 1;
-    myPane.XAxis.Scale.Format = "dd.MM.yy";
+    myPane.XAxis.Scale.Format = &quot;dd.MM.yy&quot;;
     myPane.XAxis.MajorTic.IsBetweenLabels = true;
     myPane.XAxis.Scale.Min = dates[0].ToOADate();
     myPane.XAxis.Scale.Max = dates[dates.Count - 1].ToOADate();
@@ -1667,39 +1472,29 @@ if (dates.Count > 0 && dates.Count == values.Count)
     myPane.YAxis.Scale.MinorStep = myPane.YAxis.Scale.Max/10;
     myPane.YAxis.MajorGrid.IsVisible = true;
     myPane.YAxis.Type = AxisType.Linear;
-    LineItem myCurve2 = myPane.AddCurve("Overall",
+    LineItem myCurve2 = myPane.AddCurve(&quot;Overall&quot;,
             list, Color.Blue, SymbolType.Diamond);
     myPane.YAxis.Scale.MajorStep = myPane.YAxis.Scale.Max / 5;
 
     myPane.Legend.Position = ZedGraph.LegendPos.Bottom;
     int width = 800;
-    if (27 * dates.Count > width)
+    if (27 * dates.Count &gt; width)
         width = 27 * dates.Count;
     myPane.GetImage(width, 600, 800f).Save(Path.Combine(_imageFolderName, _imageFileName), System.Drawing.Imaging.ImageFormat.Jpeg);
 }
-```
-
----
-## Sniffer of TCP packets - 10 February, 2011
-
-Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.
-
-Проект на VS2008 [SharkTrace](https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3).
-
-Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.
-
-Далее в тексте, под соединением я понимаю соответствие адресов и портов на клиенте и сервере. 
-
-Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap ([Sharppcap](http://sourceforge.net/projects/sharppcap/)).
-
-Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.
-
-Больше о флагах tcp-пакета можно посмотреть [http://www.firewall.cx.](http://www.firewall.cx/) 
-
-```csharp
-///<summary>
+</code></pre>
+<hr>
+<h2 id="sniffer-of-tcp-packets-10-february-2011">Sniffer of TCP packets - 10 February, 2011</h2>
+<p>Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.</p>
+<p>Проект на VS2008 <a href="https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3">SharkTrace</a>.</p>
+<p>Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.</p>
+<p>Далее в тексте, под соединением я понимаю соответствие адресов и портов на клиенте и сервере. </p>
+<p>Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap (<a href="http://sourceforge.net/projects/sharppcap/">Sharppcap</a>).</p>
+<p>Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.</p>
+<p>Больше о флагах tcp-пакета можно посмотреть <a href="http://www.firewall.cx/">http://www.firewall.cx.</a> </p>
+<pre><code class="lang-csharp">///&lt;summary&gt;
 ///class for connection
-///</summary>
+///&lt;/summary&gt;
 internal class Connection
 {
     public long ClientAddress; // client initiating the connection
@@ -1714,42 +1509,42 @@ internal class Connection
     public bool ClientClosed;
     public long TimeIdentifier;
     public bool ThreeWayCompleted = false; // three way connection is completed
- 
+
     // Fragments , used when we get newer packets that expected.
     // so we need to wait for expected before adding them.
-    public SortedDictionary<long, TcpPacket> HostFragments = new SortedDictionary<long, TcpPacket>();
-    public SortedDictionary<long, TcpPacket> ClientFragments = new SortedDictionary<long, TcpPacket>();
- 
+    public SortedDictionary&lt;long, TcpPacket&gt; HostFragments = new SortedDictionary&lt;long, TcpPacket&gt;();
+    public SortedDictionary&lt;long, TcpPacket&gt; ClientFragments = new SortedDictionary&lt;long, TcpPacket&gt;();
+
     // returns client ip:client port as a string
     public string GetClientAddressPort()
     {
-        return string.Format("{0}:{1}", new IPAddress(ClientAddress).ToString(), ClientPort);
+        return string.Format(&quot;{0}:{1}&quot;, new IPAddress(ClientAddress).ToString(), ClientPort);
     }
- 
+
     // returns host ip:host port as a string
     public string GetHostAddressPort()
     {
-        return string.Format("{0}:{1}", new IPAddress(HostAddress).ToString(), HostPort);
+        return string.Format(&quot;{0}:{1}&quot;, new IPAddress(HostAddress).ToString(), HostPort);
     }
- 
+
     // packet is from host
     public bool IsFromHost(TcpPacket tcp)
     {
-        return ClientAddress == ((IpPacket)tcp.ParentPacket).DestinationAddress.Address &&
-        ClientPort == tcp.DestinationPort &&
-        HostAddress == ((IpPacket)tcp.ParentPacket).SourceAddress.Address &&
+        return ClientAddress == ((IpPacket)tcp.ParentPacket).DestinationAddress.Address &amp;&amp;
+        ClientPort == tcp.DestinationPort &amp;&amp;
+        HostAddress == ((IpPacket)tcp.ParentPacket).SourceAddress.Address &amp;&amp;
         HostPort == tcp.SourcePort;
     }
- 
+
     // packet is from client
     public bool IsFromClient(TcpPacket tcp)
     {
-        return ClientAddress == ((IpPacket)tcp.ParentPacket).SourceAddress.Address &&
-        ClientPort == tcp.SourcePort &&
-        HostAddress == ((IpPacket)tcp.ParentPacket).DestinationAddress.Address &&
+        return ClientAddress == ((IpPacket)tcp.ParentPacket).SourceAddress.Address &amp;&amp;
+        ClientPort == tcp.SourcePort &amp;&amp;
+        HostAddress == ((IpPacket)tcp.ParentPacket).DestinationAddress.Address &amp;&amp;
         HostPort == tcp.DestinationPort;
     }
- 
+
     public Connection(long clientAddress, int clientPort, long hostAddress, int hostPort, long clientSyn)
     {
         this.ClientAddress = clientAddress;
@@ -1759,19 +1554,14 @@ internal class Connection
         this.ClientSyn = clientSyn;
     }
 }
-```
-
-Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать [wikipedia.org](http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment)). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют "полезную" информацию в себе (payload data).
-
-Больше о TCP пакетах [wikipedia.org](http://ru.wikipedia.org/wiki/TCP).
-
-Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому "принадлежит" этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к "полезным" данным последовательно (AddHostData и AddClientData) 
-
-```csharp
-/// <summary>
+</code></pre>
+<p>Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment">wikipedia.org</a>). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют &quot;полезную&quot; информацию в себе (payload data).</p>
+<p>Больше о TCP пакетах <a href="http://ru.wikipedia.org/wiki/TCP">wikipedia.org</a>.</p>
+<p>Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому &quot;принадлежит&quot; этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к &quot;полезным&quot; данным последовательно (AddHostData и AddClientData) </p>
+<pre><code class="lang-csharp">/// &lt;summary&gt;
 /// Main class for sniffering
-/// </summary>
-/// <remarks>
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;
 /// 1. I see that there is new version of SharpPcap library with new interface (29/11/2011)
 /// So i just try to update some useful information about this class
 /// 
@@ -1784,53 +1574,53 @@ internal class Connection
 /// }
 /// 
 /// 3. Coordinator is class with constants.
-/// </remarks>
+/// &lt;/remarks&gt;
 internal abstract class Sniffer 
 {
     private Timer timer;
     private object synchronizationObjectForConnection = new object();
-    private List<SynchronizatedConnection> Connections = new List<SynchronizatedConnection>();
+    private List&lt;SynchronizatedConnection&gt; Connections = new List&lt;SynchronizatedConnection&gt;();
     private LibPcapLiveDevice _device;
-    private readonly List<System.Net.IPAddress> _hosts;
- 
+    private readonly List&lt;System.Net.IPAddress&gt; _hosts;
+
     // when connected
     public abstract void Connected(Object conn);
     // when disconnected
     public abstract void Disconnected(Object conn);
     public abstract void AddHostData(byte[] data, string host);
     public abstract void AddClientData(byte[] data, string client);
- 
+
     private void ClearConnections(object source)
     {
         //sometimes purely the collection, just in case
         lock (synchronizationObjectForConnection)
         {
-            foreach (var key in Connections.Where(k => (DateTime.Now.ToFileTimeUtc() - k.TimeIdentifier) > 600000000 * Coordinator.Config.HowLongWeSaveTransaction.TotalMinutes).ToList())
+            foreach (var key in Connections.Where(k =&gt; (DateTime.Now.ToFileTimeUtc() - k.TimeIdentifier) &gt; 600000000 * Coordinator.Config.HowLongWeSaveTransaction.TotalMinutes).ToList())
             {
                 Connections.Remove(key);
             }
         }
     }
- 
-    /// <summary>
+
+    /// &lt;summary&gt;
     /// Create the exemplare of the class
-    /// </summary>
-    public Sniffer(List<System.Net.IPAddress> hosts)
+    /// &lt;/summary&gt;
+    public Sniffer(List&lt;System.Net.IPAddress&gt; hosts)
     {
         timer = new Timer(ClearConnections, null, Coordinator.Config.HowLongWeSaveTransaction, Coordinator.Config.HowLongWeSaveTransaction);
         _hosts = hosts;
     }
- 
-    /// <summary>
+
+    /// &lt;summary&gt;
     /// Start the tracing
-    /// </summary>
-    /// <param name="filter">See http://www.cs.ucr.edu/~marios/ethereal-tcpdump.pdf </param>
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;filter&quot;&gt;See http://www.cs.ucr.edu/~marios/ethereal-tcpdump.pdf &lt;/param&gt;
     public void RunSniffer(string filter)
     {
         var devices = LibPcapLiveDeviceList.Instance;
         //
         _device = devices[Coordinator.Config.ListeningInterface];
-        //Register our handler function to the 'packet arrival' event
+        //Register our handler function to the &#39;packet arrival&#39; event
         _device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
         //Open the device for capturing
         int readTimeoutMilliseconds = 1000;
@@ -1840,21 +1630,21 @@ internal abstract class Sniffer
         // Start capture packets
         _device.StartCapture();
     }
- 
-    /// <summary>
+
+    /// &lt;summary&gt;
     /// Stop the tracing
-    /// </summary>
+    /// &lt;/summary&gt;
     public void StopSniffer()
     {
         _device.StopCapture();
         _device.Close();
     }
- 
-    /// <summary>
+
+    /// &lt;summary&gt;
     /// Catch the packet
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+    /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
     private void device_OnPacketArrival(object sender, CaptureEventArgs e)
     {
         try
@@ -1875,32 +1665,32 @@ internal abstract class Sniffer
                 }
             }
         }
- 
-        // sometimes converting doesn't work - don't worry about it
+
+        // sometimes converting doesn&#39;t work - don&#39;t worry about it
         catch (InvalidOperationException ex)
         {
         }
     }
- 
-    /// <summary>
+
+    /// &lt;summary&gt;
     /// Parse TCP packet
-    /// </summary>
-    /// <param name="tcp">TCP packet</param>
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;tcp&quot;&gt;TCP packet&lt;/param&gt;
     privDescription. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
 
 The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
 Initially, we choose to do all the settings using a simple SQL query.ate void AssemblePacket(TcpPacket tcp)
     {
         // pass the packets that :
-        // 1. tcp.Syn && tcp.PayloadData.Length == 0 - sent for synchronization
-        // 2. tcp.PayloadData.Length > 0 - no useful data in packet
+        // 1. tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0 - sent for synchronization
+        // 2. tcp.PayloadData.Length &gt; 0 - no useful data in packet
         // 3. tcp.Fin || tcp.Rst - connection is finished or reseted
-        if (!(tcp.Syn && tcp.PayloadData.Length == 0) && (tcp.PayloadData.Length > 0) && !(tcp.Fin || tcp.Rst))
+        if (!(tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0) &amp;&amp; (tcp.PayloadData.Length &gt; 0) &amp;&amp; !(tcp.Fin || tcp.Rst))
         {
             SynchronizatedConnection conn;
             // try to find connection in collection
             bool? res = IsTcpFromClient(tcp, out conn);
-                
+
             if (res == null)
             {
                 // connection is new
@@ -1942,13 +1732,13 @@ Initially, we choose to do all the settings using a simple SQL query.        els
                 // from client
                 lock (conn.Synchro)
                 {
-                    if (tcp.SequenceNumber < conn.NextClientSeq)
+                    if (tcp.SequenceNumber &lt; conn.NextClientSeq)
                     // old packet
                     {
                         // just drop these for now
                         return;
                     }
-                    if (tcp.SequenceNumber > conn.NextClientSeq)
+                    if (tcp.SequenceNumber &gt; conn.NextClientSeq)
                     // out of order data
                     {
                         if (!conn.ClientFragments.ContainsKey(tcp.SequenceNumber))
@@ -1989,13 +1779,13 @@ Initially, we choose to do all the settings using a simple SQL query.        els
                 //from host
                 lock (conn.Synchro)
                 {
-                    if (tcp.SequenceNumber < conn.NextHostSeq)
+                    if (tcp.SequenceNumber &lt; conn.NextHostSeq)
                     // old packet
                     {
                         // just drop these for now
                         return;
                     }
-                    if (tcp.SequenceNumber > conn.NextHostSeq)
+                    if (tcp.SequenceNumber &gt; conn.NextHostSeq)
                     // newer out of order data
                     {
                         if (!conn.HostFragments.ContainsKey(tcp.SequenceNumber))
@@ -2033,13 +1823,13 @@ Initially, we choose to do all the settings using a simple SQL query.        els
             }
         }
     }
- 
+
     private static string GetIdOfConnection(SynchronizatedConnection conn)
     {
         return conn.ClientAddress.ToString() + conn.ClientPort.ToString() + conn.HostAddress.ToString()
         + conn.HostPort.ToString();
     }
- 
+
     private bool? IsTcpFromClient(TcpPacket tcp, out SynchronizatedConnection conn)
     {
         conn = null;
@@ -2061,72 +1851,59 @@ Initially, we choose to do all the settings using a simple SQL query.        els
         }
         return null;
     }
- 
-    /// <summary>
+
+    /// &lt;summary&gt;
     /// Get Payload Data from tcp packet
-    /// </summary>
-    /// <param name="tcp">TCP packet</param>
-    /// <returns>bytes of useful data</returns>
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;tcp&quot;&gt;TCP packet&lt;/param&gt;
+    /// &lt;returns&gt;bytes of useful data&lt;/returns&gt;
     protected static byte[] GetUsefulData(TcpPacket tcp)
     {
         var data = new byte[tcp.Bytes.Length - tcp.DataOffset * 4];
-        for (int i = tcp.DataOffset * 4; i < tcp.Bytes.Length; i++)
+        for (int i = tcp.DataOffset * 4; i &lt; tcp.Bytes.Length; i++)
         {
             data[i - tcp.DataOffset * 4] = tcp.Bytes[i];
         }
         return data;
     }
 }
-```
-
-Проблемы данного класса/решения:
-1. Если "словится" первый пакет, который является неправильным - возникает проблема с получением дальнейшей информации, которая идет по данному соединению;
-2. Не проверяется контрольная сумма принятого пакета;
-3. Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр
-
-```csharp
-(public void RunSniffer(string filter)) 
-```
-
-или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.
-
----
-## Linq and Group - 16 November, 2010
-
-Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
-
-The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
-Initially, we choose to do all the settings using a simple SQL query.
-
-```csharp
-private static SqlCeDataReader SelectAllParamterAndModuleName()
+</code></pre>
+<p>Проблемы данного класса/решения:</p>
+<ol>
+<li>Если &quot;словится&quot; первый пакет, который является неправильным - возникает проблема с получением дальнейшей информации, которая идет по данному соединению;</li>
+<li>Не проверяется контрольная сумма принятого пакета;</li>
+<li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</li>
+</ol>
+<pre><code class="lang-csharp">(public void RunSniffer(string filter))
+</code></pre>
+<p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
+<hr>
+<h2 id="linq-and-group-16-november-2010">Linq and Group - 16 November, 2010</h2>
+<p>Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.</p>
+<p>The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.</p>
+<pre><code class="lang-csharp">private static SqlCeDataReader SelectAllParamterAndModuleName()
 {
     return ExecuteDataReader(String.Format(QSelectAllParamterANdModuleName));
 }
-```
-
-where QSelectAllParamterANdModuleName is text of the query.
-
-```csharp
-private static IEnumerable<ParameterType> SelectAllParameterToArray()
+</code></pre>
+<p>where QSelectAllParamterANdModuleName is text of the query.</p>
+<pre><code class="lang-csharp">private static IEnumerable&lt;ParameterType&gt; SelectAllParameterToArray()
 {
     var query =
         from row in SelectAllParamterAndModuleName().Cast()
         select new ParameterType
         {
-            Id = (int)row["FID"],
-            Name = (string)row["FNAME"],
-            TypeName = (string)row["FTYPE"],
-            ModuleId = (int)row["FMODULEID"],
-                        ModuleName = (string)row["FMODULE"], Number = (int)row["FNUMBER"], TypeOfPar = (bool)row["FTYPEOFPARAMETER"]};
+            Id = (int)row[&quot;FID&quot;],
+            Name = (string)row[&quot;FNAME&quot;],
+            TypeName = (string)row[&quot;FTYPE&quot;],
+            ModuleId = (int)row[&quot;FMODULEID&quot;],
+                        ModuleName = (string)row[&quot;FMODULE&quot;], Number = (int)row[&quot;FNUMBER&quot;], TypeOfPar = (bool)row[&quot;FTYPEOFPARAMETER&quot;]};
     return query.ToArray();
 }
-```
-
-create from selected SqlReader array of elements of ParameterType. The result can be cached.
-
-```csharp
-public static List<ModuleType> SelectModuleByInputParameter(List<ParameterType> inputParameter)
+</code></pre>
+<p>create from selected SqlReader array of elements of ParameterType. The result can be cached.</p>
+<pre><code class="lang-csharp">public static List&lt;ModuleType&gt; SelectModuleByInputParameter(List&lt;ParameterType&gt; inputParameter)
 {
     if (inputParameter == null)
     {
@@ -2141,7 +1918,7 @@ public static List<ModuleType> SelectModuleByInputParameter(List<ParameterType> 
                             where parameter2.TypeOfPar
                             select parameter2.ModuleId).Contains(parameter.ModuleId)
                     select parameter;
-        return par.Select(x =&gt; new ModuleType {Id = x.ModuleId, Name = x.ModuleName}).ToList();
+        return par.Select(x =&amp;gt; new ModuleType {Id = x.ModuleId, Name = x.ModuleName}).ToList();
     }
 
     var parGr = from parameter in para
@@ -2155,7 +1932,7 @@ public static List<ModuleType> SelectModuleByInputParameter(List<ParameterType> 
     {
         bool AddInRes = true;
         var listParaGr = paramGr.ToList();
-        for (int i = 0; i &lt; listParaGr.Count; i++)
+        for (int i = 0; i &amp;lt; listParaGr.Count; i++)
         {
             if (listParaGr[i].Number != inputParameter[i].Number ||
             listParaGr[i].TypeName != inputParameter[i].TypeName)
@@ -2168,13 +1945,6 @@ public static List<ModuleType> SelectModuleByInputParameter(List<ParameterType> 
     }
     return res;
 }
-```
-
-This method returns a collection of our modules, which contains defined input parameters. Thus, this method should be called justbefore the loop until the result will contain at least one value. It should be noted that calls to this method will generally be bifurcate (the first layer selected modules, and for everyone in this layer, called again, this method and so on). But this is not Linq.
-
----
-</xmp>
-
-<script src="./strapdown.js"></script>
-</html>
-
+</code></pre>
+<p>This method returns a collection of our modules, which contains defined input parameters. Thus, this method should be called justbefore the loop until the result will contain at least one value. It should be noted that calls to this method will generally be bifurcate (the first layer selected modules, and for everyone in this layer, called again, this method and so on). But this is not Linq.</p>
+<hr>
