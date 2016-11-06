@@ -1,3 +1,5 @@
+#[Eugene Pyl](www.linkedin.com/in/eugenepyl) - Blog
+
 # Xamarin Dev Days in Warsawa - 24 September, 2016
 
 Hi All, it is my overview of Xamarin Dev Days - short summary. Hope it will be useful to create an  impression what you can expect from this event.
