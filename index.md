@@ -1,6 +1,6 @@
 # [Eugene Pyl](www.linkedin.com/in/eugenepyl) - Blog
 
-## Xamarin Dev Days in Warsawa - 24 September, 2016
+## Xamarin Dev Days in Warsaw - 24 September, 2016
 
 Hi All, it is my overview of Xamarin Dev Days - short summary. Hope it will be useful to create an  impression what you can expect from this event.
 
@@ -25,13 +25,13 @@ The third thing is about building and continuous integration. Actually it is not
 
 The last one is about distributing and monitoring. I can’t say a lot about distributing as I have never put any application to stores. As for monitoring, there is Xamarin Insight. It is the same approach as [Visual Studio Application Insights](https://www.visualstudio.com/en-us/docs/insights/application-insights). It is an extensible analytics service that helps you understand the performance and usage of your live mobile application. It's designed for developers, to help you continuously improve the performance and usability of your app. It [allows](http://www.joesauve.com/xamarin-insights-after-only-5-minutes-its-already-saving-my-arse/):
 
-* see user sessions in realtime
+* see user sessions in real time
 * see which users are being affected by which errors
 * see stacktraces for each exception
 * see device stats for each exception (operating system, app version, network status, device orientation, jalbreak status, and bluetooth status)
 * see advanced reporting and filtering of aggregate exception statistics
 * setup webhooks for triggering actions on certain Insights events
-* integrate with third-party services (Campire, Github, HipChat, Jira, PIvotalTracker, and Visual Studio Online)
+* integrate with third-party services (Campire, Github, HipChat, Jira, PivotalTracker, and Visual Studio Online)
 
 ### Approaches:
 * Separate solutions for each platform (Android, IOS, Windows)
@@ -74,7 +74,7 @@ Here I put the main interesting features of Xamarin:
 * Shared projects
 * Upcoming [.NET Standard 2.0](https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/)
 
-Currently there are two ways to write shared code in Xamrin:
+Currently there are two ways to write shared code in Xamarin:
 
 1. Shared project. Unlike most other project types, a Shared Project has no 'output' assembly. During compilation, the files are treated as part of the referencing project and compiled into that DLL. If you wish to share your code as a DLL then Portable Class Libraries are a better solution. Shared code can be branched based on the platform using compiler directives (eg. using #if \__ANDROID__ , as discussed in the Building Cross Platform Applications document).
 2. Portable library. Only a subset of the .NET framework is available to use, determined by the profile selected (see the Introduction to PCL for more info).
@@ -134,7 +134,7 @@ Azure App Service is a fully managed Platform as a Service (PaaS) that brings a 
 
 1. Build offline-ready apps with data sync.
 2. Push Notifications allows you to engage your clients with instant push notifications on any device.
-3. Authorization using different approache
+3. Authorization using different approaches
 4. Save data.
 
 ### Take a look
@@ -153,7 +153,7 @@ Want to mention two nice libraries/ applications:
     * Mobile push notifications
 
 ### References:
-There are a list of references and interesting information about Xamarin. Thank you for reading. [Please feel freee to ask](mailto:gromkaktus@gmail.com) any questions, I will try to answer.
+There are a list of references and interesting information about Xamarin. Thank you for reading. [Please feel free to ask](mailto:gromkaktus@gmail.com) any questions, I will try to answer.
 
 * https://github.com/xamarin/dev-days-labs
 * https://www.xamarin.com/dev-days
