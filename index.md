@@ -161,9 +161,7 @@ There are a list of references and interesting information about Xamarin. Thank 
 * https://confluence.infusion.com/pages/viewpage.action?pageId=28582107
 * https://confluence.infusion.com/display/innovationpractices/Xamarin+Bootcamp+Training
 * https://developer.xamarin.com/
-
 ---
-
 ## GitVersion + TC - 04 February, 2016
 
 GitVersion is the utility to set up version of deployed assemblies using information from Git.
@@ -216,10 +214,8 @@ The Boot Process
 Choosing a [Linux Distribution](https://en.wikipedia.org/wiki/Linux_distribution)
 
 ![Choose](./images/linux_foundation_choose.jpg)
-
 ---
-
-## Task: Show information about types in tooltip. The value of a point is the sum of values of types ('one', 'two'). [Link](http://jsfiddle.net/yo4L215v/).
+## Task: Show information about types in tooltip. The value of a point is the sum of values of types ('one', 'two'). [Link](http://jsfiddle.net/yo4L215v/) - 26 December, 2014
 
 [Additional info](http://api.highcharts.com/highcharts#tooltip.formatter)
 
@@ -265,4 +261,33 @@ $(function () {
         }]
     });
 });
+```
+---
+## WinRT Checksum for large files - 29 September, 2014
+
+There is a good [question](http://stackoverflow.com/questions/13534334/how-to-compute-hash-md5-or-sha-of-a-large-file-with-c-sharp-in-windows-store-a) about this.
+
+Also there is a code. I have used MD5 algorithm for my purposes.
+```csharp
+  public async Task<string> GetFileChecksumAsync(string fileName)
+  {
+   HashAlgorithmProvider alg = Windows.Security.Cryptography.Core.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+   IStorageFile stream = await openFile(fileName);
+   using (var inputStream = await stream.OpenReadAsync())
+   {
+    Windows.Storage.Streams.Buffer buffer = new Windows.Storage.Streams.Buffer(BUFFER_SIZE);
+    var hash = alg.CreateHash();
+
+    while (true)
+    {
+     await inputStream.ReadAsync(buffer, BUFFER_SIZE, InputStreamOptions.None);
+     if (buffer.Length > 0)
+      hash.Append(buffer);
+     else
+      break;
+    }
+
+    return CryptographicBuffer.EncodeToHexString(hash.GetValueAndReset()).ToUpper();
+   }
+  }
 ```

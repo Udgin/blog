@@ -209,9 +209,8 @@ Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced 
 <p>The Boot Process</p>
 <p><img src="./images/linux_foundation_boot_process.jpg" alt="Boot Process"></p>
 <p>Choosing a <a href="https://en.wikipedia.org/wiki/Linux_distribution">Linux Distribution</a></p>
-<p><img src="./images/linux_foundation_choose.jpg" alt="Choose"></p>
-<hr>
-<h2 id="task-show-information-about-types-in-tooltip-the-value-of-a-point-is-the-sum-of-values-of-types-one-two-link-http-jsfiddle-net-yo4l215v-">Task: Show information about types in tooltip. The value of a point is the sum of values of types (&#39;one&#39;, &#39;two&#39;). <a href="http://jsfiddle.net/yo4L215v/">Link</a>.</h2>
+<h2 id="-choose-images-linux_foundation_choose-jpg-"><img src="./images/linux_foundation_choose.jpg" alt="Choose"></h2>
+<h2 id="task-show-information-about-types-in-tooltip-the-value-of-a-point-is-the-sum-of-values-of-types-one-two-link-http-jsfiddle-net-yo4l215v-26-december-2014">Task: Show information about types in tooltip. The value of a point is the sum of values of types (&#39;one&#39;, &#39;two&#39;). <a href="http://jsfiddle.net/yo4L215v/">Link</a> - 26 December, 2014</h2>
 <p><a href="http://api.highcharts.com/highcharts#tooltip.formatter">Additional info</a></p>
 <p><img src="./images/highchart_add_info.png" alt="image"></p>
 <p>The code:</p>
@@ -253,4 +252,30 @@ Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced 
         }]
     });
 });
+</code></pre>
+<hr>
+<h2 id="winrt-checksum-for-large-files-29-september-2014">WinRT Checksum for large files - 29 September, 2014</h2>
+<p>There is a good <a href="http://stackoverflow.com/questions/13534334/how-to-compute-hash-md5-or-sha-of-a-large-file-with-c-sharp-in-windows-store-a">question</a> about this.</p>
+<p>Also there is a code. I have used MD5 algorithm for my purposes.</p>
+<pre><code class="lang-csharp">  public async Task&lt;string&gt; GetFileChecksumAsync(string fileName)
+  {
+   HashAlgorithmProvider alg = Windows.Security.Cryptography.Core.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+   IStorageFile stream = await openFile(fileName);
+   using (var inputStream = await stream.OpenReadAsync())
+   {
+    Windows.Storage.Streams.Buffer buffer = new Windows.Storage.Streams.Buffer(BUFFER_SIZE);
+    var hash = alg.CreateHash();
+
+    while (true)
+    {
+     await inputStream.ReadAsync(buffer, BUFFER_SIZE, InputStreamOptions.None);
+     if (buffer.Length &gt; 0)
+      hash.Append(buffer);
+     else
+      break;
+    }
+
+    return CryptographicBuffer.EncodeToHexString(hash.GetValueAndReset()).ToUpper();
+   }
+  }
 </code></pre>
