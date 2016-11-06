@@ -594,3 +594,1357 @@ I have found that log4net and log2console don&#39;t work correctly (using IISExp
 </code></pre><p>So i just rebuild my view as</p>
 <p><img src="./images/invocation2.png" alt="example2"></p>
 <hr>
+<h2 id="api-facebook-28-september-2012">API Facebook на С# - 28 September, 2012</h2>
+<p>I know there are a lot of information about working with Facebook API, but... I just think more information is better then less.</p>
+<p>I need to post different types of context to Facebook pages (user create his own page, give us the name of page). OK, let&#39;s go!</p>
+<p>I m using ASP.NET MVC, you know...
+Link to the project.</p>
+<p>All events has been shown on the main page.</p>
+<ol>
+<li>Create our application in facebook.</li>
+</ol>
+<p><img src="./images/facebook1.png" alt="example"></p>
+<p>You see there is secret key and application key. We need them to working with facebook through our application.</p>
+<ol>
+<li>Authorization (OAuth 2.0).</li>
+</ol>
+<p><img src="./images/facebook2.png" alt="example"></p>
+<ul>
+<li>Ask user to permission.</li>
+<li>User will be redirected to facebook access page.</li>
+<li>User give us needed permission.</li>
+<li>User has been redirected back to our web site with special code.</li>
+</ul>
+<p>There is the step 4 (we get the code from redirecting response).</p>
+<pre><code class="lang-csharp">public void GetAccessToken()
+{
+    if (HttpContext.Current.Request.Params.AllKeys.Contains(&quot;code&quot;))
+    {
+        code = HttpContext.Current.Request.Params[&quot;code&quot;];
+        //get the short-lived user access_toke
+        string request = string.Format(_tokenEndpoint, _applicationId, _redirectTo, _applicationSecret, code);
+        var webClient = new WebClient();
+        string response = webClient.DownloadString(request);
+        string[] pairResponse = response.Split(&#39;&amp;&#39;);
+        accessToken = pairResponse[0].Split(&#39;=&#39;)[1];
+        //get the long-lived user access_toke
+        request = string.Format(_exchangeAccessToken, _applicationId, _applicationSecret, accessToken);
+        webClient = new WebClient();
+        response = webClient.DownloadString(request);
+        if (!accessToken.Equals(response.Split(&#39;=&#39;)[1]))
+        {
+            throw new AccessViolationException();
+        }
+        GetUserInformation();
+    }
+    else if (HttpContext.Current.Request.Params.AllKeys.Contains(&quot;error&quot;))
+    {
+        error = HttpContext.Current.Request.Params[&quot;error&quot;];
+        throw new AccessViolationException(error);
+    }
+    throw new HttpException();
+}
+</code></pre>
+<p>That is my facebook controller</p>
+<pre><code class="lang-csharp">public ActionResult Index()
+{
+    if (!Client.IsAuthorizated)
+    {
+        return Redirect(Client.UriToAuth);
+    }
+    return View(new FacebookModel {Name = &quot;&quot;});
+}
+
+public ActionResult Authorizate()
+{
+    Client.GetAccessToken();
+    return RedirectToAction(&quot;Index&quot;);
+}
+</code></pre>
+<p>After getting code we need to get the id of the page:</p>
+<pre><code class="lang-csharp">private void GetUserInformation()
+{
+    string request = &quot;https://graph.facebook.com/me?access_token=&quot; + accessToken;
+    var webClient = new WebClient();
+    string response = webClient.DownloadString(request);
+    user = JObject.Parse(response);
+    GetPagesInformation();
+}
+
+private void GetPagesInformation()
+{
+    string request = &quot;https://graph.facebook.com/&quot; + user.SelectToken(&quot;id&quot;) + &quot;/accounts?access_token=&quot; +
+                        accessToken;
+    var webClient = new WebClient();
+    string response = webClient.DownloadString(request);
+    userPages = JObject.Parse(response);
+    page = userPages.SelectToken(&quot;data&quot;).First(x =&gt; x.SelectToken(&quot;name&quot;).ToString().Equals(_pageName));
+}
+</code></pre>
+<ol>
+<li>OK, let&#39;s start to posting something. Here is my configuration:</li>
+</ol>
+<pre><code class="lang-csharp">private static readonly Dictionary&lt;string, string&gt; Config = new Dictionary&lt;string, string&gt;
+{
+    {&quot;AuthorizationEndpoint&quot;, &quot;https://graph.facebook.com/oauth/authorize?client_id={0}&amp;redirect_uri={1}&amp;scope=manage_pages,create_event,publish_stream&quot;},
+    {&quot;TokenEndpoint&quot;, &quot;https://graph.facebook.com/oauth/access_token?client_id={0}&amp;redirect_uri={1}&amp;client_secret={2}&amp;code={3}&quot;},
+    {&quot;ApplicationId&quot;, &quot;387222228001291&quot;},
+    {&quot;ApplicationSecret&quot;, &quot;3a177e2231e2966733771775b42&quot;},
+    {&quot;RedirectTo&quot;, &quot;http://localhost:4769/Facebook/Authorizate&quot;},
+    {&quot;PageName&quot;, &quot;TesterMyRest Community&quot;}
+};
+</code></pre>
+<p>Posting video.</p>
+<pre><code class="lang-csharp">public string CreateVideo(MemoryStream imageMemoryStream, string title, string fileName)
+{
+    string boundary = &quot;---------------------------&quot; + DateTime.Now.Ticks.ToString(&quot;x&quot;);
+    var uploadRequest =
+        (HttpWebRequest)
+        WebRequest.Create(&quot;https://graph.facebook.com/&quot; + page.SelectToken(&quot;id&quot;) + &quot;/videos?access_token=&quot; +
+                            page.SelectToken(&quot;access_token&quot;));
+    uploadRequest.ServicePoint.Expect100Continue = false;
+    uploadRequest.Method = &quot;POST&quot;;
+    uploadRequest.UserAgent = &quot;Mozilla/4.0 (compatible; Windows NT)&quot;;
+    uploadRequest.ContentType = &quot;multipart/form-data; boundary=&quot; + boundary;
+    uploadRequest.KeepAlive = false;
+
+    var sb = new StringBuilder();
+
+    const string formdataTemplate = &quot;--{0}\r\nContent-Disposition: form-data; name=\&quot;{1}\&quot;\r\n\r\n{2}\r\n&quot;;
+    sb.AppendFormat(formdataTemplate, boundary, &quot;title&quot;, HttpContext.Current.Server.HtmlEncode(title));
+
+    const string headerTemplate = &quot;--{0}\r\nContent-Disposition: form-data; name=\&quot;{1}\&quot;; filename=\&quot;{2}\&quot;\r\nContent-Type: {3}\r\n\r\n&quot;;
+    sb.AppendFormat(headerTemplate, boundary, &quot;source&quot;, fileName, @&quot;application/octet-stream&quot;);
+
+    string formString = sb.ToString();
+    byte[] formBytes = Encoding.UTF8.GetBytes(formString);
+    byte[] trailingBytes = Encoding.UTF8.GetBytes(&quot;\r\n--&quot; + boundary + &quot;--\r\n&quot;);
+
+    long imageLength = imageMemoryStream.Length;
+    long contentLength = formBytes.Length + imageLength + trailingBytes.Length;
+    uploadRequest.ContentLength = contentLength;
+
+    uploadRequest.AllowWriteStreamBuffering = false;
+    Stream strmOut = uploadRequest.GetRequestStream();
+
+    strmOut.Write(formBytes, 0, formBytes.Length);
+
+    var buffer = new Byte[checked((uint) Math.Min(4096, (int) imageLength))];
+    int bytesRead;
+    imageMemoryStream.Seek(0, SeekOrigin.Begin);
+    while ((bytesRead = imageMemoryStream.Read(buffer, 0, buffer.Length)) != 0)
+    {
+        strmOut.Write(buffer, 0, bytesRead);
+    }
+
+    strmOut.Write(trailingBytes, 0, trailingBytes.Length);
+
+    strmOut.Close();
+
+    var wresp = uploadRequest.GetResponse() as HttpWebResponse;
+    Encoding enc = Encoding.UTF8;
+    if (wresp != null)
+    {
+        var stream = wresp.GetResponseStream();
+        if (stream != null)
+        {
+            var loResponseStream = new StreamReader(stream, enc);
+            return &quot;https://graph.facebook.com/&quot; + loResponseStream.ReadToEnd();
+        }
+    }
+    return string.Empty;
+}
+</code></pre>
+<ol>
+<li>Change the information about the page.</li>
+</ol>
+<p>WebHelper class:</p>
+<pre><code class="lang-csharp">public static class WebWorker
+{
+    private static void AddPostParameter(Dictionary&lt;string, string&gt; values, StringBuilder postBody)
+    {
+        foreach (string key in values.Keys)
+        {
+            if (postBody.Length &gt; 0)
+            {
+                postBody.Append(&quot;&amp;&quot;);
+            }
+            postBody.Append(string.Format(&quot;{0}={1}&quot;, key, values[key]));
+        }
+    }
+
+    public static JObject DownloadJson(string requestUrl)
+    {
+        var webClient = new WebClient();
+        string response = webClient.DownloadString(requestUrl);
+        return JObject.Parse(response);
+    }
+
+    public static string UploadString(string requstUrl, Dictionary&lt;string, string&gt; values)
+    {
+        var webClient = new WebClient();
+        var postBody = new StringBuilder();
+        AddPostParameter(values, postBody);
+        return webClient.UploadString(requstUrl, postBody.ToString());
+    }
+}
+</code></pre>
+<pre><code class="lang-csharp">private string CreateStatus(Dictionary&lt;string, string&gt; values)
+{
+    string request = &quot;https://graph.facebook.com/&quot; + page.SelectToken(&quot;id&quot;) + &quot;/feed?access_token=&quot; +
+                        page.SelectToken(&quot;access_token&quot;);
+    return WebWorker.UploadString(request, values);
+}
+</code></pre>
+<hr>
+<h2 id="asp-net-mvc-bundle-minification-not-found-404-06-september-2012">ASP.NET MVC Bundle Minification - Not Found 404 - 06 September, 2012</h2>
+<p>If you try to add Bundle from Web.Optimization library to your existing project and your Web.config file</p>
+<p><img src="./images/bundle1.png" alt="example"></p>
+<p>so runAllManagedModulesForAllRequests=&quot;false&quot;.</p>
+<p>You start to get 404- Not found response to your bundle requests.</p>
+<p><img src="./images/bundle2.png" alt="example"></p>
+<p>Just enable BundleModule and all will be OK ! ;)</p>
+<hr>
+<h2 id="vs-2010-attach-to-process-w3wp-exe-20-july-2012">VS 2010 Attach to process w3wp.exe - 20 July, 2012</h2>
+<p>Need to create the macros:</p>
+<pre><code>Public Module AttachToProcess
+Public Function AttachToProcess(ByVal ProcessName As String) As Boolean
+Dim proc As EnvDTE.Process
+Dim attached As Boolean
+For Each proc In DTE.Debugger.LocalProcesses
+If (Right(proc.Name, Len(ProcessName)) = ProcessName) Then
+proc.Attach()
+attached = True
+End If
+Next
+
+Return attached
+End Function
+
+Sub AttachToW3WP()
+If Not AttachToProcess(&quot;w3wp.exe&quot;) Then
+System.Windows.Forms.MessageBox.Show(&quot;Cannot attach to process&quot;)
+End If
+End Sub
+End Module
+</code></pre><p><a href="http://habrahabr.ru/post/131937/">Link</a></p>
+<hr>
+<h2 id="powershell-replace-physical-path-of-web-sites-in-iis7-17-july-2012">PowerShell, Replace physical path of web sites in IIS7 - 17 July, 2012</h2>
+<pre><code class="lang-PowerShell">param([String]$numb)
+
+[Void][Reflection.Assembly]::LoadWithPartialName(&quot;Microsoft.Web.Administration&quot;)
+
+$siteName = &quot;graph.vrpinc.com&quot;
+##$serverIP = &quot;your ip address&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.WebSite&quot;
+
+$serverManager = New-Object Microsoft.Web.Administration.ServerManager
+## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+$site = $serverManager.Sites | where { $_.Name -eq $siteName }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
+$rootVdir.PhysicalPath = $newPath
+$serverManager.CommitChanges()
+
+$siteName = &quot;gmp3.vrpinc.com&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.MvcWebSite&quot;
+
+$serverManager = New-Object Microsoft.Web.Administration.ServerManager
+## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+$site = $serverManager.Sites | where { $_.Name -eq $siteName }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
+$rootVdir.PhysicalPath = $newPath
+$serverManager.CommitChanges()
+
+$siteName = &quot;GMPServices&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.Services&quot;
+
+$serverManager = New-Object Microsoft.Web.Administration.ServerManager
+## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+$site = $serverManager.Sites | where { $_.Name -eq $siteName }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
+$rootVdir.PhysicalPath = $newPath
+$serverManager.CommitChanges()
+</code></pre>
+<p>Bat file to call PowerShell file</p>
+<pre><code>@echo off
+
+set /p delBuild=Enter the number of gmp project?
+powershell -noprofile Set-ExecutionPolicy Unrestricted
+powershell .\setUpSite.ps1 -numb %delBuild%
+</code></pre><p>One variable to set current version of projects!
+Thanks!</p>
+<hr>
+<h2 id="mvc-indefinitely-loads-the-page-and-call-the-controller-cyclical-31-january-2012">MVC indefinitely loads the page and call the controller cyclical - 31 January, 2012</h2>
+<p>I have found that the page load indefinitely. And the reason was I add @Html.RenderAction to my default layout.</p>
+<p>So the solution of the problem to add the next code to rendered view:</p>
+<pre><code>@{
+      Layout = null;
+}
+</code></pre><p>As I understand, MVC try to load the next without this code:</p>
+<p>Layout -&gt; MyView -&gt; Layout -&gt; MyView -&gt; ....</p>
+<p>With code above:</p>
+<p>Layout -&gt; MyView { -&gt; null}</p>
+<p>So it&#39;s happens.</p>
+<hr>
+<h2 id="0x80004005-failed-to-execute-url-12-december-2011">0x80004005: Failed to Execute URL - 12 December, 2011</h2>
+<p>The error was connected with GET requests. ApplicationPool was set in Classic mode.
+There is HttpModule, which throws this type of exceptions:</p>
+<pre><code>System.Web.HttpException (0x80004005): Failed to Execute URL.
+at System.Web.Hosting.ISAPIWorkerRequestInProcForIIS6.BeginExecuteUrl(String url, String method, String childHeaders, Boolean sendHeaders, Boolean addUserIndo, IntPtr token, String name, String authType, Byte[] entity, AsyncCallback cb, Object state)
+at System.Web.HttpResponse.BeginExecuteUrlForEntireResponse(String pathOverride, NameValueCollection requestHeaders, AsyncCallback cb, Object state)
+at System.Web.DefaultHttpHandler.BeginProcessRequest(HttpContext context, AsyncCallback callback, Object state)
+at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)
+</code></pre><p>contained the next source code in event context.BeginRequest:</p>
+<pre><code>app.Context.RewritePath(app.Context.Request.Path);
+</code></pre><p>The solve of the problem is:</p>
+<pre><code>app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, string.Empty);
+</code></pre><hr>
+<h2 id="powershell-how-to-9-december-2011">PowerShell How to ... ? - 9 December, 2011</h2>
+<ol>
+<li>How to set folder&#39;s permission?</li>
+</ol>
+<pre><code class="lang-powershell"> #set owner and principals for %SystemRoot%\TEMP
+ #http://channel9.msdn.com/Forums/Coffeehouse/Powershell-subinacl-ownership-of-directories
+ Write-Host -ForegroundColor green &quot;Set owner and principals for %SystemRoot%\TEMP&quot;
+ $pathToSystemRoot = get-content env:systemroot
+ $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+ $Principal = new-object security.principal.ntaccount $currentUser
+ $path = Join-Path $pathToSystemRoot \temp
+
+ $code = @&quot;
+using System;
+using System.Runtime.InteropServices;
+
+namespace WSG.Utils
+{
+public class PermissionsSetter
+{
+
+  [DllImport(&quot;advapi32.dll&quot;, ExactSpelling = true, SetLastError = true)]
+  internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall,
+  ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
+
+
+  [DllImport(&quot;kernel32.dll&quot;, ExactSpelling = true)]
+  internal static extern IntPtr GetCurrentProcess();
+
+
+  [DllImport(&quot;advapi32.dll&quot;, ExactSpelling = true, SetLastError = true)]
+  internal static extern bool OpenProcessToken(IntPtr h, int acc, ref IntPtr
+  phtok);
+
+
+  [DllImport(&quot;advapi32.dll&quot;, SetLastError = true)]
+  internal static extern bool LookupPrivilegeValue(string host, string name,
+  ref long pluid);
+
+
+  [StructLayout(LayoutKind.Sequential, Pack = 1)]
+  internal struct TokPriv1Luid
+  {
+   public int Count;
+   public long Luid;
+   public int Attr;
+  }
+
+
+  internal const int SE_PRIVILEGE_DISABLED = 0x00000000;
+  internal const int SE_PRIVILEGE_ENABLED = 0x00000002;
+  internal const int TOKEN_QUERY = 0x00000008;
+  internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;
+
+
+  public const string SE_ASSIGNPRIMARYTOKEN_NAME = &quot;SeAssignPrimaryTokenPrivilege&quot;;
+  public const string SE_AUDIT_NAME = &quot;SeAuditPrivilege&quot;;
+  public const string SE_BACKUP_NAME = &quot;SeBackupPrivilege&quot;;
+  public const string SE_CHANGE_NOTIFY_NAME = &quot;SeChangeNotifyPrivilege&quot;;
+  public const string SE_CREATE_GLOBAL_NAME = &quot;SeCreateGlobalPrivilege&quot;;
+  public const string SE_CREATE_PAGEFILE_NAME = &quot;SeCreatePagefilePrivilege&quot;;
+  public const string SE_CREATE_PERMANENT_NAME = &quot;SeCreatePermanentPrivilege&quot;;
+  public const string SE_CREATE_SYMBOLIC_LINK_NAME = &quot;SeCreateSymbolicLinkPrivilege&quot;;
+  public const string SE_CREATE_TOKEN_NAME = &quot;SeCreateTokenPrivilege&quot;;
+  public const string SE_DEBUG_NAME = &quot;SeDebugPrivilege&quot;;
+  public const string SE_ENABLE_DELEGATION_NAME = &quot;SeEnableDelegationPrivilege&quot;;
+  public const string SE_IMPERSONATE_NAME = &quot;SeImpersonatePrivilege&quot;;
+  public const string SE_INC_BASE_PRIORITY_NAME = &quot;SeIncreaseBasePriorityPrivilege&quot;;
+  public const string SE_INCREASE_QUOTA_NAME = &quot;SeIncreaseQuotaPrivilege&quot;;
+  public const string SE_INC_WORKING_SET_NAME = &quot;SeIncreaseWorkingSetPrivilege&quot;;
+  public const string SE_LOAD_DRIVER_NAME = &quot;SeLoadDriverPrivilege&quot;;
+  public const string SE_LOCK_MEMORY_NAME = &quot;SeLockMemoryPrivilege&quot;;
+  public const string SE_MACHINE_ACCOUNT_NAME = &quot;SeMachineAccountPrivilege&quot;;
+  public const string SE_MANAGE_VOLUME_NAME = &quot;SeManageVolumePrivilege&quot;;
+  public const string SE_PROF_SINGLE_PROCESS_NAME = &quot;SeProfileSingleProcessPrivilege&quot;;
+  public const string SE_RELABEL_NAME = &quot;SeRelabelPrivilege&quot;;
+  public const string SE_REMOTE_SHUTDOWN_NAME = &quot;SeRemoteShutdownPrivilege&quot;;
+  public const string SE_RESTORE_NAME = &quot;SeRestorePrivilege&quot;;
+  public const string SE_SECURITY_NAME = &quot;SeSecurityPrivilege&quot;;
+  public const string SE_SHUTDOWN_NAME = &quot;SeShutdownPrivilege&quot;;
+  public const string SE_SYNC_AGENT_NAME = &quot;SeSyncAgentPrivilege&quot;;
+  public const string SE_SYSTEM_ENVIRONMENT_NAME = &quot;SeSystemEnvironmentPrivilege&quot;;
+  public const string SE_SYSTEM_PROFILE_NAME = &quot;SeSystemProfilePrivilege&quot;;
+  public const string SE_SYSTEMTIME_NAME = &quot;SeSystemtimePrivilege&quot;;
+  public const string SE_TAKE_OWNERSHIP_NAME = &quot;SeTakeOwnershipPrivilege&quot;;
+  public const string SE_TCB_NAME = &quot;SeTcbPrivilege&quot;;
+  public const string SE_TIME_ZONE_NAME = &quot;SeTimeZonePrivilege&quot;;
+  public const string SE_TRUSTED_CREDMAN_ACCESS_NAME = &quot;SeTrustedCredManAccessPrivilege&quot;;
+  public const string SE_UNDOCK_NAME = &quot;SeUndockPrivilege&quot;;
+  public const string SE_UNSOLICITED_INPUT_NAME = &quot;SeUnsolicitedInputPrivilege&quot;;       
+
+
+  public static bool AddPrivilege(string privilege)
+  {
+   try
+   {
+    bool retVal;
+    TokPriv1Luid tp;
+    IntPtr hproc = GetCurrentProcess();
+    IntPtr htok = IntPtr.Zero;
+    retVal = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
+    tp.Count = 1;
+    tp.Luid = 0;
+    tp.Attr = SE_PRIVILEGE_ENABLED;
+    retVal = LookupPrivilegeValue(null, privilege, ref tp.Luid);
+    retVal = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+    return retVal;
+   }
+   catch (Exception ex)
+   {
+    throw ex;
+   }
+
+
+  }
+  public static bool RemovePrivilege(string privilege)
+  {
+   try
+   {
+    bool retVal;
+    TokPriv1Luid tp;
+    IntPtr hproc = GetCurrentProcess();
+    IntPtr htok = IntPtr.Zero;
+    retVal = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
+    tp.Count = 1;
+    tp.Luid = 0;
+    tp.Attr = SE_PRIVILEGE_DISABLED;
+    retVal = LookupPrivilegeValue(null, privilege, ref tp.Luid);
+    retVal = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+    return retVal;
+   }
+   catch (Exception ex)
+   {
+    throw ex;
+   }
+
+
+  }
+}
+}
+&quot;@
+
+ add-type $code
+
+ $acl = Get-Acl $Path
+ $acl.psbase.SetOwner($principal)
+ $Ar = New-Object  system.security.accesscontrol.filesystemaccessrule(&quot;IIS_IUSRS&quot;,&quot;FullControl&quot;, &quot;Allow&quot;)
+
+ ## Check if Access already exists.
+ #see http://cyrusbuilt.net/wordpress/?p=158
+ if ($acl.Access | Where { $_.IdentityReference -eq $Principal}) {
+  $accessModification = New-Object System.Security.AccessControl.AccessControlModification
+  $accessModification.value__ = 2
+  $modification = $false
+  $acl.ModifyAccessRule($accessModification, $Ar, [ref]$modification) | Out-Null
+ } else {
+  $acl.AddAccessRule($Ar)
+ }
+
+ [void][WSG.Utils.PermissionsSetter]::AddPrivilege([WSG.Utils.PermissionsSetter]::SE_RESTORE_NAME)
+ set-acl -Path $Path -AclObject $acl
+ [void][WSG.Utils.PermissionsSetter]::RemovePrivilege([WSG.Utils.PermissionsSetter]::SE_RESTORE_NAME)
+</code></pre>
+<ol>
+<li>How to register Asp.Net &amp; WCF in IIS?</li>
+</ol>
+<pre><code class="lang-powershell"> $pathToFramework = &quot;$env:windir\Microsoft.NET\Framework&quot;
+ if (test-path &quot;$env:windir\Microsoft.NET\Framework64&quot;)
+ {
+  $pathToFramework = &quot;$env:windir\Microsoft.NET\Framework64&quot;
+ }
+
+ #start aspnet_regiis and ServiceModelReg
+ $aspNet2 = Test-Path &quot;$pathToFramework\v2.0.50727\aspnet_regiis.exe&quot; -pathType leaf
+ if (($aspNet2 -eq $true) -and ($aspNet2Reg -eq $false))
+ {
+  Write-Host -ForegroundColor green &quot;`r`nInstall aspnet_regiis.exe v2.0.50727&quot;
+  &amp; &quot;$pathToFramework\v2.0.50727\aspnet_regiis.exe&quot; -i -enable
+ }
+
+ $ServModReg3 = Test-Path &quot;$pathToFramework\v3.0\Windows Communication Foundation\ServiceModelReg.exe&quot; -pathType leaf
+ if ($ServModReg3 -eq $true)
+ {
+  Write-Host -ForegroundColor green &quot;`r`nInstall ServiceModelReg.exe v3.0&quot;
+  &amp; &quot;$pathToFramework\v3.0\Windows Communication Foundation\ServiceModelReg.exe&quot; -iru
+ }
+
+ $ServModReg4 = Test-Path &quot;$pathToFramework\v4.0.30319\ServiceModelReg.exe&quot; -pathType leaf
+ if ($ServModReg4 -eq $true)
+ {
+  Write-Host -ForegroundColor green &quot;`r`nInstall ServiceModelReg.exe v4.0.30319&quot;
+  &amp; &quot;$pathToFramework\v4.0.30319\ServiceModelReg.exe&quot; -ia -q -nologo
+ }
+
+ $AspNetRegIis4 = Test-Path &quot;$pathToFramework\v4.0.30319\aspnet_regiis.exe&quot; -pathType leaf
+ if (($AspNetRegIis4 -eq $true) -and ($aspNet4Reg -eq $false))
+ {
+  Write-Host -ForegroundColor green &quot;`r`nInstall aspnet_regiis.exe v4.0.30319&quot;
+  &amp; &quot;$pathToFramework\v4.0.30319\aspnet_regiis.exe&quot; -ir -enable
+ }
+</code></pre>
+<ol>
+<li>How to enable windows features?</li>
+</ol>
+<pre><code class="lang-powershell"> #check the windows features
+ $features = @((&quot;IIS-ASPNET&quot;, &quot;unknown&quot;), (&quot;IIS-HttpCompressionDynamic&quot;, &quot;unknown&quot;), (&quot;IIS-ManagementScriptingTools&quot;, &quot;unknown&quot;), (&quot;IIS-IIS6ManagementCompatibility&quot;, &quot;unknown&quot;), (&quot;IIS-Metabase&quot;, &quot;unknown&quot;), (&quot;IIS-WMICompatibility&quot;, &quot;unknown&quot;), (&quot;IIS-LegacyScripts&quot;, &quot;unknown&quot;), (&quot;IIS-LegacySnapIn&quot;, &quot;unknown&quot;))
+
+ $dismPath = &quot;$env:windir\System32\Dism.exe&quot;
+ if(test-path &quot;$env:windir\Sysnative\Dism.exe&quot;)
+ {
+  $dismPath = &quot;$env:windir\Sysnative\Dism.exe&quot;
+ }
+
+ Write-Host -ForegroundColor green &quot;`r`nGet windows features&quot;
+ $res = &amp; &quot;$dismPath&quot; /online /Get-Features
+ #take feature&#39;s states
+ $writeNextStr = $false
+ for ($i = 0; $i -lt $res.Count; $i++)
+ {
+  $str = $res[$i]
+  foreach ($feature in $features)
+  {
+   if ($str.Contains($feature[0]))
+   {
+    $feature[1] = $res[$i+1]
+    break
+   }
+  }
+ }
+
+ #show results
+ Write-Host -ForegroundColor green &quot;`r`nPlease see the states of features`r`n&quot;
+ foreach($feature in $features)
+ {
+  Write-Host -ForegroundColor yellow &quot;$feature&quot;
+ }
+ Write-Host -ForegroundColor green &quot;`r`n&quot;
+
+ #enable features
+ $needToRestart = $false
+ Write-Host -ForegroundColor green &quot;Started to enable all features`r`n&quot;
+ foreach($feature in $features)
+ {
+  if ($feature[1] -ne &quot;State : Enabled&quot;)
+  {
+   $needToRestart  = $true
+   $temp = $feature[0]
+   Write-Host -ForegroundColor green &quot;Try to enable $temp&quot;
+   &amp; &quot;$dismPath&quot; /online /Enable-Feature /FeatureName:$temp /NoRestart
+  }
+ }
+</code></pre>
+<ol>
+<li>How to avoid exception &quot;The OS handle’s position is not what FileStream expected&quot;?</li>
+</ol>
+<pre><code class="lang-powershell">#this code is for exception such as The OS handle’s position is not what FileStream expected
+#see http://www.leeholmes.com/blog/2008/07/30/workaround-the-os-handles-position-is-not-what-filestream-expected/
+$bindingFlags = [Reflection.BindingFlags] “Instance,NonPublic,GetField”
+$objectRef = $host.GetType().GetField(“externalHostRef”, $bindingFlags).GetValue($host)
+$bindingFlags = [Reflection.BindingFlags] “Instance,NonPublic,GetProperty”
+$consoleHost = $objectRef.GetType().GetProperty(“Value”, $bindingFlags).GetValue($objectRef, @())
+[void] $consoleHost.GetType().GetProperty(“IsStandardOutputRedirected”, $bindingFlags).GetValue($consoleHost, @())
+$bindingFlags = [Reflection.BindingFlags] “Instance,NonPublic,GetField”
+$field = $consoleHost.GetType().GetField(“standardOutputWriter”, $bindingFlags)
+$field.SetValue($consoleHost, [Console]::Out)
+$field2 = $consoleHost.GetType().GetField(“standardErrorWriter”, $bindingFlags)
+$field2.SetValue($consoleHost, [Console]::Out)
+</code></pre>
+<ol>
+<li>How to load module?</li>
+</ol>
+<pre><code class="lang-powershell">Import-Module WebAdministration
+</code></pre>
+<ol>
+<li>How to load another script file?</li>
+</ol>
+<pre><code class="lang-powershell">#load external functions
+. (Join-Path $curFolder \Functions\DevSetupFunctions.ps1)
+</code></pre>
+<hr>
+<h2 id="style-cop-i-don-t-like-sa-1201-8-december-2011">Style Cop / I don&#39;t like SA 1201 - 8 December, 2011</h2>
+<p><a href="">StyleCop</a> is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...</p>
+<p>Unfortunately, the rule SA1201 is not so good for me. So i just want to create the similar rule, but a little else.</p>
+<p>You can see the rule that changes the order of document&#39;s element to the next:</p>
+<pre><code class="lang-xml">&lt;element name=&quot;File&quot; order=&quot;0&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Root&quot; order=&quot;1&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;ExternAliasDirective&quot; order=&quot;2&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;UsingDirective&quot; order=&quot;3&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;AssemblyAttribute&quot; order=&quot;4&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Namespace&quot; order=&quot;5&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Field&quot; order=&quot;6&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Constructor&quot; order=&quot;10&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Destructor&quot; order=&quot;11&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Delegate&quot; order=&quot;8&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Event&quot; order=&quot;9&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Enum&quot; order=&quot;13&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Interface&quot; order=&quot;14&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Property&quot; order=&quot;7&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Accessor&quot; order=&quot;15&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Indexer&quot; order=&quot;16&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Method&quot; order=&quot;12&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Struct&quot; order=&quot;17&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;EnumItem&quot; order=&quot;18&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;ConstructorInitializer&quot; order=&quot;19&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;EmptyElement&quot; order=&quot;20&quot;&gt;&lt;/element&gt;
+</code></pre>
+<p>It saves in configuration file, so it is possible to change it in any time. 
+Further the source code of my rule. You can see the original source code of SA1201 using the <a href="http://www.jetbrains.com/decompiler/">DotPeek</a> for <a href="./code/code.cs">example</a>.</p>
+<p>Methods AnalyzeDocument и DoAnalysis are the most important, so i suggest to start the learning code from them. The project in VS2010 is StyleCopOrder.Thanks.</p>
+<hr>
+<h2 id="fiddler-zip-extension-8-december-2011">Fiddler Zip extension - 8 December, 2011</h2>
+<p>Extension for <a href="http://www.fiddler2.com/Fiddler/dev/">Fiddler</a>.</p>
+<p><img src="./images/zip_fiddler.jpg" alt="example"></p>
+<p>The source code: <a href="https://drive.google.com/file/d/0BwVmorgjT-W1NDFlZDZkMDItMWMxMS00NzU2LTg3NDUtYTYzOWVhOGMyMzRj/view">FiddlerZip</a>.</p>
+<p>The main code:</p>
+<pre><code class="lang-csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Fiddler;
+using System.Windows.Forms;
+
+// It is important !!! see the current version of fiddler
+[assembly: Fiddler.RequiredVersion(&quot;2.3.4.4&quot;)]
+
+namespace FiddlerZip
+{
+    /// &lt;summary&gt;
+    /// Zip extension
+    /// &lt;/summary&gt;
+    public class Zip : IFiddlerExtension 
+    {
+        /// &lt;summary&gt;
+        /// page for extesnion
+        /// &lt;/summary&gt;
+        private TabPage oPage;
+        /// &lt;summary&gt;
+        /// Control that presented extension
+        /// &lt;/summary&gt;
+        private ZipControl oAppConsole;
+        #region IFiddlerExtension Members
+
+        public void OnBeforeUnload()
+        {
+
+        }
+
+        public void OnLoad()
+        {
+            // create tab with name &quot;Zip&quot;
+            oPage = new TabPage(&quot;Zip&quot;);
+            // it is possible to add icon to your tab
+            oPage.ImageIndex = (int)Fiddler.SessionIcons.FilterBrowsers;
+            oAppConsole = new ZipControl();
+            // add control to tab
+            oPage.Controls.Add(oAppConsole);
+            oAppConsole.Dock = DockStyle.Fill;
+            FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<hr>
+<h2 id="iis-7-httpmodule-logger-6-december-2011">IIS 7 HttpModule Logger - 6 December, 2011</h2>
+<p>Простой модуль-лог для IIS 7 (Classic mode)</p>
+<pre><code class="lang-csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web;
+using System.Threading.Tasks;
+using System.IO;
+using System.Threading;
+using System.Net;
+using ReutersKnowledge.Web.Services.Util;
+using System.Collections.Specialized;
+using System.Reflection;
+
+namespace IISWsgLogger
+{
+    public class IISLoggerModule : IHttpModule
+    {
+        private static string fileName = &quot;D:\\Log.txt&quot;;
+
+        private static ConcurrentQueue&lt;string&gt; logRecords = new ConcurrentQueue&lt;string&gt;();
+
+        private static object syncTask = new object();
+        private static Task taskLog;
+
+        public void Init(HttpApplication context)
+        {
+            if (taskLog == null)
+            {
+                lock (syncTask)
+                {
+                    if (taskLog == null)
+                    {
+                        taskLog = Task.Factory.StartNew(() =&gt; StartLog(), TaskCreationOptions.LongRunning);
+                    }
+                }
+            }
+            context.BeginRequest += new EventHandler(OnPreRequestHandlerExecute);
+            context.EndRequest += new EventHandler(OnPostReleaseRequestState);
+        }
+
+        private void StartLog()
+        {
+            var t = File.AppendText(fileName);
+            t.WriteLine(&quot;date time wsg-guid s-port cs-method reuters-uuid cs(Host) cs-uri-stem cs-uri-query sc-status sc-substatus cs(User-Agent) cs(Cookie) TimeTakenMS sc-bytes&quot;);
+            int waitMil = 1000;
+            string res = null;
+            try
+            {
+                while (true)
+                {
+                    while (logRecords.TryDequeue(out res))
+                    {
+                        t.WriteLine(res);
+                    }
+                    Thread.Sleep(waitMil);
+                }
+            }
+            finally
+            {
+                t.Close();
+            }
+
+        }
+
+        public void Dispose()
+        {
+        }
+
+        public void OnPreRequestHandlerExecute(Object source, EventArgs e)
+        {
+            HttpApplication app = (HttpApplication)source;
+            var guid = Guid.NewGuid().ToString();
+            app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, &quot;guid=&quot; + guid);
+        }
+
+        public void OnPostReleaseRequestState(Object source, EventArgs e)
+        {
+            HttpApplication app = (HttpApplication)source;
+            var time = DateTime.Now;
+            var timeStamp = app.Context.Timestamp;
+            var port = app.Context.Request.Url.Port;
+            var typeOfRequest = app.Context.Request.RequestType;
+            var Guid = app.Context.Request.QueryString[0];
+            var host = app.Context.Request.Url.Host;
+            var rawUrl = app.Context.Request.RawUrl;
+            var contentRequestLength = app.Context.Request.ContentLength;
+            var status = app.Context.Response.StatusCode;
+            var agent = app.Context.Request.UserAgent;
+            var cookies = string.Empty;
+            foreach (var cookie in app.Context.Request.Cookies)
+            {
+                cookies += cookies;
+            }
+
+            logRecords.Enqueue(string.Format(&quot;{0} {1} {3} {4} {5} {6} {7} {8} {9} {10}&quot;, time, guid, port, typeOfRequest, host, rawUrl, status, agent, timeStamp, contentRequestLength));
+        }
+
+    }
+}
+</code></pre>
+<p>web.config :</p>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+ &lt;configSections&gt;
+  ...
+ &lt;/configSections&gt;
+ &lt;system.web&gt;
+  ...
+   &lt;httpModules&gt;
+   ...
+  &lt;/httpModules&gt;
+ &lt;/system.web&gt;
+ &lt;system.webServer&gt;
+  &lt;modules&gt;
+   &lt;add name=&quot;IISLoggerModule&quot; type=&quot;IISLogger.IISLoggerModule, IISLogger.IISLoggerNamespace.IISLogger&quot;/&gt;
+</code></pre>
+<hr>
+<h2 id="wcf-response-without-root-element-21-june-2011">WCF/ Response without root element - 21 June, 2011</h2>
+<p>Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service should expose 1 operation (let it be &quot;GetResponse_1&quot;) with the following structure (just an example, please combine schema for the service):</p>
+<pre><code class="lang-xml">&lt;GetResponse_Request_1&gt;
+    &lt;element1&gt;text1&lt;/element1&gt;&lt;!-- at least 1 &quot;element1&quot; --&gt;
+    &lt;element1&gt;text2&lt;/element1&gt;
+    &lt;element1&gt;text3&lt;/element1&gt;
+    &lt;element2&gt;textn&lt;/element2&gt;&lt;!-- at least 1 &quot;element2&quot; --&gt;
+    &lt;element2&gt;textn+1&lt;/element2&gt;
+    &lt;element2&gt;textn+2&lt;/element2&gt;     
+&lt;/GetResponse_Request_1&gt;
+</code></pre>
+<p>Response should contain &quot;planed&quot; element1 and element2 sets, just comma separated values:</p>
+<pre><code class="lang-xml">&lt;GetResponse_Response_1&gt;
+    &lt;element1_plane&gt;text1, text2, text3&lt;/element1&gt;
+    &lt;element2_plane&gt;textn, textn+1, textn+2&lt;/element2&gt;
+&lt;/GetResponse_Response_1&gt;
+</code></pre>
+<hr>
+<h2 id="create-line-chart-use-net-2-0-06-may-2011">Create line chart use .net 2.0 - 06 May, 2011</h2>
+<p>See please <a href="https://drive.google.com/file/d/0BwVmorgjT-W1YzVhNmNmYzktOWM3Yy00OGUyLWExNzYtNTZkOGU0NmVkZTdi/view">ChatBuilder</a>. There are 4 files of simple source code.</p>
+<hr>
+<h2 id="use-logparser-5-may-2011">Use LogParser - 5 May, 2011</h2>
+<ol>
+<li>Download LogParser 2.2.</li>
+<li>C:>tlbimp LogParser.dll /out:Interop.MSUtil.dll</li>
+<li>Include Interop.MSUtil.dll in a project.
+4.</li>
+</ol>
+<pre><code class="lang-csharp">using LogQuery = Interop.MSUtil.LogQueryClassClass;
+using IISW3CInputFormat = Interop.MSUtil.COMIISW3CInputContextClassClass;
+using CsvOutputFormat = Interop.MSUtil.COMCSVOutputContextClassClass;
+using LogRecordSet = Interop.MSUtil.ILogRecordset;
+
+LogQuery oLogQuery = new LogQuery();
+
+// Instantiate the Event Log Input Format object
+IISW3CInputFormat oW3CInputFormat = new IISW3CInputFormat();
+
+string query = String.Format(_queryPostOverall, _pathToLog, &quot;200&quot;, _date);
+var oRecordSet = oLogQuery.Execute(query, oW3CInputFormat);
+for (; !oRecordSet.atEnd(); oRecordSet.moveNext())
+{
+   double count = Convert.ToDouble(oRecordSet.getRecord().getValue(&quot;count1&quot;));
+   _postCountOverall.overall += count;
+}
+oRecordSet.close();
+</code></pre>
+<hr>
+<h2 id="use-zadgraph-5-may-2011">Use ZadGraph - 5 May, 2011</h2>
+<p>Library can be downloaded. License is LPGL 2.1.</p>
+<pre><code class="lang-csharp">if (dates.Count &gt; 0 &amp;&amp; dates.Count == values.Count)
+{
+    double max = FindMax(values);
+    if (!Directory.Exists(_imageFolderName))
+    {
+        Directory.CreateDirectory(_imageFolderName);
+    }
+    GraphPane myPane = new GraphPane();
+
+    // Set the titles and axis labels
+    myPane.Title.Text = &quot;Statistic of errors&quot;;
+    myPane.XAxis.Title.Text = &quot;Day&quot;;
+    myPane.YAxis.Title.Text = &quot;Percent&quot;;
+    // Make up some data points based on the Sine function
+    PointPairList list = new PointPairList();
+    for (int i = 0; i &lt; dates.Count; i++)
+    {
+        double x = dates[i].Date.ToOADate();
+        double y = values[i];
+        list.Add(x, y);
+    }
+    myPane.XAxis.CrossAuto = true;
+    myPane.XAxis.Type = AxisType.Date;
+    myPane.XAxis.Scale.MinorStep = 1;
+    myPane.XAxis.Scale.MajorStep = 1;
+    myPane.XAxis.Scale.Format = &quot;dd.MM.yy&quot;;
+    myPane.XAxis.MajorTic.IsBetweenLabels = true;
+    myPane.XAxis.Scale.Min = dates[0].ToOADate();
+    myPane.XAxis.Scale.Max = dates[dates.Count - 1].ToOADate();
+    myPane.XAxis.AxisGap = 3f;
+
+    myPane.YAxis.Scale.Max = max + 4;
+    myPane.YAxis.Scale.MinorStep = myPane.YAxis.Scale.Max/10;
+    myPane.YAxis.MajorGrid.IsVisible = true;
+    myPane.YAxis.Type = AxisType.Linear;
+    LineItem myCurve2 = myPane.AddCurve(&quot;Overall&quot;,
+            list, Color.Blue, SymbolType.Diamond);
+    myPane.YAxis.Scale.MajorStep = myPane.YAxis.Scale.Max / 5;
+
+    myPane.Legend.Position = ZedGraph.LegendPos.Bottom;
+    int width = 800;
+    if (27 * dates.Count &gt; width)
+        width = 27 * dates.Count;
+    myPane.GetImage(width, 600, 800f).Save(Path.Combine(_imageFolderName, _imageFileName), System.Drawing.Imaging.ImageFormat.Jpeg);
+}
+</code></pre>
+<hr>
+<h2 id="sniffer-of-tcp-packets-10-february-2011">Sniffer of TCP packets - 10 February, 2011</h2>
+<p>Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.</p>
+<p>Проект на VS2008 <a href="https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3">SharkTrace</a>.</p>
+<p>Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.</p>
+<p>Далее в тексте, под соединением я понимаю соответствие адресов и портов на клиенте и сервере. </p>
+<p>Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap (<a href="http://sourceforge.net/projects/sharppcap/">Sharppcap</a>).</p>
+<p>Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.</p>
+<p>Больше о флагах tcp-пакета можно посмотреть <a href="http://www.firewall.cx/">http://www.firewall.cx.</a> </p>
+<pre><code class="lang-csharp">///&lt;summary&gt;
+///class for connection
+///&lt;/summary&gt;
+internal class Connection
+{
+    public long ClientAddress; // client initiating the connection
+    public int ClientPort;
+    public long HostAddress; // host receiving the connection
+    public int HostPort;
+    public long ClientSyn; // starting syn sent from client
+    public long HostSyn; // starting syn sent from host;
+    public long NextClientSeq; // this must be in SequenceNumber field of TCP packet if it is from client
+    public long NextHostSeq; // this must be in SequenceNumber field of TCP packet if it is from host
+    public bool HostClosed;
+    public bool ClientClosed;
+    public long TimeIdentifier;
+    public bool ThreeWayCompleted = false; // three way connection is completed
+
+    // Fragments , used when we get newer packets that expected.
+    // so we need to wait for expected before adding them.
+    public SortedDictionary&lt;long, TcpPacket&gt; HostFragments = new SortedDictionary&lt;long, TcpPacket&gt;();
+    public SortedDictionary&lt;long, TcpPacket&gt; ClientFragments = new SortedDictionary&lt;long, TcpPacket&gt;();
+
+    // returns client ip:client port as a string
+    public string GetClientAddressPort()
+    {
+        return string.Format(&quot;{0}:{1}&quot;, new IPAddress(ClientAddress).ToString(), ClientPort);
+    }
+
+    // returns host ip:host port as a string
+    public string GetHostAddressPort()
+    {
+        return string.Format(&quot;{0}:{1}&quot;, new IPAddress(HostAddress).ToString(), HostPort);
+    }
+
+    // packet is from host
+    public bool IsFromHost(TcpPacket tcp)
+    {
+        return ClientAddress == ((IpPacket)tcp.ParentPacket).DestinationAddress.Address &amp;&amp;
+        ClientPort == tcp.DestinationPort &amp;&amp;
+        HostAddress == ((IpPacket)tcp.ParentPacket).SourceAddress.Address &amp;&amp;
+        HostPort == tcp.SourcePort;
+    }
+
+    // packet is from client
+    public bool IsFromClient(TcpPacket tcp)
+    {
+        return ClientAddress == ((IpPacket)tcp.ParentPacket).SourceAddress.Address &amp;&amp;
+        ClientPort == tcp.SourcePort &amp;&amp;
+        HostAddress == ((IpPacket)tcp.ParentPacket).DestinationAddress.Address &amp;&amp;
+        HostPort == tcp.DestinationPort;
+    }
+
+    public Connection(long clientAddress, int clientPort, long hostAddress, int hostPort, long clientSyn)
+    {
+        this.ClientAddress = clientAddress;
+        this.ClientPort = clientPort;
+        this.HostAddress = hostAddress;
+        this.HostPort = hostPort;
+        this.ClientSyn = clientSyn;
+    }
+}
+</code></pre>
+<p>Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment">wikipedia.org</a>). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют &quot;полезную&quot; информацию в себе (payload data).</p>
+<p>Больше о TCP пакетах <a href="http://ru.wikipedia.org/wiki/TCP">wikipedia.org</a>.</p>
+<p>Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому &quot;принадлежит&quot; этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к &quot;полезным&quot; данным последовательно (AddHostData и AddClientData) </p>
+<pre><code class="lang-csharp">/// &lt;summary&gt;
+/// Main class for sniffering
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;
+/// 1. I see that there is new version of SharpPcap library with new interface (29/11/2011)
+/// So i just try to update some useful information about this class
+/// 
+/// 2. I believe that SynchronizatedConnection class is just 
+/// class SynchronizatedConnection : Connection
+/// {
+///     private object syncObject = new object();
+///     
+///     public Synchro {get {return syncObject;}}
+/// }
+/// 
+/// 3. Coordinator is class with constants.
+/// &lt;/remarks&gt;
+internal abstract class Sniffer 
+{
+    private Timer timer;
+    private object synchronizationObjectForConnection = new object();
+    private List&lt;SynchronizatedConnection&gt; Connections = new List&lt;SynchronizatedConnection&gt;();
+    private LibPcapLiveDevice _device;
+    private readonly List&lt;System.Net.IPAddress&gt; _hosts;
+
+    // when connected
+    public abstract void Connected(Object conn);
+    // when disconnected
+    public abstract void Disconnected(Object conn);
+    public abstract void AddHostData(byte[] data, string host);
+    public abstract void AddClientData(byte[] data, string client);
+
+    private void ClearConnections(object source)
+    {
+        //sometimes purely the collection, just in case
+        lock (synchronizationObjectForConnection)
+        {
+            foreach (var key in Connections.Where(k =&gt; (DateTime.Now.ToFileTimeUtc() - k.TimeIdentifier) &gt; 600000000 * Coordinator.Config.HowLongWeSaveTransaction.TotalMinutes).ToList())
+            {
+                Connections.Remove(key);
+            }
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Create the exemplare of the class
+    /// &lt;/summary&gt;
+    public Sniffer(List&lt;System.Net.IPAddress&gt; hosts)
+    {
+        timer = new Timer(ClearConnections, null, Coordinator.Config.HowLongWeSaveTransaction, Coordinator.Config.HowLongWeSaveTransaction);
+        _hosts = hosts;
+    }
+
+    /// &lt;summary&gt;
+    /// Start the tracing
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;filter&quot;&gt;See http://www.cs.ucr.edu/~marios/ethereal-tcpdump.pdf &lt;/param&gt;
+    public void RunSniffer(string filter)
+    {
+        var devices = LibPcapLiveDeviceList.Instance;
+        //
+        _device = devices[Coordinator.Config.ListeningInterface];
+        //Register our handler function to the &#39;packet arrival&#39; event
+        _device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+        //Open the device for capturing
+        int readTimeoutMilliseconds = 1000;
+        _device.Open(DeviceMode.Normal, readTimeoutMilliseconds);
+        // tcpdump filter to capture only TCP/IP packets
+        _device.Filter = filter;
+        // Start capture packets
+        _device.StartCapture();
+    }
+
+    /// &lt;summary&gt;
+    /// Stop the tracing
+    /// &lt;/summary&gt;
+    public void StopSniffer()
+    {
+        _device.StopCapture();
+        _device.Close();
+    }
+
+    /// &lt;summary&gt;
+    /// Catch the packet
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+    /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+    private void device_OnPacketArrival(object sender, CaptureEventArgs e)
+    {
+        try
+        {
+            // try to get TCP packet from Ip packet
+            var packet = PacketDotNet.Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
+            if (packet is PacketDotNet.EthernetPacket)
+            {
+                var eth = ((PacketDotNet.EthernetPacket)packet);
+                var ip = PacketDotNet.IpPacket.GetEncapsulated(packet);
+                if (ip != null)
+                {
+                    var tcp = PacketDotNet.TcpPacket.GetEncapsulated(packet);
+                    if (tcp != null)
+                    {
+                        AssemblePacket(tcp);
+                    }
+                }
+            }
+        }
+
+        // sometimes converting doesn&#39;t work - don&#39;t worry about it
+        catch (InvalidOperationException ex)
+        {
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Parse TCP packet
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;tcp&quot;&gt;TCP packet&lt;/param&gt;
+    privDescription. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
+
+The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.ate void AssemblePacket(TcpPacket tcp)
+    {
+        // pass the packets that :
+        // 1. tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0 - sent for synchronization
+        // 2. tcp.PayloadData.Length &gt; 0 - no useful data in packet
+        // 3. tcp.Fin || tcp.Rst - connection is finished or reseted
+        if (!(tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0) &amp;&amp; (tcp.PayloadData.Length &gt; 0) &amp;&amp; !(tcp.Fin || tcp.Rst))
+        {
+            SynchronizatedConnection conn;
+            // try to find connection in collection
+            bool? res = IsTcpFromClient(tcp, out conn);
+
+            if (res == null)
+            {
+                // connection is new
+                SynchronizatedConnection con;
+                if (_hosts.Contains(((IpPacket)tcp.ParentPacket).SourceAddress))
+                {
+                    // packet from host to client
+                    conn = new SynchronizatedConnection(((IpPacket)tcp.ParentPacket).DestinationAddress.Address,
+                    tcp.DestinationPort, ((IpPacket)tcp.ParentPacket).SourceAddress.Address, tcp.SourcePort, tcp.SequenceNumber);
+                    conn.ClientSyn = tcp.AcknowledgmentNumber;
+                    conn.HostSyn = tcp.SequenceNumber;
+                    conn.NextClientSeq = tcp.AcknowledgmentNumber;
+                    conn.NextHostSeq = tcp.SequenceNumber;
+                    res = false;
+                }
+        Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
+
+The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.        else
+                {
+                    // packet from host to client
+                    conn = new SynchronizatedConnection(((IpPacket)tcp.ParentPacket).SourceAddress.Address,
+                    tcp.SourcePort, ((IpPacket)tcp.ParentPacket).DestinationAddress.Address, tcp.DestinationPort, tcp.SequenceNumber);
+                    conn.ClientSyn = tcp.SequenceNumber;
+                    conn.HostSyn = tcp.AcknowledgmentNumber;
+                    conn.NextHostSeq = tcp.AcknowledgmentNumber;
+                    conn.NextClientSeq = tcp.SequenceNumber;
+                    res = true;
+                }
+                conn.TimeIdentifier = DateTime.Now.ToFileTimeUtc();
+                conn.ThreeWayCompleted = true;
+                lock (synchronizationObjectForConnection)
+                {
+                    Connections.Add(conn);
+                }
+            }
+            if (res == true)
+            {
+                // from client
+                lock (conn.Synchro)
+                {
+                    if (tcp.SequenceNumber &lt; conn.NextClientSeq)
+                    // old packet
+                    {
+                        // just drop these for now
+                        return;
+                    }
+                    if (tcp.SequenceNumber &gt; conn.NextClientSeq)
+                    // out of order data
+                    {
+                        if (!conn.ClientFragments.ContainsKey(tcp.SequenceNumber))
+                        {
+                            conn.ClientFragments.Add(tcp.SequenceNumber, tcp);
+                        }
+                        else
+                        // expect new data to be better?
+                        {
+                            conn.ClientFragments[tcp.SequenceNumber] = tcp;
+                        }
+                    }
+                    else
+                    {
+                        while (tcp.SequenceNumber == conn.NextClientSeq)
+                        {
+                            conn.ClientFragments.Remove(tcp.SequenceNumber);
+                            // remove fragment
+                            if (tcp.PayloadData.Length == 0)
+                                break;
+                            // new NextClientSeq for client packet 
+                            conn.NextClientSeq = conn.NextClientSeq + tcp.PayloadData.Length;
+                            // data should be valid here.
+                            AddClientData(GetUsefulData(tcp), GetIdOfConnection(conn));
+                            if (conn.ClientFragments.ContainsKey(conn.NextClientSeq))
+                            // check if we have newer fragments which will now fit.
+                            {
+                                tcp = conn.ClientFragments[conn.NextClientSeq];
+                            }
+                            else
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //from host
+                lock (conn.Synchro)
+                {
+                    if (tcp.SequenceNumber &lt; conn.NextHostSeq)
+                    // old packet
+                    {
+                        // just drop these for now
+                        return;
+                    }
+                    if (tcp.SequenceNumber &gt; conn.NextHostSeq)
+                    // newer out of order data
+                    {
+                        if (!conn.HostFragments.ContainsKey(tcp.SequenceNumber))
+                        {
+                            conn.HostFragments.Add(tcp.SequenceNumber, tcp);
+                        }
+                        else
+                        {
+                            conn.HostFragments[tcp.SequenceNumber] = tcp;
+                        }
+                    }
+                    else
+                    //
+                    {
+                        while (tcp.SequenceNumber == conn.NextHostSeq)
+                        // on time
+                        {
+                            conn.HostFragments.Remove(tcp.SequenceNumber);
+                            // remove fragment
+                            if (tcp.PayloadData.Length == 0)
+                                break;
+                            conn.NextHostSeq = conn.NextHostSeq + tcp.PayloadData.Length;
+                            // data should be valid here
+                            AddHostData(GetUsefulData(tcp), GetIdOfConnection(conn));
+                            if (conn.HostFragments.ContainsKey(conn.NextHostSeq))
+                            // check if we have newer fragments which will now fit.
+                            {
+                                tcp = conn.HostFragments[conn.NextHostSeq];
+                            }
+                            else
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static string GetIdOfConnection(SynchronizatedConnection conn)
+    {
+        return conn.ClientAddress.ToString() + conn.ClientPort.ToString() + conn.HostAddress.ToString()
+        + conn.HostPort.ToString();
+    }
+
+    private bool? IsTcpFromClient(TcpPacket tcp, out SynchronizatedConnection conn)
+    {
+        conn = null;
+        lock (synchronizationObjectForConnection)
+        {
+            foreach (var connection in Connections)
+            {
+                if (connection.IsFromClient(tcp))
+                {
+                    conn = connection;
+                    return true;
+                }
+                if (connection.IsFromHost(tcp))
+                {
+                    conn = connection;
+                    return false;
+                }
+            }
+        }
+        return null;
+    }
+
+    /// &lt;summary&gt;
+    /// Get Payload Data from tcp packet
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;tcp&quot;&gt;TCP packet&lt;/param&gt;
+    /// &lt;returns&gt;bytes of useful data&lt;/returns&gt;
+    protected static byte[] GetUsefulData(TcpPacket tcp)
+    {
+        var data = new byte[tcp.Bytes.Length - tcp.DataOffset * 4];
+        for (int i = tcp.DataOffset * 4; i &lt; tcp.Bytes.Length; i++)
+        {
+            data[i - tcp.DataOffset * 4] = tcp.Bytes[i];
+        }
+        return data;
+    }
+}
+</code></pre>
+<p>Проблемы данного класса/решения:</p>
+<ol>
+<li>Если &quot;словится&quot; первый пакет, который является неправильным - возникает проблема с получением дальнейшей информации, которая идет по данному соединению;</li>
+<li>Не проверяется контрольная сумма принятого пакета;</li>
+<li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</li>
+</ol>
+<pre><code class="lang-csharp">(public void RunSniffer(string filter))
+</code></pre>
+<p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
+<hr>
+<h2 id="linq-and-group-16-november-2010">Linq and Group - 16 November, 2010</h2>
+<p>Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.</p>
+<p>The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.</p>
+<pre><code class="lang-csharp">private static SqlCeDataReader SelectAllParamterAndModuleName()
+{
+    return ExecuteDataReader(String.Format(QSelectAllParamterANdModuleName));
+}
+</code></pre>
+<p>where QSelectAllParamterANdModuleName is text of the query.</p>
+<pre><code class="lang-csharp">private static IEnumerable&lt;ParameterType&gt; SelectAllParameterToArray()
+{
+    var query =
+        from row in SelectAllParamterAndModuleName().Cast()
+        select new ParameterType
+        {
+            Id = (int)row[&quot;FID&quot;],
+            Name = (string)row[&quot;FNAME&quot;],
+            TypeName = (string)row[&quot;FTYPE&quot;],
+            ModuleId = (int)row[&quot;FMODULEID&quot;],
+                        ModuleName = (string)row[&quot;FMODULE&quot;], Number = (int)row[&quot;FNUMBER&quot;], TypeOfPar = (bool)row[&quot;FTYPEOFPARAMETER&quot;]};
+    return query.ToArray();
+}
+</code></pre>
+<p>create from selected SqlReader array of elements of ParameterType. The result can be cached.</p>
+<pre><code class="lang-csharp">public static List&lt;ModuleType&gt; SelectModuleByInputParameter(List&lt;ParameterType&gt; inputParameter)
+{
+    if (inputParameter == null)
+    {
+        throw new ArgumentNullException();
+    }
+    var res = new List();
+    var para = SelectAllParameterToArray();
+    if (inputParameter.Count == 0)
+    {
+        var par = from parameter in para
+                    where !(from parameter2 in para
+                            where parameter2.TypeOfPar
+                            select parameter2.ModuleId).Contains(parameter.ModuleId)
+                    select parameter;
+        return par.Select(x =&amp;gt; new ModuleType {Id = x.ModuleId, Name = x.ModuleName}).ToList();
+    }
+
+    var parGr = from parameter in para
+                where parameter.TypeOfPar
+                group parameter by parameter.ModuleId
+                into modPara
+                where modPara.Count() == inputParameter.Count
+                select modPara;
+
+    foreach (var paramGr in parGr)
+    {
+        bool AddInRes = true;
+        var listParaGr = paramGr.ToList();
+        for (int i = 0; i &amp;lt; listParaGr.Count; i++)
+        {
+            if (listParaGr[i].Number != inputParameter[i].Number ||
+            listParaGr[i].TypeName != inputParameter[i].TypeName)
+                AddInRes = false;
+        }
+        if (AddInRes)
+        {
+            res.Add(new ModuleType(){Id =  listParaGr[0].ModuleId, Name = listParaGr[0].ModuleName});
+        }
+    }
+    return res;
+}
+</code></pre>
+<p>This method returns a collection of our modules, which contains defined input parameters. Thus, this method should be called justbefore the loop until the result will contain at least one value. It should be noted that calls to this method will generally be bifurcate (the first layer selected modules, and for everyone in this layer, called again, this method and so on). But this is not Linq.</p>
+<hr>
