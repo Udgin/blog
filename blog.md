@@ -152,6 +152,10 @@ Want to mention two nice libraries/ applications:
     * Mobile file sync SDK
     * Mobile push notifications
 
+### Sample application
+
+I have created a small sample application. The source code is available [here](./assets/WakeUp.zip). It is simple carousel application that shows information about morning exercises.  
+
 ### References:
 There are a list of references and interesting information about Xamarin. Thank you for reading. [Please feel free to ask](mailto:gromkaktus@gmail.com) any questions, I will try to answer.
 
