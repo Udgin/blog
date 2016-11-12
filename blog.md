@@ -1,4 +1,4 @@
-# [Eugene Pyl](www.linkedin.com/in/eugenepyl) - Notes
+# [Eugene Pyl](https://www.linkedin.com/in/eugenepyl) - Notes
 
 ## Xamarin Dev Days in Warsaw - 24 September, 2016
 
