@@ -1,5 +1,18 @@
 # [Eugene Pyl](https://www.linkedin.com/in/eugenepyl) - Notes
+## Machine Learning Init - 14 November, 2016
+The information is from this [course](https://www.coursera.org/learn/machine-learning/).
 
+[Machine learning](https://en.wikipedia.org/wiki/Machine_learning) is the subfield of computer science that "gives computers the ability to learn without being explicitly programmed" (Arthur Samuel, 1959).
+
+In general, any machine learning problem can be assigned to one of two broad classifications:
+* supervised learning ("regression" and "classification")
+* unsupervised learning
+
+In supervised learning, we are given a data set and already know what our correct output should look like, having the idea that there is a relationship between the input and the output.
+
+Unsupervised learning, on the other hand, allows us to approach problems with little or no idea what our results should look like. We can derive structure from data where we don't necessarily know the effect of the variables.
+
+---
 ## Xamarin Dev Days in Warsaw - 24 September, 2016
 
 Hi All, it is my overview of Xamarin Dev Days - short summary. Hope it will be useful to create an  impression what you can expect from this event.
