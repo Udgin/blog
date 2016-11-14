@@ -1,5 +1,6 @@
 # [Eugene Pyl](https://www.linkedin.com/in/eugenepyl) - Notes
 ## Machine Learning Init - 14 November, 2016
+
 The information is from this [course](https://www.coursera.org/learn/machine-learning/).
 
 [Machine learning](https://en.wikipedia.org/wiki/Machine_learning) is the subfield of computer science that "gives computers the ability to learn without being explicitly programmed" (Arthur Samuel, 1959).
