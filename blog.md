@@ -1,4 +1,4 @@
-## Machine Learning Init - 14 November, 2016
+## Machine Learning Init. Linear Regression. Gradient Descent - 14 November, 2016
 
 The information is from this [course](https://www.coursera.org/learn/machine-learning/).
 
