@@ -235,7 +235,7 @@ Choosing a [Linux Distribution](https://en.wikipedia.org/wiki/Linux_distribution
 ![Choose](./../images/linux_foundation_choose.jpg)
 
 ---
-## Task: Show information about types in tooltip.
+## Task: Show information about types in tooltip - 01 November, 2014
 
 The value of a point is the sum of values of types ('one', 'two').
 [Link](http://jsfiddle.net/yo4L215v/) - 26 December, 2014
