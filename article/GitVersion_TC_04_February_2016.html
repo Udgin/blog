@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog/set of notes about programming">
+    <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
     <link rel="stylesheet" href="./../markdown.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
@@ -14,11 +17,13 @@
             padding: 45px;
         }
     </style>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_CHTML"></script>
 </head>
+
 <body>
-<article class="markdown-body">
-<h2 id="gitversion-tc-04-february-2016">GitVersion + TC - 04 February, 2016</h2>
+    <article class="markdown-body">
+        <h2 id="gitversion-tc-04-february-2016">GitVersion + TC - 04 February, 2016</h2>
 <p>GitVersion is the utility to set up version of deployed assemblies using information from Git.</p>
 <p>There is an easy way to set up it on your TC build server. Go to MetaRunner and download MR_GitVersion3.xml file. You should put this file to your build server. The path is C:\ProgramData\JetBrains\TeamCity\config\projects{Project}\pluginData\metaRunners. The first part of this part you can find in Global settings of Team City. Also you have to restart your server after this.</p>
 <p>So you will be able to set up GitVersion build step which just gran information about your version from Git tags and put it to your assemblies.</p>
@@ -28,12 +33,13 @@
 <p>Trigger:</p>
 <p><img src="./../images/git_version_step3_3.PNG" alt="Image Three"></p>
 
-</article>
-<script>
+    </article>
+    <script>
 hljs.configure({
   classPrefix: 'lang-'
 })
 hljs.initHighlighting();
 </script>
 </body>
+
 </html>

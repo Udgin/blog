@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog/set of notes about programming">
+    <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
     <link rel="stylesheet" href="./../markdown.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
@@ -14,11 +17,13 @@
             padding: 45px;
         }
     </style>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_CHTML"></script>
 </head>
+
 <body>
-<article class="markdown-body">
-<h2 id="wcf-response-without-root-element-21-june-2011">WCF/ Response without root element - 21 June, 2011</h2>
+    <article class="markdown-body">
+        <h2 id="wcf-response-without-root-element-21-june-2011">WCF/ Response without root element - 21 June, 2011</h2>
 <p>Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service should expose 1 operation (let it be &quot;GetResponse_1&quot;) with the following structure (just an example, please combine schema for the service):</p>
 <pre><code class="lang-xml">&lt;GetResponse_Request_1&gt;
     &lt;element1&gt;text1&lt;/element1&gt;&lt;!-- at least 1 &quot;element1&quot; --&gt;
@@ -36,12 +41,13 @@
 &lt;/GetResponse_Response_1&gt;
 </code></pre>
 
-</article>
-<script>
+    </article>
+    <script>
 hljs.configure({
   classPrefix: 'lang-'
 })
 hljs.initHighlighting();
 </script>
 </body>
+
 </html>

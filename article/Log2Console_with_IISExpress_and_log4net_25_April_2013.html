@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog/set of notes about programming">
+    <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
     <link rel="stylesheet" href="./../markdown.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
@@ -14,11 +17,13 @@
             padding: 45px;
         }
     </style>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_CHTML"></script>
 </head>
+
 <body>
-<article class="markdown-body">
-<h2 id="log2console-with-iisexpress-and-log4net-25-april-2013">Log2Console with IISExpress and log4net - 25 April, 2013</h2>
+    <article class="markdown-body">
+        <h2 id="log2console-with-iisexpress-and-log4net-25-april-2013">Log2Console with IISExpress and log4net - 25 April, 2013</h2>
 <p>Log2Console with IISExpress and log4net
 I have found that log4net and log2console don&#39;t work correctly (using IISExpress) with each other after trying using default configuration from <a href="http://log2console.codeplex.com/wikipage?title=ClientConfiguration.">http://log2console.codeplex.com/wikipage?title=ClientConfiguration</a>.</p>
 <p>But i have found new configuration for log4net and log2console (<a href="http://logging.apache.org/log4net/release/config-examples.html#udpappender">log4net</a>) and</p>
@@ -26,12 +31,13 @@ I have found that log4net and log2console don&#39;t work correctly (using IISExp
 <p>Seems work fine:</p>
 <p><img src="./../images/log2net2.png" alt="example2"></p>
 
-</article>
-<script>
+    </article>
+    <script>
 hljs.configure({
   classPrefix: 'lang-'
 })
 hljs.initHighlighting();
 </script>
 </body>
+
 </html>

@@ -12,6 +12,43 @@ In supervised learning, we are given a data set and already know what our correc
 
 Unsupervised learning, on the other hand, allows us to approach problems with little or no idea what our results should look like. We can derive structure from data where we don't necessarily know the effect of the variables.
 
+### [Linear Regression](https://en.wikipedia.org/wiki/Linear_regression) with One Variable
+
+In statistics, linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression. For more than one explanatory variable, the process is called multiple linear regression.
+
+![Linear regression](https://en.wikipedia.org/wiki/File:Linear_regression.svg)
+
+ Hypothesis function has the general form:
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow class="MJX-TeXAtom-ORD">
+    <mover>
+      <mi>y</mi>
+      <mo stretchy="false">&#x005E;<!-- ^ --></mo>
+    </mover>
+  </mrow>
+  <mo>=</mo>
+  <msub>
+    <mi>h</mi>
+    <mi>&#x03B8;<!-- θ --></mi>
+  </msub>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>0</mn>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>1</mn>
+  </msub>
+  <mi>x</mi>
+</math>
+
+
+
 ---
 ## Xamarin Dev Days in Warsaw - 24 September, 2016
 

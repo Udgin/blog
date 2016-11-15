@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog/set of notes about programming">
+    <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
     <link rel="stylesheet" href="./../markdown.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
@@ -14,11 +17,13 @@
             padding: 45px;
         }
     </style>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_CHTML"></script>
 </head>
+
 <body>
-<article class="markdown-body">
-<h2 id="sniffer-of-tcp-packets-10-february-2011">Sniffer of TCP packets - 10 February, 2011</h2>
+    <article class="markdown-body">
+        <h2 id="sniffer-of-tcp-packets-10-february-2011">Sniffer of TCP packets - 10 February, 2011</h2>
 <p>Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.</p>
 <p>Проект на VS2008 <a href="https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3">SharkTrace</a>.</p>
 <p>Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.</p>
@@ -412,12 +417,13 @@ Initially, we choose to do all the settings using a simple SQL query.        els
 </code></pre>
 <p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
 
-</article>
-<script>
+    </article>
+    <script>
 hljs.configure({
   classPrefix: 'lang-'
 })
 hljs.initHighlighting();
 </script>
 </body>
+
 </html>

@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog/set of notes about programming">
+    <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
     <link rel="stylesheet" href="./../markdown.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
@@ -14,11 +17,13 @@
             padding: 45px;
         }
     </style>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_CHTML"></script>
 </head>
+
 <body>
-<article class="markdown-body">
-<h2 id="linq-and-group-16-november-2010">Linq and Group - 16 November, 2010</h2>
+    <article class="markdown-body">
+        <h2 id="linq-and-group-16-november-2010">Linq and Group - 16 November, 2010</h2>
 <p>Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.</p>
 <p>The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
 Initially, we choose to do all the settings using a simple SQL query.</p>
@@ -88,12 +93,13 @@ Initially, we choose to do all the settings using a simple SQL query.</p>
 </code></pre>
 <p>This method returns a collection of our modules, which contains defined input parameters. Thus, this method should be called justbefore the loop until the result will contain at least one value. It should be noted that calls to this method will generally be bifurcate (the first layer selected modules, and for everyone in this layer, called again, this method and so on). But this is not Linq.</p>
 
-</article>
-<script>
+    </article>
+    <script>
 hljs.configure({
   classPrefix: 'lang-'
 })
 hljs.initHighlighting();
 </script>
 </body>
+
 </html>
