@@ -28,7 +28,7 @@ Some time ago I had a chance to visit Xamarin Dev Days event in Warsaw. It was o
 * Sample application
 * Resources
 
-![Xamarin Platform](./images/xam_dev_days_platform.png "Xamarin Platform")
+![Xamarin Platform](./../images/xam_dev_days_platform.png "Xamarin Platform")
 
 The first thing that you should keep in mind when you are talking about Xamarin is that you are able to write application not using Visual Studio on Windows only, but also [Xamarin Studio](https://www.xamarin.com/studio) on Mac. Basically, as I understand, usually people are using Visual Studio to develop Android and Phone applications and Xamarin Studio on Mac to develop IOS application. But, of course, the team is using one code base. The reason of this approach, that it is much more quicker to build IOS application on MAC directly, without remote building using Visual Studio on Windows.
 
@@ -134,7 +134,7 @@ Use the Xamarin.Forms API provides a way to quickly build native apps for iOS, A
 
 ### [Azure Mobile Apps](https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-value-prop/)
 
-![Azure Mobile](./images/azure_mob_structure.png)
+![Azure Mobile](./../images/azure_mob_structure.png)
 
 * Stable backend
 * Shared server/client code
@@ -167,7 +167,7 @@ Want to mention two nice libraries/ applications:
 
 ### Sample application
 
-I have created a small sample application. The source code is available [here](./assets/WakeUp.zip). It is simple carousel application that shows information about morning exercises.  
+I have created a small sample application. The source code is available [here](./../assets/WakeUp.zip). It is simple carousel application that shows information about morning exercises.  
 
 ### References:
 There are a list of references and interesting information about Xamarin. Thank you for reading. [Please feel free to ask](mailto:gromkaktus@gmail.com) any questions, I will try to answer.
@@ -190,12 +190,12 @@ So you will be able to set up GitVersion build step which just gran information 
 
 TC to build only commits with tags (RC-*). VCS Root set up:
 
-![Image One](./images/git_version_step3.PNG)
-![Image Two](./images/git_version_step3_2.PNG)
+![Image One](./../images/git_version_step3.PNG)
+![Image Two](./../images/git_version_step3_2.PNG)
 
 Trigger:
 
-![Image Three](./images/git_version_step3_3.PNG)
+![Image Three](./../images/git_version_step3_3.PNG)
 
 ---
 ## Notes from 'Introduction to Linux' - 21 May, 2015
@@ -224,15 +224,15 @@ Linux [Filesystem](http://www.tldp.org/LDP/sag/html/filesystems.html)
 
 [The Filesystem Hierarchy Standard](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
 
-![File System](./images/linux_foundation_filesystem.jpg)
+![File System](./../images/linux_foundation_filesystem.jpg)
 
 The Boot Process
 
-![Boot Process](./images/linux_foundation_boot_process.jpg)
+![Boot Process](./../images/linux_foundation_boot_process.jpg)
 
 Choosing a [Linux Distribution](https://en.wikipedia.org/wiki/Linux_distribution)
 
-![Choose](./images/linux_foundation_choose.jpg)
+![Choose](./../images/linux_foundation_choose.jpg)
 
 ---
 ## Task: Show information about types in tooltip.
@@ -242,7 +242,7 @@ The value of a point is the sum of values of types ('one', 'two').
 
 [Additional info](http://api.highcharts.com/highcharts#tooltip.formatter)
 
-![image](./images/highchart_add_info.png)
+![image](./../images/highchart_add_info.png)
 
 The code:
 ```javascript
@@ -321,7 +321,7 @@ Also there is a code. I have used MD5 algorithm for my purposes.
 
 Add "Show All" to the FuelUX Tree like this.
 
-![example](./images/fuelux-tree.gif)
+![example](./../images/fuelux-tree.gif)
 
 There is the [tree plugin](https://exacttarget.github.io/fuelux/#tree). You can add the next code after initialization of the tree:
 ```javascript
@@ -348,11 +348,11 @@ I have created one more plugin for HTML table. It fixes the head of a table on t
 
 Some images of plugin:
 
-![example1](./images/fixed_header1.png)
+![example1](./../images/fixed_header1.png)
 
 And another plugin https://bitbucket.org/upyl/fixedcolumn to fix column of table.
 
-![example2](./images/fixed_header2.png)
+![example2](./../images/fixed_header2.png)
 
 ---
 ## Light version of Monodruid - 04 June, 2014
@@ -378,7 +378,7 @@ And all will be OK ! Enjoy!
 ## Bootstrap datepicker Week mode view - 28 July, 2013
 I have updated bootstrap datepicker to new view mode: week.
 
-The source code is [here](./code/bootstrap-datepicker.js)
+The source code is [here](./../code/bootstrap-datepicker.js)
 
 ---
 ## ASP.NET MVC and Html.Hidden - 01 April, 2013
@@ -533,19 +533,19 @@ But there is manual actions to do that:
 
 [link](http://burba.pro/presentation_structure/)
 
-![image](./images/presentation_structure.png)
+![image](./../images/presentation_structure.png)
 
 ---
 ## Persistence.js insert empty values in web sql - 04 April, 2013
 
 I am starting to work with persistence.js library and open the problem to me: it saves empty data to web sql
 
-![example1](./images/persistance1.png)
+![example1](./../images/persistance1.png)
 
 After investigating the problem i have found this question  and just want to clear and reproduce it in my notes. Thanks guys from this question :)
 The problem connected with this js file: persistence.jquery. If it used, we should rewrite code such as:
 
-![example2](./images/persistance2.png)
+![example2](./../images/persistance2.png)
 
 Thanks.
 
@@ -653,20 +653,20 @@ I have found that log4net and log2console don't work correctly (using IISExpress
 
 But i have found new configuration for log4net and log2console ([log4net](http://logging.apache.org/log4net/release/config-examples.html#udpappender)) and
 
-![example1](./images/log2net1.png)
+![example1](./../images/log2net1.png)
 
 Seems work fine:
 
-![example2](./images/log2net2.png)
+![example2](./../images/log2net2.png)
 
 ---
 ## jQuery / Twitter Bootstrap List Tree Plugin Editable version - 20 April, 2013
 
 JQuery / Twitter Bootstrap List Tree Plugin is a great plugin, but it does not allow to edit and sort tree elements. I have created an editable version of plugin: The view of tree:
 
-![example](./images/bootstrap_tree.png)
+![example](./../images/bootstrap_tree.png)
 
-You can find the source code [there](http://pastebin.com/BTA4nL1c) or [here](./code/tree.js).
+You can find the source code [there](http://pastebin.com/BTA4nL1c) or [here](./../code/tree.js).
 
 Also see it [below](http://jsfiddle.net/QD8Hs/1060/).
 
@@ -690,7 +690,7 @@ Thank you
 
 I m using ASP.NET MVC. And work with my view, where I have the View 
 
-![example](./images/invocation.png)
+![example](./../images/invocation.png)
 
 It gives me the exception
 
@@ -700,7 +700,7 @@ The call is ambiguous between the following methods or properties: 'GMP.MvcWebSi
 
 So i just rebuild my view as
 
-![example2](./images/invocation2.png)
+![example2](./../images/invocation2.png)
 
 ---
 ## API Facebook на С# - 28 September, 2012
@@ -716,13 +716,13 @@ All events has been shown on the main page.
 
 1. Create our application in facebook.
 
-![example](./images/facebook1.png)
+![example](./../images/facebook1.png)
 
 You see there is secret key and application key. We need them to working with facebook through our application.
 
 2. Authorization (OAuth 2.0).
 
-![example](./images/facebook2.png)
+![example](./../images/facebook2.png)
 
 * Ask user to permission.
 * User will be redirected to facebook access page.
@@ -930,13 +930,13 @@ private string CreateStatus(Dictionary<string, string> values)
 
 If you try to add Bundle from Web.Optimization library to your existing project and your Web.config file
 
-![example](./images/bundle1.png)
+![example](./../images/bundle1.png)
 
 so runAllManagedModulesForAllRequests="false".
 
 You start to get 404- Not found response to your bundle requests.
 
-![example](./images/bundle2.png)
+![example](./../images/bundle2.png)
 
 Just enable BundleModule and all will be OK ! ;)
 
@@ -1397,7 +1397,7 @@ You can see the rule that changes the order of document's element to the next:
 ```
 
 It saves in configuration file, so it is possible to change it in any time. 
-Further the source code of my rule. You can see the original source code of SA1201 using the [DotPeek](http://www.jetbrains.com/decompiler/) for [example](./code/code.cs).
+Further the source code of my rule. You can see the original source code of SA1201 using the [DotPeek](http://www.jetbrains.com/decompiler/) for [example](./../code/code.cs).
 
 Methods AnalyzeDocument и DoAnalysis are the most important, so i suggest to start the learning code from them. The project in VS2010 is StyleCopOrder.Thanks.
 
@@ -1406,7 +1406,7 @@ Methods AnalyzeDocument и DoAnalysis are the most important, so i suggest to st
 
 Extension for [Fiddler](http://www.fiddler2.com/Fiddler/dev/).
 
-![example](./images/zip_fiddler.jpg)
+![example](./../images/zip_fiddler.jpg)
 
 The source code: [FiddlerZip](https://drive.google.com/file/d/0BwVmorgjT-W1NDFlZDZkMDItMWMxMS00NzU2LTg3NDUtYTYzOWVhOGMyMzRj/view).
 
