@@ -25,13 +25,13 @@ In statistics, linear regression is an approach for modeling the relationship be
 
 We can measure the accuracy of our hypothesis function by using a cost function. This takes an average (actually a fancier version of an average) of all the results of the hypothesis with inputs from x's compared to the actual output y's.
 
-`\[J(\theta_0, \theta_1) = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left ( \hat{y}_{i}- y_{i} \right)^2  = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left (h_\theta (x_{i}) - y_{i} \right)^2\]`
+`\\[J(\theta_0, \theta_1) = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left ( \hat{y}_{i}- y_{i} \right)^2  = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left (h_\theta (x_{i}) - y_{i} \right)^2\\]`
 
 If we try to think of it in visual terms, our training data set is scattered on the x-y plane. We are trying to make straight line (defined by `\(h_\theta(x)\)`) which passes through this scattered set of data. Our objective is to get the best possible line. The best possible line will be such so that the average squared vertical distances of the scattered points from the line will be the least. In the best case, the line should pass through all the points of our training data set. In such a case the value of `\(J(\theta_0, (\theta_1\)`) will be 0.
 
 ### Gradient Descent
 
-There is hypothesis function and there are a set of {x, y} values, so we need to find `\(\theta_0\)` and `\(\theta_1\)`.
+There is hypothesis function and there are a set of {x, y} values, so we need to find `\(\theta_0\)` and `\\(\theta_1\\)`.
 
 The gradient descent algorithm is:
 
