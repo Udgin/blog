@@ -159,11 +159,42 @@ We can measure the accuracy of our hypothesis function by using a cost function.
   </mstyle>
 </math>
 
-If we try to think of it in visual terms, our training data set is scattered on the x-y plane. We are trying to make straight line (defined by hθ(x)) which passes through this scattered set of data. Our objective is to get the best possible line. The best possible line will be such so that the average squared vertical distances of the scattered points from the line will be the least. In the best case, the line should pass through all the points of our training data set. In such a case the value of J(θ0,θ1) will be 0.
+If we try to think of it in visual terms, our training data set is scattered on the x-y plane. We are trying to make straight line (defined by <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>h</mi>
+    <mi>&#x03B8;<!-- θ --></mi>
+  </msub>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math>) which passes through this scattered set of data. Our objective is to get the best possible line. The best possible line will be such so that the average squared vertical distances of the scattered points from the line will be the least. In the best case, the line should pass through all the points of our training data set. In such a case the value of <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>J</mi>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>0</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>1</mn>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math> will be 0.
 
 ### Gradient Descent
 
-There is hypothesis function and there are a set of {x, y} values, so we need to find \theta_0 and \theta_1.
+There is hypothesis function and there are a set of {x, y} values, so we need to find <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>0</mn>
+  </msub>
+</math> and <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>1</mn>
+  </msub>
+</math>.
 
 The gradient descent algorithm is:
 
