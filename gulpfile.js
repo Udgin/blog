@@ -7,6 +7,8 @@ var fs = require('fs');
 var articlePath = './article/';
 var tempPath = './temp/';
 
+var mdFileNameToNormalName = {};
+
 gulp.task('splitmarkdown', function(){
     fs.readdirSync(tempPath).forEach(function(file,index) {
         var curPath = tempPath + file;
@@ -17,13 +19,18 @@ gulp.task('splitmarkdown', function(){
     var name = 0;
     bodies.map(function(val) {
         var title = val.replace(/^\s+|\s+$/g, '');
-        var nameOfFile = title
-            .substring(3, title.indexOf('\n'))
-            .replace(/\"/g, '\'')
-            .replace(/[\/\,-]/g, '')
+
+        var normalName = title
+            .substring(3, title.indexOf('\n'));
+        
+        var nameOfFile = normalName
+            .replace(/[\!\"\#\$\%\&\'()\*\+\,.\/\:\;\<\=\>\?\@\^\_\`\{\|\}\~-]/g, '')
             .replace(/[\s]/g, '_')
             .replace(/_+/g, '_');
-        fs.writeFileSync(tempPath+ nameOfFile + '.md', val);
+
+        mdFileNameToNormalName[nameOfFile] = normalName;
+        
+        fs.writeFileSync(tempPath + nameOfFile + '.md', val);
     });
 });
 
@@ -53,8 +60,10 @@ gulp.task('indexBody', ['replaceArticle'], function(){
     fs.readdirSync(articlePath).forEach(function(file,index) {
         if (file.endsWith('html')){
             var curPath = articlePath + file;
-            var linkText = file.replace(/\.html$/g, '').replace(/_/g, ' ');
-            indexBody += '<div><a href="'+curPath+'">'+linkText + '</a></div>';
+            var linkText = file.replace(/\.html$/g, '');
+            if (mdFileNameToNormalName[linkText]){
+                indexBody += '<div><a href="'+curPath+'">'+mdFileNameToNormalName[linkText] + '</a></div>';
+            }
         }
     });
     fs.writeFileSync('indexBody.html', indexBody);
