@@ -37,22 +37,22 @@
 <p>In statistics, linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression. For more than one explanatory variable, the process is called multiple linear regression.</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/438px-Linear_regression.svg.png" alt="Linear regression"></p>
 <p> Hypothesis function has the general form:
-[\hat{y} = h_\theta(x) = \theta_0 + \theta_1 x]</p>
+<code>\[\hat{y} = h_\theta(x) = \theta_0 + \theta_1 x\]</code></p>
 <h3 id="cost-function">Cost Function</h3>
 <p>We can measure the accuracy of our hypothesis function by using a cost function. This takes an average (actually a fancier version of an average) of all the results of the hypothesis with inputs from x&#39;s compared to the actual output y&#39;s.</p>
-<p>J(\theta_0, \theta<em>1) = \dfrac {1}{2m} \displaystyle \sum </em>{i=1}^m \left ( \hat{y}<em>{i}- y</em>{i} \right)^2  = \dfrac {1}{2m} \displaystyle \sum <em>{i=1}^m \left (h</em>\theta (x<em>{i}) - y</em>{i} \right)^2</p>
-<p>If we try to think of it in visual terms, our training data set is scattered on the x-y plane. We are trying to make straight line (defined by h_\theta(x)) which passes through this scattered set of data. Our objective is to get the best possible line. The best possible line will be such so that the average squared vertical distances of the scattered points from the line will be the least. In the best case, the line should pass through all the points of our training data set. In such a case the value of J(\theta_0, (\theta_1)) will be 0.</p>
+<p><code>\[J(\theta_0, \theta_1) = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left ( \hat{y}_{i}- y_{i} \right)^2  = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left (h_\theta (x_{i}) - y_{i} \right)^2\]</code></p>
+<p>If we try to think of it in visual terms, our training data set is scattered on the x-y plane. We are trying to make straight line (defined by <code>\(h_\theta(x)\)</code>) which passes through this scattered set of data. Our objective is to get the best possible line. The best possible line will be such so that the average squared vertical distances of the scattered points from the line will be the least. In the best case, the line should pass through all the points of our training data set. In such a case the value of <code>\(J(\theta_0, (\theta_1\)</code>) will be 0.</p>
 <h3 id="gradient-descent">Gradient Descent</h3>
-<p>There is hypothesis function and there are a set of {x, y} values, so we need to find \theta_0 and \theta_1.</p>
+<p>There is hypothesis function and there are a set of {x, y} values, so we need to find <code>\(\theta_0\)</code> and <code>\(\theta_1\)</code>.</p>
 <p>The gradient descent algorithm is:</p>
-<p>\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \theta_1)</p>
+<p><code>\[\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \theta_1)\]</code></p>
 <h3 id="gradient-descent-for-linear-regression">Gradient Descent for Linear Regression</h3>
-<p>\begin{align<em>}
+<p><code>\[\begin{align*}
   \text{repeat until convergence: } \lbrace &amp; \newline 
-  \theta_0 := &amp; \theta<em>0 - \alpha \frac{1}{m} \sum\limits</em>{i=1}^{m}(h<em>\theta(x</em>{i}) - y_{i}) \newline
-  \theta_1 := &amp; \theta<em>1 - \alpha \frac{1}{m} \sum\limits</em>{i=1}^{m}\left((h<em>\theta(x</em>{i}) - y<em>{i}) x</em>{i}\right) \newline
+  \theta_0 := &amp; \theta_0 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}(h_\theta(x_{i}) - y_{i}) \newline
+  \theta_1 := &amp; \theta_1 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}\left((h_\theta(x_{i}) - y_{i}) x_{i}\right) \newline
   \rbrace&amp;
-  \end{align</em>}</p>
+  \end{align*}\]</code></p>
 
     </article>
     <script>
