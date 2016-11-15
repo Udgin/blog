@@ -16,7 +16,7 @@ Unsupervised learning, on the other hand, allows us to approach problems with li
 
 In statistics, linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression. For more than one explanatory variable, the process is called multiple linear regression.
 
-![Linear regression](https://en.wikipedia.org/wiki/File:Linear_regression.svg)
+![Linear regression](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/438px-Linear_regression.svg.png)
 
  Hypothesis function has the general form:
 <math xmlns="http://www.w3.org/1998/Math/MathML">
