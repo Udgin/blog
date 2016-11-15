@@ -104,25 +104,4 @@ gulp.task('replaceIndex', ['indexBody'], function () {
         .pipe(gulp.dest('./'));
 });
 
-gulp.task('v2', ['splitmarkdown', 'markdownv2', 'replaceArticle', 'indexBody', 'replaceIndex']);
-
-
-gulp.task('markdown', function () {
-    return gulp.src('./blog.md')
-        .pipe(marked())
-        .pipe(gulp.dest('./'));
-});
-
-gulp.task('replace', function () {
-    return gulp.src('./template.html')
-        .pipe(replace(/{BODY}/, function (s) {
-            var body = fs.readFileSync('blog.html', 'utf8');
-            return body;
-        }))
-        .pipe(rename('./index.html'))
-        .pipe(gulp.dest('./'));
-});
-
-gulp.task('default', ['markdown', 'replace'], function () {
-    gulp.watch(['./blog.md', './template.html'], ['markdown', 'replace']);
-});
+gulp.task('default', ['splitmarkdown', 'markdownv2', 'replaceArticle', 'indexBody', 'replaceIndex']);
