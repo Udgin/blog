@@ -31,7 +31,7 @@ If we try to think of it in visual terms, our training data set is scattered on 
 
 ### Gradient Descent
 
-There is hypothesis function and there are a set of {x, y} values, so we need to find `\(\theta_0\)` and `\\(\theta_1\\)`.
+There is hypothesis function and there are a set of {x, y} values, so we need to find `\(\theta_0\)` and `$\theta_1$`.
 
 The gradient descent algorithm is:
 
