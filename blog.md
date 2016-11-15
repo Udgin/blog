@@ -163,6 +163,8 @@ If we try to think of it in visual terms, our training data set is scattered on 
 
 ### Gradient Descent
 
+There is hypothesis function and there are a set of {x, y} values, so we need to find θ0 and θ1.
+
 The gradient descent algorithm is:
 
 <math xmlns="http://www.w3.org/1998/Math/MathML">
