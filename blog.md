@@ -47,7 +47,295 @@ In statistics, linear regression is an approach for modeling the relationship be
   <mi>x</mi>
 </math>
 
+### Cost Function
 
+We can measure the accuracy of our hypothesis function by using a cost function. This takes an average (actually a fancier version of an average) of all the results of the hypothesis with inputs from x's compared to the actual output y's.
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>J</mi>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>0</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>1</mn>
+  </msub>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mn>1</mn>
+      <mrow>
+        <mn>2</mn>
+        <mi>m</mi>
+      </mrow>
+    </mfrac>
+  </mstyle>
+  <mstyle displaystyle="true">
+    <munderover>
+      <mo>&#x2211;<!-- ∑ --></mo>
+      <mrow class="MJX-TeXAtom-ORD">
+        <mi>i</mi>
+        <mo>=</mo>
+        <mn>1</mn>
+      </mrow>
+      <mi>m</mi>
+    </munderover>
+    <msup>
+      <mfenced open="(" close=")">
+        <mrow>
+          <msub>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mover>
+                <mi>y</mi>
+                <mo stretchy="false">&#x005E;<!-- ^ --></mo>
+              </mover>
+            </mrow>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mi>i</mi>
+            </mrow>
+          </msub>
+          <mo>&#x2212;<!-- − --></mo>
+          <msub>
+            <mi>y</mi>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mi>i</mi>
+            </mrow>
+          </msub>
+        </mrow>
+      </mfenced>
+      <mn>2</mn>
+    </msup>
+    <mo>=</mo>
+    <mstyle>
+      <mfrac>
+        <mn>1</mn>
+        <mrow>
+          <mn>2</mn>
+          <mi>m</mi>
+        </mrow>
+      </mfrac>
+    </mstyle>
+    <mstyle>
+      <munderover>
+        <mo>&#x2211;<!-- ∑ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mi>i</mi>
+          <mo>=</mo>
+          <mn>1</mn>
+        </mrow>
+        <mi>m</mi>
+      </munderover>
+      <msup>
+        <mfenced open="(" close=")">
+          <mrow>
+            <msub>
+              <mi>h</mi>
+              <mi>&#x03B8;<!-- θ --></mi>
+            </msub>
+            <mo stretchy="false">(</mo>
+            <msub>
+              <mi>x</mi>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mi>i</mi>
+              </mrow>
+            </msub>
+            <mo stretchy="false">)</mo>
+            <mo>&#x2212;<!-- − --></mo>
+            <msub>
+              <mi>y</mi>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mi>i</mi>
+              </mrow>
+            </msub>
+          </mrow>
+        </mfenced>
+        <mn>2</mn>
+      </msup>
+    </mstyle>
+  </mstyle>
+</math>
+
+If we try to think of it in visual terms, our training data set is scattered on the x-y plane. We are trying to make straight line (defined by hθ(x)) which passes through this scattered set of data. Our objective is to get the best possible line. The best possible line will be such so that the average squared vertical distances of the scattered points from the line will be the least. In the best case, the line should pass through all the points of our training data set. In such a case the value of J(θ0,θ1) will be 0.
+
+### Gradient Descent
+
+The gradient descent algorithm is:
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mi>j</mi>
+  </msub>
+  <mo>:=</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mi>j</mi>
+  </msub>
+  <mo>&#x2212;<!-- − --></mo>
+  <mi>&#x03B1;<!-- α --></mi>
+  <mfrac>
+    <mi mathvariant="normal">&#x2202;<!-- ∂ --></mi>
+    <mrow>
+      <mi mathvariant="normal">&#x2202;<!-- ∂ --></mi>
+      <msub>
+        <mi>&#x03B8;<!-- θ --></mi>
+        <mi>j</mi>
+      </msub>
+    </mrow>
+  </mfrac>
+  <mi>J</mi>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>0</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>&#x03B8;<!-- θ --></mi>
+    <mn>1</mn>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math>
+
+### Gradient Descent for Linear Regression
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0.278em 2em 0.278em 2em 0.278em 2em 0.278em 2em 0.278em 2em 0.278em" displaystyle="true" minlabelspacing=".8em">
+    <mtr>
+      <mtd>
+        <mtext>repeat until convergence:&#xA0;</mtext>
+        <mo fence="false" stretchy="false">{</mo>
+      </mtd>
+      <mtd />
+    </mtr>
+    <mtr>
+      <mtd>
+        <msub>
+          <mi>&#x03B8;<!-- θ --></mi>
+          <mn>0</mn>
+        </msub>
+        <mo>:=</mo>
+      </mtd>
+      <mtd>
+        <msub>
+          <mi>&#x03B8;<!-- θ --></mi>
+          <mn>0</mn>
+        </msub>
+        <mo>&#x2212;<!-- − --></mo>
+        <mi>&#x03B1;<!-- α --></mi>
+        <mfrac>
+          <mn>1</mn>
+          <mi>m</mi>
+        </mfrac>
+        <munderover>
+          <mo movablelimits="false">&#x2211;<!-- ∑ --></mo>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>i</mi>
+            <mo>=</mo>
+            <mn>1</mn>
+          </mrow>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>m</mi>
+          </mrow>
+        </munderover>
+        <mo stretchy="false">(</mo>
+        <msub>
+          <mi>h</mi>
+          <mi>&#x03B8;<!-- θ --></mi>
+        </msub>
+        <mo stretchy="false">(</mo>
+        <msub>
+          <mi>x</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>i</mi>
+          </mrow>
+        </msub>
+        <mo stretchy="false">)</mo>
+        <mo>&#x2212;<!-- − --></mo>
+        <msub>
+          <mi>y</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>i</mi>
+          </mrow>
+        </msub>
+        <mo stretchy="false">)</mo>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <msub>
+          <mi>&#x03B8;<!-- θ --></mi>
+          <mn>1</mn>
+        </msub>
+        <mo>:=</mo>
+      </mtd>
+      <mtd>
+        <msub>
+          <mi>&#x03B8;<!-- θ --></mi>
+          <mn>1</mn>
+        </msub>
+        <mo>&#x2212;<!-- − --></mo>
+        <mi>&#x03B1;<!-- α --></mi>
+        <mfrac>
+          <mn>1</mn>
+          <mi>m</mi>
+        </mfrac>
+        <munderover>
+          <mo movablelimits="false">&#x2211;<!-- ∑ --></mo>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>i</mi>
+            <mo>=</mo>
+            <mn>1</mn>
+          </mrow>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>m</mi>
+          </mrow>
+        </munderover>
+        <mfenced open="(" close=")">
+          <mrow>
+            <mo stretchy="false">(</mo>
+            <msub>
+              <mi>h</mi>
+              <mi>&#x03B8;<!-- θ --></mi>
+            </msub>
+            <mo stretchy="false">(</mo>
+            <msub>
+              <mi>x</mi>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mi>i</mi>
+              </mrow>
+            </msub>
+            <mo stretchy="false">)</mo>
+            <mo>&#x2212;<!-- − --></mo>
+            <msub>
+              <mi>y</mi>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mi>i</mi>
+              </mrow>
+            </msub>
+            <mo stretchy="false">)</mo>
+            <msub>
+              <mi>x</mi>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mi>i</mi>
+              </mrow>
+            </msub>
+          </mrow>
+        </mfenced>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mo fence="false" stretchy="false">}</mo>
+      </mtd>
+      <mtd />
+    </mtr>
+  </mtable>
+</math>
 
 ---
 ## Xamarin Dev Days in Warsaw - 24 September, 2016
