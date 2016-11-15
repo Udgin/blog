@@ -13,6 +13,27 @@
             margin: 0 auto;
             padding: 45px;
         }
+
+        article {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        article > div {
+            padding: 1rem;
+            margin: 0.5rem;
+            border: 1px solid black;
+        }
+
+        .markdown-body>*:first-child {
+            margin-top: 0.5rem !important;
+        }
+
+        .markdown-body>*:last-child {
+            margin-top: 0.5em !important;
+        }
+
+
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
 </head>
