@@ -246,15 +246,7 @@ private void GetPagesInformation()
 
     </article>
     <script>
-hljs.configure({
-  classPrefix: 'lang-'
-})
-window.onload = function() {
-    var aCodes = document.querySelectorAll('pre>code');
-    for (var i=0; i < aCodes.length; i++) {
-        hljs.highlightBlock(aCodes[i]);
-    }
-};
+hljs.initHighlighting();
 </script>
 </body>
 
