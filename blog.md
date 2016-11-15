@@ -19,7 +19,7 @@ In statistics, linear regression is an approach for modeling the relationship be
 ![Linear regression](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/438px-Linear_regression.svg.png)
 
  Hypothesis function has the general form:
-`$$\hat{y} = h_\theta(x) = \theta_0 + \theta_1 x$$`
+`$$$$\hat{y} = h_\theta(x) = \theta_0 + \theta_1 x$$$$`
 
 ### Cost Function
 
