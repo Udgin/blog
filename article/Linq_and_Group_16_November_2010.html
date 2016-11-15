@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="linq-and-group-16-november-2010">Linq and Group - 16 November, 2010</h2>
+<p>Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.</p>
+<p>The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.</p>
+<pre><code class="lang-csharp">private static SqlCeDataReader SelectAllParamterAndModuleName()
+{
+    return ExecuteDataReader(String.Format(QSelectAllParamterANdModuleName));
+}
+</code></pre>
+<p>where QSelectAllParamterANdModuleName is text of the query.</p>
+<pre><code class="lang-csharp">private static IEnumerable&lt;ParameterType&gt; SelectAllParameterToArray()
+{
+    var query =
+        from row in SelectAllParamterAndModuleName().Cast()
+        select new ParameterType
+        {
+            Id = (int)row[&quot;FID&quot;],
+            Name = (string)row[&quot;FNAME&quot;],
+            TypeName = (string)row[&quot;FTYPE&quot;],
+            ModuleId = (int)row[&quot;FMODULEID&quot;],
+                        ModuleName = (string)row[&quot;FMODULE&quot;], Number = (int)row[&quot;FNUMBER&quot;], TypeOfPar = (bool)row[&quot;FTYPEOFPARAMETER&quot;]};
+    return query.ToArray();
+}
+</code></pre>
+<p>create from selected SqlReader array of elements of ParameterType. The result can be cached.</p>
+<pre><code class="lang-csharp">public static List&lt;ModuleType&gt; SelectModuleByInputParameter(List&lt;ParameterType&gt; inputParameter)
+{
+    if (inputParameter == null)
+    {
+        throw new ArgumentNullException();
+    }
+    var res = new List();
+    var para = SelectAllParameterToArray();
+    if (inputParameter.Count == 0)
+    {
+        var par = from parameter in para
+                    where !(from parameter2 in para
+                            where parameter2.TypeOfPar
+                            select parameter2.ModuleId).Contains(parameter.ModuleId)
+                    select parameter;
+        return par.Select(x =&amp;gt; new ModuleType {Id = x.ModuleId, Name = x.ModuleName}).ToList();
+    }
+
+    var parGr = from parameter in para
+                where parameter.TypeOfPar
+                group parameter by parameter.ModuleId
+                into modPara
+                where modPara.Count() == inputParameter.Count
+                select modPara;
+
+    foreach (var paramGr in parGr)
+    {
+        bool AddInRes = true;
+        var listParaGr = paramGr.ToList();
+        for (int i = 0; i &amp;lt; listParaGr.Count; i++)
+        {
+            if (listParaGr[i].Number != inputParameter[i].Number ||
+            listParaGr[i].TypeName != inputParameter[i].TypeName)
+                AddInRes = false;
+        }
+        if (AddInRes)
+        {
+            res.Add(new ModuleType(){Id =  listParaGr[0].ModuleId, Name = listParaGr[0].ModuleName});
+        }
+    }
+    return res;
+}
+</code></pre>
+<p>This method returns a collection of our modules, which contains defined input parameters. Thus, this method should be called justbefore the loop until the result will contain at least one value. It should be noted that calls to this method will generally be bifurcate (the first layer selected modules, and for everyone in this layer, called again, this method and so on). But this is not Linq.</p>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

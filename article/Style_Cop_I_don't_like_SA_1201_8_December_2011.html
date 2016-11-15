@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="style-cop-i-don-t-like-sa-1201-8-december-2011">Style Cop / I don&#39;t like SA 1201 - 8 December, 2011</h2>
+<p><a href="">StyleCop</a> is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...</p>
+<p>Unfortunately, the rule SA1201 is not so good for me. So i just want to create the similar rule, but a little else.</p>
+<p>You can see the rule that changes the order of document&#39;s element to the next:</p>
+<pre><code class="lang-xml">&lt;element name=&quot;File&quot; order=&quot;0&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Root&quot; order=&quot;1&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;ExternAliasDirective&quot; order=&quot;2&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;UsingDirective&quot; order=&quot;3&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;AssemblyAttribute&quot; order=&quot;4&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Namespace&quot; order=&quot;5&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Field&quot; order=&quot;6&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Constructor&quot; order=&quot;10&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Destructor&quot; order=&quot;11&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Delegate&quot; order=&quot;8&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Event&quot; order=&quot;9&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Enum&quot; order=&quot;13&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Interface&quot; order=&quot;14&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Property&quot; order=&quot;7&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Accessor&quot; order=&quot;15&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Indexer&quot; order=&quot;16&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Method&quot; order=&quot;12&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Struct&quot; order=&quot;17&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;EnumItem&quot; order=&quot;18&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;ConstructorInitializer&quot; order=&quot;19&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;EmptyElement&quot; order=&quot;20&quot;&gt;&lt;/element&gt;
+</code></pre>
+<p>It saves in configuration file, so it is possible to change it in any time. 
+Further the source code of my rule. You can see the original source code of SA1201 using the <a href="http://www.jetbrains.com/decompiler/">DotPeek</a> for <a href="./code/code.cs">example</a>.</p>
+<p>Methods AnalyzeDocument и DoAnalysis are the most important, so i suggest to start the learning code from them. The project in VS2010 is StyleCopOrder.Thanks.</p>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

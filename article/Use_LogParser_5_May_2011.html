@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="use-logparser-5-may-2011">Use LogParser - 5 May, 2011</h2>
+<ol>
+<li>Download LogParser 2.2.</li>
+<li>C:>tlbimp LogParser.dll /out:Interop.MSUtil.dll</li>
+<li>Include Interop.MSUtil.dll in a project.
+4.</li>
+</ol>
+<pre><code class="lang-csharp">using LogQuery = Interop.MSUtil.LogQueryClassClass;
+using IISW3CInputFormat = Interop.MSUtil.COMIISW3CInputContextClassClass;
+using CsvOutputFormat = Interop.MSUtil.COMCSVOutputContextClassClass;
+using LogRecordSet = Interop.MSUtil.ILogRecordset;
+
+LogQuery oLogQuery = new LogQuery();
+
+// Instantiate the Event Log Input Format object
+IISW3CInputFormat oW3CInputFormat = new IISW3CInputFormat();
+
+string query = String.Format(_queryPostOverall, _pathToLog, &quot;200&quot;, _date);
+var oRecordSet = oLogQuery.Execute(query, oW3CInputFormat);
+for (; !oRecordSet.atEnd(); oRecordSet.moveNext())
+{
+   double count = Convert.ToDouble(oRecordSet.getRecord().getValue(&quot;count1&quot;));
+   _postCountOverall.overall += count;
+}
+oRecordSet.close();
+</code></pre>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="vs-2010-attach-to-process-w3wp-exe-20-july-2012">VS 2010 Attach to process w3wp.exe - 20 July, 2012</h2>
+<p>Need to create the macros:</p>
+<pre><code>Public Module AttachToProcess
+Public Function AttachToProcess(ByVal ProcessName As String) As Boolean
+Dim proc As EnvDTE.Process
+Dim attached As Boolean
+For Each proc In DTE.Debugger.LocalProcesses
+If (Right(proc.Name, Len(ProcessName)) = ProcessName) Then
+proc.Attach()
+attached = True
+End If
+Next
+
+Return attached
+End Function
+
+Sub AttachToW3WP()
+If Not AttachToProcess(&quot;w3wp.exe&quot;) Then
+System.Windows.Forms.MessageBox.Show(&quot;Cannot attach to process&quot;)
+End If
+End Sub
+End Module
+</code></pre><p><a href="http://habrahabr.ru/post/131937/">Link</a></p>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

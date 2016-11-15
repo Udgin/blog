@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="useful-linq-extensions-26-april-2013">Useful LINQ extensions - 26 April, 2013</h2>
+<p>After reading a lot of articles about this theme, I start to use the next <a href="http://pastebin.com/As5as2pE">extensions</a></p>
+<pre><code class="lang-csharp">public static class Linq
+{
+    public static IEnumerable&lt;T&gt; Except&lt;T&gt;(this IEnumerable&lt;T&gt; source, IEnumerable&lt;T&gt; target, Func&lt;T, T, bool&gt; func)
+    {
+        return source.Except(target, new LambdaComparer&lt;T&gt;(func));
+    }
+
+    public static TResult With&lt;TInput, TResult&gt;(this TInput o, Func&lt;TInput, TResult&gt; evaluator)
+        where TInput : class
+    {
+        if (o == null) return default(TResult);
+        return evaluator(o);
+    }
+
+    public static TResult Return&lt;TInput, TResult&gt;(this TInput o, Func&lt;TInput, TResult&gt; evaluator, TResult failure_value) where TInput : class
+    {
+        if (o == null) return failure_value;
+        return evaluator(o);
+    }
+
+    public static bool Check&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return false;
+        return evaluator(o);
+    }
+
+    public static TInput If&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return null;
+        return evaluator(o) ? o : null;
+    }
+
+    public static TInput Unless&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return null;
+        return evaluator(o) ? null : o;
+    }
+
+    public static TInput Do&lt;TInput&gt;(this TInput o, Action&lt;TInput&gt; action) where TInput : class
+    {
+        if (o == null) return null;
+        action(o);
+        return o;
+    }
+
+    public static List&lt;TInput&gt; Delete&lt;TInput&gt;(this List&lt;TInput&gt; o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        var listToDelete = o.Where(evaluator).ToList();
+        foreach (var input in listToDelete)
+        {
+            o.Remove(input);
+        }
+        return o;
+    }
+}
+
+
+public class LambdaComparer&lt;T&gt; : IEqualityComparer&lt;T&gt;
+{
+    private readonly Func&lt;T, T, bool&gt; _lambdaComparer;
+    private readonly Func&lt;T, int&gt; _lambdaHash;
+
+    public LambdaComparer(Func&lt;T, T, bool&gt; lambdaComparer) :
+        this(lambdaComparer, o =&gt; 0)
+    {
+    }
+
+    public LambdaComparer(Func&lt;T, T, bool&gt; lambdaComparer, Func&lt;T, int&gt; lambdaHash)
+    {
+        if (lambdaComparer == null)
+            throw new ArgumentNullException(&quot;lambdaComparer&quot;);
+        if (lambdaHash == null)
+            throw new ArgumentNullException(&quot;lambdaHash&quot;);
+
+        _lambdaComparer = lambdaComparer;
+        _lambdaHash = lambdaHash;
+    }
+
+    public bool Equals(T x, T y)
+    {
+        return _lambdaComparer(x, y);
+    }
+
+    public int GetHashCode(T obj)
+    {
+        return _lambdaHash(obj);
+    }
+}
+</code></pre>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

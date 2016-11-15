@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="powershell-replace-physical-path-of-web-sites-in-iis7-17-july-2012">PowerShell, Replace physical path of web sites in IIS7 - 17 July, 2012</h2>
+<pre><code class="lang-PowerShell">param([String]$numb)
+
+[Void][Reflection.Assembly]::LoadWithPartialName(&quot;Microsoft.Web.Administration&quot;)
+
+$siteName = &quot;graph.vrpinc.com&quot;
+##$serverIP = &quot;your ip address&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.WebSite&quot;
+
+$serverManager = New-Object Microsoft.Web.Administration.ServerManager
+## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+$site = $serverManager.Sites | where { $_.Name -eq $siteName }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
+$rootVdir.PhysicalPath = $newPath
+$serverManager.CommitChanges()
+
+$siteName = &quot;gmp3.vrpinc.com&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.MvcWebSite&quot;
+
+$serverManager = New-Object Microsoft.Web.Administration.ServerManager
+## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+$site = $serverManager.Sites | where { $_.Name -eq $siteName }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
+$rootVdir.PhysicalPath = $newPath
+$serverManager.CommitChanges()
+
+$siteName = &quot;GMPServices&quot;
+$newPath = &quot;D:\Projects\gmp&quot;+$numb+&quot;\GMP.Services&quot;
+
+$serverManager = New-Object Microsoft.Web.Administration.ServerManager
+## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+$site = $serverManager.Sites | where { $_.Name -eq $siteName }
+$rootApp = $site.Applications | where { $_.Path -eq &quot;/&quot; }
+$rootVdir = $rootApp.VirtualDirectories | where { $_.Path -eq &quot;/&quot; }
+$rootVdir.PhysicalPath = $newPath
+$serverManager.CommitChanges()
+</code></pre>
+<p>Bat file to call PowerShell file</p>
+<pre><code>@echo off
+
+set /p delBuild=Enter the number of gmp project?
+powershell -noprofile Set-ExecutionPolicy Unrestricted
+powershell .\setUpSite.ps1 -numb %delBuild%
+</code></pre><p>One variable to set current version of projects!
+Thanks!</p>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

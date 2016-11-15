@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="notes-from-introduction-to-linux-21-may-2015">Notes from &#39;Introduction to Linux&#39; - 21 May, 2015</h2>
+<p><a href="https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0">course link</a></p>
+<p>Linux <a href="http://www.tldp.org/LDP/sag/html/filesystems.html">Filesystem</a></p>
+<ul>
+<li>Conventional disk filesystems: ext2, ext3, ext4, XFS, Btrfs, JFS,NTFS, etc.</li>
+<li>Flash storage filesystems: ubifs, JFFS2, YAFFS, etc.</li>
+<li>Database filesystems</li>
+<li>Special purpose filesystems: procfs, sysfs, tmpfs, debugfs, etc.</li>
+</ul>
+<p><a href="https://en.wikipedia.org/wiki/Disk_partitioning">Partitions</a></p>
+<ol>
+<li>Windows<ul>
+<li>Partition: Disk1 </li>
+<li>Filesystem type: NTFS/FAT32</li>
+<li>Mounting Parameters: DriveLetter </li>
+<li>Base Folder of OS: C drive</li>
+</ul>
+</li>
+<li>Linux<ul>
+<li>Partition: /dev/sda1</li>
+<li>Filesystem type: EXT3/EXT4/XFS</li>
+<li>Mounting Parameters: MountPoint</li>
+<li>Base Folder of OS: /</li>
+</ul>
+</li>
+</ol>
+<p><a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">The Filesystem Hierarchy Standard</a></p>
+<p><img src="./images/linux_foundation_filesystem.jpg" alt="File System"></p>
+<p>The Boot Process</p>
+<p><img src="./images/linux_foundation_boot_process.jpg" alt="Boot Process"></p>
+<p>Choosing a <a href="https://en.wikipedia.org/wiki/Linux_distribution">Linux Distribution</a></p>
+<p><img src="./images/linux_foundation_choose.jpg" alt="Choose"></p>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

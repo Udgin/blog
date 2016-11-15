@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="smo-scripter-create-script-of-db-25-june-2013">SMO Scripter. Create script of DB - 25 June, 2013</h2>
+<p>It is possible to create script of MSSQL using SMO: (<a href="http://pastebin.com/AQkprTS7#">link</a>)</p>
+<pre><code class="lang-csharp">private static void Main(string[] args)
+{
+    var arguments = args.Select(x =&gt; x.ToLower()).ToList();
+    if (arguments.Count == 0 || arguments.Contains(&quot;-help&quot;))
+    {
+        Console.WriteLine(&quot;-d - Database Name&quot;);
+        Console.WriteLine(&quot;-i - Output Sql File Name&quot;);
+        Console.WriteLine(&quot;-s - Server Instance&quot;);
+        Console.WriteLine(&quot;-u - User Name&quot;);
+        Console.WriteLine(&quot;-p - Password&quot;);
+        Console.WriteLine(&quot;It should be &#39;tables.txt&#39; file in folder with names of tables to script; if it does not exist the application scripts all tables with prefix &#39;GMP_&#39;&quot;);
+        Console.ReadKey();
+    }
+    else if (arguments.Count &gt; 1 &amp;&amp; arguments.Contains(&quot;-d&quot;) &amp;&amp; args.Contains(&quot;-i&quot;))
+    {
+        if (arguments.Count &lt;= arguments.IndexOf(&quot;-d&quot;) + 1)
+        {
+            throw new ArgumentException(&quot;Database Name&quot;);
+        }
+        if (arguments.Count &lt;= argumSMO Scripter. Create script of DBents.IndexOf(&quot;-i&quot;) + 1)
+        {
+            throw new ArgumentException(&quot;Output Sql File Name&quot;);
+        }
+        var dbName = arguments[arguments.IndexOf(&quot;-d&quot;) + 1];
+        var outputFileName = arguments[arguments.IndexOf(&quot;-i&quot;) + 1];
+        var srv = new Server();
+        if (arguments.Contains(&quot;-s&quot;) &amp;&amp; args.Contains(&quot;-u&quot;) &amp;&amp; arguments.Contains(&quot;-p&quot;))
+        {
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-s&quot;) + 1)
+            {
+                throw new ArgumentException(&quot;Server Instance&quot;);
+            }
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-u&quot;) + 1)
+            {
+                throw new ArgumentException(&quot;User Name&quot;);
+            }
+            if (arguments.Count &lt;= arguments.IndexOf(&quot;-p&quot;) + 1)
+            {
+                throw new ArgumentException(&quot;Password&quot;);
+            }
+            var connection = new ServerConnection(arguments[arguments.IndexOf(&quot;-s&quot;) + 1], arguments[arguments.IndexOf(&quot;-u&quot;) + 1], arguments[arguments.IndexOf(&quot;-p&quot;) + 1]);
+            srv = new Server(connection);
+        }
+        // read names of tables
+        var tablesFromFile = new List&lt;string&gt;();
+        if (File.Exists(&quot;tables.txt&quot;))
+        {
+            using (var file = File.OpenText(&quot;tables.txt&quot;))
+            {
+                while (file.Peek() &gt; 0)
+                {
+                    tablesFromFile.Add(file.ReadLine());
+                }
+            }
+        }
+        Database db = srv.Databases[dbName];
+        var dropKeys = new Scripter(srv) {Options = {ScriptDrops = true, IncludeIfNotExists = true, DriForeignKeys = true}};
+        var listOfScripts = new List&lt;Scripter&gt;
+                            {
+                                new Scripter(srv) {Options = {ScriptDrops = true, IncludeIfNotExists =true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {ScriptDrops = false, ScriptSchema = true, WithDependencies = false, DriIndexes = true, DriClustered = true, IncludeIfNotExists = true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {ScriptDrops = false, ScriptSchema = true, DriDefaults = false, DriIndexes = false, DriPrimaryKey = false, DriClustered = false, Default = false, DriAll =false, DriForeignKeys = true, IncludeIfNotExists = true, DriAllKeys = false}},
+                                new Scripter(srv) {Options = {DriIndexes = true, Default = true, DriDefaults = true, DriClustered = false, IncludeIfNotExists = true, DriAll = true, DriAllConstraints = true, DriAllKeys = true, SchemaQualify = true, SchemaQualifyForeignKeysReferences = true, NoCollation = true}}
+                            };
+        using (var file = File.CreateText(outputFileName))
+        {
+            foreach (Table tb in db.Tables)
+            {
+                if ((tablesFromFile.Count &gt; 0 &amp;&amp; tablesFromFile.Contains(tb.Name) || (tablesFromFile.Count== 0 &amp;&amp; tb.Name.StartsWith(&quot;GMP_&quot;))))
+                {
+                    if (tb.IsSystemObject == false)
+                    {
+                        foreach (ForeignKey foreignKey in tb.ForeignKeys)
+                        {
+                            System.Collections.Specialized.StringCollection scd = dropKeys.Script(new[] {foreignKey.Urn });
+                            foreach (string st in scd)
+                            {
+                                file.WriteLine(st);
+                                file.WriteLine(&quot;GO&quot;);
+                            }
+                        }
+                        file.WriteLine();
+                    }
+                }
+            }
+            foreach (var script in listOfScripts)
+            {
+                foreach (Table tb in db.Tables)
+                {
+                    if ((tablesFromFile.Count &gt; 0 &amp;&amp; tablesFromFile.Contains(tb.Name) ||(tablesFromFile.Count == 0 &amp;&amp; tb.Name.StartsWith(&quot;GMP_&quot;))))
+                    {
+                        if (tb.IsSystemObject == false)
+                        {
+                            System.Collections.Specialized.StringCollection scd = script.Script(new[] {tb.Urn });
+                            foreach (string st in scd)
+                            {
+                                file.WriteLine(st);
+                                file.WriteLine(&quot;GO&quot;);
+                            }
+                            file.WriteLine();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="mvc-indefinitely-loads-the-page-and-call-the-controller-cyclical-31-january-2012">MVC indefinitely loads the page and call the controller cyclical - 31 January, 2012</h2>
+<p>I have found that the page load indefinitely. And the reason was I add @Html.RenderAction to my default layout.</p>
+<p>So the solution of the problem to add the next code to rendered view:</p>
+<pre><code>@{
+      Layout = null;
+}
+</code></pre><p>As I understand, MVC try to load the next without this code:</p>
+<p>Layout -&gt; MyView -&gt; Layout -&gt; MyView -&gt; ....</p>
+<p>With code above:</p>
+<p>Layout -&gt; MyView { -&gt; null}</p>
+<p>So it&#39;s happens.</p>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

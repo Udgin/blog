@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="fuelux-tree-additional-behavior-14-july-2014">FuelUX Tree additional behavior - 14 July, 2014</h2>
+<p>Add &quot;Show All&quot; to the FuelUX Tree like this.</p>
+<p><img src="./images/fuelux-tree.gif" alt="example"></p>
+<p>There is the <a href="https://exacttarget.github.io/fuelux/#tree">tree plugin</a>. You can add the next code after initialization of the tree:</p>
+<pre><code class="lang-javascript">scope.find(&#39;#MyTree&#39;).on(&#39;selected&#39;, function (event, data) {
+    if (data.target.additionalParameters.id == 0) {
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item:eq(1)&#39;).addClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;tree-dot&#39;).addClass(&#39;icon-ok&#39;);
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-folder-header&gt; i.icon-ok&#39;).remove();
+    }
+    else {
+        scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item:eq(1)&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
+        if (data.target.additionalParameters.type == &#39;anyOther&#39;) {
+            data.element.closest(&#39;.tree-folder-content&#39;).find(&#39;.tree-item:gt(0)&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
+        }
+    }
+
+});
+</code></pre>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

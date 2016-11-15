@@ -1,4 +1,3 @@
-# [Eugene Pyl](https://www.linkedin.com/in/eugenepyl) - Notes
 ## Machine Learning Init - 14 November, 2016
 
 The information is from this [course](https://www.coursera.org/learn/machine-learning/).
@@ -199,7 +198,9 @@ Trigger:
 ![Image Three](./images/git_version_step3_3.PNG)
 
 ---
-## Notes from [Introduction to Linux] - 21 May, 2015(https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0)
+## Notes from 'Introduction to Linux' - 21 May, 2015
+
+[course link](https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0)
 
 Linux [Filesystem](http://www.tldp.org/LDP/sag/html/filesystems.html)
 
@@ -234,7 +235,10 @@ Choosing a [Linux Distribution](https://en.wikipedia.org/wiki/Linux_distribution
 ![Choose](./images/linux_foundation_choose.jpg)
 
 ---
-## Task: Show information about types in tooltip. The value of a point is the sum of values of types ('one', 'two'). [Link](http://jsfiddle.net/yo4L215v/) - 26 December, 2014
+## Task: Show information about types in tooltip.
+
+The value of a point is the sum of values of types ('one', 'two').
+[Link](http://jsfiddle.net/yo4L215v/) - 26 December, 2014
 
 [Additional info](http://api.highcharts.com/highcharts#tooltip.formatter)
 
@@ -338,7 +342,7 @@ scope.find('#MyTree').on('selected', function (event, data) {
 ```
 
 ---
-## Fixed header/column for HTML table using JQuery - 07 July, 2014
+## Fixed header or column for HTML table using JQuery - 07 July, 2014
 
 I have created one more plugin for HTML table. It fixes the head of a table on the page. [Please see it](https://bitbucket.org/upyl/fixedheader). The main feature is supporting of overflow parent element.
 
@@ -525,7 +529,9 @@ But there is manual actions to do that:
 2. Remove all nodes in solution and project file with tag <scc />
 
 ---
-## [Structure of presentation](http://burba.pro/presentation_structure/)
+## Structure of presentation - 10 April, 2013
+
+[link](http://burba.pro/presentation_structure/)
 
 ![image](./images/presentation_structure.png)
 
@@ -2186,5 +2192,3 @@ public static List<ModuleType> SelectModuleByInputParameter(List<ParameterType> 
 ```
 
 This method returns a collection of our modules, which contains defined input parameters. Thus, this method should be called justbefore the loop until the result will contain at least one value. It should be noted that calls to this method will generally be bifurcate (the first layer selected modules, and for everyone in this layer, called again, this method and so on). But this is not Linq.
-
----

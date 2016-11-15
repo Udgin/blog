@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="fiddler-zip-extension-8-december-2011">Fiddler Zip extension - 8 December, 2011</h2>
+<p>Extension for <a href="http://www.fiddler2.com/Fiddler/dev/">Fiddler</a>.</p>
+<p><img src="./images/zip_fiddler.jpg" alt="example"></p>
+<p>The source code: <a href="https://drive.google.com/file/d/0BwVmorgjT-W1NDFlZDZkMDItMWMxMS00NzU2LTg3NDUtYTYzOWVhOGMyMzRj/view">FiddlerZip</a>.</p>
+<p>The main code:</p>
+<pre><code class="lang-csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Fiddler;
+using System.Windows.Forms;
+
+// It is important !!! see the current version of fiddler
+[assembly: Fiddler.RequiredVersion(&quot;2.3.4.4&quot;)]
+
+namespace FiddlerZip
+{
+    /// &lt;summary&gt;
+    /// Zip extension
+    /// &lt;/summary&gt;
+    public class Zip : IFiddlerExtension 
+    {
+        /// &lt;summary&gt;
+        /// page for extesnion
+        /// &lt;/summary&gt;
+        private TabPage oPage;
+        /// &lt;summary&gt;
+        /// Control that presented extension
+        /// &lt;/summary&gt;
+        private ZipControl oAppConsole;
+        #region IFiddlerExtension Members
+
+        public void OnBeforeUnload()
+        {
+
+        }
+
+        public void OnLoad()
+        {
+            // create tab with name &quot;Zip&quot;
+            oPage = new TabPage(&quot;Zip&quot;);
+            // it is possible to add icon to your tab
+            oPage.ImageIndex = (int)Fiddler.SessionIcons.FilterBrowsers;
+            oAppConsole = new ZipControl();
+            // add control to tab
+            oPage.Controls.Add(oAppConsole);
+            oAppConsole.Dock = DockStyle.Fill;
+            FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>

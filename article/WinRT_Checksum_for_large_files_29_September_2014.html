@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="winrt-checksum-for-large-files-29-september-2014">WinRT Checksum for large files - 29 September, 2014</h2>
+<p>There is a good <a href="http://stackoverflow.com/questions/13534334/how-to-compute-hash-md5-or-sha-of-a-large-file-with-c-sharp-in-windows-store-a">question</a> about this.</p>
+<p>Also there is a code. I have used MD5 algorithm for my purposes.</p>
+<pre><code class="lang-csharp">  public async Task&lt;string&gt; GetFileChecksumAsync(string fileName)
+  {
+   HashAlgorithmProvider alg = Windows.Security.Cryptography.Core.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+   IStorageFile stream = await openFile(fileName);
+   using (var inputStream = await stream.OpenReadAsync())
+   {
+    Windows.Storage.Streams.Buffer buffer = new Windows.Storage.Streams.Buffer(BUFFER_SIZE);
+    var hash = alg.CreateHash();
+
+    while (true)
+    {
+     await inputStream.ReadAsync(buffer, BUFFER_SIZE, InputStreamOptions.None);
+     if (buffer.Length &gt; 0)
+      hash.Append(buffer);
+     else
+      break;
+    }
+
+    return CryptographicBuffer.EncodeToHexString(hash.GetValueAndReset()).ToUpper();
+   }
+  }
+</code></pre>
+
+</article>
+<script>
+hljs.configure({
+  classPrefix: 'lang-'
+})
+hljs.initHighlighting();
+</script>
+</body>
+</html>
