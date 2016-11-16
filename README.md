@@ -4,7 +4,7 @@ Tags:
 MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF
 
 Based on markdown file: blog.md. Every article should be separated by next line:
----
+`---`
 
 Every title of article should be started by '##' and ended with '- dd mmm, yyyy', e.g. - 14 November, 2016.
 
