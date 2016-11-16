@@ -79,7 +79,7 @@ gulp.task('indexBody', ['replaceArticle'], function () {
             var curPath = articlePath + file;
             var linkText = file.replace(/\.html$/g, '');
             if (mdFileNameToNormalName[linkText]) {
-                indexBodyArray[linkText] = '<div><a href="' + curPath + '#disqus_thread">' + mdFileNameToNormalName[linkText] + '</a></div>';
+                indexBodyArray[linkText] = '<div><a href="' + curPath + '">' + mdFileNameToNormalName[linkText] + '</a><span class="disqus-comment-count" data-disqus-url="' + curPath + '"></span></div>';
             }
         }
     });
