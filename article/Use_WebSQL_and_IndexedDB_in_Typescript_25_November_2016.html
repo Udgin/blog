@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog/set of notes about programming">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="./../markdown.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-87583712-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="use-websql-and-indexeddb-in-typescript-25-november-2016">Use WebSQL and IndexedDB in Typescript - 25 November, 2016</h2>
+<p>More information about <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDb</a> or <a href="https://www.w3.org/TR/webdatabase/">WebSQL</a>.</p>
+<p>Let&#39;s define base interfaces for our task:</p>
+<pre><code class="lang-javascript">export interface IItem {
+    id: string;
+    value: string;
+}
+
+export interface IStorage&lt;T extends IItem&gt; {
+    // Initial method to create storage
+    init(name: string): Observable&lt;IStorage&lt;T&gt;&gt;;
+
+    // Get the value by unique key
+    get(key: string): Observable&lt;T&gt;;
+
+    // Clear/remove all data in the storage
+    clear(): Observable&lt;T&gt;;
+
+    // Put specific value into the storage
+    put(value: T): Observable&lt;T&gt;;
+
+    // Get all values using the set of keys
+    getDenseBatch(keys: string[]): Observable&lt;T&gt;;
+
+    // Get all values from the storage
+    all(): Observable&lt;T&gt;;
+}
+</code></pre>
+<p>Here I am using <a href="http://reactivex.io/">rxjs</a> to handle results. IItem is an interface which should be saved, IStorage is interface for a specific storage.</p>
+<h3 id="in-memory-implementation">In Memory implementation</h3>
+<p>A short example how to implement mentioned interface using in-memory array:</p>
+<pre><code class="lang-javascript">export class MemoryStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+    private storage: { [key: string]: T } = {};
+
+    init(name: string): Observable&lt;MemoryStorage&lt;T&gt;&gt; {
+        return Observable.of(this);
+    }
+
+    get(key: string): Observable&lt;T&gt; {
+        return Observable.of(this.storage[key]);
+    }
+
+    clear(): Observable&lt;T&gt; {
+        this.storage = {};
+        return Observable.empty&lt;T&gt;();
+    }
+
+    put(value: T): Observable&lt;T&gt; {
+        if (!value.id) {
+            value.id = Math.random().toString(36).substring(7);
+        }
+        this.storage[value.id] = value;
+        return Observable.of(value);
+    }
+
+    getDenseBatch(keys: string[]): Observable&lt;T&gt; {
+        return Observable.from(keys.map(x =&gt; this.storage[x]));
+    }
+
+    all(): Observable&lt;T&gt; {
+        return Observable.from(Object.keys(this.storage).map(x =&gt; this.storage[x]));
+    }
+}
+</code></pre>
+<p>Simple implementation of IItem:</p>
+<pre><code class="lang-javascript">class TestKeyValue implements IItem {
+  public id: string;
+  public value: string;
+}
+</code></pre>
+<p>Unit tests for MemoryStorage:</p>
+<pre><code class="lang-javascript">describe(&#39;MemoryStorage: Class&#39;, () =&gt; {
+  let key1 = &#39;key1&#39;, key2 = &#39;key2&#39;;
+  let value1 = &#39;value1&#39;, value2 = &#39;value2&#39;;
+
+  function init(): MemoryStorage&lt;TestKeyValue&gt; {
+    let storage = new MemoryStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test&#39;);
+    return storage;
+  }
+
+  it(&#39;should create empty storage&#39;, async(() =&gt; {
+    let storage = init();
+    storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+  }));
+
+  it(&#39;should save one item&#39;, async(() =&gt; {
+    let storage = init();
+    storage.put({ id: key1, value: value1 });
+    storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeFalsy());
+  }));
+
+  it(&#39;should save/get one item&#39;, async(() =&gt; {
+    let storage = init();
+    let item = { id: key1, value: value1 };
+    storage.put(item);
+    storage.get(key1).subscribe(value =&gt; expect(value).toEqual(item));
+  }));
+
+  it(&#39;should save/get two items&#39;, async(() =&gt; {
+    let storage = init();
+    let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
+    storage.put(items[0]);
+    storage.put(items[1]);
+    let i = 0;
+    storage.getDenseBatch([key1, key2]).subscribe(value =&gt; expect(value).toEqual(items[i++]));
+  }));
+
+  it(&#39;should clear saved items&#39;, async(() =&gt; {
+    let storage = init();
+    let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
+    storage.put(items[0]);
+    storage.put(items[1]);
+
+    storage.clear();
+    storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+  }));
+});
+</code></pre>
+<h3 id="websql-implementation">WebSQL implementation</h3>
+<pre><code class="lang-javascript">export class WebSQLStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+    private db: Database;
+    private databaseName: string = &#39;TripNoteDB&#39;;
+    private name: string;
+
+    constructor() {
+        this.db = window.openDatabase(this.databaseName, &#39;1.0&#39;, `Store information`, 40 * 1024 * 1024);
+    }
+
+    init(name: string): Observable&lt;WebSQLStorage&lt;T&gt;&gt; {
+        this.name = name;
+        return Observable.create((observer: Observer&lt;WebSQLStorage&lt;T&gt;&gt;) =&gt; {
+            this.db.transaction(
+                (tx) =&gt; tx.executeSql(`CREATE TABLE IF NOT EXISTS ${name} (key unique, value string)`,
+                    [],
+                    (t, results) =&gt; {
+                        observer.next(this);
+                        observer.complete();
+                    },
+                    (t, message) =&gt; {
+                        observer.error(message.message.toString());
+                        return true;
+                    })
+            );
+        });
+    }
+
+    get(key: string): Observable&lt;T&gt; {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            this.db.transaction((tx) =&gt; {
+                tx.executeSql(`SELECT * FROM ${this.name} WHERE key=&#39;${key}&#39;`, [],
+                    (t, results) =&gt; {
+                        let len = results.rows.length;
+                        if (len === 0) {
+                            observer.next(undefined);
+                        } else if (len === 1) {
+                            observer.next(results.rows.item(0));
+                        } else {
+                            observer.error(&#39;There should be no more than one entry&#39;);
+                        }
+                        observer.complete();
+                    },
+                    (t, message) =&gt; {
+                        observer.error(message.message.toString());
+                        return true;
+                    });
+            });
+        });
+    }
+
+    clear() {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            this.db.transaction((tx) =&gt; {
+                tx.executeSql(`DELETE FROM ${this.name}`, [], (t, r) =&gt; observer.complete(), (t, e) =&gt; {
+                    observer.error(e.message.toString());
+                    return true;
+                });
+            });
+        });
+    }
+
+    all(): Observable&lt;T&gt; {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            this.db.transaction((tx) =&gt; {
+                tx.executeSql(`SELECT * FROM ${this.name}`,
+                    [],
+                    (t, results) =&gt; {
+                        for (let i = 0; i &lt; results.rows.length; i++) {
+                            observer.next(results.rows.item(i));
+                        }
+                        observer.complete();
+                    },
+                    (t, message) =&gt; {
+                        observer.error(message.message.toString());
+                        return true;
+                    });
+            });
+        });
+    }
+
+    put(value: T): Observable&lt;T&gt; {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            this.db.transaction((tx) =&gt; {
+                tx.executeSql(`INSERT OR REPLACE INTO ${this.name} VALUES (?, ?)`, [value.id, value.value],
+                    () =&gt; {
+                        observer.next(value);
+                        observer.complete();
+                    },
+                    (t, e) =&gt; {
+                        observer.error(e.message.toString());
+                        return true;
+                    });
+            });
+        });
+    }
+
+    getDenseBatch(keys: string[]): Observable&lt;T&gt; {
+        if (keys.length === 0) {
+            return Observable.empty&lt;T&gt;();
+        };
+
+        return Observable.create((observer: Observer&lt;T[]&gt;) =&gt; {
+            this.db.transaction((tx) =&gt; {
+                let key = keys.map(x =&gt; &#39;\&#39;&#39; + x + &#39;\&#39;&#39;).join(&#39;,&#39;);
+                tx.executeSql(`SELECT * FROM ${this.name} WHERE key IN (${key})`,
+                    [],
+                    (t, results) =&gt; {
+                        for (let i = 0; i &lt; results.rows.length; i++) {
+                            observer.next(results.rows.item(i));
+                        }
+                        observer.complete();
+                    },
+                    (t, e) =&gt; {
+                        observer.error(e.message.toString());
+                        return true;
+                    });
+            });
+        });
+    }
+}
+</code></pre>
+<pre><code class="lang-javascript">describe(&#39;WebSQLStorage: Class&#39;, () =&gt; {
+  let key1 = &#39;key1&#39;, key2 = &#39;key2&#39;;
+  let value1 = &#39;value1&#39;, value2 = &#39;value2&#39;;
+
+  it(&#39;should create empty storage&#39;, async(() =&gt; {
+    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test1&#39;).subscribe(() =&gt; {
+      storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+    });
+  }));
+
+  it(&#39;should save one item &#39;, async(() =&gt; {
+    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test2&#39;).subscribe(() =&gt; {
+      storage.put({ id: key1, value: value1 }).subscribe(() =&gt; {
+        storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeFalsy());
+      });
+    });
+  }));
+
+  it(&#39;should save/get one item&#39;, async(() =&gt; {
+    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test3&#39;).subscribe(() =&gt; {
+      let item = { id: key1, value: value1 };
+      storage.put(item).subscribe(() =&gt; {
+        storage.get(key1).subscribe(value =&gt; {
+          expect(value.value).toEqual(item.value);
+        });
+
+      });
+    });
+  }));
+
+  it(&#39;should save/get two items&#39;, async(() =&gt; {
+    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test4&#39;).subscribe(() =&gt; {
+      let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
+      storage.put(items[0])
+      .subscribe(() =&gt; storage.put(items[1])
+        .subscribe(() =&gt; {
+          let i = 0;
+          storage.getDenseBatch([key1, key2])
+            .subscribe(value =&gt; expect(value.value).toEqual(items[i++].value));
+        }));
+    });
+  }));
+
+  it(&#39;should clear saved items&#39;, async(() =&gt; {
+    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test5&#39;).subscribe(() =&gt; {
+      let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
+      storage.put(items[0])
+        .zip(() =&gt; storage.put(items[1]))
+        .subscribe(() =&gt; storage.clear()
+        .subscribe(() =&gt; {
+          storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+        }));
+    });
+  }));
+});
+</code></pre>
+<h3 id="indexeddb-implementation">IndexedDB implementation</h3>
+<pre><code class="lang-javascript">export class IndexedDBStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+    private db: IDBDatabase;
+    private databaseName: string = &#39;TripNoteDB&#39;;
+    private name: string;
+
+    init(name: string): Observable&lt;IndexedDBStorage&lt;T&gt;&gt; {
+        this.name = name;
+        return Observable.create((observer: Observer&lt;IndexedDBStorage&lt;T&gt;&gt;) =&gt; {
+            let req = window.indexedDB.open(this.databaseName, 1);
+            req.onerror = (e) =&gt; observer.error(e.error);
+            req.onupgradeneeded = (e) =&gt; {
+                this.db = (&lt;any&gt;e.target).result;
+                this.db.createObjectStore(this.name, {keyPath: &#39;id&#39;});
+                let trans = req.result;
+                trans.oncomplete = () =&gt; {
+                    observer.next(this);
+                    observer.complete();
+                };
+            };
+            req.onerror = function(e) {
+                observer.error(&#39;Can not create db&#39;);
+            };
+        });
+    }
+
+    all(): Observable&lt;T&gt; {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            let req = this.db.transaction(this.name, &#39;readwrite&#39;).objectStore(this.name)
+                .openCursor();
+            req.onsuccess = (e) =&gt; {
+                this.db.close();
+                let res = (&lt;any&gt;event.target).result;
+                if (res) {
+                    observer.next(res.value);
+                    res.continue();
+                }
+                observer.complete();
+            };
+            req.onerror = (e) =&gt; observer.error(e.error);
+        });
+    }
+
+    get(key: string): Observable&lt;T&gt; {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            let req = this.db.transaction(this.name).objectStore(this.name).get(key);
+            req.onerror = (e) =&gt; observer.error(e.error);
+            req.onsuccess = (e) =&gt; {
+                observer.next(req.result);
+                observer.complete();
+            };
+        });
+    }
+
+    clear() {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            let req = this.db.transaction(this.name, &#39;readwrite&#39;).objectStore(this.name).clear();
+            req.onerror = (e) =&gt; observer.error(e.error);
+            req.onsuccess = (e) =&gt; observer.complete();
+        });
+    }
+
+    put(value: T): Observable&lt;T&gt; {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            let req = this.db.transaction(this.name, &#39;readwrite&#39;).objectStore(this.name).add(value, value.id);
+            req.onerror = (e) =&gt; observer.error(e.error);
+            req.onsuccess = (e) =&gt; {
+                observer.next(value);
+                observer.complete();
+            };
+        });
+    }
+
+    getDenseBatch(keys: string[]): Observable&lt;T&gt; {
+        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
+            let req = this.db.transaction(this.name, &#39;readwrite&#39;).objectStore(this.name)
+                .openCursor(keys);
+            req.onsuccess = (e) =&gt; {
+                this.db.close();
+                let res = (&lt;any&gt;event.target).result;
+                if (res) {
+                    observer.next(res.value);
+                    res.continue();
+                }
+                observer.complete();
+            };
+            req.onerror = (e) =&gt; observer.error(e.error);
+        });
+    }
+}
+</code></pre>
+<pre><code class="lang-javascript">describe(&#39;IndexedDBStorage: Class&#39;, () =&gt; {
+  let key1 = &#39;key1&#39;, key2 = &#39;key2&#39;;
+  let value1 = &#39;value1&#39;, value2 = &#39;value2&#39;;
+
+  it(&#39;should create empty storage&#39;, async(() =&gt; {
+    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test11&#39;).subscribe(() =&gt; {
+      storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+    });
+  }));
+
+  it(&#39;should save one item &#39;, async(() =&gt; {
+    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test2&#39;).subscribe(() =&gt; {
+      storage.put({ id: key1, value: value1 }).subscribe(() =&gt; {
+        storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeFalsy());
+      });
+    });
+  }));
+
+  it(&#39;should save/get one item&#39;, async(() =&gt; {
+    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test3&#39;).subscribe(() =&gt; {
+      let item = { id: key1, value: value1 };
+      storage.put(item).subscribe(() =&gt; {
+        storage.get(key1).subscribe(value =&gt; expect(value).toEqual(item));
+      });
+    });
+  }));
+
+  it(&#39;should save/get two items&#39;, async(() =&gt; {
+    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test4&#39;).subscribe(() =&gt; {
+      let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
+      storage.put(items[0])
+      .zip(storage.put(items[1]))
+      .subscribe(() =&gt; {
+          let i = 0;
+          storage.getDenseBatch([key1, key2]).subscribe(value =&gt; expect(value).toEqual(items[i++]));
+        });
+    });
+  }));
+
+  it(&#39;should clear saved items&#39;, async(() =&gt; {
+    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
+    storage.init(&#39;test5&#39;).subscribe(() =&gt; {
+      let items = [{id: key1, value: value1}, {id: key2, value: value2}];
+      storage.put(items[0])
+      .zip(storage.put(items[1]))
+      .subscribe(() =&gt; storage.clear()
+      .subscribe(() =&gt; {
+        storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+      }));
+    });
+  }));
+});
+</code></pre>
+
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//eapyl-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+    <script>
+hljs.initHighlighting();
+</script>
+
+</body>
+
+</html>

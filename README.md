@@ -16,6 +16,7 @@ Features:
 - Automatically sorting articles by date in the end of title of article.
 - MathJax(mathematical formulas) is supported;
 - Highlight for code is supported;
+- Google Analytics
 
 Used tools:
 - Visual Studio Code;
