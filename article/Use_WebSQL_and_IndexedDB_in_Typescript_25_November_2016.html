@@ -84,7 +84,7 @@ export interface IStorage&lt;T extends IItem&gt; {
     all(): Observable&lt;T&gt;;
 }
 </code></pre>
-<p>Here I am using <a href="http://reactivex.io/">rxjs</a> to handle results. IItem is an interface which should be saved, IStorage is interface for a specific storage.</p>
+<p>Here I am using <a href="http://reactivex.io/">rxjs</a> to handle results. IItem is an interface for items which we are saving, IStorage is an interface for a specific storage.</p>
 <h3 id="in-memory-implementation">In Memory implementation</h3>
 <p>A short example how to implement mentioned interface using in-memory array:</p>
 <pre><code class="lang-javascript">export class MemoryStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
@@ -176,6 +176,7 @@ export interface IStorage&lt;T extends IItem&gt; {
 });
 </code></pre>
 <h3 id="websql-implementation">WebSQL implementation</h3>
+<p>Current implementation just just for objects where key (string) is unique string value, value (string) is a payload.</p>
 <pre><code class="lang-javascript">export class WebSQLStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
     private db: Database;
     private databaseName: string = &#39;TripNoteDB&#39;;
@@ -359,153 +360,7 @@ export interface IStorage&lt;T extends IItem&gt; {
 });
 </code></pre>
 <h3 id="indexeddb-implementation">IndexedDB implementation</h3>
-<pre><code class="lang-javascript">export class IndexedDBStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
-    private db: IDBDatabase;
-    private databaseName: string = &#39;TripNoteDB&#39;;
-    private name: string;
-
-    init(name: string): Observable&lt;IndexedDBStorage&lt;T&gt;&gt; {
-        this.name = name;
-        return Observable.create((observer: Observer&lt;IndexedDBStorage&lt;T&gt;&gt;) =&gt; {
-            let req = window.indexedDB.open(this.databaseName, 1);
-            req.onerror = (e) =&gt; observer.error(e.error);
-            req.onupgradeneeded = (e) =&gt; {
-                this.db = (&lt;any&gt;e.target).result;
-                this.db.createObjectStore(this.name, {keyPath: &#39;id&#39;});
-                let trans = req.result;
-                trans.oncomplete = () =&gt; {
-                    observer.next(this);
-                    observer.complete();
-                };
-            };
-            req.onerror = function(e) {
-                observer.error(&#39;Can not create db&#39;);
-            };
-        });
-    }
-
-    all(): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            let req = this.db.transaction(this.name, &#39;readwrite&#39;).objectStore(this.name)
-                .openCursor();
-            req.onsuccess = (e) =&gt; {
-                this.db.close();
-                let res = (&lt;any&gt;event.target).result;
-                if (res) {
-                    observer.next(res.value);
-                    res.continue();
-                }
-                observer.complete();
-            };
-            req.onerror = (e) =&gt; observer.error(e.error);
-        });
-    }
-
-    get(key: string): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            let req = this.db.transaction(this.name).objectStore(this.name).get(key);
-            req.onerror = (e) =&gt; observer.error(e.error);
-            req.onsuccess = (e) =&gt; {
-                observer.next(req.result);
-                observer.complete();
-            };
-        });
-    }
-
-    clear() {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            let req = this.db.transaction(this.name, &#39;readwrite&#39;).objectStore(this.name).clear();
-            req.onerror = (e) =&gt; observer.error(e.error);
-            req.onsuccess = (e) =&gt; observer.complete();
-        });
-    }
-
-    put(value: T): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            let req = this.db.transaction(this.name, &#39;readwrite&#39;).objectStore(this.name).add(value, value.id);
-            req.onerror = (e) =&gt; observer.error(e.error);
-            req.onsuccess = (e) =&gt; {
-                observer.next(value);
-                observer.complete();
-            };
-        });
-    }
-
-    getDenseBatch(keys: string[]): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            let req = this.db.transaction(this.name, &#39;readwrite&#39;).objectStore(this.name)
-                .openCursor(keys);
-            req.onsuccess = (e) =&gt; {
-                this.db.close();
-                let res = (&lt;any&gt;event.target).result;
-                if (res) {
-                    observer.next(res.value);
-                    res.continue();
-                }
-                observer.complete();
-            };
-            req.onerror = (e) =&gt; observer.error(e.error);
-        });
-    }
-}
-</code></pre>
-<pre><code class="lang-javascript">describe(&#39;IndexedDBStorage: Class&#39;, () =&gt; {
-  let key1 = &#39;key1&#39;, key2 = &#39;key2&#39;;
-  let value1 = &#39;value1&#39;, value2 = &#39;value2&#39;;
-
-  it(&#39;should create empty storage&#39;, async(() =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init(&#39;test11&#39;).subscribe(() =&gt; {
-      storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
-    });
-  }));
-
-  it(&#39;should save one item &#39;, async(() =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init(&#39;test2&#39;).subscribe(() =&gt; {
-      storage.put({ id: key1, value: value1 }).subscribe(() =&gt; {
-        storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeFalsy());
-      });
-    });
-  }));
-
-  it(&#39;should save/get one item&#39;, async(() =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init(&#39;test3&#39;).subscribe(() =&gt; {
-      let item = { id: key1, value: value1 };
-      storage.put(item).subscribe(() =&gt; {
-        storage.get(key1).subscribe(value =&gt; expect(value).toEqual(item));
-      });
-    });
-  }));
-
-  it(&#39;should save/get two items&#39;, async(() =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init(&#39;test4&#39;).subscribe(() =&gt; {
-      let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
-      storage.put(items[0])
-      .zip(storage.put(items[1]))
-      .subscribe(() =&gt; {
-          let i = 0;
-          storage.getDenseBatch([key1, key2]).subscribe(value =&gt; expect(value).toEqual(items[i++]));
-        });
-    });
-  }));
-
-  it(&#39;should clear saved items&#39;, async(() =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init(&#39;test5&#39;).subscribe(() =&gt; {
-      let items = [{id: key1, value: value1}, {id: key2, value: value2}];
-      storage.put(items[0])
-      .zip(storage.put(items[1]))
-      .subscribe(() =&gt; storage.clear()
-      .subscribe(() =&gt; {
-        storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
-      }));
-    });
-  }));
-});
-</code></pre>
+<p>How to use IndexedDB is <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">here</a>.</p>
 
     </article>
     <div id="disqus_thread"></div>
