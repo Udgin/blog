@@ -58,20 +58,20 @@
     <article class="markdown-body">
         <h2 id="linear-regression-with-multiple-variables-27-november-2016">Linear Regression with Multiple Variables - 27 November, 2016</h2>
 <p>Hypothesis function looks like:</p>
-<p><code>h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \theta_3 x_3 + \cdots + \theta_n x_n</code></p>
+<p><code>\[h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \theta_3 x_3 + \cdots + \theta_n x_n\]</code></p>
 <p>Vectorized version:</p>
-<p><code>h_\theta(X) = X \theta</code></p>
+<p><code>\[h_\theta(X) = X \theta\]</code></p>
 <p>Vectorized version of cost function:</p>
-<p><code>J(\theta) = \dfrac {1}{2m} (X\theta - \vec{y})^{T} (X\theta - \vec{y})</code></p>
+<p><code>\[J(\theta) = \dfrac {1}{2m} (X\theta - \vec{y})^{T} (X\theta - \vec{y})\]</code></p>
 <p>Gradient descent:</p>
-<p><code>\begin{align*}&amp; \text{repeat until convergence:} \; \lbrace \newline \; &amp; \theta_j := \theta_j - \alpha \frac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_j^{(i)} \;  &amp; \text{for j := 0..n}\newline \rbrace\end{align*}</code></p>
+<p><code>\[\begin{align*}&amp; \text{repeat until convergence:} \; \lbrace \newline \; &amp; \theta_j := \theta_j - \alpha \frac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_j^{(i)} \;  &amp; \text{for j := 0..n}\newline \rbrace\end{align*}\]</code></p>
 <p>Vectorized version:</p>
-<p><code>\theta := \theta - \frac{\alpha}{m} X^{T} (X\theta - \vec{y})</code></p>
+<p><code>\[theta := \theta - \frac{\alpha}{m} X^{T} (X\theta - \vec{y})\]</code></p>
 <h3 id="feature-normalization">Feature Normalization</h3>
 <p>We can speed up gradient descent by having each of our input values in roughly the same range. This is because θ will descend quickly on small ranges and slowly on large ranges, and so will oscillate inefficiently down to the optimum when the variables are very uneven.</p>
 <p>Two techniques to help with this are feature scaling and mean normalization. Feature scaling involves dividing the input values by the range (i.e. the maximum value minus the minimum value) of the input variable, resulting in a new range of just 1. Mean normalization involves subtracting the average value for an input variable from the values for that input variable, resulting in a new average value for the input variable of just zero. To implement both of these techniques, adjust your input values as shown in this formula:</p>
-<p><code>x_i := \dfrac{x_i - \mu_i}{s_i}</code></p>
-<p>Where <code>μ_i</code> is the average of all the values for feature (i) and <code>s_i</code> is the range of values (max - min), or <code>s_i</code> is the standard deviation.</p>
+<p><code>\[x_i := \dfrac{x_i - \mu_i}{s_i}\]</code></p>
+<p>Where <code>\(μ_i\)</code> is the average of all the values for feature (i) and <code>\(s_i\)</code> is the range of values (max - min), or <code>\(s_i\)</code> is the standard deviation.</p>
 
     </article>
     <div id="disqus_thread"></div>
