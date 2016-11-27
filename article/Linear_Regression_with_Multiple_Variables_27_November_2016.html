@@ -72,6 +72,10 @@
 <p>Two techniques to help with this are feature scaling and mean normalization. Feature scaling involves dividing the input values by the range (i.e. the maximum value minus the minimum value) of the input variable, resulting in a new range of just 1. Mean normalization involves subtracting the average value for an input variable from the values for that input variable, resulting in a new average value for the input variable of just zero. To implement both of these techniques, adjust your input values as shown in this formula:</p>
 <p><code>\[x_i := \dfrac{x_i - \mu_i}{s_i}\]</code></p>
 <p>Where <code>\(μ_i\)</code> is the average of all the values for feature (i) and <code>\(s_i\)</code> is the range of values (max - min), or <code>\(s_i\)</code> is the standard deviation.</p>
+<h3 id="normal-equation">Normal Equation</h3>
+<p>The &quot;Normal Equation&quot; is a method of finding the optimum theta without iteration.</p>
+<p><code>\[\theta = (X^T X)^{-1}X^T y\]</code></p>
+<p>Basically it means that we are solving the equation to find minimum. Additional info is <a href="http://eli.thegreenplace.net/2014/derivation-of-the-normal-equation-for-linear-regression">here</a>.</p>
 
     </article>
     <div id="disqus_thread"></div>

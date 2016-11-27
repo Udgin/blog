@@ -30,6 +30,14 @@ Two techniques to help with this are feature scaling and mean normalization. Fea
 
 Where `\(μ_i\)` is the average of all the values for feature (i) and `\(s_i\)` is the range of values (max - min), or `\(s_i\)` is the standard deviation.
 
+### Normal Equation
+
+The "Normal Equation" is a method of finding the optimum theta without iteration.
+
+`\[\theta = (X^T X)^{-1}X^T y\]`
+
+Basically it means that we are solving the equation to find minimum. Additional info is [here](http://eli.thegreenplace.net/2014/derivation-of-the-normal-equation-for-linear-regression).
+
 ---
 ## Use WebSQL and IndexedDB in Typescript - 25 November, 2016
 
