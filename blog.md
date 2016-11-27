@@ -1,4 +1,4 @@
-## Octave Tutorial - 27 November, 2016
+## Octave Tutorial - 26 November, 2016
 ### Basic operations
 
 ```Octave
@@ -39,6 +39,7 @@ a
 
 %%  vectors and matrices
 A = [1 2; 3 4; 5 6]
+
 
 v = [1 2 3]
 v = [1; 2; 3]
@@ -247,7 +248,7 @@ y2 = x^3
 ```
 
 ---
-## Linear Regression with Multiple Variables - 27 November, 2016
+## Linear Regression with Multiple Variables - 24 November, 2016
 
 Hypothesis function looks like:
 
