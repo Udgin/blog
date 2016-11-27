@@ -1,4 +1,7 @@
 ## Octave Tutorial - 26 November, 2016
+
+Information is from this wonderful [course](https://www.coursera.org/learn/machine-learning/).
+
 ### Basic operations
 
 ```Octave
