@@ -1,4 +1,5 @@
 ## Octave Tutorial - 26 November, 2016
+Tags: octave
 
 Information is from this wonderful [course](https://www.coursera.org/learn/machine-learning/).
 
@@ -252,6 +253,7 @@ y2 = x^3
 
 ---
 ## Linear Regression with Multiple Variables - 24 November, 2016
+Tags: machine learning
 
 Hypothesis function looks like:
 
@@ -293,6 +295,7 @@ Basically it means that we are solving the equation to find minimum. Additional 
 
 ---
 ## Use WebSQL and IndexedDB in Typescript - 25 November, 2016
+Tags: webSQL, indexedDb, typescript
 
 More information about [IndexedDb](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) or [WebSQL](https://www.w3.org/TR/webdatabase/).
 
@@ -623,6 +626,7 @@ How to use IndexedDB is [here](https://developer.mozilla.org/en-US/docs/Web/API/
 
 ---
 ## Machine Learning Init. Linear Regression. Gradient Descent - 14 November, 2016
+Tags: machine learning
 
 The information is from this [course](https://www.coursera.org/learn/machine-learning/).
 
@@ -672,6 +676,7 @@ The gradient descent algorithm is:
 
 ---
 ## Xamarin Dev Days in Warsaw - 24 September, 2016
+Tags: xamarin, dev days
 
 Hi All, it is my overview of Xamarin Dev Days - short summary. Hope it will be useful to create an  impression what you can expect from this event.
 
@@ -839,6 +844,7 @@ There are a list of references and interesting information about Xamarin. Thank 
 
 ---
 ## GitVersion + TC - 04 February, 2016
+Tags: git
 
 GitVersion is the utility to set up version of deployed assemblies using information from Git.
 
@@ -857,6 +863,7 @@ Trigger:
 
 ---
 ## Notes from 'Introduction to Linux' - 21 May, 2015
+Tags: linux
 
 [course link](https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0)
 
@@ -894,6 +901,7 @@ Choosing a [Linux Distribution](https://en.wikipedia.org/wiki/Linux_distribution
 
 ---
 ## Task: Show information about types in tooltip - 01 November, 2014
+Tags: javascript
 
 The value of a point is the sum of values of types ('one', 'two').
 [Link](http://jsfiddle.net/yo4L215v/) - 26 December, 2014
@@ -946,6 +954,7 @@ $(function () {
 
 ---
 ## WinRT Checksum for large files - 29 September, 2014
+Tags: winRT, .net
 
 There is a good [question](http://stackoverflow.com/questions/13534334/how-to-compute-hash-md5-or-sha-of-a-large-file-with-c-sharp-in-windows-store-a) about this.
 
@@ -976,6 +985,7 @@ Also there is a code. I have used MD5 algorithm for my purposes.
 
 ---
 ## FuelUX Tree additional behavior - 14 July, 2014
+Tags: javascript
 
 Add "Show All" to the FuelUX Tree like this.
 
@@ -1001,6 +1011,7 @@ scope.find('#MyTree').on('selected', function (event, data) {
 
 ---
 ## Fixed header or column for HTML table using JQuery - 07 July, 2014
+Tags: javascript
 
 I have created one more plugin for HTML table. It fixes the head of a table on the page. [Please see it](https://bitbucket.org/upyl/fixedheader). The main feature is supporting of overflow parent element.
 
@@ -1014,6 +1025,7 @@ And another plugin https://bitbucket.org/upyl/fixedcolumn to fix column of table
 
 ---
 ## Light version of Monodruid - 04 June, 2014
+Tags: .net, xamarin
 
 I have created the light version of [MonoDroid Unit Testing framework](https://bitbucket.org/mayastudios/monodroid-unittest/wiki/Home).
 
@@ -1021,6 +1033,7 @@ Please [look](https://bitbucket.org/upyl/mono-unitetsting-light) and use if you 
 
 ---
 ## Bootstrap + Recaptcha. Css problem - 07 June, 2013
+Tags: bootstrap, javascript
 
 If you use bootstrap and recaptcha, you may face a problem like wrong padding|margin:
 
@@ -1034,12 +1047,15 @@ And all will be OK ! Enjoy!
 
 ---
 ## Bootstrap datepicker Week mode view - 28 July, 2013
+Tags: javascript, Bootstrap
+
 I have updated bootstrap datepicker to new view mode: week.
 
 The source code is [here](./../code/bootstrap-datepicker.js)
 
 ---
 ## ASP.NET MVC and Html.Hidden - 01 April, 2013
+Tags: .net, asp.net mvc
 
 There is interesting bug connected with Html.Hidden.
 There are two model:
@@ -1179,6 +1195,7 @@ private static void Main(string[] args)
 
 ---
 ## TFS Exclude binding from solution - 24 April, 2013
+Tags: TFS
 
 It is not easy command to unbind solution/project of TFS.
 
@@ -1195,6 +1212,7 @@ But there is manual actions to do that:
 
 ---
 ## Persistence.js insert empty values in web sql - 04 April, 2013
+Tags: javascript
 
 I am starting to work with persistence.js library and open the problem to me: it saves empty data to web sql
 
@@ -1209,6 +1227,7 @@ Thanks.
 
 ---
 ## Useful LINQ extensions - 26 April, 2013
+Tags: .net, linq
 
 After reading a lot of articles about this theme, I start to use the next [extensions](http://pastebin.com/As5as2pE)
 
@@ -1319,6 +1338,7 @@ Seems work fine:
 
 ---
 ## jQuery / Twitter Bootstrap List Tree Plugin Editable version - 20 April, 2013
+Tags: javascript, bootstrap, jquery
 
 JQuery / Twitter Bootstrap List Tree Plugin is a great plugin, but it does not allow to edit and sort tree elements. I have created an editable version of plugin: The view of tree:
 
@@ -1345,6 +1365,7 @@ Thank you
 
 ---
 ## Avoid "Ambiguous invocation" for extension methods - 14 September, 2012
+Tags: asp.net mvc
 
 I m using ASP.NET MVC. And work with my view, where I have the View 
 
@@ -1362,6 +1383,7 @@ So i just rebuild my view as
 
 ---
 ## API Facebook на С# - 28 September, 2012
+Tags: facebook, api
 
 I know there are a lot of information about working with Facebook API, but... I just think more information is better then less.
 
@@ -1585,6 +1607,7 @@ private string CreateStatus(Dictionary<string, string> values)
 
 ---
 ## ASP.NET MVC Bundle Minification - Not Found 404 - 06 September, 2012
+Tags: asp.net mvc
 
 If you try to add Bundle from Web.Optimization library to your existing project and your Web.config file
 
@@ -1630,6 +1653,7 @@ End Module
 
 ---
 ## PowerShell, Replace physical path of web sites in IIS7 - 17 July, 2012
+Tags: powershell
 
 ```PowerShell
 param([String]$numb)
@@ -1686,6 +1710,7 @@ Thanks!
 
 ---
 ## MVC indefinitely loads the page and call the controller cyclical - 31 January, 2012
+Tags: asp.net mvc
 
 I have found that the page load indefinitely. And the reason was I add @Html.RenderAction to my default layout.
 
@@ -1736,6 +1761,7 @@ app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathIn
 
 ---
 ## PowerShell How to ... ? - 9 December, 2011
+Tags: powershell
 
 1. How to set folder's permission?
 

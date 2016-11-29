@@ -28,6 +28,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             padding: 1rem;
             margin: 0.5rem;
             border: 1px solid black;
+            position: relative;
         }
         
         .markdown-body>*:first-child {
@@ -36,6 +37,21 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
         
         .markdown-body>*:last-child {
             margin-bottom: 0.5em !important;
+        }
+
+        article > div > div {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            flex-wrap: nowrap;
+            font-size: 0.6rem;
+        }
+
+        article > div > div > div {
+            border-top: 1px solid black;
+            border-left: 1px solid black;
+            padding: 0.08rem;
         }
     </style>
         <script>

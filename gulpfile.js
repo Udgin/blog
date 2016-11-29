@@ -7,11 +7,33 @@ var fs = require('fs');
 var articlePath = './article/';
 var tempPath = './temp/';
 
+var colours = ["#FFEC94", "#FFAEAE", "#FFF0AA", "#B0E57C", "#B4D8E7", "#56BAEC"];
+
+var allTags = [];
+var coloursIndex = 0;
+
 var mdFileNameToNormalName = {};
+var mdFileNameToTags = {};
 var createdDateToFileName = {};
 var createdDates = [];
 
 gulp.task('splitmarkdown', function () {
+    function readingTags(body, name){
+        var firstLineEnd = body.indexOf('\n');
+        var secondLine = body.substring(firstLineEnd+1, body.indexOf('\n', firstLineEnd+1)).replace(/^\s+|\s+$/g, '');
+        if (secondLine.indexOf('Tags: ') === 0) {
+            secondLine.substring(6).split(',').map(x=> x.replace(/^\s+|\s+$/g, '')).map(tag=>{
+                var tagObj = allTags.find(x=> x.Tag === tag);
+                if (!tagObj) {
+                    tagObj = {Tag: tag, Colour: colours[(coloursIndex++) % colours.length]};
+                    allTags.push(tagObj);
+                }
+                if (!mdFileNameToTags[name]) mdFileNameToTags[name] = [];
+                mdFileNameToTags[name].push(tagObj);
+            });
+        }
+
+    }
     fs.readdirSync(tempPath).forEach(function (file, index) {
         var curPath = tempPath + file;
         fs.unlinkSync(curPath);
@@ -20,10 +42,10 @@ gulp.task('splitmarkdown', function () {
     var bodies = body.split("---\n");
     var name = 0;
     bodies.map(function (val) {
-        var title = val.replace(/^\s+|\s+$/g, '');
+        var cleanBody = val.replace(/^\s+|\s+$/g, '');
 
-        var normalName = title
-            .substring(3, title.indexOf('\n'));
+        var normalName = cleanBody
+            .substring(3, cleanBody.indexOf('\n'));
 
         var splittedNormalName = normalName.split('- ');
         var createdDate = new Date(splittedNormalName[splittedNormalName.length - 1]);
@@ -36,6 +58,7 @@ gulp.task('splitmarkdown', function () {
 
         createdDateToFileName[createdDate] = nameOfFile;
         mdFileNameToNormalName[nameOfFile] = normalName;
+        readingTags(cleanBody, nameOfFile);
 
         fs.writeFileSync(tempPath + nameOfFile + '.md', val);
     });
@@ -79,7 +102,14 @@ gulp.task('indexBody', ['replaceArticle'], function () {
             var curPath = articlePath + file;
             var linkText = file.replace(/\.html$/g, '');
             if (mdFileNameToNormalName[linkText]) {
-                indexBodyArray[linkText] = '<div><a href="' + curPath + '">' + mdFileNameToNormalName[linkText] + '</a></div>';
+                var tagDivs = '<div>';
+                if (mdFileNameToTags[linkText]){
+                    for (var i =0; i < mdFileNameToTags[linkText].length; i++){
+                        tagDivs += '<div style="background-color:'+mdFileNameToTags[linkText][i].Colour+'">'+mdFileNameToTags[linkText][i].Tag+'</div>';
+                    }
+                }
+                tagDivs += '</div>';
+                indexBodyArray[linkText] = '<div><a href="' + curPath + '">' + mdFileNameToNormalName[linkText] + '</a>'+tagDivs+'</div>';
             }
         }
     });
