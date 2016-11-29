@@ -2304,6 +2304,7 @@ See please [ChatBuilder](https://drive.google.com/file/d/0BwVmorgjT-W1YzVhNmNmYz
 
 ---
 ## Use LogParser - 5 May, 2011
+Tags: .net
 
 1. Download LogParser 2.2.
 2. C:\>tlbimp LogParser.dll /out:Interop.MSUtil.dll
@@ -2386,6 +2387,7 @@ if (dates.Count > 0 && dates.Count == values.Count)
 
 ---
 ## Sniffer of TCP packets - 10 February, 2011
+Tags: .net
 
 Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.
 
@@ -2797,6 +2799,7 @@ Initially, we choose to do all the settings using a simple SQL query.        els
 
 ---
 ## Linq and Group - 16 November, 2010
+Tags: linq
 
 Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
 
