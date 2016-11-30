@@ -334,7 +334,7 @@ Here I am using [rxjs](http://reactivex.io/) to handle results. IItem is an inte
 
 A short example how to implement mentioned interface using in-memory array:
 
-```typescript
+```javascript
 export class MemoryStorage<T extends IItem> implements IStorage<T> {
     private storage: { [key: string]: T } = {};
 
@@ -371,7 +371,7 @@ export class MemoryStorage<T extends IItem> implements IStorage<T> {
 
 Simple implementation of IItem:
 
-```typescript
+```javascript
 class TestKeyValue implements IItem {
   public id: string;
   public value: string;
@@ -380,7 +380,7 @@ class TestKeyValue implements IItem {
 
 Unit tests for MemoryStorage:
 
-```typescript
+```javascript
 describe('MemoryStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
@@ -434,7 +434,7 @@ describe('MemoryStorage: Class', () => {
 
 Current implementation just just for objects where key (string) is unique string value, value (string) is a payload.
 
-```typescript
+```javascript
 export class WebSQLStorage<T extends IItem> implements IStorage<T> {
     private db: Database;
     private databaseName: string = 'TripNoteDB';
@@ -557,7 +557,7 @@ export class WebSQLStorage<T extends IItem> implements IStorage<T> {
 }
 ```
 
-```typescript
+```javascript
 describe('WebSQLStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
@@ -625,7 +625,7 @@ describe('WebSQLStorage: Class', () => {
 How to use IndexedDB is [here](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB).
 There is very useful [tricks](https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb).
 
-```typescript
+```javascript
 export class IndexedDBStorage<T extends IItem> implements IStorage<T> {
     private databaseName: string = 'TripNoteDB';
     private name: string;
@@ -778,7 +778,7 @@ export class IndexedDBStorage<T extends IItem> implements IStorage<T> {
 
 Unit tests for indexedDB:
 
-```typescript
+```javascript
 describe('IndexedDBStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
