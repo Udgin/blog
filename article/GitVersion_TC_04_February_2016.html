@@ -15,6 +15,7 @@
             max-width: 980px;
             margin: 0 auto;
             padding: 45px;
+            transition: 2s background, color;
         }
         
         code.has-jax {
@@ -22,6 +23,14 @@
             font-size: 100%;
             background: inherit;
             border: inherit;
+        }
+        .night {
+            filter: invert(100%);
+        }
+        
+        .night body {
+            background: #151515;
+            color: #fff
         }
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
@@ -82,5 +91,19 @@ hljs.initHighlighting();
 </script>
 
 </body>
+    <script>
+function callEveryHour() {
+    setInterval(timeCheck(), 1000 * 60 * 60);
+}
+var currentTime = new Date().getHours();
 
+function timeCheck() {
+    if (currentTime > 18 || currentTime < 6) {
+      document.documentElement.classList.add('night');
+    } else {
+        document.documentElement.classList.remove('night');
+    }
+}
+timeCheck();
+</script>
 </html>

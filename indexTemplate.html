@@ -17,6 +17,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             max-width: 980px;
             margin: 0 auto;
             padding: 45px;
+            transition: 2s background, color;
         }
         
         article {
@@ -53,6 +54,15 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             border-left: 1px solid black;
             padding: 0.08rem;
         }
+                
+        .night {
+            filter: invert(100%);
+        }
+        
+        .night body {
+            background: #151515;
+            color: #fff
+        }
     </style>
         <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -74,5 +84,19 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
     <h1 class="markdown-body"><a href="https://udginpyl.azurewebsites.net/">Contact me</a></h1>
 
 </body>
+    <script>
+function callEveryHour() {
+    setInterval(timeCheck(), 1000 * 60 * 60);
+}
+var currentTime = new Date().getHours();
 
+function timeCheck() {
+    if (currentTime > 18 || currentTime < 6) {
+      document.documentElement.classList.add('night');
+    } else {
+        document.documentElement.classList.remove('night');
+    }
+}
+timeCheck();
+</script>
 </html>
