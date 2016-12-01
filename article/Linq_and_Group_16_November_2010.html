@@ -155,9 +155,9 @@ hljs.initHighlighting();
 function callEveryHour() {
     setInterval(timeCheck(), 1000 * 60 * 60);
 }
-var currentTime = new Date().getHours();
 
 function timeCheck() {
+    var currentTime = new Date().getHours();
     if (currentTime > 18 || currentTime < 6) {
       document.documentElement.classList.add('night');
     } else {
