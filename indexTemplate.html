@@ -64,6 +64,15 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             background: #151515;
             color: #fff
         }
+
+        .theme {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2rem;
+            width: 2rem;
+            background-color: #151515;
+        }
     </style>
         <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -78,6 +87,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
 </head>
 
 <body>
+    <div class="theme"></div>
     <h1 class="markdown-body"><a href="https://www.linkedin.com/in/eugenepyl">Eugene Pyl</a> - Notes</h1>
     <article class="markdown-body">
         {BODY}
@@ -85,19 +95,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
     <h1 class="markdown-body"><a href="https://udginpyl.azurewebsites.net/">Contact me</a></h1>
 
 </body>
-    <script>
-function callEveryHour() {
-    setInterval(timeCheck(), 1000 * 60 * 60);
-}
-
-function timeCheck() {
-    var currentTime = new Date().getHours();
-    if (currentTime > 18 || currentTime < 6) {
-      document.documentElement.classList.add('night');
-    } else {
-        document.documentElement.classList.remove('night');
-    }
-}
-timeCheck();
+<script>
+    document.querySelector('div.theme').onclick = () =>  document.documentElement.classList.toggle('night');
 </script>
 </html>

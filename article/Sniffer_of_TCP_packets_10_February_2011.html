@@ -33,6 +33,15 @@
             background: #151515;
             color: #fff
         }
+
+        .theme {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2rem;
+            width: 2rem;
+            background-color: #151515;
+        }
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/x-mathjax-config">
@@ -65,6 +74,7 @@
 </head>
 
 <body>
+    <div class="theme"></div>
     <article class="markdown-body">
         <h2 id="sniffer-of-tcp-packets-10-february-2011">Sniffer of TCP packets - 10 February, 2011</h2>
 <p>Tags: .net</p>
@@ -474,21 +484,8 @@ s.setAttribute('data-timestamp', +new Date());
     <script>
 hljs.initHighlighting();
 </script>
-
-</body>
-    <script>
-function callEveryHour() {
-    setInterval(timeCheck(), 1000 * 60 * 60);
-}
-
-function timeCheck() {
-    var currentTime = new Date().getHours();
-    if (currentTime > 18 || currentTime < 6) {
-      document.documentElement.classList.add('night');
-    } else {
-        document.documentElement.classList.remove('night');
-    }
-}
-timeCheck();
+<script>
+    document.querySelector('div.theme').onclick = () =>  document.documentElement.classList.toggle('night');
 </script>
+</body>
 </html>

@@ -33,6 +33,15 @@
             background: #151515;
             color: #fff
         }
+
+        .theme {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2rem;
+            width: 2rem;
+            background-color: #151515;
+        }
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/x-mathjax-config">
@@ -65,6 +74,7 @@
 </head>
 
 <body>
+    <div class="theme"></div>
     <article class="markdown-body">
         <h2 id="style-cop-i-don-t-like-sa-1201-8-december-2011">Style Cop / I don&#39;t like SA 1201 - 8 December, 2011</h2>
 <p><a href="">StyleCop</a> is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...</p>
@@ -109,21 +119,8 @@ s.setAttribute('data-timestamp', +new Date());
     <script>
 hljs.initHighlighting();
 </script>
-
-</body>
-    <script>
-function callEveryHour() {
-    setInterval(timeCheck(), 1000 * 60 * 60);
-}
-
-function timeCheck() {
-    var currentTime = new Date().getHours();
-    if (currentTime > 18 || currentTime < 6) {
-      document.documentElement.classList.add('night');
-    } else {
-        document.documentElement.classList.remove('night');
-    }
-}
-timeCheck();
+<script>
+    document.querySelector('div.theme').onclick = () =>  document.documentElement.classList.toggle('night');
 </script>
+</body>
 </html>

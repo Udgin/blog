@@ -33,6 +33,15 @@
             background: #151515;
             color: #fff
         }
+
+        .theme {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2rem;
+            width: 2rem;
+            background-color: #151515;
+        }
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/x-mathjax-config">
@@ -65,6 +74,7 @@
 </head>
 
 <body>
+    <div class="theme"></div>
     <article class="markdown-body">
         <h2 id="tfs-delete-team-project-30-january-2013">TFS Delete Team Project - 30 January, 2013</h2>
 <p>It is not so easy to find the steps to delete project from TFS.</p>
@@ -86,21 +96,8 @@ s.setAttribute('data-timestamp', +new Date());
     <script>
 hljs.initHighlighting();
 </script>
-
-</body>
-    <script>
-function callEveryHour() {
-    setInterval(timeCheck(), 1000 * 60 * 60);
-}
-
-function timeCheck() {
-    var currentTime = new Date().getHours();
-    if (currentTime > 18 || currentTime < 6) {
-      document.documentElement.classList.add('night');
-    } else {
-        document.documentElement.classList.remove('night');
-    }
-}
-timeCheck();
+<script>
+    document.querySelector('div.theme').onclick = () =>  document.documentElement.classList.toggle('night');
 </script>
+</body>
 </html>
