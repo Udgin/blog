@@ -90,7 +90,8 @@ gulp.task('replaceArticle', ['markdownv2'], function () {
         if (file.endsWith('html')) {
             var curPath = tempPath + file;
             var val = fs.readFileSync(curPath, 'utf8');
-            fs.writeFileSync(articlePath + file, template.replace(/\{BODY\}/g, val));
+            fs.writeFileSync(articlePath + file, template.replace(/\{BODY\}/g, val)
+                .replace(/\{PAGE_TITLE\}/g, mdFileNameToNormalName[file.replace('.html', '')]));
         }
     });
 });
