@@ -16,7 +16,7 @@
             max-width: 980px;
             margin: 0 auto;
             padding: 45px;
-            background-color: #FCFCFC;
+            background-color: #fcfcfc;
         }
         
         code.has-jax {
@@ -25,23 +25,12 @@
             background: inherit;
             border: inherit;
         }
-        .night {
-            filter: invert(100%);
-        }
+       
         
         .night body {
-            background: #151515;
-            color: #fff
+            background: #fffedd;
         }
 
-        .theme {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 2rem;
-            width: 2rem;
-            background-color: #151515;
-        }
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/x-mathjax-config">
@@ -74,7 +63,6 @@
 </head>
 
 <body>
-    <div class="theme"></div>
     <article class="markdown-body">
         <h2 id="wcf-response-without-root-element-21-june-2011">WCF/ Response without root element - 21 June, 2011</h2>
 <p>Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service should expose 1 operation (let it be &quot;GetResponse_1&quot;) with the following structure (just an example, please combine schema for the service):</p>
@@ -108,7 +96,16 @@ s.setAttribute('data-timestamp', +new Date());
 hljs.initHighlighting();
 </script>
 <script>
-    document.querySelector('div.theme').onclick = () =>  document.documentElement.classList.toggle('night');
+function timeCheck() {
+    var currentTime = new Date().getHours();
+    if (currentTime > 18 || currentTime < 6) {
+        document.documentElement.classList.add('night');
+    } else {
+        document.documentElement.classList.remove('night');
+    }
+}
+timeCheck();
+setInterval(timeCheck(), 1000 * 60 * 60);
 </script>
 </body>
 </html>

@@ -16,7 +16,7 @@
             max-width: 980px;
             margin: 0 auto;
             padding: 45px;
-            background-color: #FCFCFC;
+            background-color: #fcfcfc;
         }
         
         code.has-jax {
@@ -25,23 +25,12 @@
             background: inherit;
             border: inherit;
         }
-        .night {
-            filter: invert(100%);
-        }
+       
         
         .night body {
-            background: #151515;
-            color: #fff
+            background: #fffedd;
         }
 
-        .theme {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 2rem;
-            width: 2rem;
-            background-color: #151515;
-        }
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/x-mathjax-config">
@@ -74,7 +63,6 @@
 </head>
 
 <body>
-    <div class="theme"></div>
     <article class="markdown-body">
         <h2 id="style-cop-i-don-t-like-sa-1201-8-december-2011">Style Cop / I don&#39;t like SA 1201 - 8 December, 2011</h2>
 <p><a href="">StyleCop</a> is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...</p>
@@ -120,7 +108,16 @@ s.setAttribute('data-timestamp', +new Date());
 hljs.initHighlighting();
 </script>
 <script>
-    document.querySelector('div.theme').onclick = () =>  document.documentElement.classList.toggle('night');
+function timeCheck() {
+    var currentTime = new Date().getHours();
+    if (currentTime > 18 || currentTime < 6) {
+        document.documentElement.classList.add('night');
+    } else {
+        document.documentElement.classList.remove('night');
+    }
+}
+timeCheck();
+setInterval(timeCheck(), 1000 * 60 * 60);
 </script>
 </body>
 </html>

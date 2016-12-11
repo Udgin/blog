@@ -18,7 +18,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             max-width: 980px;
             margin: 0 auto;
             padding: 45px;
-            background-color: #FCFCFC;
+            background-color: #fcfcfc;
         }
         
         article {
@@ -55,23 +55,9 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             border-left: 1px solid black;
             padding: 0.08rem;
         }
-                
-        .night {
-            filter: invert(100%);
-        }
         
         .night body {
-            background: #151515;
-            color: #fff
-        }
-
-        .theme {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 2rem;
-            width: 2rem;
-            background-color: #151515;
+            background: #fffedd;
         }
     </style>
         <script>
@@ -87,7 +73,6 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
 </head>
 
 <body>
-    <div class="theme"></div>
     <h1 class="markdown-body"><a href="https://www.linkedin.com/in/eugenepyl">Eugene Pyl</a> - Notes</h1>
     <article class="markdown-body">
         {BODY}
@@ -96,6 +81,15 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
 
 </body>
 <script>
-    document.querySelector('div.theme').onclick = () =>  document.documentElement.classList.toggle('night');
+function timeCheck() {
+    var currentTime = new Date().getHours();
+    if (currentTime > 18 || currentTime < 6) {
+        document.documentElement.classList.add('night');
+    } else {
+        document.documentElement.classList.remove('night');
+    }
+}
+timeCheck();
+setInterval(timeCheck(), 1000 * 60 * 60);
 </script>
 </html>
