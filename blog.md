@@ -1,4 +1,4 @@
-## Implementing async.queue using rxjs
+## Implementing async.queue using rxjs - 18 December, 2016
 Tags: rxjs, javascript, async.js
 
 There is an example of queue using rxjs:
