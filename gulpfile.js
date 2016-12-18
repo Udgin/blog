@@ -103,14 +103,17 @@ gulp.task('indexBody', ['replaceArticle'], function () {
             var curPath = articlePath + file;
             var linkText = file.replace(/\.html$/g, '');
             if (mdFileNameToNormalName[linkText]) {
-                var tagDivs = '<div>';
+                var tagDivs = '<div class="tag">';
                 if (mdFileNameToTags[linkText]){
                     for (var i =0; i < mdFileNameToTags[linkText].length; i++){
                         tagDivs += '<div style="background-color:'+mdFileNameToTags[linkText][i].Colour+'">'+mdFileNameToTags[linkText][i].Tag+'</div>';
                     }
                 }
                 tagDivs += '</div>';
-                indexBodyArray[linkText] = '<div><a href="' + curPath + '">' + mdFileNameToNormalName[linkText] + '</a>'+tagDivs+'</div>';
+
+                var normalName = mdFileNameToNormalName[linkText].split(" - ")[0];
+                var date = mdFileNameToNormalName[linkText].split(" - ")[1];
+                indexBodyArray[linkText] = '<div><div class="date">'+ date +'</div><a href="' + curPath + '">' + normalName + '</a>'+tagDivs+'</div>';
             }
         }
     });

@@ -41,7 +41,16 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             margin-bottom: 0.5em !important;
         }
 
-        article > div > div {
+        article > div > div.date {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 0.6rem;
+            border-bottom: 1px solid black;
+            border-right: 1px solid black;
+        }
+
+        article > div > div.tag {
             position: absolute;
             bottom: 0;
             right: 0;
@@ -50,7 +59,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             font-size: 0.6rem;
         }
 
-        article > div > div > div {
+        article > div > div.tag > div {
             border-top: 1px solid black;
             border-left: 1px solid black;
             padding: 0.08rem;
