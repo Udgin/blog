@@ -25,7 +25,6 @@
             background: inherit;
             border: inherit;
         }
-       
         
         .night body {
             background: #fffedd;
@@ -374,7 +373,7 @@ export interface IStorage&lt;T extends IItem&gt; {
 </code></pre>
 <h3 id="indexeddb-implementation">IndexedDB implementation</h3>
 <p>How to use IndexedDB is <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">here</a>.
-There is very useful <a href="https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb">tricks</a>.</p>
+There are very useful <a href="https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb">tricks</a>.</p>
 <pre><code class="lang-javascript">export class IndexedDBStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
     private databaseName: string = &#39;TripNoteDB&#39;;
     private name: string;

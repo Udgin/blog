@@ -842,7 +842,7 @@ describe('WebSQLStorage: Class', () => {
 ### IndexedDB implementation
 
 How to use IndexedDB is [here](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB).
-There is very useful [tricks](https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb).
+There are very useful [tricks](https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb).
 
 ```javascript
 export class IndexedDBStorage<T extends IItem> implements IStorage<T> {
