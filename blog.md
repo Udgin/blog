@@ -1,3 +1,35 @@
+## Simple question to check understanding of recursion in .NET - 19 December, 2016
+Tags: C#, interview, dotnet
+
+There is the next code:
+
+```csharp
+public static void Main(string[] args) {
+    Test();
+    Console.WriteLine("Done");
+    Console.Read();
+}
+
+public static int Test(int index = 0) {
+    if (index > 100) return index;
+    try {
+        for (var i=0; i< 10; i++) {
+            index++;
+        }
+    }
+    catch {
+        Console.Write("Error");
+    }
+    for (var j = 1; j < 10; j++)
+        Test(index);
+    return index;
+}
+
+```
+
+Is it working? If not, what is the problem ?
+
+---
 ## Implementing async.queue using rxjs - 18 December, 2016
 Tags: rxjs, javascript, async.js
 
