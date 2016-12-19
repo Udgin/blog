@@ -49,6 +49,12 @@ gulp.task('splitmarkdown', function () {
 
         var splittedNormalName = normalName.split('- ');
         var createdDate = new Date(splittedNormalName[splittedNormalName.length - 1]);
+        createdDate.setHours(23);
+        while (createdDates.some(x => x.toLocaleString() == createdDate.toLocaleString()))
+        {
+            createdDate.setHours(createdDate.getHours() - 1);
+        }
+        
         createdDates.push(createdDate);
 
         var nameOfFile = normalName
