@@ -42,7 +42,7 @@ Links:
 * [How to create a permanent “alias”?](http://askubuntu.com/questions/1414/how-to-create-a-permanent-alias#5278)
 
 ---
-## Simple question to check understanding of recursion in .NET - 18 December, 2016
+## Simple question to check understanding of recursion in .NET - 19 December, 2016
 Tags: C#, interview, dotnet
 
 There is the next code:
