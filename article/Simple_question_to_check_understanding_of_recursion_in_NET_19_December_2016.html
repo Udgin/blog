@@ -46,13 +46,11 @@
 <p>Tags: C#, interview, dotnet</p>
 <p>There is the next code:</p>
 <pre><code class="lang-csharp">public static void Main(string[] args) {
-    Test();
-    Console.WriteLine(&quot;Done&quot;);
-    Console.Read();
+    Console.WriteLine(Test());
 }
 
 public static int Test(int index = 0) {
-    if (index &gt; 100) return index;
+    if (index &gt; 10) return 0;
     try {
         for (var i=0; i&lt; 10; i++) {
             index++;
@@ -62,11 +60,11 @@ public static int Test(int index = 0) {
         Console.Write(&quot;Error&quot;);
     }
     for (var j = 1; j &lt; 10; j++)
-        Test(index);
+        index += Test(index);
     return index;
 }
 </code></pre>
-<p>Is it working? If not, what is the problem ?</p>
+<p>Is it working? What is the output?</p>
 
     </article>
     <div id="disqus_thread"></div>

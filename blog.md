@@ -5,13 +5,11 @@ There is the next code:
 
 ```csharp
 public static void Main(string[] args) {
-    Test();
-    Console.WriteLine("Done");
-    Console.Read();
+    Console.WriteLine(Test());
 }
 
 public static int Test(int index = 0) {
-    if (index > 100) return index;
+    if (index > 10) return 0;
     try {
         for (var i=0; i< 10; i++) {
             index++;
@@ -21,13 +19,13 @@ public static int Test(int index = 0) {
         Console.Write("Error");
     }
     for (var j = 1; j < 10; j++)
-        Test(index);
+        index += Test(index);
     return index;
 }
 
 ```
 
-Is it working? If not, what is the problem ?
+Is it working? What is the output?
 
 ---
 ## Implementing async.queue using rxjs - 18 December, 2016
