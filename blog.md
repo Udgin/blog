@@ -1,4 +1,48 @@
-## Simple question to check understanding of recursion in .NET - 19 December, 2016
+## Add dotnet command to alias of bash - 19 December, 2016
+Tags: bash, ubuntu, dotnet
+
+### Dotnet commands
+I am using sample application created by `dotnet run`.
+
+To run dotnet core application on Ubuntu with **compilation**:
+
+```
+dotnet run -p {pathToFolderWithProjectJson} -- {arguments}
+```
+
+To run compiled application:
+
+```
+dotnet {pathToCompiledDll} {arguments}
+```
+where `pathToCompiledDll` is a path to dll (it is in `/bin/Debug/netcoreapp1.1/` be default).
+
+### Bash commands
+
+To add dotnet alias (shortcut) to bash set of commands:
+
+```
+nano ~/.bash_aliases
+```
+
+And you need to add the next line to this file (bash_aliases):
+
+```
+alias helloWorld="dotnet run -p ~/projects/helloWorld -- ~/Peter"
+```
+where 
+* ~/projects/helloWorld is path to the project;
+* ~/Peter is an argument passed to the application;
+
+Now you are able to run `helloWorld` in bash terminal after restarting it. You should see *Hello World*.
+
+Links:
+* [How do I create shortcut commands in the Ubuntu terminal?](http://stackoverflow.com/questions/5658781/how-do-i-create-shortcut-commands-in-the-ubuntu-terminal)
+* [dotnet run](https://docs.microsoft.com/en-us/dotnet/articles/core/tools/dotnet-run)
+* [How to create a permanent “alias”?](http://askubuntu.com/questions/1414/how-to-create-a-permanent-alias#5278)
+
+---
+## Simple question to check understanding of recursion in .NET - 18 December, 2016
 Tags: C#, interview, dotnet
 
 There is the next code:
