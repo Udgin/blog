@@ -1,4 +1,4 @@
-## InfluxDB can't start service - 21 December, 2016
+## InfluxDB can't be started as a service - 21 December, 2016
 Tags: influxdb, ubuntu
 
 I was not able to run influxdb as a service after [installing](https://docs.influxdata.com/influxdb/v1.1/introduction/installation/) influxdb on my local ubuntu:
