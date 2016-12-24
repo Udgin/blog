@@ -1,4 +1,4 @@
-## Белорусский chat.by в Discord, общение и знакомство - 22 December, 2016
+## Discord Belarus chat By - 22 December, 2016
 Tags: chat, by, minsk, belarus, discord
 
 Приглашаю всех присоединиться к белорусскому серверу в Discrod - **чату**, который позволит пообщаться и познакомиться!
