@@ -10,7 +10,7 @@ Tags: chat, by, minsk, belarus, discord
 На данный момент этот сервер не очень известен и популярен, но, надеюсь, общими усилиями мы сделаем его приятным и интересным местом для нас всех! Заранее спасибо!
 
 С уважением,  
-Discrod Chat By
+Discord Chat By
 
 ---
 ## InfluxDB can't be started as a service - 21 December, 2016
