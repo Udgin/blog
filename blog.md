@@ -1,3 +1,6 @@
+## Optimization Objective
+
+---
 ## Applying machine learning - 27 December, 2016
 Tags: machine learning
 
