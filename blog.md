@@ -43,9 +43,6 @@ High bias is underfitting and high variance is overfitting.
 
 ![image](../images/features-and-polynom-degree-fix2.png)
 
-More info:
-[https://www.coursera.org/learn/machine-learning](https://www.coursera.org/learn/machine-learning)
-
 In order to choose the model and the regularization λ, we need:
 
 1. Create a list of lambda (i.e. λ∈{0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24});
@@ -114,6 +111,9 @@ A better way is to compute the F Score (or F1 score):
 `\[\text{F Score} = 2\dfrac{PR}{P + R}\]`
 
 In order for the F Score to be large, both precision and recall must be large. We want to train precision and recall on the cross validation set so as not to bias our test set.
+
+More info:
+[https://www.coursera.org/learn/machine-learning](https://www.coursera.org/learn/machine-learning)
 
 ---
 ## Discord Belarus chat By - 22 December, 2016
