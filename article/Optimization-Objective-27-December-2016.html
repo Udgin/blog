@@ -50,6 +50,55 @@
     <article class="markdown-body">
         <h2 id="optimization-objective-27-december-2016">Optimization Objective - 27 December, 2016</h2>
 <p>The Support Vector Machine (SVM) is yet another type of supervised machine learning algorithm. It is sometimes cleaner and more powerful.</p>
+<h3 id="cost-function">Cost function</h3>
+<p><code>\(\text{cost}_1(z)\)</code> and <code>\(\text{cost}_0(z)\)</code> (respectively, note that <code>\(\text{cost}_1(z)\)</code> is the cost for classifying when y=1, and <code>\(\text{cost}_0(z)\)</code> is the cost for classifying when y=0)</p>
+<p><img src="../images/Svm_hing.png" alt="image">
+<img src="../images/Svm_hinge_negative_class.png" alt="image"></p>
+<p><code>\[J(\theta) = C\sum_{i=1}^m y^{(i)} \ \text{cost}_1(\theta^Tx^{(i)}) + (1 - y^{(i)}) \ \text{cost}_0(\theta^Tx^{(i)}) + \dfrac{1}{2}\sum_{j=1}^n \Theta^2_j\]</code></p>
+<p>Note that the hypothesis of the Support Vector Machine is not interpreted as the probability of y being 1 or 0 (as it is for the hypothesis of logistic regression). Instead, it outputs either 1 or 0. (In technical terms, it is a discriminant function.)</p>
+<p><code>\[h_\theta(x) =\begin{cases}    1 &amp; \text{if} \ \Theta^Tx \geq 0 \\    0 &amp; \text{otherwise}\end{cases}\]</code></p>
+<h3 id="large-margin-intuition">Large Margin Intuition</h3>
+<p>A useful way to think about Support Vector Machines is to think of them as Large Margin Classifiers.</p>
+<ul>
+<li>If y=1, we want <code>\(\Theta^Tx \geq 1\)</code> (not just ≥0)</li>
+<li>If y=0, we want <code>\(\Theta^Tx \leq -1\)</code> (not just &lt;0)</li>
+</ul>
+<p>In SVMs, the decision boundary has the special property that it is as far away as possible from both the positive and the negative examples.</p>
+<p>This large margin is only achieved when C is very large. Data is linearly separable when a straight line can separate the positive and negative examples. If we have outlier examples that we don&#39;t want to affect the decision boundary, then we can reduce C. Increasing and decreasing C is similar to respectively decreasing and increasing λ, and can simplify our decision boundary.</p>
+<h3 id="kernels">Kernels</h3>
+<p>Kernels allow us to make complex, non-linear classifiers using Support Vector Machines.</p>
+<p><code>\[f_i = similarity(x, l^{(i)}) = \exp(-\dfrac{||x - l^{(i)}||^2}{2\sigma^2})\]</code></p>
+<p>This &quot;similarity&quot; function is called a Gaussian Kernel. It is a specific example of a kernel.</p>
+<p>If <code>\(x \approx l^{(i)}\)</code>, then <code>\(f_i = \exp(-\dfrac{\approx 0^2}{2\sigma^2}) \approx 1\)</code>
+If x is far from <code>\(l^{(i)}\)</code>, then <code>\(f_i = \exp(-\dfrac{(large\ number)^2}{2\sigma^2}) \approx 0\)</code></p>
+<p>One way to get the landmarks is to put them in the exact same locations as all the training examples. This gives us m landmarks, with one landmark per training example.</p>
+<p>Using kernels to generate f(i) is not exclusive to SVMs and may also be applied to logistic regression. However, because of computational optimizations on SVMs, kernels combined with SVMs is much faster than with other algorithms, so kernels are almost always found combined only with SVMs.</p>
+<h3 id="choosing-svm-parameters">Choosing SVM Parameters</h3>
+<ul>
+<li>If C is large, then we get higher variance/lower bias</li>
+<li><p>If C is small, then we get lower variance/higher bias</p>
+</li>
+<li><p>With a large <code>\(σ^2\)</code>, the features fi vary more smoothly, causing higher bias and lower variance.</p>
+</li>
+<li>With a small <code>\(σ^2\)</code>, the features fi vary less smoothly, causing lower bias and higher variance.</li>
+</ul>
+<h3 id="using-an-svm">Using An SVM</h3>
+<ul>
+<li>Choice of parameter C</li>
+<li>Choice of kernel (similarity function)</li>
+<li>No kernel (&quot;linear&quot; kernel) -- gives standard linear classifier</li>
+<li>Choose when n is large and when m is small</li>
+<li>Gaussian Kernel (above) -- need to choose σ2</li>
+<li>Choose when n is small and m is large</li>
+</ul>
+<h3 id="logistic-regression-vs-svms">Logistic Regression vs. SVMs</h3>
+<ul>
+<li>If n is large (relative to m), then use logistic regression, or SVM without a kernel (the &quot;linear kernel&quot;)</li>
+<li>If n is small and m is intermediate, then use SVM with a Gaussian Kernel</li>
+<li>If n is small and m is large, then manually create/add more features, then use logistic regression or SVM without a kernel.
+In the first case, we don&#39;t have enough examples to need a complicated polynomial hypothesis. In the second example, we have enough examples that we may need a complex non-linear hypothesis. In the last case, we want to increase our features so that logistic regression becomes applicable.</li>
+</ul>
+<p><strong>Note</strong>: a neural network is likely to work well for any of these situations, but may be slower to train.</p>
 <p>More info:
 <a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
 
