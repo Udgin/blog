@@ -3,13 +3,13 @@ Tags: english
 
 ### Crime stuff
 
-* Proximity
+* proximity
 > The state, quality, sense, or fact of being near or next; closeness: "Swift's major writings have a proximity and a relevance that is splendidly invigorating" (M.D. Aeschliman).
-* Robbery
+* robbery
 > The act or an instance of unlawfully taking the property of another by the use of violence or intimidation. "He committed dozens of armed robberies."
-* Burglary
+* burglary
 > The act of entering another's premises without authorization in order to commit a crime, such as theft. An instance of this: There were 10 burglaries in the area last month.
-* Fraud
+* fraud
 >  A deception practiced in order to induce another to give up possession of property or surrender a right. A piece of trickery; a trick.
 * get away with something
 >  escape without any penalty
