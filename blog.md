@@ -1,3 +1,28 @@
+## English minute - 12 January, 2017
+Tags: english
+
+* gook
+> A derrogatory term used for the purpose of describing a korean.
+* chink
+> A racist term used to describe the Chinese.
+* Honky Cracker
+> A word used to describe a piggy ugly ass racist white muthafucking person.
+> woman: KKK muthafucker told us to get the fuck out of here!
+> man: Oh shit that honky cracker is muthafucker.
+* wet backer
+> A racial term for someone who swims in order to get to another country. Most commonly used towards Mexicans who swim to America, but may also refer to the Vietnamese who swim to Hong Kong during the Vietnam War to escape from Ho Chi Minh.
+> The wet backer has some crazy arms from all that swimming.
+* Spik
+> Actually "Spik" is derived from the Mexicans themselves. The ones who can't speak very good english would say "no spika da english". So Americans began calling them Spiks.
+* wop
+> An epithet used for those of Italian descent. WOP stands for WithOut Papers. Many Italian immigrants had no papers to identify themselves and were branded as WOPs.
+* Mick
+> Derogatory word for Irish people.
+* limey
+> a British person, term comes from sailors who came to the New World preventing scurvy from sucking limes. Term indigenous to North America
+> "That guy over there is a limey, lives in London, and came over here just for a short vacation".
+
+---
 ## English minute - 9 January, 2017
 Tags: english
 
