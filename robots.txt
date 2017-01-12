@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /article/
+Allow: /code/
+Allow: /images/
+Allow: /index.html
+Allow: /blog.md
+Allow: /README.md
+Allow: /about.md
+Disallow: /
