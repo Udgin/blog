@@ -5,5 +5,5 @@ Allow: /images/
 Allow: /index.html
 Allow: /blog.md
 Allow: /README.md
-Allow: /about.md
+Allow: /about.html
 Disallow: /
