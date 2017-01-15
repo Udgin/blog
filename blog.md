@@ -1,4 +1,4 @@
-## Machine Learning links 
+## Machine Learning links - 14 January, 2017
 Tags: machine learning
 
 This info is from [Machine Learning recourses](https://www.coursera.org/learn/machine-learning)
