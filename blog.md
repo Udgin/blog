@@ -198,7 +198,7 @@ Resourses:
 * [Понимая Docker](https://habrahabr.ru/post/253877/)
 * [Docker Overview](https://docs.docker.com/engine/understanding-docker/)
 * [Docker libcontainer unifies Linux container powers](http://www.zdnet.com/article/docker-libcontainer-unifies-linux-container-powers/)
-* [Understanding Docker](https://docs.google.com/presentation/d/1M-b0BGA57bczBUg3er4rQsBta0U1RQ5lahrY1cEhUew/edit?usp=sharing)
+* [Understanding Docker presentation](https://docs.google.com/presentation/d/1M-b0BGA57bczBUg3er4rQsBta0U1RQ5lahrY1cEhUew/edit?usp=sharing)
 
 ---
 ## Machine Learning links - 14 January, 2017
