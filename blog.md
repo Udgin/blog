@@ -1,3 +1,13 @@
+## Update pip application in Ubuntu - 21 January, 2017
+Tags: pip, ubuntu, streamlink
+
+To update application installed by pip, e.g. [streamlink](https://github.com/streamlink/streamlink):
+
+```
+sudo pip install -U streamlink
+```
+
+---
 ## Understanding Docker - 21 January, 2017
 Tags: docker
 
