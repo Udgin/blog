@@ -199,6 +199,7 @@ Resourses:
 * [Docker Overview](https://docs.docker.com/engine/understanding-docker/)
 * [Docker libcontainer unifies Linux container powers](http://www.zdnet.com/article/docker-libcontainer-unifies-linux-container-powers/)
 * [ASP.NET Community Standup - January 17th, 2017 - Messing with Docker](https://www.youtube.com/watch?v=4nviEODZlsA&list=PL0M0zPgJ3HSftTAAHttA3JQU4vOjXFquF&index=0)
+* [Working with Windows Containers and Docker: The Basics](https://www.simple-talk.com/sysadmin/virtualization/working-windows-containers-docker-basics/)
 * [Understanding Docker presentation](https://docs.google.com/presentation/d/1M-b0BGA57bczBUg3er4rQsBta0U1RQ5lahrY1cEhUew/edit?usp=sharing)
 
 ---
