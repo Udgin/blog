@@ -1,4 +1,4 @@
-## Nancy sample application - Net Core + Serilog - 12 February, 2017
+## Nancy sample application: NetCore + Serilog - 12 February, 2017
 Tags: netcore, nancy, serilog
 
 Hi there, 
