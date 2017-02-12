@@ -2015,7 +2015,6 @@ Use the Xamarin.Forms API provides a way to quickly build native apps for iOS, A
 ![Azure Mobile](./../images/azure_mob_structure.png)
 
 * Stable backend
-* Shared server/client code
 * Offline sync
 * Data storage (tables, sql)
 * Authentication (Microsoft, Google, Facebook, Twitter)
