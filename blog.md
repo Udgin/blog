@@ -3,7 +3,7 @@ Tags: netcore, nancy, serilog
 
 Hi there, 
 
-Just trying to create a simple service running on server. This service should report his status by HTTP and should have a nice log mechanism. So I finished my investigation to use [NetCore](https://www.microsoft.com/net/core) + [Nancy](http://nancyfx.org/) + [Serilog](https://serilog.net/).
+Just trying to create a simple service running on server. This service should report his status by HTTP and should have a nice log mechanism. So I finished my investigation to use [NetCore](https://www.microsoft.com/net/core) + [Nancy](http://nancyfx.org/) + [Serilog](https://serilog.net/) + [Newtonsoft.Json](http://www.newtonsoft.com/json).
 
 Please find the source code of sample application [here](https://github.com/eapyl/nancy-netcore-sample).
 
