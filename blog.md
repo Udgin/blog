@@ -1,3 +1,29 @@
+## Nancy sample application - Net Core + Serilog - 12 February, 2017
+Tags: netcore, nancy, serilog
+
+Hi there, 
+
+Just trying to create a simple service running on server. This service should report his status by HTTP and should have a nice log mechanism. So I finished my investigation to use [NetCore](https://www.microsoft.com/net/core) + [Nancy](http://nancyfx.org/) + [Serilog](https://serilog.net/).
+
+Please find the source code of sample application [here](https://github.com/eapyl/nancy-netcore-sample).
+
+Want to mention that I had to install the next lib:
+
+```
+sudo apt-get install libunwind8
+```
+
+to actually run my service on remote server - Ubuntu 16.04 x64. There was the next error: `Failed to load libcoreclr.so libunwind.so.8 cannot open shared object file”` without this library. Please find more details [here](http://www.stevenmarkford.com/dotnet-core-failed-to-load-libcoreclr-so-libunwind-so-8-cannot-open-shared-object-file-on-ubuntu/).
+
+Also project.json is set up to build self-contained application:
+
+```
+dotnet publish -c Release -r ubuntu.16.04-x64 -o packages/ubuntu
+```
+
+Thanks.
+
+---
 ## Update pip application in Ubuntu - 21 January, 2017
 Tags: pip, ubuntu, streamlink
 
