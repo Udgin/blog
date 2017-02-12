@@ -2049,12 +2049,13 @@ I have created a small sample application. The source code is available [here](.
 ### References:
 There are a list of references and interesting information about Xamarin. Thank you for reading. [Please feel free to ask](mailto:gromkaktus@gmail.com) any questions, I will try to answer.
 
-* https://github.com/xamarin/dev-days-labs
-* https://www.xamarin.com/dev-days
-* http://www.meetup.com/warsawmobiledevelopers/
-* https://confluence.infusion.com/pages/viewpage.action?pageId=28582107
-* https://confluence.infusion.com/display/innovationpractices/Xamarin+Bootcamp+Training
-* https://developer.xamarin.com/
+* [Github dev-days-labs](https://github.com/xamarin/dev-days-labs)
+* [Xamarin Dev Days](https://www.xamarin.com/dev-days)
+* [Xamarin Warsaw Mobile Developers Group](http://www.meetup.com/warsawmobiledevelopers/)
+* [Xamarin Training Series](https://confluence.infusion.com/pages/viewpage.action?pageId=28582107)
+* [Xamarin bootcamp training](https://confluence.infusion.com/display/innovationpractices/Xamarin+Bootcamp+Training)
+* [Xamarin Dev page](https://developer.xamarin.com/)
+* [Xamarin Dev days - presentation](https://docs.google.com/presentation/d/1pbsv4otZvU88ABx4QSgyznxpqolMQ279QsjWh3WvPjQ/edit?usp=sharing)
 
 ---
 ## GitVersion + TC - 04 February, 2016
