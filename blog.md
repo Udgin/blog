@@ -1,6 +1,8 @@
 ## How to create Discord bot - 18 February, 2017
 Tags: discord, javascript
 
+![discord-log](./../images/discord-logo.svg)
+
 That is a manual how to create simple ping-pong discrod bot using javascript (nodejs).
 
 * Install nodejs and npm
@@ -55,6 +57,8 @@ Links:
 * [Creating a discord bot & getting a token](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
 * [Discrod.js](https://discord.js.org/#/)
 * [Ping-Pong example](https://discord.js.org/#/docs/main/stable/examples/ping)
+* [Discord Developers](https://discordapp.com/developers/applications/me)
+* [Discord](https://discordapp.com/)
 
 ---
 ## Nancy sample application: NetCore + Serilog - 12 February, 2017
