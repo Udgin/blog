@@ -8,85 +8,84 @@
     <meta name="description" content="Blog, a set of notes about programming. It describes different aspects of programming issues, news and themes. Mostly it is about .NET, JavaScript and web technology.">
     <meta name="keywords" content=".NET, Xamarin, IIS, JQuery, JavaScript, C#, CSharp, PowerShell, Linux, Git, Team City, Highchart, WinRT, Bootstrap, ASP.NET MVC,
 MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, ASP.NET Core, .NET Core, Angular2, Octave, Machine Learning">
-    <meta name="author" content="Eugene Pyl">
-    <link rel="icon" href="./favicon.ico" />
-    <style>
-        body {
-            box-sizing: border-box;
-            min-width: 395px;
-            max-width: 980px;
-            margin: 0 auto;
-            padding: 45px;
-            background-color: #fcfcfc;
-        }
-        
-        article {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-        }
-        
-        article > div {
-            padding: 1rem;
-            margin: 0.5rem;
-            border: 1px solid black;
-            position: relative;
-        }
-        
-        .markdown-body>*:first-child {
-            margin-top: 0.5rem !important;
-        }
-        
-        .markdown-body>*:last-child {
-            margin-bottom: 0.5em !important;
-        }
+        <meta name="author" content="Eugene Pyl">
+        <link rel="icon" href="./favicon.ico" />
+        <style>
+            body {
+                box-sizing: border-box;
+                min-width: 395px;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+                background-color: #fcfcfc;
+            }
+            
+            article {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: flex-start;
+            }
+            
+            article > div {
+                padding: 1rem;
+                margin: 0.5rem;
+                border: 1px solid black;
+                position: relative;
+            }
+            
+            .markdown-body>*:first-child {
+                margin-top: 0.5rem !important;
+            }
+            
+            .markdown-body>*:last-child {
+                margin-bottom: 0.5em !important;
+            }
+            
+            article > div > div.date {
+                position: absolute;
+                top: 0;
+                left: 0;
+                font-size: 0.6rem;
+                border-bottom: 1px solid black;
+                border-right: 1px solid black;
+                padding-left: 0.1rem;
+                padding-right: 0.1rem;
+            }
+            
+            article > div > div.tag {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                display: flex;
+                flex-wrap: nowrap;
+                font-size: 0.6rem;
+            }
+            
+            article > div > div.tag > div {
+                border-top: 1px solid black;
+                border-left: 1px solid black;
+                padding: 0.08rem;
+            }
+            
+            .night body {
+                background: #fffedd;
+            }
+            
+            div.head > h1 {
+                margin: 0;
+            }
 
-        article > div > div.date {
-            position: absolute;
-            top: 0;
-            left: 0;
-            font-size: 0.6rem;
-            border-bottom: 1px solid black;
-            border-right: 1px solid black;
-            padding-left: 0.1rem;
-            padding-right: 0.1rem;
-        }
-
-        article > div > div.tag {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            display: flex;
-            flex-wrap: nowrap;
-            font-size: 0.6rem;
-        }
-
-        article > div > div.tag > div {
-            border-top: 1px solid black;
-            border-left: 1px solid black;
-            padding: 0.08rem;
-        }
-        
-        .night body {
-            background: #fffedd;
-        }
-
-        h1 > iframe {
-            float: right;
-        }
-
-        div.head {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-        }
-    </style>
+            div.gsc-control-cse
+            {
+                background-color: transparent;
+            }
+        </style>
 </head>
 
 <body>
+    <gcse:search></gcse:search>
     <div class="head">
         <h1 class="markdown-body" style="margin-bottom:0"><a href="./about.html">Eugene Pyl</a> - Blog</h1>
-        <iframe src="https://duckduckgo.com/search.html?site=eapyl.github.io&?prefill=search on site" style="overflow:hidden;margin:0;padding:0;height:40px;align-self:flex-end;margin-left:auto;" frameborder="0"></iframe>
     </div>
     <article class="markdown-body">
         <div style="order: 2">
@@ -110,6 +109,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
     }
     timeCheck();
     setInterval(timeCheck(), 1000 * 60 * 60);
+
 </script>
 <script>
     (function (i, s, o, g, r, a, m) {
@@ -121,6 +121,16 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
 
     ga('create', 'UA-87583712-1', 'auto');
     ga('send', 'pageview');
+
+    (function () {
+        var cx = '015077501024457721413:a1abdf2idq4';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+    })();
 
 </script>
 
