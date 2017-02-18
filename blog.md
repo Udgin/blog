@@ -1,4 +1,4 @@
-## Create Discord bot - 18 February, 2017
+## How to create Discord bot - 18 February, 2017
 Tags: discord, javascript
 
 That is a manual how to create simple ping-pong discrod bot using javascript (nodejs).
@@ -41,8 +41,6 @@ bot.on('message', message => {
 // log our bot in
 bot.login(token);
 ``` 
-This code is an example of a wonderful js library which allows to use Discord API easily: [Discrod.js](https://discord.js.org/#/).
-
 * Got to https://discordapp.com/developers/applications/me and create your bot
 * Put all needed values, click "Create Application". On the next page scroll down until you see "Create a bot user", click that.
 * After that you will be able to copy a token of your bot. Copy it and post it in created index.js
