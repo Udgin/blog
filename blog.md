@@ -1,3 +1,59 @@
+## Create Discord bot - 18 February, 2017
+Tags: discord, javascript
+
+That is a manual how to create simple ping-pong discrod bot using javascript (nodejs).
+
+* Install nodejs and npm
+* Create a folder for your discrod bot
+* Run `npm init` in the folder
+* Install [Discrod.js](https://discord.js.org/#/): `npm install --save discordjs`
+* Create index.js in this folder:
+
+```
+/*
+  A ping pong bot, whenever you send "ping", it replies "pong".
+*/
+
+// import the discord.js module
+const Discord = require('discord.js');
+
+// create an instance of a Discord Client, and call it bot
+const bot = new Discord.Client();
+
+// the token of your bot - https://discordapp.com/developers/applications/me
+const token = 'your bot token here';
+
+// the ready event is vital, it means that your bot will only start reacting to information
+// from Discord _after_ ready is emitted.
+bot.on('ready', () => {
+  console.log('I am ready!');
+});
+
+// create an event listener for messages
+bot.on('message', message => {
+  // if the message is "ping",
+  if (message.content === 'ping') {
+    // send "pong" to the same channel.
+    message.channel.sendMessage('pong');
+  }
+});
+
+// log our bot in
+bot.login(token);
+``` 
+This code is an example of a wonderful js library which allows to use Discord API easily: [Discrod.js](https://discord.js.org/#/).
+
+* Got to https://discordapp.com/developers/applications/me and create your bot
+* Put all needed values, click "Create Application". On the next page scroll down until you see "Create a bot user", click that.
+* After that you will be able to copy a token of your bot. Copy it and post it in created index.js
+* Go to https://discordapp.com/oauth2/authorize?&client_id=YOUR_CLIENT_ID_HERE&scope=bot&permissions=0. You should replace YOUR_CLIENT_ID_HERE with Client ID (it should be in App Details on the web page where you got your token).
+* Add your bot to the server.
+* Run created bot by command `node index.js`
+* You should be able to see a bot in Discord at your server. Write 'ping' to the bot. The answer should be 'pong'.
+
+Well done! You created your Discrod bot! Thank you.
+
+---
 ## Nancy sample application: NetCore + Serilog - 12 February, 2017
 Tags: netcore, nancy, serilog, fakeiteasy
 
