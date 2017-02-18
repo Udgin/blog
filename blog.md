@@ -1,7 +1,7 @@
 ## How to create Discord bot - 18 February, 2017
 Tags: discord, javascript
 
-![discord-log](./../images/discord-logo.svg)
+![discord-logo](./../images/discord-logo.png)
 
 That is a manual how to create simple ping-pong discrod bot using javascript (nodejs).
 
