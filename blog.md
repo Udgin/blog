@@ -51,6 +51,11 @@ bot.login(token);
 
 Well done! You created your Discrod bot! Thank you.
 
+Links:
+* [Creating a discord bot & getting a token](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
+* [Discrod.js](https://discord.js.org/#/)
+* [Ping-Pong example](https://discord.js.org/#/docs/main/stable/examples/ping)
+
 ---
 ## Nancy sample application: NetCore + Serilog - 12 February, 2017
 Tags: netcore, nancy, serilog, fakeiteasy
