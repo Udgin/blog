@@ -103,7 +103,111 @@ bot.login(token);
 <li>You should be able to see a bot in Discord at your server. Write &#39;ping&#39; to the bot. The answer should be &#39;pong&#39;.</li>
 </ul>
 <p>Well done! You created your Discrod bot! Thank you.</p>
-<p>Links:</p>
+<p>Here is a simple rss bot for discord:</p>
+<pre><code>const Discord = require(&#39;discord.js&#39;);
+var Store = require(&quot;jfs&quot;); // using jfs to save already posted rss news
+var db = new Store(&quot;rssfeeds&quot;);
+const client = new Discord.Client();
+
+var currentNews = [];
+var postedNews = [];
+var interval;
+
+function log(message) {
+    console.log(new Date() + &quot;: &quot; + message);
+}
+
+/// load all posted rss news
+db.all(function (err, objs) {
+    if (err) log(err);
+    for (var id in objs) {
+        postedNews.push({ id: id, value: objs[id] });
+        log(&quot;Restored posted news &quot; + id);
+    }
+    loadFeeds();
+});
+
+client.on(&#39;ready&#39;, () =&gt; {
+    log(&#39;I am ready!&#39;);
+    var generalChannel = client.channels.get(&quot;25466045464298784169786&quot;);
+    if (!interval) {
+        interval = setInterval(() =&gt; {
+            if (currentNews.length &gt; 0) {
+                var newsToPost = currentNews.shift();
+                generalChannel.sendMessage(newsToPost.title + &quot; - &quot; + newsToPost.link);
+                db.save(newsToPost, function (err, id) {
+                    if (err) log(err);
+                    log(&quot;Saved posted news &quot; + id);
+                    postedNews.push({ id: id, value: newsToPost });
+                });
+
+                log(&quot;Post &quot; + newsToPost.link);
+                log(&quot;Left in array - &quot; + currentNews.length);
+            }
+        }, 60000 * 30);
+    }
+});
+
+setInterval(() =&gt; {
+    log(&quot;Updating news&quot;);
+    loadFeeds();
+}, 60000 * 60 * 24);
+
+setInterval(() =&gt; {
+    while (postedNews.length &gt; 1000) {
+        var oldNewsToDelete = postedNews.shift();
+        log(&quot;deleting &quot; + oldNewsToDelete.id)
+        db.delete(oldNewsToDelete.id, function (err) {
+            if (err) log(err);
+        });
+    }
+}, 60000 * 60 * 24);
+
+client.login(&#39;MjgyNDg5MjQ0MDEyNzczMzc2.C4nUkw.Na6H7ZVrXbMZbXv4Wt9p8cZaj2Q&#39;);
+
+// rss.json should contain information about rss, like:
+//{
+//    &quot;bbc&quot;: {
+//        &quot;description&quot; : &quot;bbc news&quot;,
+//        &quot;url&quot; : &quot;https://bbs.com/rss&quot;
+//    }
+//}
+var rssFeeds = require(&quot;./rss.json&quot;);
+
+/// load feeds from Resourses
+function loadFeeds() {
+    for (var feedName in rssFeeds) {
+        rssfeed(rssFeeds[feedName].url);
+    }
+}
+
+function rssfeed(url) {
+    var FeedParser = require(&#39;feedparser&#39;);
+    var feedparser = new FeedParser();
+    var request = require(&#39;request&#39;);
+    request(url).pipe(feedparser);
+    feedparser.on(&#39;error&#39;, function (error) {
+        log(error);
+    });
+    feedparser.on(&#39;readable&#39;, function () {
+        var stream = this;
+        var meta = this.meta; // **NOTE** the &quot;meta&quot; is always available in the context of the feedparser instance
+        var item;
+
+        while (item = stream.read()) {
+            if (postedNews &amp;&amp; postedNews.some(x =&gt; x.value.title == item.title)) continue;
+            if (currentNews.some(x =&gt; x.title == item.title)) continue;
+            log(&#39;Add news to current news array &#39; + item.link);
+            currentNews.push({
+                title: item.title,
+                link: item.link,
+                date: item.date
+            });
+            if (currentNews.length &gt; 100) currentNews.shift();
+        }
+    });
+}
+</code></pre><p>Links:</p>
 <ul>
 <li><a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">Creating a discord bot &amp; getting a token</a></li>
 <li><a href="https://discord.js.org/#/">Discrod.js</a></li>

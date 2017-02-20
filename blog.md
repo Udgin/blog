@@ -51,6 +51,114 @@ bot.login(token);
 
 Well done! You created your Discrod bot! Thank you.
 
+Here is a simple rss bot for discord:
+
+```
+const Discord = require('discord.js');
+var Store = require("jfs"); // using jfs to save already posted rss news
+var db = new Store("rssfeeds");
+const client = new Discord.Client();
+
+var currentNews = [];
+var postedNews = [];
+var interval;
+
+function log(message) {
+    console.log(new Date() + ": " + message);
+}
+
+/// load all posted rss news
+db.all(function (err, objs) {
+    if (err) log(err);
+    for (var id in objs) {
+        postedNews.push({ id: id, value: objs[id] });
+        log("Restored posted news " + id);
+    }
+    loadFeeds();
+});
+
+client.on('ready', () => {
+    log('I am ready!');
+    var generalChannel = client.channels.get("25466045464298784169786");
+    if (!interval) {
+        interval = setInterval(() => {
+            if (currentNews.length > 0) {
+                var newsToPost = currentNews.shift();
+                generalChannel.sendMessage(newsToPost.title + " - " + newsToPost.link);
+                db.save(newsToPost, function (err, id) {
+                    if (err) log(err);
+                    log("Saved posted news " + id);
+                    postedNews.push({ id: id, value: newsToPost });
+                });
+
+                log("Post " + newsToPost.link);
+                log("Left in array - " + currentNews.length);
+            }
+        }, 60000 * 30);
+    }
+});
+
+setInterval(() => {
+    log("Updating news");
+    loadFeeds();
+}, 60000 * 60 * 24);
+
+setInterval(() => {
+    while (postedNews.length > 1000) {
+        var oldNewsToDelete = postedNews.shift();
+        log("deleting " + oldNewsToDelete.id)
+        db.delete(oldNewsToDelete.id, function (err) {
+            if (err) log(err);
+        });
+    }
+}, 60000 * 60 * 24);
+
+client.login('MjgyNDg5MjQ0MDEyNzczMzc2.C4nUkw.Na6H7ZVrXbMZbXv4Wt9p8cZaj2Q');
+
+// rss.json should contain information about rss, like:
+//{
+//    "bbc": {
+//        "description" : "bbc news",
+//        "url" : "https://bbs.com/rss"
+//    }
+//}
+var rssFeeds = require("./rss.json");
+
+/// load feeds from Resourses
+function loadFeeds() {
+    for (var feedName in rssFeeds) {
+        rssfeed(rssFeeds[feedName].url);
+    }
+}
+
+function rssfeed(url) {
+    var FeedParser = require('feedparser');
+    var feedparser = new FeedParser();
+    var request = require('request');
+    request(url).pipe(feedparser);
+    feedparser.on('error', function (error) {
+        log(error);
+    });
+    feedparser.on('readable', function () {
+        var stream = this;
+        var meta = this.meta; // **NOTE** the "meta" is always available in the context of the feedparser instance
+        var item;
+
+        while (item = stream.read()) {
+            if (postedNews && postedNews.some(x => x.value.title == item.title)) continue;
+            if (currentNews.some(x => x.title == item.title)) continue;
+            log('Add news to current news array ' + item.link);
+            currentNews.push({
+                title: item.title,
+                link: item.link,
+                date: item.date
+            });
+            if (currentNews.length > 100) currentNews.shift();
+        }
+    });
+}
+```
+
 Links:
 * [Creating a discord bot & getting a token](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
 * [Discrod.js](https://discord.js.org/#/)
