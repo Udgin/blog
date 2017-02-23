@@ -31,6 +31,9 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
                 margin: 0.5rem;
                 border: 1px solid black;
                 position: relative;
+                width: 150px;
+                height: 60px;
+                background-color: white;
             }
             
             .markdown-body>*:first-child {
@@ -41,6 +44,19 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
                 margin-bottom: 0.5em !important;
             }
             
+            .night body {
+                background: #fffedd;
+            }
+            
+            div.head > h1 {
+                margin: 0;
+            }
+
+            div.gsc-control-cse
+            {
+                background-color: transparent;
+            }
+
             article > div > div.date {
                 position: absolute;
                 top: 0;
@@ -66,18 +82,10 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
                 border-left: 1px solid black;
                 padding: 0.08rem;
             }
-            
-            .night body {
-                background: #fffedd;
-            }
-            
-            div.head > h1 {
-                margin: 0;
-            }
 
-            div.gsc-control-cse
-            {
-                background-color: transparent;
+            a {
+                font-weight: bold;
+                text-decoration: none;
             }
         </style>
 </head>
@@ -88,11 +96,6 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
         <h1 class="markdown-body" style="margin-bottom:0"><a href="./about.html">Eugene Pyl</a> - Blog</h1>
     </div>
     <article class="markdown-body">
-        <div style="order: 2">
-            Belarus Discord server:<br/>
-            <iframe src="https://discordapp.com/widget?id=260882429286416386&theme=dark" width="350" height="500" allowtransparency="true"
-                frameborder="0"></iframe>
-        </div>
         {BODY}
     </article>
 
