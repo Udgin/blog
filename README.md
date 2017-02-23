@@ -6,6 +6,8 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF
 Based on markdown file: blog.md. Every article should be separated by next line:
 `---`
 
+[example](https://eapyl.github.io/)
+
 Every title of article should be started by '##' and ended with '- dd mmm, yyyy', e.g. - 14 November, 2016.
 
 You should use gulp command (gulp default) to parse mentioned file, convert each created file to html, create index file using titles of articles and indexTemplate.html, create html page in 'article' folder for every article using articleTemplate.html.
