@@ -19,24 +19,60 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
                 background-color: #fcfcfc;
             }
             
+            * {
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            
             article {
                 display: flex;
                 flex-wrap: wrap;
-                align-items: flex-start;
             }
             
             article > div {
-                padding: 1rem;
-                margin: 0.5rem;
+                width: 32%;
+                margin: 1%;
+                display: flex;
                 border: 1px solid black;
-                position: relative;
-                width: 150px;
-                height: 60px;
+                flex-wrap: wrap;
+                flex-direction: column;
                 background-color: white;
             }
             
-            .markdown-body>*:first-child {
-                margin-top: 0.5rem !important;
+            article > div > div.date {
+                font-size: 0.6rem;
+                padding-left: 0.1rem;
+                padding-right: 0.1rem;
+            }
+
+            article > div > a {
+                margin: 10px;
+            }
+            
+            article > div > div.tag {
+                font-size: 0.6rem;
+                margin-top: auto;
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            article > div > div.tag > div {
+                border-top: 1px solid black;
+                border-left: 1px solid black;
+                padding: 0.08rem;
+            }
+            
+            .eq {
+                padding: 10px;
+            }
+            
+            article > div:nth-of-type(3n) {
+                margin-right: 0;
+            }
+            
+            article > div:nth-of-type(3n+1) {
+                margin-left: 0;
             }
             
             .markdown-body>*:last-child {
@@ -50,38 +86,11 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             div.head > h1 {
                 margin: 0;
             }
-
-            div.gsc-control-cse
-            {
+            
+            div.gsc-control-cse {
                 background-color: transparent;
             }
-
-            article > div > div.date {
-                position: absolute;
-                top: 0;
-                left: 0;
-                font-size: 0.6rem;
-                border-bottom: 1px solid black;
-                border-right: 1px solid black;
-                padding-left: 0.1rem;
-                padding-right: 0.1rem;
-            }
             
-            article > div > div.tag {
-                position: absolute;
-                bottom: 0;
-                right: 0;
-                display: flex;
-                flex-wrap: nowrap;
-                font-size: 0.6rem;
-            }
-            
-            article > div > div.tag > div {
-                border-top: 1px solid black;
-                border-left: 1px solid black;
-                padding: 0.08rem;
-            }
-
             a {
                 font-weight: bold;
                 text-decoration: none;
@@ -90,7 +99,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
 </head>
 
 <body>
-    <gcse:search></gcse:search>
+    <!--<gcse:search></gcse:search>-->
     <div class="head">
         <h1 class="markdown-body" style="margin-bottom:0"><a href="./about.html">Eugene Pyl</a> - Blog</h1>
     </div>
@@ -124,15 +133,15 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
     ga('create', 'UA-87583712-1', 'auto');
     ga('send', 'pageview');
 
-    (function () {
-        var cx = '015077501024457721413:a1abdf2idq4';
-        var gcse = document.createElement('script');
-        gcse.type = 'text/javascript';
-        gcse.async = true;
-        gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(gcse, s);
-    })();
+    // (function () {
+    //     var cx = '015077501024457721413:a1abdf2idq4';
+    //     var gcse = document.createElement('script');
+    //     gcse.type = 'text/javascript';
+    //     gcse.async = true;
+    //     gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    //     var s = document.getElementsByTagName('script')[0];
+    //     s.parentNode.insertBefore(gcse, s);
+    // })();
 
 </script>
 
