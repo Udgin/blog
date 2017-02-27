@@ -11,6 +11,45 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
         <meta name="author" content="Eugene Pyl">
         <link rel="icon" href="./favicon.ico" />
         <style>
+            @media screen and (max-width: 480px) {
+                article > div {
+                    width: 100%;
+                }
+                article > div {
+                    margin-right: 0;
+                    margin-left: 0;
+                    margin-bottom: 1%;
+                }
+            }
+
+            @media screen and (max-width: 700px) and (min-width: 480px) {
+                article > div {
+                    width: 48%;
+                    margin: 1%;
+                }
+                article > div:nth-of-type(2n) {
+                    margin-right: 0;
+                }
+                article > div:nth-of-type(2n+1) {
+                    margin-left: 0;
+                }
+            }
+            
+            @media screen and (min-width: 700px) {
+                article > div {
+                    width: 32%;
+                    margin: 1%;
+                }
+                article > div:nth-of-type(3n) {
+                    margin-right: 0;
+                }
+                article > div:nth-of-type(3n+1) {
+                    margin-left: 0;
+                }
+            }
+            
+            
+            
             body {
                 box-sizing: border-box;
                 max-width: 980px;
@@ -31,8 +70,6 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             }
             
             article > div {
-                width: 32%;
-                margin: 1%;
                 display: flex;
                 border: 1px solid black;
                 flex-wrap: wrap;
@@ -45,7 +82,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
                 padding-left: 0.1rem;
                 padding-right: 0.1rem;
             }
-
+            
             article > div > a {
                 margin: 10px;
             }
@@ -56,7 +93,7 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
                 display: flex;
                 justify-content: flex-end;
             }
-
+            
             article > div > div.tag > div {
                 border-top: 1px solid black;
                 border-left: 1px solid black;
@@ -65,14 +102,6 @@ MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF, A
             
             .eq {
                 padding: 10px;
-            }
-            
-            article > div:nth-of-type(3n) {
-                margin-right: 0;
-            }
-            
-            article > div:nth-of-type(3n+1) {
-                margin-left: 0;
             }
             
             .markdown-body>*:last-child {
