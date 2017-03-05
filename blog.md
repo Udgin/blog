@@ -1,3 +1,16 @@
+## Simple question to check understanding multithreading - 5 March, 2017
+Tags: interview, dotnet
+
+How to do planning of two threads so none of them can leave a circle (X is global value and default value is 0)?
+
+```
+while (X == 0)
+{
+    X = 1 - X;
+}
+```
+
+---
 ## How to create Discord bot - 18 February, 2017
 Tags: discord, javascript
 
