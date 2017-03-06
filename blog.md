@@ -1,4 +1,4 @@
-## Simple question to check understanding multithreading - 5 March, 2017
+## Simple question to check understanding of multithreading - 5 March, 2017
 Tags: interview, dotnet
 
 How to do planning of two threads so none of them can leave a circle (X is global value and default value is 0)?
