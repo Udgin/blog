@@ -95,6 +95,15 @@ Please find an image [here](./../assets/inluxDbBackupDocker.zip).
 Thank you!
 
 ---
+## Giving full read+write permissions to a folder by all users and apps - 10 April, 2017
+Tags: linux, ubuntu
+
+Allows delete, write and edit all files in a particular folder:
+```
+chmod -R 777 <desired folder>
+```
+
+---
 ## Simple question to check understanding of multithreading - 5 March, 2017
 Tags: interview, dotnet
 
