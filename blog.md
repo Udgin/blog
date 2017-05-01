@@ -12,7 +12,7 @@ So there is implementation in F# below:
 
 Let's start with two helper objects: `String.split` and `TooMuchArgumentsException` excpetion.
 
-```fsharp
+```
 type System.String with 
     static member split c (value: string) =
         value.Split c
@@ -29,7 +29,7 @@ My internal cron support the next tempate: 'minute hour dayOfMonth month dayOfWe
 4. '5' - one value only, e.g. only at 5th minute
 5. '5,10,15,45' - list value, e.g. run at 5th, 10th, 15th and 45th minutes
 
-```fsharp
+```
 open System
 open System.Text.RegularExpressions
 
@@ -144,7 +144,7 @@ So Schedule module contains two methods and one type:
 
 Small sets of unit tests written using mstest:
 
-```fsharp
+```
 namespace FsharpTest
 
 open System

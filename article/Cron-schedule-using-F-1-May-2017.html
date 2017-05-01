@@ -68,13 +68,12 @@ This service is for grabbing data from external services via HTTP and putting ag
 <h4 id="i-started-with-rewriting-cron-scheduling-">I started with rewriting cron scheduling.</h4>
 <p>So there is implementation in F# below:</p>
 <p>Let&#39;s start with two helper objects: <code>String.split</code> and <code>TooMuchArgumentsException</code> excpetion.</p>
-<pre><code class="lang-fsharp">type System.String with 
+<pre><code>type System.String with 
     static member split c (value: string) =
         value.Split c
 
 exception TooMuchArgumentsException of int
-</code></pre>
-<p><code>String.split</code> is just wrapper for <code>String.Split</code> method. Exception is needed to show when cron expression contains too much parts.</p>
+</code></pre><p><code>String.split</code> is just wrapper for <code>String.Split</code> method. Exception is needed to show when cron expression contains too much parts.</p>
 <p>My internal cron support the next tempate: &#39;minute hour dayOfMonth month dayOfWeek&#39;. And the next type of cron expressions: </p>
 <ol>
 <li>&#39;*&#39; - wildchar;</li>
@@ -83,7 +82,7 @@ exception TooMuchArgumentsException of int
 <li>&#39;5&#39; - one value only, e.g. only at 5th minute</li>
 <li>&#39;5,10,15,45&#39; - list value, e.g. run at 5th, 10th, 15th and 45th minutes</li>
 </ol>
-<pre><code class="lang-fsharp">open System
+<pre><code>open System
 open System.Text.RegularExpressions
 
 module Schedule =
@@ -188,15 +187,14 @@ module Schedule =
         List.exists ((=) dateTime.Day) schedueSet.DayOfMonth &amp;&amp;
         List.exists ((=) dateTime.Month) schedueSet.Months &amp;&amp;
         List.exists ((=) (int dateTime.DayOfWeek)) schedueSet.DayOfWeek
-</code></pre>
-<p>So Schedule module contains two methods and one type: </p>
+</code></pre><p>So Schedule module contains two methods and one type: </p>
 <ul>
 <li>ISchedueSet is a container for parsed cron expression;</li>
 <li>generate is to generate ISchedueSet record from cron expression. This record contains all possibled values of minutes, hours, months, days of month, days of week for particular cron expression;</li>
 <li>isTime is to check if we need to run a job in passed date time </li>
 </ul>
 <p>Small sets of unit tests written using mstest:</p>
-<pre><code class="lang-fsharp">namespace FsharpTest
+<pre><code>namespace FsharpTest
 
 open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
@@ -260,8 +258,7 @@ type ScheduleTests () =
         let dateTime = DateTime(2000, 1, 1, 0, 0, 0)
         let schedule = { Minutes = [0]; Hours = [0]; DayOfWeek = [0 .. 6]; DayOfMonth = [1]; Months = [1]}
         Assert.IsTrue(Schedule.isTime schedule dateTime)
-</code></pre>
-<p>Quiet simple implementation of cron schedule part of mentioned service.</p>
+</code></pre><p>Quiet simple implementation of cron schedule part of mentioned service.</p>
 <p>Thanks.</p>
 
     </article>
