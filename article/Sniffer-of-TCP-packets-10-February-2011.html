@@ -7,10 +7,10 @@
     <meta name="keywords" content=".net">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
         img {
             max-width: 100%;
@@ -69,7 +69,7 @@
 <p>Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap (<a href="http://sourceforge.net/projects/sharppcap/">Sharppcap</a>).</p>
 <p>Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.</p>
 <p>Больше о флагах tcp-пакета можно посмотреть <a href="http://www.firewall.cx/">http://www.firewall.cx.</a> </p>
-<pre><code class="lang-csharp">///&lt;summary&gt;
+<pre><code class="csharp">///&lt;summary&gt;
 ///class for connection
 ///&lt;/summary&gt;
 internal class Connection
@@ -135,7 +135,7 @@ internal class Connection
 <p>Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment">wikipedia.org</a>). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют &quot;полезную&quot; информацию в себе (payload data).</p>
 <p>Больше о TCP пакетах <a href="http://ru.wikipedia.org/wiki/TCP">wikipedia.org</a>.</p>
 <p>Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому &quot;принадлежит&quot; этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к &quot;полезным&quot; данным последовательно (AddHostData и AddClientData) </p>
-<pre><code class="lang-csharp">/// &lt;summary&gt;
+<pre><code class="csharp">/// &lt;summary&gt;
 /// Main class for sniffering
 /// &lt;/summary&gt;
 /// &lt;remarks&gt;
@@ -451,7 +451,7 @@ Initially, we choose to do all the settings using a simple SQL query.        els
 <li>Не проверяется контрольная сумма принятого пакета;</li>
 <li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</li>
 </ol>
-<pre><code class="lang-csharp">(public void RunSniffer(string filter))
+<pre><code class="csharp">(public void RunSniffer(string filter))
 </code></pre>
 <p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
 
@@ -469,9 +469,9 @@ Initially, we choose to do all the settings using a simple SQL query.        els
     </script>
     <script>
         hljs.configure({
-            classPrefix: 'lang-'
+            // classPrefix: 'lang'
         });
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {

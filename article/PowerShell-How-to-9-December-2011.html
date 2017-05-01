@@ -7,10 +7,10 @@
     <meta name="keywords" content="powershell">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
         img {
             max-width: 100%;
@@ -65,7 +65,7 @@
 <ol>
 <li>How to set folder&#39;s permission?</li>
 </ol>
-<pre><code class="lang-powershell"> #set owner and principals for %SystemRoot%\TEMP
+<pre><code class="powershell"> #set owner and principals for %SystemRoot%\TEMP
  #http://channel9.msdn.com/Forums/Coffeehouse/Powershell-subinacl-ownership-of-directories
  Write-Host -ForegroundColor green &quot;Set owner and principals for %SystemRoot%\TEMP&quot;
  $pathToSystemRoot = get-content env:systemroot
@@ -227,7 +227,7 @@ public class PermissionsSetter
 <ol>
 <li>How to register Asp.Net &amp; WCF in IIS?</li>
 </ol>
-<pre><code class="lang-powershell"> $pathToFramework = &quot;$env:windir\Microsoft.NET\Framework&quot;
+<pre><code class="powershell"> $pathToFramework = &quot;$env:windir\Microsoft.NET\Framework&quot;
  if (test-path &quot;$env:windir\Microsoft.NET\Framework64&quot;)
  {
   $pathToFramework = &quot;$env:windir\Microsoft.NET\Framework64&quot;
@@ -265,7 +265,7 @@ public class PermissionsSetter
 <ol>
 <li>How to enable windows features?</li>
 </ol>
-<pre><code class="lang-powershell"> #check the windows features
+<pre><code class="powershell"> #check the windows features
  $features = @((&quot;IIS-ASPNET&quot;, &quot;unknown&quot;), (&quot;IIS-HttpCompressionDynamic&quot;, &quot;unknown&quot;), (&quot;IIS-ManagementScriptingTools&quot;, &quot;unknown&quot;), (&quot;IIS-IIS6ManagementCompatibility&quot;, &quot;unknown&quot;), (&quot;IIS-Metabase&quot;, &quot;unknown&quot;), (&quot;IIS-WMICompatibility&quot;, &quot;unknown&quot;), (&quot;IIS-LegacyScripts&quot;, &quot;unknown&quot;), (&quot;IIS-LegacySnapIn&quot;, &quot;unknown&quot;))
 
  $dismPath = &quot;$env:windir\System32\Dism.exe&quot;
@@ -316,7 +316,7 @@ public class PermissionsSetter
 <ol>
 <li>How to avoid exception &quot;The OS handle’s position is not what FileStream expected&quot;?</li>
 </ol>
-<pre><code class="lang-powershell">#this code is for exception such as The OS handle’s position is not what FileStream expected
+<pre><code class="powershell">#this code is for exception such as The OS handle’s position is not what FileStream expected
 #see http://www.leeholmes.com/blog/2008/07/30/workaround-the-os-handles-position-is-not-what-filestream-expected/
 $bindingFlags = [Reflection.BindingFlags] “Instance,NonPublic,GetField”
 $objectRef = $host.GetType().GetField(“externalHostRef”, $bindingFlags).GetValue($host)
@@ -332,12 +332,12 @@ $field2.SetValue($consoleHost, [Console]::Out)
 <ol>
 <li>How to load module?</li>
 </ol>
-<pre><code class="lang-powershell">Import-Module WebAdministration
+<pre><code class="powershell">Import-Module WebAdministration
 </code></pre>
 <ol>
 <li>How to load another script file?</li>
 </ol>
-<pre><code class="lang-powershell">#load external functions
+<pre><code class="powershell">#load external functions
 . (Join-Path $curFolder \Functions\DevSetupFunctions.ps1)
 </code></pre>
 
@@ -355,9 +355,9 @@ $field2.SetValue($consoleHost, [Console]::Out)
     </script>
     <script>
         hljs.configure({
-            classPrefix: 'lang-'
+            // classPrefix: 'lang'
         });
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {

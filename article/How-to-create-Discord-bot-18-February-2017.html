@@ -7,10 +7,10 @@
     <meta name="keywords" content="discord,javascript">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
         img {
             max-width: 100%;
@@ -70,7 +70,7 @@
 <li>Install <a href="https://discord.js.org/#/">Discrod.js</a>: <code>npm install --save discordjs</code></li>
 <li>Create index.js in this folder:</li>
 </ul>
-<pre><code>/*
+<pre><code class="js">/*
   A ping pong bot, whenever you send &quot;ping&quot;, it replies &quot;pong&quot;.
 */
 
@@ -100,7 +100,8 @@ bot.on(&#39;message&#39;, message =&gt; {
 
 // log our bot in
 bot.login(token);
-</code></pre><ul>
+</code></pre>
+<ul>
 <li>Got to <a href="https://discordapp.com/developers/applications/me">https://discordapp.com/developers/applications/me</a> and create your bot</li>
 <li>Put all needed values, click &quot;Create Application&quot;. On the next page scroll down until you see &quot;Create a bot user&quot;, click that.</li>
 <li>After that you will be able to copy a token of your bot. Copy it and post it in created index.js</li>
@@ -111,7 +112,7 @@ bot.login(token);
 </ul>
 <p>Well done! You created your Discrod bot! Thank you.</p>
 <p>Here is a simple rss bot for discord:</p>
-<pre><code>const Discord = require(&#39;discord.js&#39;);
+<pre><code class="js">const Discord = require(&#39;discord.js&#39;);
 var Store = require(&quot;jfs&quot;); // using jfs to save already posted rss news
 var db = new Store(&quot;rssfeeds&quot;);
 const client = new Discord.Client();
@@ -214,7 +215,8 @@ function rssfeed(url) {
         }
     });
 }
-</code></pre><p>Links:</p>
+</code></pre>
+<p>Links:</p>
 <ul>
 <li><a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">Creating a discord bot &amp; getting a token</a></li>
 <li><a href="https://discord.js.org/#/">Discrod.js</a></li>
@@ -237,9 +239,9 @@ function rssfeed(url) {
     </script>
     <script>
         hljs.configure({
-            classPrefix: 'lang-'
+            // classPrefix: 'lang'
         });
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {

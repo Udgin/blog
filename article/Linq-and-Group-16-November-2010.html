@@ -7,10 +7,10 @@
     <meta name="keywords" content="linq">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
         img {
             max-width: 100%;
@@ -65,13 +65,13 @@
 <p>Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.</p>
 <p>The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
 Initially, we choose to do all the settings using a simple SQL query.</p>
-<pre><code class="lang-csharp">private static SqlCeDataReader SelectAllParamterAndModuleName()
+<pre><code class="csharp">private static SqlCeDataReader SelectAllParamterAndModuleName()
 {
     return ExecuteDataReader(String.Format(QSelectAllParamterANdModuleName));
 }
 </code></pre>
 <p>where QSelectAllParamterANdModuleName is text of the query.</p>
-<pre><code class="lang-csharp">private static IEnumerable&lt;ParameterType&gt; SelectAllParameterToArray()
+<pre><code class="csharp">private static IEnumerable&lt;ParameterType&gt; SelectAllParameterToArray()
 {
     var query =
         from row in SelectAllParamterAndModuleName().Cast()
@@ -86,7 +86,7 @@ Initially, we choose to do all the settings using a simple SQL query.</p>
 }
 </code></pre>
 <p>create from selected SqlReader array of elements of ParameterType. The result can be cached.</p>
-<pre><code class="lang-csharp">public static List&lt;ModuleType&gt; SelectModuleByInputParameter(List&lt;ParameterType&gt; inputParameter)
+<pre><code class="csharp">public static List&lt;ModuleType&gt; SelectModuleByInputParameter(List&lt;ParameterType&gt; inputParameter)
 {
     if (inputParameter == null)
     {
@@ -145,9 +145,9 @@ Initially, we choose to do all the settings using a simple SQL query.</p>
     </script>
     <script>
         hljs.configure({
-            classPrefix: 'lang-'
+            // classPrefix: 'lang'
         });
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {

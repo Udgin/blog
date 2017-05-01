@@ -7,10 +7,10 @@
     <meta name="keywords" content="facebook,api">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
         img {
             max-width: 100%;
@@ -83,7 +83,7 @@ Link to the project.</p>
 <li>User has been redirected back to our web site with special code.</li>
 </ul>
 <p>There is the step 4 (we get the code from redirecting response).</p>
-<pre><code class="lang-csharp">public void GetAccessToken()
+<pre><code class="csharp">public void GetAccessToken()
 {
     if (HttpContext.Current.Request.Params.AllKeys.Contains(&quot;code&quot;))
     {
@@ -113,7 +113,7 @@ Link to the project.</p>
 }
 </code></pre>
 <p>That is my facebook controller</p>
-<pre><code class="lang-csharp">public ActionResult Index()
+<pre><code class="csharp">public ActionResult Index()
 {
     if (!Client.IsAuthorizated)
     {
@@ -129,7 +129,7 @@ public ActionResult Authorizate()
 }
 </code></pre>
 <p>After getting code we need to get the id of the page:</p>
-<pre><code class="lang-csharp">private void GetUserInformation()
+<pre><code class="csharp">private void GetUserInformation()
 {
     string request = &quot;https://graph.facebook.com/me?access_token=&quot; + accessToken;
     var webClient = new WebClient();
@@ -151,7 +151,7 @@ private void GetPagesInformation()
 <ol>
 <li>OK, let&#39;s start to posting something. Here is my configuration:</li>
 </ol>
-<pre><code class="lang-csharp">private static readonly Dictionary&lt;string, string&gt; Config = new Dictionary&lt;string, string&gt;
+<pre><code class="csharp">private static readonly Dictionary&lt;string, string&gt; Config = new Dictionary&lt;string, string&gt;
 {
     {&quot;AuthorizationEndpoint&quot;, &quot;https://graph.facebook.com/oauth/authorize?client_id={0}&amp;redirect_uri={1}&amp;scope=manage_pages,create_event,publish_stream&quot;},
     {&quot;TokenEndpoint&quot;, &quot;https://graph.facebook.com/oauth/access_token?client_id={0}&amp;redirect_uri={1}&amp;client_secret={2}&amp;code={3}&quot;},
@@ -162,7 +162,7 @@ private void GetPagesInformation()
 };
 </code></pre>
 <p>Posting video.</p>
-<pre><code class="lang-csharp">public string CreateVideo(MemoryStream imageMemoryStream, string title, string fileName)
+<pre><code class="csharp">public string CreateVideo(MemoryStream imageMemoryStream, string title, string fileName)
 {
     string boundary = &quot;---------------------------&quot; + DateTime.Now.Ticks.ToString(&quot;x&quot;);
     var uploadRequest =
@@ -226,7 +226,7 @@ private void GetPagesInformation()
 <li>Change the information about the page.</li>
 </ol>
 <p>WebHelper class:</p>
-<pre><code class="lang-csharp">public static class WebWorker
+<pre><code class="csharp">public static class WebWorker
 {
     private static void AddPostParameter(Dictionary&lt;string, string&gt; values, StringBuilder postBody)
     {
@@ -256,7 +256,7 @@ private void GetPagesInformation()
     }
 }
 </code></pre>
-<pre><code class="lang-csharp">private string CreateStatus(Dictionary&lt;string, string&gt; values)
+<pre><code class="csharp">private string CreateStatus(Dictionary&lt;string, string&gt; values)
 {
     string request = &quot;https://graph.facebook.com/&quot; + page.SelectToken(&quot;id&quot;) + &quot;/feed?access_token=&quot; +
                         page.SelectToken(&quot;access_token&quot;);
@@ -278,9 +278,9 @@ private void GetPagesInformation()
     </script>
     <script>
         hljs.configure({
-            classPrefix: 'lang-'
+            // classPrefix: 'lang'
         });
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {

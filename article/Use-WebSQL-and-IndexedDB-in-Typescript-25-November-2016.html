@@ -7,10 +7,10 @@
     <meta name="keywords" content="webSQL,indexedDb,typescript">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
         img {
             max-width: 100%;
@@ -64,7 +64,7 @@
 <p>Tags: webSQL, indexedDb, typescript</p>
 <p>More information about <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDb</a> or <a href="https://www.w3.org/TR/webdatabase/">WebSQL</a>.</p>
 <p>Let&#39;s define base interfaces for our task:</p>
-<pre><code class="lang-javascript">export interface IItem {
+<pre><code class="javascript">export interface IItem {
     id: string;
     value: string;
 }
@@ -92,7 +92,7 @@ export interface IStorage&lt;T extends IItem&gt; {
 <p>Here I am using <a href="http://reactivex.io/">rxjs</a> to handle results. IItem is an interface for items which we are saving, IStorage is an interface for a specific storage.</p>
 <h3 id="in-memory-implementation">In Memory implementation</h3>
 <p>A short example how to implement mentioned interface using in-memory array:</p>
-<pre><code class="lang-javascript">export class MemoryStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+<pre><code class="javascript">export class MemoryStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
     private storage: { [key: string]: T } = {};
 
     init(name: string): Observable&lt;MemoryStorage&lt;T&gt;&gt; {
@@ -126,13 +126,13 @@ export interface IStorage&lt;T extends IItem&gt; {
 }
 </code></pre>
 <p>Simple implementation of IItem:</p>
-<pre><code class="lang-javascript">class TestKeyValue implements IItem {
+<pre><code class="javascript">class TestKeyValue implements IItem {
   public id: string;
   public value: string;
 }
 </code></pre>
 <p>Unit tests for MemoryStorage:</p>
-<pre><code class="lang-javascript">describe(&#39;MemoryStorage: Class&#39;, () =&gt; {
+<pre><code class="javascript">describe(&#39;MemoryStorage: Class&#39;, () =&gt; {
   let key1 = &#39;key1&#39;, key2 = &#39;key2&#39;;
   let value1 = &#39;value1&#39;, value2 = &#39;value2&#39;;
 
@@ -182,7 +182,7 @@ export interface IStorage&lt;T extends IItem&gt; {
 </code></pre>
 <h3 id="websql-implementation">WebSQL implementation</h3>
 <p>Current implementation just just for objects where key (string) is unique string value, value (string) is a payload.</p>
-<pre><code class="lang-javascript">export class WebSQLStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+<pre><code class="javascript">export class WebSQLStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
     private db: Database;
     private databaseName: string = &#39;TripNoteDB&#39;;
     private name: string;
@@ -303,7 +303,7 @@ export interface IStorage&lt;T extends IItem&gt; {
     }
 }
 </code></pre>
-<pre><code class="lang-javascript">describe(&#39;WebSQLStorage: Class&#39;, () =&gt; {
+<pre><code class="javascript">describe(&#39;WebSQLStorage: Class&#39;, () =&gt; {
   let key1 = &#39;key1&#39;, key2 = &#39;key2&#39;;
   let value1 = &#39;value1&#39;, value2 = &#39;value2&#39;;
 
@@ -367,7 +367,7 @@ export interface IStorage&lt;T extends IItem&gt; {
 <h3 id="indexeddb-implementation">IndexedDB implementation</h3>
 <p>How to use IndexedDB is <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">here</a>.
 There are very useful <a href="https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb">tricks</a>.</p>
-<pre><code class="lang-javascript">export class IndexedDBStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+<pre><code class="javascript">export class IndexedDBStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
     private databaseName: string = &#39;TripNoteDB&#39;;
     private name: string;
 
@@ -517,7 +517,7 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
 }
 </code></pre>
 <p>Unit tests for indexedDB:</p>
-<pre><code class="lang-javascript">describe(&#39;IndexedDBStorage: Class&#39;, () =&gt; {
+<pre><code class="javascript">describe(&#39;IndexedDBStorage: Class&#39;, () =&gt; {
   let key1 = &#39;key1&#39;, key2 = &#39;key2&#39;;
   let value1 = &#39;value1&#39;, value2 = &#39;value2&#39;;
 
@@ -602,9 +602,9 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
     </script>
     <script>
         hljs.configure({
-            classPrefix: 'lang-'
+            // classPrefix: 'lang'
         });
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {

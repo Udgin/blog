@@ -7,10 +7,10 @@
     <meta name="keywords" content="docker">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
         img {
             max-width: 100%;
@@ -170,8 +170,9 @@
 <p>A container uses the host machine’s Linux/Windows kernel, and consists of any extra files you add when the image is created, along with metadata associated with the container at creation or when the container is started. Each container is built from an image. The image defines the container’s contents, which process to run when the container is launched, and a variety of other configuration details. The Docker image is read-only. When Docker runs a container from an image, it adds a read-write layer on top of the image in which your application runs.</p>
 <h4 id="what-happens-when-you-run-a-container-">What happens when you run a container?</h4>
 <p>When you use the docker run CLI command or the equivalent API, the Docker Engine client instructs the Docker daemon to run a container. For example:</p>
-<pre><code>$ docker run -i -t ubuntu /bin/bash
-</code></pre><p>When you run this command, Docker Engine does the following:</p>
+<pre><code class="bash">$ docker run -i -t ubuntu /bin/bash
+</code></pre>
+<p>When you run this command, Docker Engine does the following:</p>
 <ul>
 <li><strong>Pulls the ubuntu image</strong>: Docker Engine checks for the presence of the ubuntu image. If the image already exists locally, Docker Engine uses it for the new container. Otherwise, then Docker Engine pulls it from Docker Hub.</li>
 <li><strong>Creates a new container</strong>: Docker uses the image to create a container.</li>
@@ -227,9 +228,9 @@
     </script>
     <script>
         hljs.configure({
-            classPrefix: 'lang-'
+            // classPrefix: 'lang'
         });
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {

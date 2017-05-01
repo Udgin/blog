@@ -12,7 +12,7 @@ So there is implementation in F# below:
 
 Let's start with two helper objects: `String.split` and `TooMuchArgumentsException` excpetion.
 
-```
+```fs
 type System.String with 
     static member split c (value: string) =
         value.Split c
@@ -29,7 +29,7 @@ My internal cron support the next tempate: 'minute hour dayOfMonth month dayOfWe
 4. '5' - one value only, e.g. only at 5th minute
 5. '5,10,15,45' - list value, e.g. run at 5th, 10th, 15th and 45th minutes
 
-```
+```fs
 open System
 open System.Text.RegularExpressions
 
@@ -144,7 +144,7 @@ So Schedule module contains two methods and one type:
 
 Small sets of unit tests written using mstest:
 
-```
+```fs
 namespace FsharpTest
 
 open System
@@ -224,7 +224,8 @@ If you want to backup your InfluxDB in Docker you can probably can start with th
 Later I will just describe how I am doing backup to local folder instead of S3 storage.
 
 It is my docker-compose:
-```
+
+```dockerfile
     db:
         image: "influxdb:1.2"
         restart: always
@@ -248,7 +249,7 @@ It is my docker-compose:
 
 So there are two containers: influxdb is the standard [InfluxDB](https://docs.influxdata.com/influxdb/v1.2/introduction/getting_started/) and influxdb-backup:1.2 (see dockerfile for this image below).
 
-```
+```dockerfile
 FROM influxdb:1.2-alpine
 
 # Backup the following databases, seperator ":"
@@ -272,7 +273,7 @@ CMD crond -l 0 -f
 ```
 
 So we are running cron job to run our `backup.sh`. The configuration (cron.conf):
-```
+```bash
 # do daily/weekly/monthly maintenance
 # min	hour	day	month	weekday	command
 0 0 * * * /bin/backup.sh
@@ -280,7 +281,7 @@ So we are running cron job to run our `backup.sh`. The configuration (cron.conf)
 ```
 
 There is backup.sh with the next content:
-```
+```bash
 #!/bin/bash
 set -e
 
@@ -317,7 +318,7 @@ Thank you!
 Tags: linux, ubuntu
 
 Allows delete, write and edit all files in a particular folder:
-```
+```bash
 chmod -R 777 <desired folder>
 ```
 
@@ -327,7 +328,7 @@ Tags: interview, dotnet
 
 How to do planning of two threads so none of them can leave a circle (X is global value and default value is 0)?
 
-```
+```csharp
 while (X == 0)
 {
     X = 1 - X;
@@ -346,7 +347,7 @@ That is a manual how to create simple ping-pong discrod bot using javascript (no
 * Install [Discrod.js](https://discord.js.org/#/): `npm install --save discordjs`
 * Create index.js in this folder:
 
-```
+```js
 /*
   A ping pong bot, whenever you send "ping", it replies "pong".
 */
@@ -390,7 +391,7 @@ Well done! You created your Discrod bot! Thank you.
 
 Here is a simple rss bot for discord:
 
-```
+```js
 const Discord = require('discord.js');
 var Store = require("jfs"); // using jfs to save already posted rss news
 var db = new Store("rssfeeds");
@@ -515,7 +516,7 @@ Please find the source code of sample application [here](https://github.com/eapy
 
 Want to mention that I had to install the next lib:
 
-```
+```bash
 sudo apt-get install libunwind8
 ```
 
@@ -523,7 +524,7 @@ to actually run my service on remote server - Ubuntu 16.04 x64. There was the ne
 
 Also project.json is set up to build self-contained application:
 
-```
+```bash
 dotnet publish -c Release -r ubuntu.16.04-x64 -o packages/ubuntu
 ```
 
@@ -535,7 +536,7 @@ Tags: pip, ubuntu, streamlink
 
 To update application installed by pip, e.g. [streamlink](https://github.com/streamlink/streamlink):
 
-```
+```bash
 sudo pip install -U streamlink
 ```
 
@@ -682,7 +683,7 @@ A container uses the host machine’s Linux/Windows kernel, and consists of any 
 
 When you use the docker run CLI command or the equivalent API, the Docker Engine client instructs the Docker daemon to run a container. For example:
 
-```
+```bash
 $ docker run -i -t ubuntu /bin/bash
 ```
 

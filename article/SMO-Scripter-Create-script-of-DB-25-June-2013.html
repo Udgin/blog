@@ -7,10 +7,10 @@
     <meta name="keywords" content="">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
         img {
             max-width: 100%;
@@ -62,7 +62,7 @@
     <article class="markdown-body">
         <h2 id="smo-scripter-create-script-of-db-25-june-2013">SMO Scripter. Create script of DB - 25 June, 2013</h2>
 <p>It is possible to create script of MSSQL using SMO: (<a href="http://pastebin.com/AQkprTS7#">link</a>)</p>
-<pre><code class="lang-csharp">private static void Main(string[] args)
+<pre><code class="csharp">private static void Main(string[] args)
 {
     var arguments = args.Select(x =&gt; x.ToLower()).ToList();
     if (arguments.Count == 0 || arguments.Contains(&quot;-help&quot;))
@@ -185,9 +185,9 @@
     </script>
     <script>
         hljs.configure({
-            classPrefix: 'lang-'
+            // classPrefix: 'lang'
         });
-        hljs.initHighlightingOnLoad();
+        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
