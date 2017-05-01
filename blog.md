@@ -211,7 +211,7 @@ type ScheduleTests () =
         Assert.IsTrue(Schedule.isTime schedule dateTime)
 ```
 
-Quiet simple implementation of cron schedule part of mentioned service.
+Quite simple implementation of cron schedule part of mentioned service.
 
 Thanks.
 
