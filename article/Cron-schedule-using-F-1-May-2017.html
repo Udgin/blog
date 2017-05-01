@@ -68,7 +68,7 @@ This service is for grabbing data from external services via HTTP and putting ag
 <h4 id="i-started-with-rewriting-cron-scheduling-">I started with rewriting cron scheduling.</h4>
 <p>So there is implementation in F# below:</p>
 <p>Let&#39;s start with two helper objects: <code>String.split</code> and <code>TooMuchArgumentsException</code> excpetion.</p>
-<pre><code class="lang-f#">type System.String with 
+<pre><code class="lang-fsharp">type System.String with 
     static member split c (value: string) =
         value.Split c
 
@@ -83,7 +83,7 @@ exception TooMuchArgumentsException of int
 <li>&#39;5&#39; - one value only, e.g. only at 5th minute</li>
 <li>&#39;5,10,15,45&#39; - list value, e.g. run at 5th, 10th, 15th and 45th minutes</li>
 </ol>
-<pre><code class="lang-f#">open System
+<pre><code class="lang-fsharp">open System
 open System.Text.RegularExpressions
 
 module Schedule =
@@ -196,7 +196,7 @@ module Schedule =
 <li>isTime is to check if we need to run a job in passed date time </li>
 </ul>
 <p>Small sets of unit tests written using mstest:</p>
-<pre><code class="lang-f#">namespace FsharpTest
+<pre><code class="lang-fsharp">namespace FsharpTest
 
 open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
