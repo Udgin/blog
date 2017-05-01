@@ -67,7 +67,7 @@
 This service is for grabbing data from external services via HTTP and putting aggregated data to InfluxDB database. Internally the service is using cron to plan and run this process as we want to grab data periodically.</p>
 <h4 id="i-started-with-rewriting-cron-scheduling-">I started with rewriting cron scheduling.</h4>
 <p>So there is implementation in F# below:</p>
-<p>Let&#39;s start with two helper objects: <code>String.split</code> and <code>TooMuchArgumentsException</code> excpetion.</p>
+<p>Let&#39;s start with two helper objects: <code>String.split</code> and <code>TooMuchArgumentsException</code> exception.</p>
 <pre><code class="fs">type System.String with 
     static member split c (value: string) =
         value.Split c
@@ -75,9 +75,9 @@ This service is for grabbing data from external services via HTTP and putting ag
 exception TooMuchArgumentsException of int
 </code></pre>
 <p><code>String.split</code> is just wrapper for <code>String.Split</code> method. Exception is needed to show when cron expression contains too much parts.</p>
-<p>My internal cron support the next tempate: &#39;minute hour dayOfMonth month dayOfWeek&#39;. And the next type of cron expressions: </p>
+<p>My internal cron supports the next template: &#39;minute hour dayOfMonth month dayOfWeek&#39;. And the next type of cron expressions: </p>
 <ol>
-<li>&#39;*&#39; - wildchar;</li>
+<li>&#39;*&#39; - wildcard;</li>
 <li>&#39;*/5&#39; - every 5th, e.g. every five minutes;</li>
 <li>&#39;10-20/5&#39; - range value, e.g. every from 10 till 20, e.g. every minute from 10 till 20. &#39;/5&#39; is optional and it works the same as previous one, so &#39;10-20/5&#39; for minutes means run at 10, 15 and 20;</li>
 <li>&#39;5&#39; - one value only, e.g. only at 5th minute</li>
@@ -150,7 +150,7 @@ module Schedule =
             | 3 -&gt; (1, 12)
             // for day of week
             | 4 -&gt; (0, 6)
-            // thow an exception if don&#39;t know for what part of date time we need values
+            // throw an exception if don&#39;t know for what part of date time we need values
             | _ -&gt; raise (TooMuchArgumentsException i)
 
         // active pattern to match regexp
@@ -159,7 +159,7 @@ module Schedule =
             if m.Success then Some (m.ToString()) else None
 
         // parsing cron expression and create a array of lists which contains all possibles values
-        // for every part of datetime
+        // for every part of daytime
         let parts =
             expression 
             |&gt; String.split [|&#39; &#39;|]
@@ -173,7 +173,7 @@ module Schedule =
                     | MatchRegex OneValuePattern x -&gt; oneValue x
                     | _ -&gt; []
             )
-        // conver list of array to ISchedueSet
+        // convert list of array to ISchedueSet
         { 
             Minutes = parts.[0];
             Hours = parts.[1];
@@ -192,7 +192,7 @@ module Schedule =
 <p>So Schedule module contains two methods and one type: </p>
 <ul>
 <li>ISchedueSet is a container for parsed cron expression;</li>
-<li>generate is to generate ISchedueSet record from cron expression. This record contains all possibled values of minutes, hours, months, days of month, days of week for particular cron expression;</li>
+<li>generate is to generate ISchedueSet record from cron expression. This record contains all possible values of minutes, hours, months, days of month, days of week for particular cron expression;</li>
 <li>isTime is to check if we need to run a job in passed date time </li>
 </ul>
 <p>Small sets of unit tests written using mstest:</p>

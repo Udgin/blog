@@ -88,7 +88,7 @@
 <p>So there are two containers: influxdb is the standard <a href="https://docs.influxdata.com/influxdb/v1.2/introduction/getting_started/">InfluxDB</a> and influxdb-backup:1.2 (see dockerfile for this image below).</p>
 <pre><code class="dockerfile">FROM influxdb:1.2-alpine
 
-# Backup the following databases, seperator &quot;:&quot;
+# Backup the following databases, separator &quot;:&quot;
 ENV DATABASES=entity_db
 ENV INFLUX_HOST=influxdb
 

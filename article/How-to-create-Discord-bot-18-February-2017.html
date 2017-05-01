@@ -62,10 +62,10 @@
     <article class="markdown-body">
         <h2 id="how-to-create-discord-bot-18-february-2017">How to create Discord bot - 18 February, 2017</h2>
 <p>Tags: discord, javascript</p>
-<p>That is a manual how to create simple ping-pong discrod bot using javascript (nodejs).</p>
+<p>That is a manual how to create simple ping-pong discord bot using javascript (nodejs).</p>
 <ul>
 <li>Install nodejs and npm</li>
-<li>Create a folder for your discrod bot</li>
+<li>Create a folder for your discord bot</li>
 <li>Run <code>npm init</code> in the folder</li>
 <li>Install <a href="https://discord.js.org/#/">Discrod.js</a>: <code>npm install --save discordjs</code></li>
 <li>Create index.js in this folder:</li>
@@ -110,7 +110,7 @@ bot.login(token);
 <li>Run created bot by command <code>node index.js</code></li>
 <li>You should be able to see a bot in Discord at your server. Write &#39;ping&#39; to the bot. The answer should be &#39;pong&#39;.</li>
 </ul>
-<p>Well done! You created your Discrod bot! Thank you.</p>
+<p>Well done! You created your Discord bot! Thank you.</p>
 <p>Here is a simple rss bot for discord:</p>
 <pre><code class="js">const Discord = require(&#39;discord.js&#39;);
 var Store = require(&quot;jfs&quot;); // using jfs to save already posted rss news
@@ -182,7 +182,7 @@ client.login(&#39;MjgyNDg5MjQ0MDEyNzczMzc2.C4nUkw.Na6H7ZVrXbMZbXv4Wt9p8cZaj2Q&#3
 //}
 var rssFeeds = require(&quot;./rss.json&quot;);
 
-/// load feeds from Resourses
+/// load feeds from Resources
 function loadFeeds() {
     for (var feedName in rssFeeds) {
         rssfeed(rssFeeds[feedName].url);
@@ -219,7 +219,7 @@ function rssfeed(url) {
 <p>Links:</p>
 <ul>
 <li><a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">Creating a discord bot &amp; getting a token</a></li>
-<li><a href="https://discord.js.org/#/">Discrod.js</a></li>
+<li><a href="https://discord.js.org/#/">Discord.js</a></li>
 <li><a href="https://discord.js.org/#/docs/main/stable/examples/ping">Ping-Pong example</a></li>
 <li><a href="https://discordapp.com/developers/applications/me">Discord Developers</a></li>
 <li><a href="https://discordapp.com/">Discord</a></li>

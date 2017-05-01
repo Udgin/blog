@@ -10,7 +10,7 @@ This service is for grabbing data from external services via HTTP and putting ag
 
 So there is implementation in F# below:
 
-Let's start with two helper objects: `String.split` and `TooMuchArgumentsException` excpetion.
+Let's start with two helper objects: `String.split` and `TooMuchArgumentsException` exception.
 
 ```fs
 type System.String with 
@@ -22,8 +22,8 @@ exception TooMuchArgumentsException of int
 
 `String.split` is just wrapper for `String.Split` method. Exception is needed to show when cron expression contains too much parts.
 
-My internal cron support the next tempate: 'minute hour dayOfMonth month dayOfWeek'. And the next type of cron expressions: 
-1. '*' - wildchar;
+My internal cron supports the next template: 'minute hour dayOfMonth month dayOfWeek'. And the next type of cron expressions: 
+1. '*' - wildcard;
 2. '*/5' - every 5th, e.g. every five minutes;
 3. '10-20/5' - range value, e.g. every from 10 till 20, e.g. every minute from 10 till 20. '/5' is optional and it works the same as previous one, so '10-20/5' for minutes means run at 10, 15 and 20;
 4. '5' - one value only, e.g. only at 5th minute
@@ -97,7 +97,7 @@ module Schedule =
             | 3 -> (1, 12)
             // for day of week
             | 4 -> (0, 6)
-            // thow an exception if don't know for what part of date time we need values
+            // throw an exception if don't know for what part of date time we need values
             | _ -> raise (TooMuchArgumentsException i)
         
         // active pattern to match regexp
@@ -106,7 +106,7 @@ module Schedule =
             if m.Success then Some (m.ToString()) else None
         
         // parsing cron expression and create a array of lists which contains all possibles values
-        // for every part of datetime
+        // for every part of daytime
         let parts =
             expression 
             |> String.split [|' '|]
@@ -120,7 +120,7 @@ module Schedule =
                     | MatchRegex OneValuePattern x -> oneValue x
                     | _ -> []
             )
-        // conver list of array to ISchedueSet
+        // convert list of array to ISchedueSet
         { 
             Minutes = parts.[0];
             Hours = parts.[1];
@@ -139,7 +139,7 @@ module Schedule =
 
 So Schedule module contains two methods and one type: 
 * ISchedueSet is a container for parsed cron expression;
-* generate is to generate ISchedueSet record from cron expression. This record contains all possibled values of minutes, hours, months, days of month, days of week for particular cron expression;
+* generate is to generate ISchedueSet record from cron expression. This record contains all possible values of minutes, hours, months, days of month, days of week for particular cron expression;
 * isTime is to check if we need to run a job in passed date time 
 
 Small sets of unit tests written using mstest:
@@ -252,7 +252,7 @@ So there are two containers: influxdb is the standard [InfluxDB](https://docs.in
 ```dockerfile
 FROM influxdb:1.2-alpine
 
-# Backup the following databases, seperator ":"
+# Backup the following databases, separator ":"
 ENV DATABASES=entity_db
 ENV INFLUX_HOST=influxdb
 
@@ -339,10 +339,10 @@ while (X == 0)
 ## How to create Discord bot - 18 February, 2017
 Tags: discord, javascript
 
-That is a manual how to create simple ping-pong discrod bot using javascript (nodejs).
+That is a manual how to create simple ping-pong discord bot using javascript (nodejs).
 
 * Install nodejs and npm
-* Create a folder for your discrod bot
+* Create a folder for your discord bot
 * Run `npm init` in the folder
 * Install [Discrod.js](https://discord.js.org/#/): `npm install --save discordjs`
 * Create index.js in this folder:
@@ -387,7 +387,7 @@ bot.login(token);
 * Run created bot by command `node index.js`
 * You should be able to see a bot in Discord at your server. Write 'ping' to the bot. The answer should be 'pong'.
 
-Well done! You created your Discrod bot! Thank you.
+Well done! You created your Discord bot! Thank you.
 
 Here is a simple rss bot for discord:
 
@@ -462,7 +462,7 @@ client.login('MjgyNDg5MjQ0MDEyNzczMzc2.C4nUkw.Na6H7ZVrXbMZbXv4Wt9p8cZaj2Q');
 //}
 var rssFeeds = require("./rss.json");
 
-/// load feeds from Resourses
+/// load feeds from Resources
 function loadFeeds() {
     for (var feedName in rssFeeds) {
         rssfeed(rssFeeds[feedName].url);
@@ -499,7 +499,7 @@ function rssfeed(url) {
 
 Links:
 * [Creating a discord bot & getting a token](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
-* [Discrod.js](https://discord.js.org/#/)
+* [Discord.js](https://discord.js.org/#/)
 * [Ping-Pong example](https://discord.js.org/#/docs/main/stable/examples/ping)
 * [Discord Developers](https://discordapp.com/developers/applications/me)
 * [Discord](https://discordapp.com/)
