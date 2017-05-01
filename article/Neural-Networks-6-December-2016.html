@@ -95,7 +95,10 @@ h_\Theta(x) = a_1^{(3)} = g(\Theta_{10}^{(2)}a_0^{(2)} + \Theta_{11}^{(2)}a_1^{(
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {

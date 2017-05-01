@@ -87,7 +87,10 @@ at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; comp
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {

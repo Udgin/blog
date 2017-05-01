@@ -247,7 +247,10 @@ Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced 
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {

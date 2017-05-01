@@ -103,7 +103,10 @@ Further the source code of my rule. You can see the original source code of SA12
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {

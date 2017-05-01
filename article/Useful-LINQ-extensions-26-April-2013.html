@@ -166,7 +166,10 @@ public class LambdaComparer&lt;T&gt; : IEqualityComparer&lt;T&gt;
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {

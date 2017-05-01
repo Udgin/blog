@@ -82,7 +82,10 @@ The problem connected with this js file: persistence.jquery. If it used, we shou
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {

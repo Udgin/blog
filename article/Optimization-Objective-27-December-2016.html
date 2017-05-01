@@ -128,7 +128,10 @@ In the first case, we don&#39;t have enough examples to need a complicated polyn
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {

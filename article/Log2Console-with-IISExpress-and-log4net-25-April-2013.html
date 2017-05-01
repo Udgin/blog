@@ -81,7 +81,10 @@ I have found that log4net and log2console don&#39;t work correctly (using IISExp
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {

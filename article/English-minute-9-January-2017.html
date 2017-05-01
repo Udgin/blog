@@ -124,7 +124,10 @@ OMFG, I can&#39;t believe he did a whole inning.</p>
         })();
     </script>
     <script>
-        hljs.initHighlighting();
+        hljs.configure({
+            classPrefix: 'lang-'
+        });
+        hljs.initHighlightingOnLoad();
     </script>
     <script>
         function timeCheck() {
