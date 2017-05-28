@@ -1,4 +1,4 @@
-## Cron service using F# on .NET Core - 18 May, 2017
+## Cron service using F# on .NET Core - 28 May, 2017
 Tags: dotnet, fsharp, cron
 
 As continuation for [my previous post](https://eapyl.github.io/article/Daemon-cron-using-F-19-May-2017.html) I want to create a nancy service to run my cron jobs.
