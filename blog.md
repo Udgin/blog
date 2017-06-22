@@ -1,3 +1,224 @@
+## Cake.Net. Useful scripts for AngularJS, dotnet core, docker application - 22 June, 2017
+Tags: dotnet, angular, docker, cake.net, git
+
+There is a great [cross-platform build automation tool](http://cakebuild.net/).
+
+I start using it and create some useful scripts to Release and Publish new version of application.
+
+I am using AngularJS as frontend framework, asp net core (dotnet core) as backend framework, git as source system and docker to deploy and run application on remote server.
+
+So it is a small cake script to release a new version of application:
+
+```cake
+#addin "Cake.Docker"
+#addin "Cake.FileHelpers"
+// Release: ./build.sh -t Release "-packageVersion=x.x.x.x"
+
+var target = Argument<string>("target");
+var version = Argument<string>("packageVersion");
+
+static class Settings
+{
+    public static string ProjectName = "example.csproj";
+}
+
+Task("Release")
+    // put new version to csproj file
+    .IsDependentOn("SetVersion")
+    // build dotnet core project
+    .IsDependentOn("Build")
+    // add tag with release version and push it
+    .IsDependentOn("PushTagToGit")
+    .Does(()=>
+    {
+        Information("Finished!");
+    });
+
+Task("SetVersion")
+    .Does(()=>
+    {
+        var file = File($"./src/{Settings.ProjectName}");
+        XmlPoke(file, "/Project/PropertyGroup/Version", version);
+    });
+
+Task("Build")
+    .Does(() =>
+{
+    DotNetCoreRestore($"./src/{Settings.ProjectName}");
+    // publish application to artifacts folder
+    CleanDirectory("./artifacts");
+    var settings = new DotNetCorePublishSettings
+    {
+        Framework = "netcoreapp1.1",
+        Configuration = "Release",
+        OutputDirectory = "./artifacts/"
+    };
+    DotNetCorePublish($"./src/{Settings.ProjectName}", settings);
+});
+
+Task("PushTagToGit")
+    .Does(() =>
+{
+    StartProcess("git", $"tag v{version}");
+    StartProcess("git", "push --tags");
+});
+
+RunTarget(target);
+```
+
+It is a script to build released version and publish a docker container to a server:
+
+```cake
+#addin "Cake.Docker"
+#addin "Cake.FileHelpers"
+
+// Publish: ./build.sh -t Publish "-packageVersion=x.x.x.x"
+
+static class Settings
+{
+    // put ssh address of your server
+    public static string SshAddress = "example@166.66.66.666";
+    // ssh port
+    public static string SshPort = "26";
+    // path with your project on a server
+    public static string HomePath = "/home/example";
+    public static string ProjectName = "example.csproj";
+    public static string ContainerName = "example";
+}
+
+Task("Publish")
+    // check that current 'master' branch hasn't uncommitted changes
+    .IsDependentOn("CheckAllCommitted")
+    // checkout release tag
+    .IsDependentOn("CheckoutTag")
+    // build angular
+    .IsDependentOn("Build Angular")
+    // build release 
+    .IsDependentOn("Build")
+    // return 'master' to HEAD as we have published release in artifacts folder
+    .IsDependentOn("CheckoutBranch")
+    // create docker image using published release
+    .IsDependentOn("BuildDocker")
+    // copy image to remote server
+    .IsDependentOn("ExportDocker")
+    // import new image, replace running container
+    .IsDependentOn("PublishService")
+    .Does(()=>
+    {
+        Information("Finished!");
+    });
+
+Task("Build Angular")
+    .Does(() =>
+{
+    StartProcess("ng", "build");
+});
+
+Task("Build")
+    .Does(() =>
+{
+    DotNetCoreRestore($"./src/{Settings.ProjectName}");
+    CleanDirectory("./artifacts");
+    var settings = new DotNetCorePublishSettings
+    {
+        Framework = "netcoreapp1.1",
+        Configuration = "Release",
+        OutputDirectory = "./artifacts/"
+    };
+    DotNetCorePublish($"./src/{Settings.ProjectName}", settings);
+    // clean up artifacts folder
+    DeleteDirectory("./artifacts/e2e", recursive:true);
+    DeleteDirectory("./artifacts/src", recursive:true);
+    DeleteFiles("./artifacts/ts*.json");
+});
+
+Task("BuildDocker")
+    .Does(() =>
+{
+    var settings = new DockerBuildSettings {
+        Tag = new []{ $"{Settings.ContainerName}:{version}" }
+    };
+    DockerBuild(settings, ".");
+});
+
+Task("ExportDocker")
+    .Does(() =>
+{
+    var settings = new DockerSaveSettings {
+        Output = $"./artifacts/{Settings.ContainerName}.{version}.tar"
+    };
+    // save docker image to tar archive
+    DockerSave(settings, new[] { $"{Settings.ContainerName}:{version}"});
+});
+
+Task("PublishService")
+    .Does(() =>
+{
+    // cope docker image to remote server
+    StartProcess("scp", $"-P {Settings.SshPort} ./artifacts/{Settings.ContainerName}.{version}.tar {Settings.SshAddress}:{Settings.HomePath}/");
+    // load copied image to docker on remote server
+    StartProcess("ssh", $"-p {Settings.SshPort} {Settings.SshAddress} docker load < {Settings.HomePath}/{Settings.ContainerName}.{version}.tar");
+
+    // copy docker-compose configuration from remote server to artifacts folder
+    StartProcess("scp", $"-P {Settings.SshPort} {Settings.SshAddress}:{Settings.HomePath}/docker-compose.yml ./artifacts/");
+    // replace the version of docker image in docker-compose configuration
+    ReplaceRegexInFiles("./artifacts/docker-compose.yml", $"{Settings.ContainerName}:\\d+\\.\\d+\\.\\d+\\.\\d+", $"{Settings.ContainerName}:{version}");
+
+    // stop old docker container on server
+    StartProcess("ssh", $"-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose stop {Settings.ContainerName}");
+    // delete old container
+    StartProcess("ssh", $"-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose rm -f {Settings.ContainerName}");
+    // copy new docker-compose configuration to remote server
+    StartProcess("scp", $"-P {Settings.SshPort} ./artifacts/docker-compose.yml {Settings.SshAddress}:{Settings.HomePath}/");
+    // recreate docker container, it will create a new version
+    StartProcess("ssh", $"-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose create {Settings.ContainerName}");
+    // start new docker container
+    StartProcess("ssh", $"-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose start {Settings.ContainerName}");
+});
+
+Task("CheckoutTag")
+    .Does(() =>
+{
+    StartProcess("git", $"checkout tags/v{version}");
+});
+
+Task("CheckoutBranch")
+    .Does(() =>
+{
+    StartProcess("git", $"checkout master");
+});
+
+Task("CheckAllCommitted")
+    .Does(() =>
+{
+    IEnumerable<string> redirectedOutput;
+    var exitCodeWithArgument = StartProcess("git", new ProcessSettings{
+    Arguments = "status",
+    RedirectStandardOutput = true
+    },
+    out redirectedOutput
+    );
+    if (!redirectedOutput.LastOrDefault().Contains("nothing to commit"))
+    {
+        throw new Exception("Exists uncommitted changes");
+    }
+});
+
+RunTarget(target);
+```
+
+I am running service using docker compose like:
+
+```yml
+version: '2'
+services:
+    ContainerName:
+        image: ContainerName:x.x.x.x
+```
+
+Thanks.
+
+---
 ## Cron service using F# on .NET Core - 28 May, 2017
 Tags: dotnet, fsharp, cron
 

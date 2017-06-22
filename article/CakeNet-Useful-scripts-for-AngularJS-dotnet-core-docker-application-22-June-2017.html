@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cake.Net. Useful scripts for AngularJS, dotnet core, docker application - 22 June, 2017</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="dotnet,angular,docker,cake.net,git">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="cake-net-useful-scripts-for-angularjs-dotnet-core-docker-application-22-june-2017">Cake.Net. Useful scripts for AngularJS, dotnet core, docker application - 22 June, 2017</h2>
+<p>Tags: dotnet, angular, docker, cake.net, git</p>
+<p>There is a great <a href="http://cakebuild.net/">cross-platform build automation tool</a>.</p>
+<p>I start using it and create some useful scripts to Release and Publish new version of application.</p>
+<p>I am using AngularJS as frontend framework, asp net core (dotnet core) as backend framework, git as source system and docker to deploy and run application on remote server.</p>
+<p>So it is a small cake script to release a new version of application:</p>
+<pre><code class="cake">#addin &quot;Cake.Docker&quot;
+#addin &quot;Cake.FileHelpers&quot;
+// Release: ./build.sh -t Release &quot;-packageVersion=x.x.x.x&quot;
+
+var target = Argument&lt;string&gt;(&quot;target&quot;);
+var version = Argument&lt;string&gt;(&quot;packageVersion&quot;);
+
+static class Settings
+{
+    public static string ProjectName = &quot;example.csproj&quot;;
+}
+
+Task(&quot;Release&quot;)
+    // put new version to csproj file
+    .IsDependentOn(&quot;SetVersion&quot;)
+    // build dotnet core project
+    .IsDependentOn(&quot;Build&quot;)
+    // add tag with release version and push it
+    .IsDependentOn(&quot;PushTagToGit&quot;)
+    .Does(()=&gt;
+    {
+        Information(&quot;Finished!&quot;);
+    });
+
+Task(&quot;SetVersion&quot;)
+    .Does(()=&gt;
+    {
+        var file = File({BODY}quot;./src/{Settings.ProjectName}&quot;);
+        XmlPoke(file, &quot;/Project/PropertyGroup/Version&quot;, version);
+    });
+
+Task(&quot;Build&quot;)
+    .Does(() =&gt;
+{
+    DotNetCoreRestore({BODY}quot;./src/{Settings.ProjectName}&quot;);
+    // publish application to artifacts folder
+    CleanDirectory(&quot;./artifacts&quot;);
+    var settings = new DotNetCorePublishSettings
+    {
+        Framework = &quot;netcoreapp1.1&quot;,
+        Configuration = &quot;Release&quot;,
+        OutputDirectory = &quot;./artifacts/&quot;
+    };
+    DotNetCorePublish({BODY}quot;./src/{Settings.ProjectName}&quot;, settings);
+});
+
+Task(&quot;PushTagToGit&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, {BODY}quot;tag v{version}&quot;);
+    StartProcess(&quot;git&quot;, &quot;push --tags&quot;);
+});
+
+RunTarget(target);
+</code></pre>
+<p>It is a script to build released version and publish a docker container to a server:</p>
+<pre><code class="cake">#addin &quot;Cake.Docker&quot;
+#addin &quot;Cake.FileHelpers&quot;
+
+// Publish: ./build.sh -t Publish &quot;-packageVersion=x.x.x.x&quot;
+
+static class Settings
+{
+    // put ssh address of your server
+    public static string SshAddress = &quot;example@166.66.66.666&quot;;
+    // ssh port
+    public static string SshPort = &quot;26&quot;;
+    // path with your project on a server
+    public static string HomePath = &quot;/home/example&quot;;
+    public static string ProjectName = &quot;example.csproj&quot;;
+    public static string ContainerName = &quot;example&quot;;
+}
+
+Task(&quot;Publish&quot;)
+    // check that current &#39;master&#39; branch hasn&#39;t uncommitted changes
+    .IsDependentOn(&quot;CheckAllCommitted&quot;)
+    // checkout release tag
+    .IsDependentOn(&quot;CheckoutTag&quot;)
+    // build angular
+    .IsDependentOn(&quot;Build Angular&quot;)
+    // build release 
+    .IsDependentOn(&quot;Build&quot;)
+    // return &#39;master&#39; to HEAD as we have published release in artifacts folder
+    .IsDependentOn(&quot;CheckoutBranch&quot;)
+    // create docker image using published release
+    .IsDependentOn(&quot;BuildDocker&quot;)
+    // copy image to remote server
+    .IsDependentOn(&quot;ExportDocker&quot;)
+    // import new image, replace running container
+    .IsDependentOn(&quot;PublishService&quot;)
+    .Does(()=&gt;
+    {
+        Information(&quot;Finished!&quot;);
+    });
+
+Task(&quot;Build Angular&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;ng&quot;, &quot;build&quot;);
+});
+
+Task(&quot;Build&quot;)
+    .Does(() =&gt;
+{
+    DotNetCoreRestore({BODY}quot;./src/{Settings.ProjectName}&quot;);
+    CleanDirectory(&quot;./artifacts&quot;);
+    var settings = new DotNetCorePublishSettings
+    {
+        Framework = &quot;netcoreapp1.1&quot;,
+        Configuration = &quot;Release&quot;,
+        OutputDirectory = &quot;./artifacts/&quot;
+    };
+    DotNetCorePublish({BODY}quot;./src/{Settings.ProjectName}&quot;, settings);
+    // clean up artifacts folder
+    DeleteDirectory(&quot;./artifacts/e2e&quot;, recursive:true);
+    DeleteDirectory(&quot;./artifacts/src&quot;, recursive:true);
+    DeleteFiles(&quot;./artifacts/ts*.json&quot;);
+});
+
+Task(&quot;BuildDocker&quot;)
+    .Does(() =&gt;
+{
+    var settings = new DockerBuildSettings {
+        Tag = new []{ {BODY}quot;{Settings.ContainerName}:{version}&quot; }
+    };
+    DockerBuild(settings, &quot;.&quot;);
+});
+
+Task(&quot;ExportDocker&quot;)
+    .Does(() =&gt;
+{
+    var settings = new DockerSaveSettings {
+        Output = {BODY}quot;./artifacts/{Settings.ContainerName}.{version}.tar&quot;
+    };
+    // save docker image to tar archive
+    DockerSave(settings, new[] { {BODY}quot;{Settings.ContainerName}:{version}&quot;});
+});
+
+Task(&quot;PublishService&quot;)
+    .Does(() =&gt;
+{
+    // cope docker image to remote server
+    StartProcess(&quot;scp&quot;, {BODY}quot;-P {Settings.SshPort} ./artifacts/{Settings.ContainerName}.{version}.tar {Settings.SshAddress}:{Settings.HomePath}/&quot;);
+    // load copied image to docker on remote server
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} docker load &lt; {Settings.HomePath}/{Settings.ContainerName}.{version}.tar&quot;);
+
+    // copy docker-compose configuration from remote server to artifacts folder
+    StartProcess(&quot;scp&quot;, {BODY}quot;-P {Settings.SshPort} {Settings.SshAddress}:{Settings.HomePath}/docker-compose.yml ./artifacts/&quot;);
+    // replace the version of docker image in docker-compose configuration
+    ReplaceRegexInFiles(&quot;./artifacts/docker-compose.yml&quot;, {BODY}quot;{Settings.ContainerName}:\\d+\\.\\d+\\.\\d+\\.\\d+&quot;, {BODY}quot;{Settings.ContainerName}:{version}&quot;);
+
+    // stop old docker container on server
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose stop {Settings.ContainerName}&quot;);
+    // delete old container
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose rm -f {Settings.ContainerName}&quot;);
+    // copy new docker-compose configuration to remote server
+    StartProcess(&quot;scp&quot;, {BODY}quot;-P {Settings.SshPort} ./artifacts/docker-compose.yml {Settings.SshAddress}:{Settings.HomePath}/&quot;);
+    // recreate docker container, it will create a new version
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose create {Settings.ContainerName}&quot;);
+    // start new docker container
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose start {Settings.ContainerName}&quot;);
+});
+
+Task(&quot;CheckoutTag&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, {BODY}quot;checkout tags/v{version}&quot;);
+});
+
+Task(&quot;CheckoutBranch&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, {BODY}quot;checkout master&quot;);
+});
+
+Task(&quot;CheckAllCommitted&quot;)
+    .Does(() =&gt;
+{
+    IEnumerable&lt;string&gt; redirectedOutput;
+    var exitCodeWithArgument = StartProcess(&quot;git&quot;, new ProcessSettings{
+    Arguments = &quot;status&quot;,
+    RedirectStandardOutput = true
+    },
+    out redirectedOutput
+    );
+    if (!redirectedOutput.LastOrDefault().Contains(&quot;nothing to commit&quot;))
+    {
+        throw new Exception(&quot;Exists uncommitted changes&quot;);
+    }
+});
+
+RunTarget(target);
+</code></pre>
+<p>I am running service using docker compose like:</p>
+<pre><code class="yml">version: &#39;2&#39;
+services:
+    ContainerName:
+        image: ContainerName:x.x.x.x
+</code></pre>
+<p>Thanks.</p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>
