@@ -1,9 +1,9 @@
 ## Cake.Net. Useful scripts for AngularJS, dotnet core, docker application - 22 June, 2017
 Tags: dotnet, angular, docker, cake.net, git
 
-There is a great [cross-platform build automation tool](http://cakebuild.net/).
+There is a great [cross-platform build automation tool](http://cakebuild.net/) - Cake.Net.
 
-I start using it and create some useful scripts to Release and Publish new version of application.
+I started using it and created some useful scripts to Release and Publish new version of application.
 
 I am using AngularJS as frontend framework, asp net core (dotnet core) as backend framework, git as source system and docker to deploy and run application on remote server.
 
