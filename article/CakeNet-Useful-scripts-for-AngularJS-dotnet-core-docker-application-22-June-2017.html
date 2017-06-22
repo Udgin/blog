@@ -93,14 +93,14 @@ Task(&quot;Release&quot;)
 Task(&quot;SetVersion&quot;)
     .Does(()=&gt;
     {
-        var file = File({BODY}quot;./src/{Settings.ProjectName}&quot;);
+        var file = File($ &quot;./src/{Settings.ProjectName}&quot;);
         XmlPoke(file, &quot;/Project/PropertyGroup/Version&quot;, version);
     });
 
 Task(&quot;Build&quot;)
     .Does(() =&gt;
 {
-    DotNetCoreRestore({BODY}quot;./src/{Settings.ProjectName}&quot;);
+    DotNetCoreRestore($ &quot;./src/{Settings.ProjectName}&quot;);
     // publish application to artifacts folder
     CleanDirectory(&quot;./artifacts&quot;);
     var settings = new DotNetCorePublishSettings
@@ -109,13 +109,13 @@ Task(&quot;Build&quot;)
         Configuration = &quot;Release&quot;,
         OutputDirectory = &quot;./artifacts/&quot;
     };
-    DotNetCorePublish({BODY}quot;./src/{Settings.ProjectName}&quot;, settings);
+    DotNetCorePublish($ &quot;./src/{Settings.ProjectName}&quot;, settings);
 });
 
 Task(&quot;PushTagToGit&quot;)
     .Does(() =&gt;
 {
-    StartProcess(&quot;git&quot;, {BODY}quot;tag v{version}&quot;);
+    StartProcess(&quot;git&quot;, $ &quot;tag v{version}&quot;);
     StartProcess(&quot;git&quot;, &quot;push --tags&quot;);
 });
 
@@ -170,7 +170,7 @@ Task(&quot;Build Angular&quot;)
 Task(&quot;Build&quot;)
     .Does(() =&gt;
 {
-    DotNetCoreRestore({BODY}quot;./src/{Settings.ProjectName}&quot;);
+    DotNetCoreRestore($ &quot;./src/{Settings.ProjectName}&quot;);
     CleanDirectory(&quot;./artifacts&quot;);
     var settings = new DotNetCorePublishSettings
     {
@@ -178,7 +178,7 @@ Task(&quot;Build&quot;)
         Configuration = &quot;Release&quot;,
         OutputDirectory = &quot;./artifacts/&quot;
     };
-    DotNetCorePublish({BODY}quot;./src/{Settings.ProjectName}&quot;, settings);
+    DotNetCorePublish($ &quot;./src/{Settings.ProjectName}&quot;, settings);
     // clean up artifacts folder
     DeleteDirectory(&quot;./artifacts/e2e&quot;, recursive:true);
     DeleteDirectory(&quot;./artifacts/src&quot;, recursive:true);
@@ -189,7 +189,7 @@ Task(&quot;BuildDocker&quot;)
     .Does(() =&gt;
 {
     var settings = new DockerBuildSettings {
-        Tag = new []{ {BODY}quot;{Settings.ContainerName}:{version}&quot; }
+        Tag = new []{ $ &quot;{Settings.ContainerName}:{version}&quot; }
     };
     DockerBuild(settings, &quot;.&quot;);
 });
@@ -198,47 +198,47 @@ Task(&quot;ExportDocker&quot;)
     .Does(() =&gt;
 {
     var settings = new DockerSaveSettings {
-        Output = {BODY}quot;./artifacts/{Settings.ContainerName}.{version}.tar&quot;
+        Output = $ &quot;./artifacts/{Settings.ContainerName}.{version}.tar&quot;
     };
     // save docker image to tar archive
-    DockerSave(settings, new[] { {BODY}quot;{Settings.ContainerName}:{version}&quot;});
+    DockerSave(settings, new[] { $ &quot;{Settings.ContainerName}:{version}&quot;});
 });
 
 Task(&quot;PublishService&quot;)
     .Does(() =&gt;
 {
     // cope docker image to remote server
-    StartProcess(&quot;scp&quot;, {BODY}quot;-P {Settings.SshPort} ./artifacts/{Settings.ContainerName}.{version}.tar {Settings.SshAddress}:{Settings.HomePath}/&quot;);
+    StartProcess(&quot;scp&quot;, $ &quot;-P {Settings.SshPort} ./artifacts/{Settings.ContainerName}.{version}.tar {Settings.SshAddress}:{Settings.HomePath}/&quot;);
     // load copied image to docker on remote server
-    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} docker load &lt; {Settings.HomePath}/{Settings.ContainerName}.{version}.tar&quot;);
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} docker load &lt; {Settings.HomePath}/{Settings.ContainerName}.{version}.tar&quot;);
 
     // copy docker-compose configuration from remote server to artifacts folder
-    StartProcess(&quot;scp&quot;, {BODY}quot;-P {Settings.SshPort} {Settings.SshAddress}:{Settings.HomePath}/docker-compose.yml ./artifacts/&quot;);
+    StartProcess(&quot;scp&quot;, $ &quot;-P {Settings.SshPort} {Settings.SshAddress}:{Settings.HomePath}/docker-compose.yml ./artifacts/&quot;);
     // replace the version of docker image in docker-compose configuration
-    ReplaceRegexInFiles(&quot;./artifacts/docker-compose.yml&quot;, {BODY}quot;{Settings.ContainerName}:\\d+\\.\\d+\\.\\d+\\.\\d+&quot;, {BODY}quot;{Settings.ContainerName}:{version}&quot;);
+    ReplaceRegexInFiles(&quot;./artifacts/docker-compose.yml&quot;, $ &quot;{Settings.ContainerName}:\\d+\\.\\d+\\.\\d+\\.\\d+&quot;, $ &quot;{Settings.ContainerName}:{version}&quot;);
 
     // stop old docker container on server
-    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose stop {Settings.ContainerName}&quot;);
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose stop {Settings.ContainerName}&quot;);
     // delete old container
-    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose rm -f {Settings.ContainerName}&quot;);
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose rm -f {Settings.ContainerName}&quot;);
     // copy new docker-compose configuration to remote server
-    StartProcess(&quot;scp&quot;, {BODY}quot;-P {Settings.SshPort} ./artifacts/docker-compose.yml {Settings.SshAddress}:{Settings.HomePath}/&quot;);
+    StartProcess(&quot;scp&quot;, $ &quot;-P {Settings.SshPort} ./artifacts/docker-compose.yml {Settings.SshAddress}:{Settings.HomePath}/&quot;);
     // recreate docker container, it will create a new version
-    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose create {Settings.ContainerName}&quot;);
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose create {Settings.ContainerName}&quot;);
     // start new docker container
-    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose start {Settings.ContainerName}&quot;);
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose start {Settings.ContainerName}&quot;);
 });
 
 Task(&quot;CheckoutTag&quot;)
     .Does(() =&gt;
 {
-    StartProcess(&quot;git&quot;, {BODY}quot;checkout tags/v{version}&quot;);
+    StartProcess(&quot;git&quot;, $ &quot;checkout tags/v{version}&quot;);
 });
 
 Task(&quot;CheckoutBranch&quot;)
     .Does(() =&gt;
 {
-    StartProcess(&quot;git&quot;, {BODY}quot;checkout master&quot;);
+    StartProcess(&quot;git&quot;, $ &quot;checkout master&quot;);
 });
 
 Task(&quot;CheckAllCommitted&quot;)
