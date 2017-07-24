@@ -1,3 +1,97 @@
+## Personal mobile radio application using Ionic - 24 July, 2017
+Tags: ionic, android, angular, ubuntu
+
+Hi, there!
+
+Finally I am tired because of all advertisements which we have in any simple radio mobile application. I just want to listen radio and that is all! Quite simple, hah?
+
+So I decided to create a simple radio mobile application by myself. I thought about Xamarin as I have some experience in creating application using it. But I decided to use new framework for me and it is Ionic. I am very impressed how cool it is and how easy to create application using it. It took about 2 hours to install all dependencies (ionic, android studio, java), deploy and run a first version of my application on my android device. Quite fast!
+
+I am using Ubuntu 16.04.
+
+Please find the steps below:  
+1. I have installed ionic framework using this [link](http://ionicframework.com/docs/intro/installation/) and create blank application: `ionic start radioOn blank`.
+2. And that is all, to start our application need to run `ionic serve`.
+3. As I want to listen an online radio, I need to create a provider to listen online stream: Html5Audio:
+
+```typescript
+import { Injectable, Output, EventEmitter } from '@angular/core';
+
+@Injectable()
+export class Html5Audio {
+    @Output()
+    ended = new EventEmitter();
+
+    private pad2(number) { (number < 10 ? '0' : '') + number; }
+
+    audioPlayer: any;
+    time: string;
+    @Output()
+    isPlaying = false;
+    readyStateInterval = null;
+    url: string;
+
+    public play(url: string) {
+        if (this.audioPlayer) {
+            this.stop();
+        }
+        this.url = url;
+        this.audioPlayer = new Audio(this.url);
+        this.isPlaying = true;
+        this.audioPlayer.play();
+
+        this.audioPlayer.addEventListener("timeupdate", () => {
+            if (this.audioPlayer) {
+                var s = this.audioPlayer.currentTime % 60;
+                var m = (this.audioPlayer.currentTime / 60) % 60;
+                var h = ((this.audioPlayer.currentTime / 60) / 60) % 60;
+                if (this.isPlaying && this.audioPlayer.currentTime > 0) {
+                    this.time = this.pad2(h) + ':' + this.pad2(m) + ':' + this.pad2(s);
+                }
+            }
+        }, false);
+        this.audioPlayer.addEventListener("error", (ex) => {
+            console.error(ex);
+        }, false);
+        this.audioPlayer.addEventListener("canplay", () => {
+            console.log('CAN PLAY');
+        }, false);
+        this.audioPlayer.addEventListener("waiting", () => {
+            this.isPlaying = false;
+        }, false);
+        this.audioPlayer.addEventListener("playing", () => {
+            this.isPlaying = true;
+        }, false);
+        this.audioPlayer.addEventListener("ended", () => {
+            this.stop();
+            this.ended.emit();
+        }, false);
+    }
+
+    pause() {
+        this.isPlaying = false;
+        this.audioPlayer.pause();
+    }
+
+    stop() {
+        this.isPlaying = false;
+        this.audioPlayer.pause();
+        this.audioPlayer = null;
+    }
+}
+```
+4. It has been imported to /src/app/app.module.
+5. There is only one page with a list of stations (I have [only 3](https://github.com/eapyl/radioon/blob/master/src/pages/home/home.ts) which I listen). Click on a station - starting this station, and there is one button to stop music([link](https://github.com/eapyl/radioon/blob/master/src/pages/home/home.html)). That is all. Simple!
+6. After that we need to prepare icon and splash image for application. I am using [game-icons](http://game-icons.net) to create an icon and [unspalsh](https://unsplash.com/) to find full size images.
+7. Need to put created icon.png and splash.png to /resources/icon.png and /resources/splash.png and run the next command `ionic cordova resources` (you have to have an account in Ionic portal and it is free).
+8. To [deploy](http://ionicframework.com/docs/intro/deploying/) our application need to run `ionic cordova build android --prod --release` and it will create *.apk file. We need to sign it using 'Sign Android APK' section from [here](http://ionicframework.com/docs/intro/deploying/).
+9. That is all. We have signed apk which we can copy on our device and install.
+
+Please find my project [here](https://github.com/eapyl/radioon).
+
+Cheers,
+
+---
 ## Cake.Net. Useful scripts for AngularJS, dotnet core, docker application - 22 June, 2017
 Tags: dotnet, angular, docker, cake.net, git
 
@@ -12,40 +106,116 @@ So it is a small cake script to release a new version of application:
 ```cake
 #addin "Cake.Docker"
 #addin "Cake.FileHelpers"
-// Release: ./build.sh -t Release "-packageVersion=x.x.x.x"
 
+// Release: ./build.sh -t Release "-packageVersion=x.x.x.x"
+// Publish: ./build.sh -t Publish "-packageVersion=x.x.x.x" "-env=one"
+// Delete release: ./build.sh -t Delete "-packageVersion=x.x.x.x"
 var target = Argument<string>("target");
 var version = Argument<string>("packageVersion");
 
-static class Settings
+public class Settings
 {
-    public static string ProjectName = "example.csproj";
+    public string SshAddress;
+    public string SshPort;
+    public string HomePath;
 }
 
+Settings sets;
+
+Task("SelectEnvironment")
+    .Does(()=>{
+        var env = Argument<string>("env");
+        var environments = new Dictionary<string, Settings> {
+            ["one"] = new Settings {
+                SshAddress = "root@66.66.66.66",
+                SshPort = "22",
+                HomePath = "/root/Templates"
+            },
+            ["two"] = new Settings{
+                SshAddress = "root@99.99.99.99",
+                SshPort = "26",
+                HomePath = "/home/Templates"
+            }
+        };
+        sets = environments[env];
+});
+
+Task("Publish")
+    .IsDependentOn("SelectEnvironment")
+    .IsDependentOn("CheckAllCommitted")
+    .IsDependentOn("CheckoutTag")
+    .IsDependentOn("BuildAngular")
+    .IsDependentOn("BuildDocker")
+    .IsDependentOn("CheckoutBranch")
+    .IsDependentOn("PushToGitLab")
+    .IsDependentOn("PublishService")
+    .Does(()=>
+    {
+        Information("Finished!");
+    });
+
 Task("Release")
-    // put new version to csproj file
     .IsDependentOn("SetVersion")
-    // build dotnet core project
+    .IsDependentOn("ReleaseNotes")
+    .IsDependentOn("Commit")
     .IsDependentOn("Build")
-    // add tag with release version and push it
     .IsDependentOn("PushTagToGit")
     .Does(()=>
     {
         Information("Finished!");
     });
 
-Task("SetVersion")
-    .Does(()=>
+//build angular
+Task("Build Angular")
+    .Does(() =>
     {
-        var file = File($ "./src/{Settings.ProjectName}");
-        XmlPoke(file, "/Project/PropertyGroup/Version", version);
+        StartProcess("ng", "build");
     });
 
+// delete release (tag)
+Task("Delete")
+    .Does(()=>
+    {
+        StartProcess("git", $"tag --delete v{version}");
+        StartProcess("git", $"push --delete origin v{version}");
+    });
+
+// add release notes to historys
+Task("ReleaseNotes")
+    .Does(()=> {
+        IEnumerable<string> redirectedOutput;
+        StartProcess("git", 
+            new ProcessSettings {
+                Arguments = $"describe --abbrev=0 --tags",
+                RedirectStandardOutput = true
+            },
+            out redirectedOutput
+        );
+        var previousVersion = redirectedOutput.First();
+        Information(previousVersion);
+        IEnumerable<string> redirectedOutput2;
+        StartProcess("git", 
+            new ProcessSettings {
+                Arguments = $"log --pretty=\"%s\" HEAD...{previousVersion}",
+                RedirectStandardOutput = true
+            },
+            out redirectedOutput2
+        );
+        FileAppendLines("./src/HISTORY.txt", new string[]{$"------release v{version}-----"});
+        FileAppendLines("./src/HISTORY.txt", redirectedOutput2.ToArray());
+    });
+
+// push docker image to gitlab
+Task("PushToGitLab")
+    .Does(()=>{
+        StartProcess("docker", $"push registry.gitlab.com/counterra/service:{version}");
+    });
+
+// build project locally 
 Task("Build")
     .Does(() =>
 {
-    DotNetCoreRestore($ "./src/{Settings.ProjectName}");
-    // publish application to artifacts folder
+    DotNetCoreRestore("./src/counterra.csproj");
     CleanDirectory("./artifacts");
     var settings = new DotNetCorePublishSettings
     {
@@ -53,38 +223,155 @@ Task("Build")
         Configuration = "Release",
         OutputDirectory = "./artifacts/"
     };
-    DotNetCorePublish($ "./src/{Settings.ProjectName}", settings);
+    DotNetCorePublish("./src/counterra.csproj", settings);
 });
 
+// set new version in project file
+Task("SetVersion")
+    .Does(()=>
+    {
+        var file = File("./src/counterra.csproj");
+        XmlPoke(file, "/Project/PropertyGroup/Version", version);
+    });
+
+// build docker
+Task("BuildDocker")
+    .Does(() =>
+{
+    var settings = new DockerBuildSettings {
+        Tag = new []{ $"registry.gitlab.com/counterra/service:{version}" }
+    };
+    DockerBuild(settings, ".");
+});
+
+// go to remote server and replace docker there
+Task("PublishService")
+    .Does(() =>
+{
+    StartProcess("scp", $"-P {sets.SshPort} {sets.SshAddress}:{sets.HomePath}/server/docker-compose.yml ./artifacts/");
+    ReplaceRegexInFiles("./artifacts/docker-compose.yml", @"registry.gitlab.com/counterra/service:\d+\.\d+\.\d+\.\d+", $"registry.gitlab.com/counterra/service:{version}");
+
+    StartProcess("ssh", $"-p {sets.SshPort} {sets.SshAddress} cd {sets.HomePath}/server/; docker-compose stop service");
+    StartProcess("ssh", $"-p {sets.SshPort} {sets.SshAddress} cd {sets.HomePath}/server/; docker-compose rm -f service");
+    StartProcess("scp", $"-P {sets.SshPort} ./artifacts/docker-compose.yml {sets.SshAddress}:{sets.HomePath}/server/");
+    StartProcess("ssh", $"-p {sets.SshPort} {sets.SshAddress} cd {sets.HomePath}/server/; docker-compose create service");
+    StartProcess("ssh", $"-p {sets.SshPort} {sets.SshAddress} cd {sets.HomePath}/server/; docker-compose start service");
+});
+
+// push new tag
 Task("PushTagToGit")
     .Does(() =>
 {
-    StartProcess("git", $ "tag v{version}");
+    StartProcess("git", $"tag v{version}");
     StartProcess("git", "push --tags");
 });
 
+// checkout tag
+Task("CheckoutTag")
+    .Does(() =>
+{
+    StartProcess("git", $"checkout tags/v{version}");
+});
+
+// checkout master
+Task("CheckoutBranch")
+    .Does(() =>
+{
+    StartProcess("git", $"checkout master");
+});
+
+// commit all to branch and push it
+Task("Commit")
+    .Does(() =>
+{
+    StartProcess("git", $"add .");
+    StartProcess("git", $"commit -m \"Release v{version}\" ");
+    StartProcess("git", $"push");
+});
+
+// check that we haven't uncommitted files
+Task("CheckAllCommitted")
+    .Does(() =>
+{
+    IEnumerable<string> redirectedOutput;
+    StartProcess("git", 
+        new ProcessSettings {
+            Arguments = "status",
+            RedirectStandardOutput = true
+        },
+        out redirectedOutput
+    );
+    if (!redirectedOutput.LastOrDefault().Contains("nothing to commit"))
+    {
+        throw new Exception("Exists uncommitted changes");
+    }
+});
+
 RunTarget(target);
+
 ```
 
 It is a script to build released version and publish a docker container to a server:
 
 ```cake
-#addin "Cake.Docker"
-#addin "Cake.FileHelpers"
+// Release: ./build.sh -t Release "-packageVersion=x.x.x.x"
+// Publish: ./build.sh -t Publish "-packageVersion=x.x.x.x" "-env=counterra"
+// Delete release: ./build.sh -t Delete "-packageVersion=x.x.x.x"
+var target = Argument<string>("target");
+var version = Argument<string>("packageVersion");
 
-// Publish: ./build.sh -t Publish "-packageVersion=x.x.x.x"
-
-static class Settings
+public class Settings
 {
-    // put ssh address of your server
-    public static string SshAddress = "example@166.66.66.666";
-    // ssh port
-    public static string SshPort = "26";
-    // path with your project on a server
-    public static string HomePath = "/home/example";
-    public static string ProjectName = "example.csproj";
-    public static string ContainerName = "example";
+    public string SshAddress;
+    public string SshPort;
+    public string HomePath;
 }
+
+Settings sets;
+
+Task("SelectEnvironment")
+    .Does(()=>{
+        var env = Argument<string>("env");
+        var environments = new Dictionary<string, Settings> {
+            ["counterra"] = new Settings {
+                SshAddress = "root@83.220.171.23",
+                SshPort = "22",
+                HomePath = "/root/Templates"
+            },
+            ["tj"] = new Settings{
+                SshAddress = "vorsa@195.14.96.218",
+                SshPort = "26",
+                HomePath = "/home/vorsa"
+            }
+        };
+        sets = environments[env];
+});
+
+Task("Publish")
+    .IsDependentOn("SelectEnvironment")
+    .IsDependentOn("CheckAllCommitted")
+    .IsDependentOn("CheckoutTag")
+    // build angular
+    .IsDependentOn("Build Angular")
+    .IsDependentOn("BuildDocker")
+    .IsDependentOn("CheckoutBranch")
+    .IsDependentOn("PushToGitLab")
+    .IsDependentOn("PublishService")
+    .Does(()=>
+    {
+        Information("Finished!");
+    });
+
+Task("Release")
+    .IsDependentOn("SetVersion")
+    .IsDependentOn("ReleaseNotes")
+    .IsDependentOn("Commit")
+    .IsDependentOn("Build")
+    .IsDependentOn("PushTagToGit")
+    .Does(()=>
+    {
+        Information("Finished!");
+    });
 
 Task("Publish")
     // check that current 'master' branch hasn't uncommitted changes
