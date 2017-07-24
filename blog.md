@@ -87,7 +87,10 @@ export class Html5Audio {
 8. To [deploy](http://ionicframework.com/docs/intro/deploying/) our application need to run `ionic cordova build android --prod --release` and it will create *.apk file. We need to sign it using 'Sign Android APK' section from [here](http://ionicframework.com/docs/intro/deploying/).
 9. That is all. We have signed apk which we can copy on our device and install.
 
-Please find my project [here](https://github.com/eapyl/radioon).
+Please find my project [here](https://github.com/eapyl/radioon). Signed apk file [here](./../assets/RadioOn.apk).
+
+How it looks like:
+![image](./../images/radio-on-screenshot.png)
 
 Cheers,
 
