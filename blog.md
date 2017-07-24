@@ -89,7 +89,7 @@ export class Html5Audio {
 
 Please find my project [here](https://github.com/eapyl/radioon). Signed apk file [here](./../assets/RadioOn.apk).
 
-How it looks like:
+How it looks like:  
 ![image](./../images/radio-on-screenshot.png)
 
 Cheers,
