@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Simplest syslog server for rfc5424 (TCP) - 12 September, 2017</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="docker,dotnet,syslog,logspout,serilog">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="simplest-syslog-server-for-rfc5424-tcp-12-september-2017">Simplest syslog server for rfc5424 (TCP) - 12 September, 2017</h2>
+<p>Tags: docker, dotnet, syslog, logspout, serilog</p>
+<p>I am working on onside project where we have more than 5 docker containers. Previously we used just serilog to do our logging in all our containers. So each project had his own logging mechanism. Finally we decided to centralize our logging system ans start using docker logs. There are a lot of solutions using clouds (e.g. <a href="https://www.loggly.com/">loggly</a>) or quite complex systems to grab, analyze and show your logs (like <a href="https://kafka.apache.org">kafka</a>, <a href="https://www.elastic.co/products/kibana">kibana</a>). But we wanted to save our logs to simple txt files without any additional complex stuff.</p>
+<p>There are nice project which allows automatically read docker container logs and push them to one syslog server - <a href="https://github.com/gliderlabs/logspout">logspout</a>.</p>
+<p>We tried to find simple syslog server without success. So there is a <a href="https://github.com/eapyl/syslog-collector">small syslog server</a> written in dotnet core. I used serilog to write logs to files (<a href="https://github.com/serilog/serilog-sinks-rollingfile">Rolling File</a>).</p>
+<p>So docker-compose configuration looks like:</p>
+<pre><code>  #another containers
+  logspout:
+    image: gliderlabs/logspout
+    command: syslog+tcp://logcollector:5000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - logcollector
+  logcollector:
+    build: $PWD/../log/
+    volumes: 
+      - $PWD/../logs:/log/logs
+</code></pre><p>After that logs from all our containers are in logs folder! Very simple and easy!</p>
+<p>P.S. We started to write log message to stdout or stderr using <a href="https://github.com/serilog/serilog-sinks-literate">serilog</a>. So it was just small configuration change in all our projects to use Serilog.Literate instead of Serilog.RollingFile .</p>
+<p>Thanks!</p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>
