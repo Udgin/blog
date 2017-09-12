@@ -18,7 +18,7 @@ So docker-compose configuration looks like:
     depends_on:
       - logcollector
   logcollector:
-    build: $PWD/../log/
+    image: eapyl/syslog-collector
     volumes: 
       - $PWD/../logs:/log/logs
 ```

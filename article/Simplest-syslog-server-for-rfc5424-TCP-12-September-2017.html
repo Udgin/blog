@@ -75,7 +75,7 @@
     depends_on:
       - logcollector
   logcollector:
-    build: $PWD/../log/
+    image: eapyl/syslog-collector
     volumes: 
       - $PWD/../logs:/log/logs
 </code></pre><p>After that logs from all our containers are in logs folder! Very simple and easy!</p>
