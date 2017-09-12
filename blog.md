@@ -25,6 +25,8 @@ So docker-compose configuration looks like:
 
 After that logs from all our containers are in logs folder! Very simple and easy!
 
+Please find docker image [here](https://hub.docker.com/r/eapyl/syslog-collector/).
+
 P.S. We started to write log message to stdout or stderr using [serilog](https://github.com/serilog/serilog-sinks-literate). So it was just small configuration change in all our projects to use Serilog.Literate instead of Serilog.RollingFile .
 
 Thanks!
@@ -150,7 +152,7 @@ export class Html5Audio {
 8. To [deploy](http://ionicframework.com/docs/intro/deploying/) our application need to run `ionic cordova build android --prod --release` and it will create *.apk file. We need to sign it using 'Sign Android APK' section from [here](http://ionicframework.com/docs/intro/deploying/).
 9. That is all. We have signed apk which we can copy on our device and install.
 
-Please find my project [here](https://github.com/eapyl/radioon). Signed apk file [here](./../assets/RadioOn.apk).
+Please find my project [here](https://github.com/eapyl/radioon). Signed apk file [here](https://mega.nz/#!edsTXT6L).
 
 How it looks like:  
 ![image](./../images/radio-on-screenshot.png)

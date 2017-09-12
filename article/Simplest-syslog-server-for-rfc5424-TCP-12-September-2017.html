@@ -79,6 +79,7 @@
     volumes: 
       - $PWD/../logs:/log/logs
 </code></pre><p>After that logs from all our containers are in logs folder! Very simple and easy!</p>
+<p>Please find docker image <a href="https://hub.docker.com/r/eapyl/syslog-collector/">here</a>.</p>
 <p>P.S. We started to write log message to stdout or stderr using <a href="https://github.com/serilog/serilog-sinks-literate">serilog</a>. So it was just small configuration change in all our projects to use Serilog.Literate instead of Serilog.RollingFile .</p>
 <p>Thanks!</p>
 
