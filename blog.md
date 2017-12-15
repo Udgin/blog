@@ -4,9 +4,9 @@ Tags: mssql, code coverage, sql, .net
 If you are creating a lot of SQL code, it is a good idea to do unit testing for it and see [code coverage](https://en.wikipedia.org/wiki/Code_coverage). Luckly there is two nice tools/libs to do it: [tSQLt](http://tsqlt.org/) and [SQLCover](https://github.com/GoEddie/SQLCover).
 
 In this article I will show how to create/set up SQLCover and run it for each CI build.
-The basic idea is we are creating command line application which will run our tSQLt unit tests via SQLCover and generate HTML report with code coverage information.
+The basic idea is we are creating command line application which runs our tSQLt unit tests via SQLCover and generates HTML report with code coverage information.
 
-Unofrtunately there is no SQLCover lin in NuGet, but we can download it from [here](http://the.agilesql.club/SQLCover/download.php).
+Unfortunately there is no SQLCover package in NuGet, but we can download it from [here](http://the.agilesql.club/SQLCover/download.php).
 
 Create a new command line application, add references to SQLCover.dll and Microsoft.SqlServer.TransactSql.ScriptDom.dll.
 After that there is an example of Program.cs:

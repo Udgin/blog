@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Useful LINQ extensions - 26 April, 2013</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content=".net,linq">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="useful-linq-extensions-26-april-2013">Useful LINQ extensions - 26 April, 2013</h2>
+<p>Tags: .net, linq</p>
+<p>After reading a lot of articles about this theme, I start to use the next <a href="http://pastebin.com/As5as2pE">extensions</a></p>
+<pre><code class="csharp">public static class Linq
+{
+    public static IEnumerable&lt;T&gt; Except&lt;T&gt;(this IEnumerable&lt;T&gt; source, IEnumerable&lt;T&gt; target, Func&lt;T, T, bool&gt; func)
+    {
+        return source.Except(target, new LambdaComparer&lt;T&gt;(func));
+    }
+
+    public static TResult With&lt;TInput, TResult&gt;(this TInput o, Func&lt;TInput, TResult&gt; evaluator)
+        where TInput : class
+    {
+        if (o == null) return default(TResult);
+        return evaluator(o);
+    }
+
+    public static TResult Return&lt;TInput, TResult&gt;(this TInput o, Func&lt;TInput, TResult&gt; evaluator, TResult failure_value) where TInput : class
+    {
+        if (o == null) return failure_value;
+        return evaluator(o);
+    }
+
+    public static bool Check&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return false;
+        return evaluator(o);
+    }
+
+    public static TInput If&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return null;
+        return evaluator(o) ? o : null;
+    }
+
+    public static TInput Unless&lt;TInput&gt;(this TInput o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        if (o == null) return null;
+        return evaluator(o) ? null : o;
+    }
+
+    public static TInput Do&lt;TInput&gt;(this TInput o, Action&lt;TInput&gt; action) where TInput : class
+    {
+        if (o == null) return null;
+        action(o);
+        return o;
+    }
+
+    public static List&lt;TInput&gt; Delete&lt;TInput&gt;(this List&lt;TInput&gt; o, Func&lt;TInput, bool&gt; evaluator) where TInput : class
+    {
+        var listToDelete = o.Where(evaluator).ToList();
+        foreach (var input in listToDelete)
+        {
+            o.Remove(input);
+        }
+        return o;
+    }
+}
+
+
+public class LambdaComparer&lt;T&gt; : IEqualityComparer&lt;T&gt;
+{
+    private readonly Func&lt;T, T, bool&gt; _lambdaComparer;
+    private readonly Func&lt;T, int&gt; _lambdaHash;
+
+    public LambdaComparer(Func&lt;T, T, bool&gt; lambdaComparer) :
+        this(lambdaComparer, o =&gt; 0)
+    {
+    }
+
+    public LambdaComparer(Func&lt;T, T, bool&gt; lambdaComparer, Func&lt;T, int&gt; lambdaHash)
+    {
+        if (lambdaComparer == null)
+            throw new ArgumentNullException(&quot;lambdaComparer&quot;);
+        if (lambdaHash == null)
+            throw new ArgumentNullException(&quot;lambdaHash&quot;);
+
+        _lambdaComparer = lambdaComparer;
+        _lambdaHash = lambdaHash;
+    }
+
+    public bool Equals(T x, T y)
+    {
+        return _lambdaComparer(x, y);
+    }
+
+    public int GetHashCode(T obj)
+    {
+        return _lambdaHash(obj);
+    }
+}
+</code></pre>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>

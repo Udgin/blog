@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Sniffer of TCP packets - 10 February, 2011</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content=".net">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="sniffer-of-tcp-packets-10-february-2011">Sniffer of TCP packets - 10 February, 2011</h2>
+<p>Tags: .net</p>
+<p>Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.</p>
+<p>Проект на VS2008 <a href="https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3">SharkTrace</a>.</p>
+<p>Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.</p>
+<p>Далее в тексте, под соединением я понимаю соответствие адресов и портов на клиенте и сервере. </p>
+<p>Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap (<a href="http://sourceforge.net/projects/sharppcap/">Sharppcap</a>).</p>
+<p>Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.</p>
+<p>Больше о флагах tcp-пакета можно посмотреть <a href="http://www.firewall.cx/">http://www.firewall.cx.</a> </p>
+<pre><code class="csharp">///&lt;summary&gt;
+///class for connection
+///&lt;/summary&gt;
+internal class Connection
+{
+    public long ClientAddress; // client initiating the connection
+    public int ClientPort;
+    public long HostAddress; // host receiving the connection
+    public int HostPort;
+    public long ClientSyn; // starting syn sent from client
+    public long HostSyn; // starting syn sent from host;
+    public long NextClientSeq; // this must be in SequenceNumber field of TCP packet if it is from client
+    public long NextHostSeq; // this must be in SequenceNumber field of TCP packet if it is from host
+    public bool HostClosed;
+    public bool ClientClosed;
+    public long TimeIdentifier;
+    public bool ThreeWayCompleted = false; // three way connection is completed
+
+    // Fragments , used when we get newer packets that expected.
+    // so we need to wait for expected before adding them.
+    public SortedDictionary&lt;long, TcpPacket&gt; HostFragments = new SortedDictionary&lt;long, TcpPacket&gt;();
+    public SortedDictionary&lt;long, TcpPacket&gt; ClientFragments = new SortedDictionary&lt;long, TcpPacket&gt;();
+
+    // returns client ip:client port as a string
+    public string GetClientAddressPort()
+    {
+        return string.Format(&quot;{0}:{1}&quot;, new IPAddress(ClientAddress).ToString(), ClientPort);
+    }
+
+    // returns host ip:host port as a string
+    public string GetHostAddressPort()
+    {
+        return string.Format(&quot;{0}:{1}&quot;, new IPAddress(HostAddress).ToString(), HostPort);
+    }
+
+    // packet is from host
+    public bool IsFromHost(TcpPacket tcp)
+    {
+        return ClientAddress == ((IpPacket)tcp.ParentPacket).DestinationAddress.Address &amp;&amp;
+        ClientPort == tcp.DestinationPort &amp;&amp;
+        HostAddress == ((IpPacket)tcp.ParentPacket).SourceAddress.Address &amp;&amp;
+        HostPort == tcp.SourcePort;
+    }
+
+    // packet is from client
+    public bool IsFromClient(TcpPacket tcp)
+    {
+        return ClientAddress == ((IpPacket)tcp.ParentPacket).SourceAddress.Address &amp;&amp;
+        ClientPort == tcp.SourcePort &amp;&amp;
+        HostAddress == ((IpPacket)tcp.ParentPacket).DestinationAddress.Address &amp;&amp;
+        HostPort == tcp.DestinationPort;
+    }
+
+    public Connection(long clientAddress, int clientPort, long hostAddress, int hostPort, long clientSyn)
+    {
+        this.ClientAddress = clientAddress;
+        this.ClientPort = clientPort;
+        this.HostAddress = hostAddress;
+        this.HostPort = hostPort;
+        this.ClientSyn = clientSyn;
+    }
+}
+</code></pre>
+<p>Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment">wikipedia.org</a>). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют &quot;полезную&quot; информацию в себе (payload data).</p>
+<p>Больше о TCP пакетах <a href="http://ru.wikipedia.org/wiki/TCP">wikipedia.org</a>.</p>
+<p>Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому &quot;принадлежит&quot; этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к &quot;полезным&quot; данным последовательно (AddHostData и AddClientData) </p>
+<pre><code class="csharp">/// &lt;summary&gt;
+/// Main class for sniffering
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;
+/// 1. I see that there is new version of SharpPcap library with new interface (29/11/2011)
+/// So i just try to update some useful information about this class
+/// 
+/// 2. I believe that SynchronizatedConnection class is just 
+/// class SynchronizatedConnection : Connection
+/// {
+///     private object syncObject = new object();
+///     
+///     public Synchro {get {return syncObject;}}
+/// }
+/// 
+/// 3. Coordinator is class with constants.
+/// &lt;/remarks&gt;
+internal abstract class Sniffer 
+{
+    private Timer timer;
+    private object synchronizationObjectForConnection = new object();
+    private List&lt;SynchronizatedConnection&gt; Connections = new List&lt;SynchronizatedConnection&gt;();
+    private LibPcapLiveDevice _device;
+    private readonly List&lt;System.Net.IPAddress&gt; _hosts;
+
+    // when connected
+    public abstract void Connected(Object conn);
+    // when disconnected
+    public abstract void Disconnected(Object conn);
+    public abstract void AddHostData(byte[] data, string host);
+    public abstract void AddClientData(byte[] data, string client);
+
+    private void ClearConnections(object source)
+    {
+        //sometimes purely the collection, just in case
+        lock (synchronizationObjectForConnection)
+        {
+            foreach (var key in Connections.Where(k =&gt; (DateTime.Now.ToFileTimeUtc() - k.TimeIdentifier) &gt; 600000000 * Coordinator.Config.HowLongWeSaveTransaction.TotalMinutes).ToList())
+            {
+                Connections.Remove(key);
+            }
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Create the exemplare of the class
+    /// &lt;/summary&gt;
+    public Sniffer(List&lt;System.Net.IPAddress&gt; hosts)
+    {
+        timer = new Timer(ClearConnections, null, Coordinator.Config.HowLongWeSaveTransaction, Coordinator.Config.HowLongWeSaveTransaction);
+        _hosts = hosts;
+    }
+
+    /// &lt;summary&gt;
+    /// Start the tracing
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;filter&quot;&gt;See http://www.cs.ucr.edu/~marios/ethereal-tcpdump.pdf &lt;/param&gt;
+    public void RunSniffer(string filter)
+    {
+        var devices = LibPcapLiveDeviceList.Instance;
+        //
+        _device = devices[Coordinator.Config.ListeningInterface];
+        //Register our handler function to the &#39;packet arrival&#39; event
+        _device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+        //Open the device for capturing
+        int readTimeoutMilliseconds = 1000;
+        _device.Open(DeviceMode.Normal, readTimeoutMilliseconds);
+        // tcpdump filter to capture only TCP/IP packets
+        _device.Filter = filter;
+        // Start capture packets
+        _device.StartCapture();
+    }
+
+    /// &lt;summary&gt;
+    /// Stop the tracing
+    /// &lt;/summary&gt;
+    public void StopSniffer()
+    {
+        _device.StopCapture();
+        _device.Close();
+    }
+
+    /// &lt;summary&gt;
+    /// Catch the packet
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+    /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+    private void device_OnPacketArrival(object sender, CaptureEventArgs e)
+    {
+        try
+        {
+            // try to get TCP packet from Ip packet
+            var packet = PacketDotNet.Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
+            if (packet is PacketDotNet.EthernetPacket)
+            {
+                var eth = ((PacketDotNet.EthernetPacket)packet);
+                var ip = PacketDotNet.IpPacket.GetEncapsulated(packet);
+                if (ip != null)
+                {
+                    var tcp = PacketDotNet.TcpPacket.GetEncapsulated(packet);
+                    if (tcp != null)
+                    {
+                        AssemblePacket(tcp);
+                    }
+                }
+            }
+        }
+
+        // sometimes converting doesn&#39;t work - don&#39;t worry about it
+        catch (InvalidOperationException ex)
+        {
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Parse TCP packet
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;tcp&quot;&gt;TCP packet&lt;/param&gt;
+    privDescription. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
+
+The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.ate void AssemblePacket(TcpPacket tcp)
+    {
+        // pass the packets that :
+        // 1. tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0 - sent for synchronization
+        // 2. tcp.PayloadData.Length &gt; 0 - no useful data in packet
+        // 3. tcp.Fin || tcp.Rst - connection is finished or reseted
+        if (!(tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0) &amp;&amp; (tcp.PayloadData.Length &gt; 0) &amp;&amp; !(tcp.Fin || tcp.Rst))
+        {
+            SynchronizatedConnection conn;
+            // try to find connection in collection
+            bool? res = IsTcpFromClient(tcp, out conn);
+
+            if (res == null)
+            {
+                // connection is new
+                SynchronizatedConnection con;
+                if (_hosts.Contains(((IpPacket)tcp.ParentPacket).SourceAddress))
+                {
+                    // packet from host to client
+                    conn = new SynchronizatedConnection(((IpPacket)tcp.ParentPacket).DestinationAddress.Address,
+                    tcp.DestinationPort, ((IpPacket)tcp.ParentPacket).SourceAddress.Address, tcp.SourcePort, tcp.SequenceNumber);
+                    conn.ClientSyn = tcp.AcknowledgmentNumber;
+                    conn.HostSyn = tcp.SequenceNumber;
+                    conn.NextClientSeq = tcp.AcknowledgmentNumber;
+                    conn.NextHostSeq = tcp.SequenceNumber;
+                    res = false;
+                }
+        Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
+
+The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.        else
+                {
+                    // packet from host to client
+                    conn = new SynchronizatedConnection(((IpPacket)tcp.ParentPacket).SourceAddress.Address,
+                    tcp.SourcePort, ((IpPacket)tcp.ParentPacket).DestinationAddress.Address, tcp.DestinationPort, tcp.SequenceNumber);
+                    conn.ClientSyn = tcp.SequenceNumber;
+                    conn.HostSyn = tcp.AcknowledgmentNumber;
+                    conn.NextHostSeq = tcp.AcknowledgmentNumber;
+                    conn.NextClientSeq = tcp.SequenceNumber;
+                    res = true;
+                }
+                conn.TimeIdentifier = DateTime.Now.ToFileTimeUtc();
+                conn.ThreeWayCompleted = true;
+                lock (synchronizationObjectForConnection)
+                {
+                    Connections.Add(conn);
+                }
+            }
+            if (res == true)
+            {
+                // from client
+                lock (conn.Synchro)
+                {
+                    if (tcp.SequenceNumber &lt; conn.NextClientSeq)
+                    // old packet
+                    {
+                        // just drop these for now
+                        return;
+                    }
+                    if (tcp.SequenceNumber &gt; conn.NextClientSeq)
+                    // out of order data
+                    {
+                        if (!conn.ClientFragments.ContainsKey(tcp.SequenceNumber))
+                        {
+                            conn.ClientFragments.Add(tcp.SequenceNumber, tcp);
+                        }
+                        else
+                        // expect new data to be better?
+                        {
+                            conn.ClientFragments[tcp.SequenceNumber] = tcp;
+                        }
+                    }
+                    else
+                    {
+                        while (tcp.SequenceNumber == conn.NextClientSeq)
+                        {
+                            conn.ClientFragments.Remove(tcp.SequenceNumber);
+                            // remove fragment
+                            if (tcp.PayloadData.Length == 0)
+                                break;
+                            // new NextClientSeq for client packet 
+                            conn.NextClientSeq = conn.NextClientSeq + tcp.PayloadData.Length;
+                            // data should be valid here.
+                            AddClientData(GetUsefulData(tcp), GetIdOfConnection(conn));
+                            if (conn.ClientFragments.ContainsKey(conn.NextClientSeq))
+                            // check if we have newer fragments which will now fit.
+                            {
+                                tcp = conn.ClientFragments[conn.NextClientSeq];
+                            }
+                            else
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //from host
+                lock (conn.Synchro)
+                {
+                    if (tcp.SequenceNumber &lt; conn.NextHostSeq)
+                    // old packet
+                    {
+                        // just drop these for now
+                        return;
+                    }
+                    if (tcp.SequenceNumber &gt; conn.NextHostSeq)
+                    // newer out of order data
+                    {
+                        if (!conn.HostFragments.ContainsKey(tcp.SequenceNumber))
+                        {
+                            conn.HostFragments.Add(tcp.SequenceNumber, tcp);
+                        }
+                        else
+                        {
+                            conn.HostFragments[tcp.SequenceNumber] = tcp;
+                        }
+                    }
+                    else
+                    //
+                    {
+                        while (tcp.SequenceNumber == conn.NextHostSeq)
+                        // on time
+                        {
+                            conn.HostFragments.Remove(tcp.SequenceNumber);
+                            // remove fragment
+                            if (tcp.PayloadData.Length == 0)
+                                break;
+                            conn.NextHostSeq = conn.NextHostSeq + tcp.PayloadData.Length;
+                            // data should be valid here
+                            AddHostData(GetUsefulData(tcp), GetIdOfConnection(conn));
+                            if (conn.HostFragments.ContainsKey(conn.NextHostSeq))
+                            // check if we have newer fragments which will now fit.
+                            {
+                                tcp = conn.HostFragments[conn.NextHostSeq];
+                            }
+                            else
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static string GetIdOfConnection(SynchronizatedConnection conn)
+    {
+        return conn.ClientAddress.ToString() + conn.ClientPort.ToString() + conn.HostAddress.ToString()
+        + conn.HostPort.ToString();
+    }
+
+    private bool? IsTcpFromClient(TcpPacket tcp, out SynchronizatedConnection conn)
+    {
+        conn = null;
+        lock (synchronizationObjectForConnection)
+        {
+            foreach (var connection in Connections)
+            {
+                if (connection.IsFromClient(tcp))
+                {
+                    conn = connection;
+                    return true;
+                }
+                if (connection.IsFromHost(tcp))
+                {
+                    conn = connection;
+                    return false;
+                }
+            }
+        }
+        return null;
+    }
+
+    /// &lt;summary&gt;
+    /// Get Payload Data from tcp packet
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;tcp&quot;&gt;TCP packet&lt;/param&gt;
+    /// &lt;returns&gt;bytes of useful data&lt;/returns&gt;
+    protected static byte[] GetUsefulData(TcpPacket tcp)
+    {
+        var data = new byte[tcp.Bytes.Length - tcp.DataOffset * 4];
+        for (int i = tcp.DataOffset * 4; i &lt; tcp.Bytes.Length; i++)
+        {
+            data[i - tcp.DataOffset * 4] = tcp.Bytes[i];
+        }
+        return data;
+    }
+}
+</code></pre>
+<p>Проблемы данного класса/решения:</p>
+<ol>
+<li>Если &quot;словится&quot; первый пакет, который является неправильным - возникает проблема с получением дальнейшей информации, которая идет по данному соединению;</li>
+<li>Не проверяется контрольная сумма принятого пакета;</li>
+<li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</li>
+</ol>
+<pre><code class="csharp">(public void RunSniffer(string filter))
+</code></pre>
+<p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>

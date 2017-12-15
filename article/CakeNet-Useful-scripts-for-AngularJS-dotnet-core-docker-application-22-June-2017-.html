@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cake.Net. Useful scripts for AngularJS, dotnet core, docker application - 22 June, 2017</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="dotnet,angular,docker,cake.net,git">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="cake-net-useful-scripts-for-angularjs-dotnet-core-docker-application-22-june-2017">Cake.Net. Useful scripts for AngularJS, dotnet core, docker application - 22 June, 2017</h2>
+<p>Tags: dotnet, angular, docker, cake.net, git</p>
+<p>There is a great <a href="http://cakebuild.net/">cross-platform build automation tool</a> - Cake.Net.</p>
+<p>I started using it and created some useful scripts to Release and Publish new version of application.</p>
+<p>I am using AngularJS as frontend framework, asp net core (dotnet core) as backend framework, git as source system and docker to deploy and run application on remote server.</p>
+<p>So it is a small cake script to release a new version of application:</p>
+<pre><code class="cake">#addin &quot;Cake.Docker&quot;
+#addin &quot;Cake.FileHelpers&quot;
+
+// Release: ./build.sh -t Release &quot;-packageVersion=x.x.x.x&quot;
+// Publish: ./build.sh -t Publish &quot;-packageVersion=x.x.x.x&quot; &quot;-env=one&quot;
+// Delete release: ./build.sh -t Delete &quot;-packageVersion=x.x.x.x&quot;
+var target = Argument&lt;string&gt;(&quot;target&quot;);
+var version = Argument&lt;string&gt;(&quot;packageVersion&quot;);
+
+public class Settings
+{
+    public string SshAddress;
+    public string SshPort;
+    public string HomePath;
+}
+
+Settings sets;
+
+Task(&quot;SelectEnvironment&quot;)
+    .Does(()=&gt;{
+        var env = Argument&lt;string&gt;(&quot;env&quot;);
+        var environments = new Dictionary&lt;string, Settings&gt; {
+            [&quot;one&quot;] = new Settings {
+                SshAddress = &quot;root@66.66.66.66&quot;,
+                SshPort = &quot;22&quot;,
+                HomePath = &quot;/root/Templates&quot;
+            },
+            [&quot;two&quot;] = new Settings{
+                SshAddress = &quot;root@99.99.99.99&quot;,
+                SshPort = &quot;26&quot;,
+                HomePath = &quot;/home/Templates&quot;
+            }
+        };
+        sets = environments[env];
+});
+
+Task(&quot;Publish&quot;)
+    .IsDependentOn(&quot;SelectEnvironment&quot;)
+    .IsDependentOn(&quot;CheckAllCommitted&quot;)
+    .IsDependentOn(&quot;CheckoutTag&quot;)
+    .IsDependentOn(&quot;BuildAngular&quot;)
+    .IsDependentOn(&quot;BuildDocker&quot;)
+    .IsDependentOn(&quot;CheckoutBranch&quot;)
+    .IsDependentOn(&quot;PushToGitLab&quot;)
+    .IsDependentOn(&quot;PublishService&quot;)
+    .Does(()=&gt;
+    {
+        Information(&quot;Finished!&quot;);
+    });
+
+Task(&quot;Release&quot;)
+    .IsDependentOn(&quot;SetVersion&quot;)
+    .IsDependentOn(&quot;ReleaseNotes&quot;)
+    .IsDependentOn(&quot;Commit&quot;)
+    .IsDependentOn(&quot;Build&quot;)
+    .IsDependentOn(&quot;PushTagToGit&quot;)
+    .Does(()=&gt;
+    {
+        Information(&quot;Finished!&quot;);
+    });
+
+//build angular
+Task(&quot;Build Angular&quot;)
+    .Does(() =&gt;
+    {
+        StartProcess(&quot;ng&quot;, &quot;build&quot;);
+    });
+
+// delete release (tag)
+Task(&quot;Delete&quot;)
+    .Does(()=&gt;
+    {
+        StartProcess(&quot;git&quot;, {BODY}quot;tag --delete v{version}&quot;);
+        StartProcess(&quot;git&quot;, {BODY}quot;push --delete origin v{version}&quot;);
+    });
+
+// add release notes to historys
+Task(&quot;ReleaseNotes&quot;)
+    .Does(()=&gt; {
+        IEnumerable&lt;string&gt; redirectedOutput;
+        StartProcess(&quot;git&quot;, 
+            new ProcessSettings {
+                Arguments = {BODY}quot;describe --abbrev=0 --tags&quot;,
+                RedirectStandardOutput = true
+            },
+            out redirectedOutput
+        );
+        var previousVersion = redirectedOutput.First();
+        Information(previousVersion);
+        IEnumerable&lt;string&gt; redirectedOutput2;
+        StartProcess(&quot;git&quot;, 
+            new ProcessSettings {
+                Arguments = {BODY}quot;log --pretty=\&quot;%s\&quot; HEAD...{previousVersion}&quot;,
+                RedirectStandardOutput = true
+            },
+            out redirectedOutput2
+        );
+        FileAppendLines(&quot;./src/HISTORY.txt&quot;, new string[]{{BODY}quot;------release v{version}-----&quot;});
+        FileAppendLines(&quot;./src/HISTORY.txt&quot;, redirectedOutput2.ToArray());
+    });
+
+// push docker image to gitlab
+Task(&quot;PushToGitLab&quot;)
+    .Does(()=&gt;{
+        StartProcess(&quot;docker&quot;, {BODY}quot;push registry.gitlab.com/counterra/service:{version}&quot;);
+    });
+
+// build project locally 
+Task(&quot;Build&quot;)
+    .Does(() =&gt;
+{
+    DotNetCoreRestore(&quot;./src/counterra.csproj&quot;);
+    CleanDirectory(&quot;./artifacts&quot;);
+    var settings = new DotNetCorePublishSettings
+    {
+        Framework = &quot;netcoreapp1.1&quot;,
+        Configuration = &quot;Release&quot;,
+        OutputDirectory = &quot;./artifacts/&quot;
+    };
+    DotNetCorePublish(&quot;./src/counterra.csproj&quot;, settings);
+});
+
+// set new version in project file
+Task(&quot;SetVersion&quot;)
+    .Does(()=&gt;
+    {
+        var file = File(&quot;./src/counterra.csproj&quot;);
+        XmlPoke(file, &quot;/Project/PropertyGroup/Version&quot;, version);
+    });
+
+// build docker
+Task(&quot;BuildDocker&quot;)
+    .Does(() =&gt;
+{
+    var settings = new DockerBuildSettings {
+        Tag = new []{ {BODY}quot;registry.gitlab.com/counterra/service:{version}&quot; }
+    };
+    DockerBuild(settings, &quot;.&quot;);
+});
+
+// go to remote server and replace docker there
+Task(&quot;PublishService&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;scp&quot;, {BODY}quot;-P {sets.SshPort} {sets.SshAddress}:{sets.HomePath}/server/docker-compose.yml ./artifacts/&quot;);
+    ReplaceRegexInFiles(&quot;./artifacts/docker-compose.yml&quot;, @&quot;registry.gitlab.com/counterra/service:\d+\.\d+\.\d+\.\d+&quot;, {BODY}quot;registry.gitlab.com/counterra/service:{version}&quot;);
+
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {sets.SshPort} {sets.SshAddress} cd {sets.HomePath}/server/; docker-compose stop service&quot;);
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {sets.SshPort} {sets.SshAddress} cd {sets.HomePath}/server/; docker-compose rm -f service&quot;);
+    StartProcess(&quot;scp&quot;, {BODY}quot;-P {sets.SshPort} ./artifacts/docker-compose.yml {sets.SshAddress}:{sets.HomePath}/server/&quot;);
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {sets.SshPort} {sets.SshAddress} cd {sets.HomePath}/server/; docker-compose create service&quot;);
+    StartProcess(&quot;ssh&quot;, {BODY}quot;-p {sets.SshPort} {sets.SshAddress} cd {sets.HomePath}/server/; docker-compose start service&quot;);
+});
+
+// push new tag
+Task(&quot;PushTagToGit&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, {BODY}quot;tag v{version}&quot;);
+    StartProcess(&quot;git&quot;, &quot;push --tags&quot;);
+});
+
+// checkout tag
+Task(&quot;CheckoutTag&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, {BODY}quot;checkout tags/v{version}&quot;);
+});
+
+// checkout master
+Task(&quot;CheckoutBranch&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, {BODY}quot;checkout master&quot;);
+});
+
+// commit all to branch and push it
+Task(&quot;Commit&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, {BODY}quot;add .&quot;);
+    StartProcess(&quot;git&quot;, {BODY}quot;commit -m \&quot;Release v{version}\&quot; &quot;);
+    StartProcess(&quot;git&quot;, {BODY}quot;push&quot;);
+});
+
+// check that we haven&#39;t uncommitted files
+Task(&quot;CheckAllCommitted&quot;)
+    .Does(() =&gt;
+{
+    IEnumerable&lt;string&gt; redirectedOutput;
+    StartProcess(&quot;git&quot;, 
+        new ProcessSettings {
+            Arguments = &quot;status&quot;,
+            RedirectStandardOutput = true
+        },
+        out redirectedOutput
+    );
+    if (!redirectedOutput.LastOrDefault().Contains(&quot;nothing to commit&quot;))
+    {
+        throw new Exception(&quot;Exists uncommitted changes&quot;);
+    }
+});
+
+RunTarget(target);
+</code></pre>
+<p>It is a script to build released version and publish a docker container to a server:</p>
+<pre><code class="cake">// Release: ./build.sh -t Release &quot;-packageVersion=x.x.x.x&quot;
+// Publish: ./build.sh -t Publish &quot;-packageVersion=x.x.x.x&quot; &quot;-env=counterra&quot;
+// Delete release: ./build.sh -t Delete &quot;-packageVersion=x.x.x.x&quot;
+var target = Argument&lt;string&gt;(&quot;target&quot;);
+var version = Argument&lt;string&gt;(&quot;packageVersion&quot;);
+
+public class Settings
+{
+    public string SshAddress;
+    public string SshPort;
+    public string HomePath;
+}
+
+Settings sets;
+
+Task(&quot;SelectEnvironment&quot;)
+    .Does(()=&gt;{
+        var env = Argument&lt;string&gt;(&quot;env&quot;);
+        var environments = new Dictionary&lt;string, Settings&gt; {
+            [&quot;counterra&quot;] = new Settings {
+                SshAddress = &quot;root@83.220.171.23&quot;,
+                SshPort = &quot;22&quot;,
+                HomePath = &quot;/root/Templates&quot;
+            },
+            [&quot;tj&quot;] = new Settings{
+                SshAddress = &quot;vorsa@195.14.96.218&quot;,
+                SshPort = &quot;26&quot;,
+                HomePath = &quot;/home/vorsa&quot;
+            }
+        };
+        sets = environments[env];
+});
+
+Task(&quot;Publish&quot;)
+    .IsDependentOn(&quot;SelectEnvironment&quot;)
+    .IsDependentOn(&quot;CheckAllCommitted&quot;)
+    .IsDependentOn(&quot;CheckoutTag&quot;)
+    // build angular
+    .IsDependentOn(&quot;Build Angular&quot;)
+    .IsDependentOn(&quot;BuildDocker&quot;)
+    .IsDependentOn(&quot;CheckoutBranch&quot;)
+    .IsDependentOn(&quot;PushToGitLab&quot;)
+    .IsDependentOn(&quot;PublishService&quot;)
+    .Does(()=&gt;
+    {
+        Information(&quot;Finished!&quot;);
+    });
+
+Task(&quot;Release&quot;)
+    .IsDependentOn(&quot;SetVersion&quot;)
+    .IsDependentOn(&quot;ReleaseNotes&quot;)
+    .IsDependentOn(&quot;Commit&quot;)
+    .IsDependentOn(&quot;Build&quot;)
+    .IsDependentOn(&quot;PushTagToGit&quot;)
+    .Does(()=&gt;
+    {
+        Information(&quot;Finished!&quot;);
+    });
+
+Task(&quot;Publish&quot;)
+    // check that current &#39;master&#39; branch hasn&#39;t uncommitted changes
+    .IsDependentOn(&quot;CheckAllCommitted&quot;)
+    // checkout release tag
+    .IsDependentOn(&quot;CheckoutTag&quot;)
+    // build angular
+    .IsDependentOn(&quot;Build Angular&quot;)
+    // build release 
+    .IsDependentOn(&quot;Build&quot;)
+    // return &#39;master&#39; to HEAD as we have published release in artifacts folder
+    .IsDependentOn(&quot;CheckoutBranch&quot;)
+    // create docker image using published release
+    .IsDependentOn(&quot;BuildDocker&quot;)
+    // copy image to remote server
+    .IsDependentOn(&quot;ExportDocker&quot;)
+    // import new image, replace running container
+    .IsDependentOn(&quot;PublishService&quot;)
+    .Does(()=&gt;
+    {
+        Information(&quot;Finished!&quot;);
+    });
+
+Task(&quot;Build Angular&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;ng&quot;, &quot;build&quot;);
+});
+
+Task(&quot;Build&quot;)
+    .Does(() =&gt;
+{
+    DotNetCoreRestore($ &quot;./src/{Settings.ProjectName}&quot;);
+    CleanDirectory(&quot;./artifacts&quot;);
+    var settings = new DotNetCorePublishSettings
+    {
+        Framework = &quot;netcoreapp1.1&quot;,
+        Configuration = &quot;Release&quot;,
+        OutputDirectory = &quot;./artifacts/&quot;
+    };
+    DotNetCorePublish($ &quot;./src/{Settings.ProjectName}&quot;, settings);
+    // clean up artifacts folder
+    DeleteDirectory(&quot;./artifacts/e2e&quot;, recursive:true);
+    DeleteDirectory(&quot;./artifacts/src&quot;, recursive:true);
+    DeleteFiles(&quot;./artifacts/ts*.json&quot;);
+});
+
+Task(&quot;BuildDocker&quot;)
+    .Does(() =&gt;
+{
+    var settings = new DockerBuildSettings {
+        Tag = new []{ $ &quot;{Settings.ContainerName}:{version}&quot; }
+    };
+    DockerBuild(settings, &quot;.&quot;);
+});
+
+Task(&quot;ExportDocker&quot;)
+    .Does(() =&gt;
+{
+    var settings = new DockerSaveSettings {
+        Output = $ &quot;./artifacts/{Settings.ContainerName}.{version}.tar&quot;
+    };
+    // save docker image to tar archive
+    DockerSave(settings, new[] { $ &quot;{Settings.ContainerName}:{version}&quot;});
+});
+
+Task(&quot;PublishService&quot;)
+    .Does(() =&gt;
+{
+    // cope docker image to remote server
+    StartProcess(&quot;scp&quot;, $ &quot;-P {Settings.SshPort} ./artifacts/{Settings.ContainerName}.{version}.tar {Settings.SshAddress}:{Settings.HomePath}/&quot;);
+    // load copied image to docker on remote server
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} docker load &lt; {Settings.HomePath}/{Settings.ContainerName}.{version}.tar&quot;);
+
+    // copy docker-compose configuration from remote server to artifacts folder
+    StartProcess(&quot;scp&quot;, $ &quot;-P {Settings.SshPort} {Settings.SshAddress}:{Settings.HomePath}/docker-compose.yml ./artifacts/&quot;);
+    // replace the version of docker image in docker-compose configuration
+    ReplaceRegexInFiles(&quot;./artifacts/docker-compose.yml&quot;, $ &quot;{Settings.ContainerName}:\\d+\\.\\d+\\.\\d+\\.\\d+&quot;, $ &quot;{Settings.ContainerName}:{version}&quot;);
+
+    // stop old docker container on server
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose stop {Settings.ContainerName}&quot;);
+    // delete old container
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose rm -f {Settings.ContainerName}&quot;);
+    // copy new docker-compose configuration to remote server
+    StartProcess(&quot;scp&quot;, $ &quot;-P {Settings.SshPort} ./artifacts/docker-compose.yml {Settings.SshAddress}:{Settings.HomePath}/&quot;);
+    // recreate docker container, it will create a new version
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose create {Settings.ContainerName}&quot;);
+    // start new docker container
+    StartProcess(&quot;ssh&quot;, $ &quot;-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose start {Settings.ContainerName}&quot;);
+});
+
+Task(&quot;CheckoutTag&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, $ &quot;checkout tags/v{version}&quot;);
+});
+
+Task(&quot;CheckoutBranch&quot;)
+    .Does(() =&gt;
+{
+    StartProcess(&quot;git&quot;, $ &quot;checkout master&quot;);
+});
+
+Task(&quot;CheckAllCommitted&quot;)
+    .Does(() =&gt;
+{
+    IEnumerable&lt;string&gt; redirectedOutput;
+    var exitCodeWithArgument = StartProcess(&quot;git&quot;, new ProcessSettings{
+    Arguments = &quot;status&quot;,
+    RedirectStandardOutput = true
+    },
+    out redirectedOutput
+    );
+    if (!redirectedOutput.LastOrDefault().Contains(&quot;nothing to commit&quot;))
+    {
+        throw new Exception(&quot;Exists uncommitted changes&quot;);
+    }
+});
+
+RunTarget(target);
+</code></pre>
+<p>I am running service using docker compose like:</p>
+<pre><code class="yml">version: &#39;2&#39;
+services:
+    ContainerName:
+        image: ContainerName:x.x.x.x
+</code></pre>
+<p>Thanks.</p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Xamarin Dev Days in Warsaw - 24 September, 2016</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="xamarin,dev days">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="xamarin-dev-days-in-warsaw-24-september-2016">Xamarin Dev Days in Warsaw - 24 September, 2016</h2>
+<p>Tags: xamarin, dev days</p>
+<p>Hi All, it is my overview of Xamarin Dev Days - short summary. Hope it will be useful to create an  impression what you can expect from this event.</p>
+<p>My stream technology is server-side .NET or ASP.NET MVC. My current project is on .NET platform, the main technology is Windows Workflow Foundation and I am not using Xamarin platform. But I had a small experience in Xamarin that I got during working on my previous project.</p>
+<p>Some time ago I had a chance to visit Xamarin Dev Days event in Warsaw. It was one day event in Warsaw Microsoft office. There were two part: the first one is generic information about Xamarin ecosystem and Azure Mobile Apps. The second one is hands on lab. So <a href="https://docs.google.com/presentation/d/1pbsv4otZvU88ABx4QSgyznxpqolMQ279QsjWh3WvPjQ/edit?usp=sharing">this presentation</a> has been created to summarize and do a short recap mentioned event.</p>
+<h3 id="agenda-">Agenda:</h3>
+<ul>
+<li>Introduction to Xamarin</li>
+<li>Xamarin.Forms</li>
+<li>Azure Mobile Apps</li>
+<li>Sample application</li>
+<li>Resources</li>
+</ul>
+<p><img src="./../images/xam_dev_days_platform.png" alt="Xamarin Platform" title="Xamarin Platform"></p>
+<p>The first thing that you should keep in mind when you are talking about Xamarin is that you are able to write application not using Visual Studio on Windows only, but also <a href="https://www.xamarin.com/studio">Xamarin Studio</a> on Mac. As I understand, usually people are using Visual Studio to develop Android and Phone applications and Xamarin Studio on Mac to develop IOS application. But, of course, the team is using one code base. The reason of this approach, that it is much more quicker to build IOS application on MAC directly, without remote building using Visual Studio on Windows.</p>
+<p>The second thing is that Xamarin is not only about developing cross-platform applications using Visual Studio or Xamarin Studio, but Xamarin also provides possibility to test you application on various number of devices using <a href="https://www.xamarin.com/test-cloud">Xamarin Cloud</a>. As you can imagine, it is very expensive to buy all set of mobile devices for testing, so this cloud allows you to run your application on thousand of real devices in the cloud, analyze detailed test reports with results, screenshots, and performance metrics. Also it allows you to measure performance of your application. Sounds very cool, but there was a question from Xamarin Dev Days presenter about if there is someone who is using this cloud and nobody answered.</p>
+<p>The third thing is about building and continuous integration. Actually it is not about Xamarin but about <a href="https://www.visualstudio.com/tfs/">TFS</a>(Team Foundation Server). You are able to install it on your private server or it is possible to use <a href="https://www.visualstudio.com/">Visual Studio Online</a> service from Microsoft. It is free for small teams. It provides opportunity to work with your code (git), use agile board to organize your work, set up your continuous integration project (pure version of team city), create test cases. I heard that they added Wiki also.</p>
+<p>The last one is about distributing and monitoring. I can’t say a lot about distributing as I have never put any application to stores. As for monitoring, there is Xamarin Insight. It is the same approach as <a href="https://www.visualstudio.com/en-us/docs/insights/application-insights">Visual Studio Application Insights</a>. It is an extensible analytics service that helps you understand the performance and usage of your live mobile application. It&#39;s designed for developers, to help you continuously improve the performance and usability of your app. It <a href="http://www.joesauve.com/xamarin-insights-after-only-5-minutes-its-already-saving-my-arse/">allows</a>:</p>
+<ul>
+<li>see user sessions in real time</li>
+<li>see which users are being affected by which errors</li>
+<li>see stacktraces for each exception</li>
+<li>see device stats for each exception (operating system, app version, network status, device orientation, jalbreak status, and bluetooth status)</li>
+<li>see advanced reporting and filtering of aggregate exception statistics</li>
+<li>setup webhooks for triggering actions on certain Insights events</li>
+<li>integrate with third-party services (Campire, Github, HipChat, Jira, PivotalTracker, and Visual Studio Online)</li>
+</ul>
+<h3 id="approaches-">Approaches:</h3>
+<ul>
+<li>Separate solutions for each platform (Android, IOS, Windows)<ul>
+<li>Many projects, many languages, many teams</li>
+</ul>
+</li>
+<li>One universal solution (JS + HTML + CSS) - Cordova<ul>
+<li>Slow performance, limited native API</li>
+</ul>
+</li>
+<li>Xamarin approach (shared code + platform specific UI)<ul>
+<li>Good performance, almost all native API</li>
+</ul>
+</li>
+<li>ReactNative and NativeScript<ul>
+<li>Only Android and IOS (UWP in future)</li>
+</ul>
+</li>
+</ul>
+<p>Here I want to show the main ways to build mobile application.</p>
+<ol>
+<li>Of course, firstly it is native apps. It is clear. Swift, object-C for IOS, java is for Android, C# is  for Windows Phone. It means you should have and support many projects and many teams. It is a good option if you are planning to build complex and big mobile application. The best scenario is if this application has only mobile version.</li>
+<li>Universal solution. You are able to use Cordova and build you application using JavaScript. Personally I really like this approach as you are able to build almost any type of application using Javascript now. To execute javascript on server - NodeJs. For desktop application there is Electron framework. Cordova is to create mobile applications. The problem here is performance. The resulting applications are hybrid, meaning that they are neither truly native mobile application (because all layout rendering is done via Web views instead of the platform&#39;s native UI framework) nor purely Web-based (because they are not just Web apps, but are packaged as apps for distribution and have access to native device APIs). [<a href="https://en.wikipedia.org/wiki/Apache_Cordova">link</a>]</li>
+<li>And Xamarin. It looks like win-win strategy if you already have web or desktop application written on .NET. You are able to share code, get native performance (almost, depends how you are creating application, Xamarin.Forms, for example, can create non the best implementation), access to all native API (almost). If there is a new version of OS, need to wait implementation in Xamarin up to one month.</li>
+<li><a href="https://www.reactnative.com/">ReactNative</a> and <a href="https://www.nativescript.org/">NativeScript</a> created and supported by Facebook and Telerik. ReactNative hasn’t final version still, but NativeScript has version 2.0. They are the most young libraries in the list. JavaScript is the language to write a code. But unlike Cordova transform Javascript elements to native UI elements. Support Android and IOS now. Microsoft is working to add UWP here (NativeScript). Looks like the most perspective platforms. You are able to use <a href="https://www.quora.com/What-are-the-key-difference-between-ReactNative-and-NativeScript/answer/Valentin-Stoychev">Angular2 + Typescript + NativeScript or ReactJs + ReactNative</a> to write mobile applications and share code also with your web version of application. Probably it is the best frameworks if your application is web first.</li>
+</ol>
+<h3 id="-xamarin-features-https-www-xamarin-com-download-it-"><a href="https://www.xamarin.com/download-it">Xamarin features</a></h3>
+<ul>
+<li>Produce ARM binary for Apple store</li>
+<li>Produce APK for Android</li>
+<li>Possibility to use only one IDE (Visual Studio)</li>
+<li><a href="&quot;https://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/debug-on-emulator/visual-studio-android-emulator/">Android Hyper-V</a> and <a href="https://developer.xamarin.com/guides/cross-platform/windows/ios-simulator/">IOS Remote emulators</a></li>
+<li>Designers for IOS, Android and Windows Phone in Visual Studio</li>
+<li>Xamarin Studio for Mac</li>
+<li><a href="https://msdn.microsoft.com/en-us/library/hh848246.aspx">MVVM pattern</a> (XAML)</li>
+</ul>
+<p>Here I put the main interesting features of Xamarin:</p>
+<ol>
+<li>Xamarin <a href="https://www.xamarin.com/download-it#ios">allows</a> to ship native app bundles on the App Store. Ahead-of-Time (AOT) compiler compiles Xamarin.iOS apps directly to native ARM assembly code, meaning your app is a native platform binary.</li>
+<li>As for Android, Xamarin.Android uses just-in-time compilation for sophisticated runtime optimization of your app’s performance, meaning your app is a native Android APK.</li>
+<li>Also I talked that we are able to use only one IDE to develop applications in theory. </li>
+<li>Microsoft Visual Studio 2015 includes an Android emulator that you can use as a target for debugging your Xamarin.Android app: Visual Studio Emulator for Android. This emulator uses the Hyper-V capabilities of your development computer, resulting in faster launch and execution times than the default emulator that comes with the Android SDK. Also it is possible to debug IOS in Windows using remote simulator.</li>
+<li>Visual Studio supports also visual designers to build UI. It works almost the same like it works for WPF.</li>
+<li>Also there is <a href="https://www.visualstudio.com/vs/visual-studio-mac/">Visual Studio for Mac</a>.</li>
+<li>The Model-View-ViewModel (MVVM) architectural pattern was invented with XAML in mind. The pattern enforces a separation of the XAML user interface (the View) from the underlying data (the Model) through a class that serves as an intermediary between the View and the Model (the ViewModel). The View and the ViewModel are often connected through data bindings defined in the XAML file. The BindingContext for the View is usually an instance of the ViewModel. <a href="https://developer.xamarin.com/guides/xamarin-forms/xaml/xaml-basics/data_bindings_to_mvvm/">link</a></li>
+</ol>
+<h3 id="-sharing-code-https-developer-xamarin-com-guides-cross-platform-application_fundamentals-building_cross_platform_applications-sharing_code_options-"><a href="https://developer.xamarin.com/guides/cross-platform/application_fundamentals/building_cross_platform_applications/sharing_code_options/">Sharing code</a></h3>
+<ul>
+<li>Portable class library</li>
+<li>Shared projects</li>
+<li>Upcoming <a href="https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/">.NET Standard 2.0</a></li>
+</ul>
+<p>Currently there are two ways to write shared code in Xamarin:</p>
+<ol>
+<li>Shared project. Unlike most other project types, a Shared Project has no &#39;output&#39; assembly. During compilation, the files are treated as part of the referencing project and compiled into that DLL. If you wish to share your code as a DLL then Portable Class Libraries are a better solution. Shared code can be branched based on the platform using compiler directives (eg. using #if __ANDROID__ , as discussed in the Building Cross Platform Applications document).</li>
+<li>Portable library. Only a subset of the .NET framework is available to use, determined by the profile selected (see the Introduction to PCL for more info).
+Upcoming .net standard 2.0 will support Xamarin. Basically Microsoft introduced a new <a href="https://docs.microsoft.com/en-us/dotnet/articles/standard/library">.NET Standard Library</a>. The .NET Standard Library is a formal specification of .NET APIs that are intended to be available on all .NET runtimes. The motivation behind the Standard Library is establishing greater uniformity in the .NET ecosystem.</li>
+</ol>
+<h3 id="-xamarin-plugins-https-developer-xamarin-com-guides-xamarin-forms-platform-features-plugins-nuget-"><a href="https://developer.xamarin.com/guides/xamarin-forms/platform-features/plugins/">Xamarin plugins</a> (nuget)</h3>
+<ul>
+<li>Battery</li>
+<li>Connectivity</li>
+<li>Geolocation</li>
+<li>Media</li>
+<li>Settings</li>
+<li>Text to speech</li>
+<li>...</li>
+</ul>
+<p>Another one nice feature of Xamarin is Xamarin <a href="https://github.com/xamarin/XamarinComponents">plugins</a> that can be downloaded using nuget. These libraries allow you to use functionality that adds cross-platform functionality or abstracts platform specific functionality to a common API, like battery, geolocation, media and so on.</p>
+<p>You are able to find the whole list of plugins <a href="https://components.xamarin.com/?category=plugins">here</a>.</p>
+<h3 id="-xamarin-forms-https-developer-xamarin-com-guides-xamarin-forms-"><a href="https://developer.xamarin.com/guides/xamarin-forms/">Xamarin.Forms</a></h3>
+<ul>
+<li>Shared UI </li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/controls/">Pages, layouts, controls</a></li>
+<li><a href="https://blog.xamarin.com/introduction-to-data-binding/">Two-ways data binding</a></li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/user-interface/navigation/">Navigation</a></li>
+<li><a href="https://blog.xamarin.com/creating-animations-with-xamarin-forms/">Animation</a></li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/dependency-service/">Dependency service</a>, <a href="https://developer.xamarin.com/guides/xamarin-forms/messaging-center/">messaging center</a></li>
+<li><a href="https://developer.xamarin.com/releases/xamarin-forms/xamarin-forms-2.0/2.0.0/">Xamarin.Forms 2.0</a> - Performance</li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/themes/">Themes</a></li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/datapages/">Data pages</a></li>
+<li><a href="https://developer.xamarin.com/guides/xamarin-forms/user-interface/layouts/add-platform-controls/">Native embedding</a></li>
+</ul>
+<p>Use the Xamarin.Forms API provides a way to quickly build native apps for iOS, Android and Windows completely in C#. Xamarin.Forms is included with Visual Studio.</p>
+<ol>
+<li>Xamarin allows sharing not only code between platforms, but also UI. During compilation created abstract XAML is transformed to platform specific. For example, there is the next XAML element: Entry, what is TextBox in Windows Phone. So we have an platform-specific equivalent for every control from Xamarin.Form.</li>
+<li>There are three main groups in Xamarin.Form:<ul>
+<li>A Xamarin.Forms.Page represents a View Controller in iOS or a Page in Windows Phone. On Android each page takes up the screen like an Activity, but Xamarin.Forms Pages are not Activities.</li>
+<li>The Layout class in Xamarin.Forms is a specialized subtype of View, which acts as a container for other Layouts or Views. It typically contains logic to set the position and size of child elements in Xamarin.Forms applications.</li>
+<li>Xamarin.Forms uses the word View to refer to visual objects such as buttons, labels or text entry boxes - which may be more commonly known as controls of widgets.</li>
+</ul>
+</li>
+<li>Data binding connects two objects, called the source and the target. The source object provides the data. The target object, which must be a bindable property, will consume (and often display) data from the source object.</li>
+<li>Xamarin.Forms provides a number of different page navigation experiences, depending upon the Page type being used: Tabbed Page, Hierarchical Navigation, CarouselPage and so on.</li>
+<li>Xamarin.Forms includes its own animation infrastructure that allows for easy creation of simple animations, while also being versatile enough to create complex animations. The Xamarin.Forms animation classes target different properties of visual elements, with a typical animation progressively changing a property from one value to another over a period of time.</li>
+<li>Xamarin.Forms allows developers to define behavior in platform-specific projects. DependencyService then finds the right platform implementation, allowing shared code to access the native functionality.</li>
+<li>Xamarin.Forms MessagingCenter enables view models and other components to communicate with without having to know anything about each other besides a simple Message contract.</li>
+<li>Native Embedding. Platform-specific controls can be directly added to a Xamarin.Forms layout. It is possible to add platform-specific controls to a Xamarin.Forms layout, and how to override the layout of custom controls in order to correct their measurement API usage.</li>
+</ol>
+<h3 id="-azure-mobile-apps-https-azure-microsoft-com-en-us-documentation-articles-app-service-mobile-value-prop-"><a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-value-prop/">Azure Mobile Apps</a></h3>
+<p><img src="./../images/azure_mob_structure.png" alt="Azure Mobile"></p>
+<ul>
+<li>Stable backend</li>
+<li>Offline sync</li>
+<li>Data storage (tables, sql)</li>
+<li>Authentication (Microsoft, Google, Facebook, Twitter)</li>
+<li>Push notifications</li>
+</ul>
+<p>Azure App Service is a fully managed Platform as a Service (PaaS) that brings a rich set of capabilities to web, mobile and integration scenarios.</p>
+<ol>
+<li>Build offline-ready apps with data sync.</li>
+<li>Push Notifications allows you to engage your clients with instant push notifications on any device.</li>
+<li>Authorization using different approaches</li>
+<li>Save data.</li>
+</ol>
+<h3 id="take-a-look">Take a look</h3>
+<ul>
+<li><a href="https://github.com/MikeCodesDotNet/App-Service-Helpers">App Service Helpers</a></li>
+<li><a href="https://github.com/azure-appservice-samples/ContosoMoments">Contoso Moments</a></li>
+</ul>
+<p>Want to mention two nice libraries/ applications:</p>
+<ol>
+<li>App Service Helpers (ASH) makes it as easy as possible to add data storage and authentication to your mobile app with Microsoft&#39;s Azure App Service Platform. ASH was built with the mobile developer in mind, and requires no previous experience with backends as a service (BaaS). This lib was developed as a supplemental library to Microsoft&#39;s Azure Client SDK. Rather than replacing this library, ASH extends it by lowering the barrier to entry for developers who wish to build cloud-connected mobile apps in C#.</li>
+<li>It is a good example how to use Azure Mobile services. Contoso Moments is a photo sharing application that demonstrates the following features of Azure App Service:<ul>
+<li>App Service authentication/authorization</li>
+<li>Continuous Integration and deployment</li>
+<li>Mobile app server SDK</li>
+<li>Mobile offline sync client SDK</li>
+<li>Mobile file sync SDK</li>
+<li>Mobile push notifications</li>
+</ul>
+</li>
+</ol>
+<h3 id="sample-application">Sample application</h3>
+<p>I have created a small sample application. The source code is available <a href="./../assets/WakeUp.zip">here</a>. It is simple carousel application that shows information about morning exercises.  </p>
+<h3 id="references-">References:</h3>
+<p>There are a list of references and interesting information about Xamarin. Thank you for reading. <a href="mailto:gromkaktus@gmail.com">Please feel free to ask</a> any questions, I will try to answer.</p>
+<ul>
+<li><a href="https://github.com/xamarin/dev-days-labs">Github dev-days-labs</a></li>
+<li><a href="https://www.xamarin.com/dev-days">Xamarin Dev Days</a></li>
+<li><a href="http://www.meetup.com/warsawmobiledevelopers/">Xamarin Warsaw Mobile Developers Group</a></li>
+<li><a href="https://confluence.infusion.com/pages/viewpage.action?pageId=28582107">Xamarin Training Series</a></li>
+<li><a href="https://confluence.infusion.com/display/innovationpractices/Xamarin+Bootcamp+Training">Xamarin bootcamp training</a></li>
+<li><a href="https://developer.xamarin.com/">Xamarin Dev page</a></li>
+<li><a href="https://docs.google.com/presentation/d/1pbsv4otZvU88ABx4QSgyznxpqolMQ279QsjWh3WvPjQ/edit?usp=sharing">Xamarin Dev days - presentation</a></li>
+</ul>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>

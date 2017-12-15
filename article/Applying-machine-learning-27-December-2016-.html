@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Applying machine learning - 27 December, 2016</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="machine learning">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="applying-machine-learning-27-december-2016">Applying machine learning - 27 December, 2016</h2>
+<p>Tags: machine learning</p>
+<p>Errors in your predictions can be troubleshooted by:</p>
+<ul>
+<li>Getting more training examples</li>
+<li>Trying smaller sets of features</li>
+<li>Trying additional features</li>
+<li>Trying polynomial features</li>
+<li>Increasing or decreasing λ</li>
+</ul>
+<p>It is good to use test error factor to understand the correctness of our algorithm:</p>
+<p><code>\[\text{Test Error} = \dfrac{1}{m_{test}} \sum^{m_{test}}_{i=1} err(h_\Theta(x^{(i)}_{test}), y^{(i)}_{test})\]</code></p>
+<p>and this factor is calculated using completely separate training set (test set).</p>
+<p>Using <strong>Cross Validation Set</strong> our test set will give us an accurate, non-optimistic error.</p>
+<p>One example way to break down our dataset into the three sets is:</p>
+<ul>
+<li>Training set: 60%</li>
+<li>Cross validation set: 20%</li>
+<li>Test set: 20%
+We can now calculate three separate error values for the three different sets.</li>
+</ul>
+<p>With the Validation Set (note: this method presumes we do not also use the CV set for regularization)</p>
+<ol>
+<li>Optimize the parameters in Θ using the training set for each polynomial degree.</li>
+<li>Find the polynomial degree d with the least error using the cross validation set.</li>
+<li>Estimate the generalization error using the test set with <code>\(J_{test}(\Theta^{(d)})\)</code>, (d = theta from polynomial with lower error).</li>
+</ol>
+<h3 id="diagnosing-bias-vs-variance">Diagnosing Bias vs. Variance</h3>
+<p>High bias is underfitting and high variance is overfitting. </p>
+<p><img src="../images/features-and-polynom-degree.png" alt="image"></p>
+<h2 id="regularization-and-bias-variance">Regularization and Bias/Variance</h2>
+<ul>
+<li>Large λ: High bias (underfitting)</li>
+<li>Small λ: High variance (overfitting)</li>
+</ul>
+<p><img src="../images/features-and-polynom-degree-fix2.png" alt="image"></p>
+<p>In order to choose the model and the regularization λ, we need:</p>
+<ol>
+<li>Create a list of lambda (i.e. λ∈{0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24});</li>
+<li>Select a lambda to compute;</li>
+<li>Create a model set like degree of the polynomial or others;</li>
+<li>Select a model to learn Θ;</li>
+<li>Learn the parameter Θ for the model selected, using <code>\(J_{train}(\Theta)\)</code> with λ selected (this will learn Θ for the next step);</li>
+<li>Compute the train error using the learned Θ (computed with λ ) on the <code>\(J_{train}(\Theta)\)</code> without regularization or λ = 0;</li>
+<li>Compute the cross validation error using the learned Θ (computed with λ) on the <code>\(J_{CV}(\Theta)\)</code> without regularization or λ = 0;</li>
+<li>Do this for the entire model set and lambdas, then select the best combo that produces the lowest error on the cross validation set;</li>
+<li>Now if you need visualize to help you understand your decision, you can plot to the figure like above with: (λ x Cost J<code>\(J_{train}(\Theta)\)</code> and (λ x Cost <code>\(J_{CV}(\Theta)\)</code>);</li>
+<li>Now using the best combo Θ and λ, apply it on <code>\(J_{test}(\Theta)\)</code> to see if it has a good generalization of the problem.</li>
+<li>To help decide the best polynomial degree and λ to use, we can diagnose with the learning curves.</li>
+</ol>
+<h3 id="learning-curves">Learning Curves</h3>
+<p>If a learning algorithm is suffering from high variance, getting more training data is likely to help.
+If a learning algorithm is suffering from high bias, getting more training data will not (by itself) help much.</p>
+<p><img src="../images/Learning1.png" alt="image">
+<img src="../images/Learning2.png" alt="image"></p>
+<h3 id="deciding-what-to-do-next-revisited">Deciding What to Do Next Revisited</h3>
+<p>Decision process can be broken down as follows:</p>
+<ol>
+<li>Getting more training examples - Fixes high variance</li>
+<li>Trying smaller sets of features - Fixes high variance</li>
+<li>Adding features - Fixes high bias</li>
+<li>Adding polynomial features - Fixes high bias</li>
+<li>Decreasing λ - Fixes high bias</li>
+<li>Increasing λ - Fixes high variance</li>
+</ol>
+<h3 id="diagnosing-neural-networks">Diagnosing Neural Networks</h3>
+<ul>
+<li>A neural network with fewer parameters is prone to underfitting. It is also computationally cheaper.</li>
+<li>A large neural network with more parameters is prone to overfitting. It is also computationally expensive. In this case you can use regularization (increase λ) to address the overfitting.</li>
+</ul>
+<p>Using a single hidden layer is a good starting default. You can train your neural network on a number of hidden layers using your cross validation set.</p>
+<h2 id="error-analysis">Error Analysis</h2>
+<p>The recommended approach to solving machine learning problems is:</p>
+<ul>
+<li>Start with a simple algorithm, implement it quickly, and test it early.</li>
+<li>Plot learning curves to decide if more data, more features, etc. will help</li>
+<li>Error analysis: manually examine the errors on examples in the cross validation set and try to spot a trend.</li>
+</ul>
+<p>It&#39;s important to get error results as a single, numerical value. Otherwise it is difficult to assess your algorithm&#39;s performance.</p>
+<h3 id="error-metrics-for-skewed-classes">Error Metrics for Skewed Classes</h3>
+<p>Precision:</p>
+<p><code>\[\dfrac{\text{True Positives}}{\text{Total number of predicted positives}}
+= \dfrac{\text{True Positives}}{\text{True Positives}+\text{False positives}}\]</code></p>
+<p>Recall:</p>
+<p><code>\[\dfrac{\text{True Positives}}{\text{Total number of actual positives}}= \dfrac{\text{True Positives}}{\text{True Positives}+\text{False negatives}}\]</code></p>
+<h3 id="trading-off-precision-and-recall">Trading Off Precision and Recall</h3>
+<p>A better way is to compute the F Score (or F1 score):</p>
+<p><code>\[\text{F Score} = 2\dfrac{PR}{P + R}\]</code></p>
+<p>In order for the F Score to be large, both precision and recall must be large. We want to train precision and recall on the cross validation set so as not to bias our test set.</p>
+<p>More info:
+<a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>

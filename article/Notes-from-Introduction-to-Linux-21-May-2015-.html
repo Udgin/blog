@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Notes from 'Introduction to Linux' - 21 May, 2015</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="linux">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="notes-from-introduction-to-linux-21-may-2015">Notes from &#39;Introduction to Linux&#39; - 21 May, 2015</h2>
+<p>Tags: linux</p>
+<p><a href="https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-0">course link</a></p>
+<p>Linux <a href="http://www.tldp.org/LDP/sag/html/filesystems.html">Filesystem</a></p>
+<ul>
+<li>Conventional disk filesystems: ext2, ext3, ext4, XFS, Btrfs, JFS,NTFS, etc.</li>
+<li>Flash storage filesystems: ubifs, JFFS2, YAFFS, etc.</li>
+<li>Database filesystems</li>
+<li>Special purpose filesystems: procfs, sysfs, tmpfs, debugfs, etc.</li>
+</ul>
+<p><a href="https://en.wikipedia.org/wiki/Disk_partitioning">Partitions</a></p>
+<ol>
+<li>Windows<ul>
+<li>Partition: Disk1 </li>
+<li>Filesystem type: NTFS/FAT32</li>
+<li>Mounting Parameters: DriveLetter </li>
+<li>Base Folder of OS: C drive</li>
+</ul>
+</li>
+<li>Linux<ul>
+<li>Partition: /dev/sda1</li>
+<li>Filesystem type: EXT3/EXT4/XFS</li>
+<li>Mounting Parameters: MountPoint</li>
+<li>Base Folder of OS: /</li>
+</ul>
+</li>
+</ol>
+<p><a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">The Filesystem Hierarchy Standard</a></p>
+<p><img src="./../images/linux_foundation_filesystem.jpg" alt="File System"></p>
+<p>The Boot Process</p>
+<p><img src="./../images/linux_foundation_boot_process.jpg" alt="Boot Process"></p>
+<p>Choosing a <a href="https://en.wikipedia.org/wiki/Linux_distribution">Linux Distribution</a></p>
+<p><img src="./../images/linux_foundation_choose.jpg" alt="Choose"></p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>

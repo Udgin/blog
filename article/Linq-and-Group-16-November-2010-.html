@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Linq and Group - 16 November, 2010</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="linq">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="linq-and-group-16-november-2010">Linq and Group - 16 November, 2010</h2>
+<p>Tags: linq</p>
+<p>Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.</p>
+<p>The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.</p>
+<pre><code class="csharp">private static SqlCeDataReader SelectAllParamterAndModuleName()
+{
+    return ExecuteDataReader(String.Format(QSelectAllParamterANdModuleName));
+}
+</code></pre>
+<p>where QSelectAllParamterANdModuleName is text of the query.</p>
+<pre><code class="csharp">private static IEnumerable&lt;ParameterType&gt; SelectAllParameterToArray()
+{
+    var query =
+        from row in SelectAllParamterAndModuleName().Cast()
+        select new ParameterType
+        {
+            Id = (int)row[&quot;FID&quot;],
+            Name = (string)row[&quot;FNAME&quot;],
+            TypeName = (string)row[&quot;FTYPE&quot;],
+            ModuleId = (int)row[&quot;FMODULEID&quot;],
+                        ModuleName = (string)row[&quot;FMODULE&quot;], Number = (int)row[&quot;FNUMBER&quot;], TypeOfPar = (bool)row[&quot;FTYPEOFPARAMETER&quot;]};
+    return query.ToArray();
+}
+</code></pre>
+<p>create from selected SqlReader array of elements of ParameterType. The result can be cached.</p>
+<pre><code class="csharp">public static List&lt;ModuleType&gt; SelectModuleByInputParameter(List&lt;ParameterType&gt; inputParameter)
+{
+    if (inputParameter == null)
+    {
+        throw new ArgumentNullException();
+    }
+    var res = new List();
+    var para = SelectAllParameterToArray();
+    if (inputParameter.Count == 0)
+    {
+        var par = from parameter in para
+                    where !(from parameter2 in para
+                            where parameter2.TypeOfPar
+                            select parameter2.ModuleId).Contains(parameter.ModuleId)
+                    select parameter;
+        return par.Select(x =&amp;gt; new ModuleType {Id = x.ModuleId, Name = x.ModuleName}).ToList();
+    }
+
+    var parGr = from parameter in para
+                where parameter.TypeOfPar
+                group parameter by parameter.ModuleId
+                into modPara
+                where modPara.Count() == inputParameter.Count
+                select modPara;
+
+    foreach (var paramGr in parGr)
+    {
+        bool AddInRes = true;
+        var listParaGr = paramGr.ToList();
+        for (int i = 0; i &amp;lt; listParaGr.Count; i++)
+        {
+            if (listParaGr[i].Number != inputParameter[i].Number ||
+            listParaGr[i].TypeName != inputParameter[i].TypeName)
+                AddInRes = false;
+        }
+        if (AddInRes)
+        {
+            res.Add(new ModuleType(){Id =  listParaGr[0].ModuleId, Name = listParaGr[0].ModuleName});
+        }
+    }
+    return res;
+}
+</code></pre>
+<p>This method returns a collection of our modules, which contains defined input parameters. Thus, this method should be called justbefore the loop until the result will contain at least one value. It should be noted that calls to this method will generally be bifurcate (the first layer selected modules, and for everyone in this layer, called again, this method and so on). But this is not Linq.</p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>
