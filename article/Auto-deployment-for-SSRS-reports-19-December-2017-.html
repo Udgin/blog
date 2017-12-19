@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Auto deployment for SSRS reports - 19 December, 2017</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="ssrs">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="auto-deployment-for-ssrs-reports-19-december-2017">Auto deployment for SSRS reports - 19 December, 2017</h2>
+<p>Tags: ssrs</p>
+<p>If you work with SSRS it is not so easy to create CI build for SSRS project. It looks like the best approach is to use shared datasources, shared datasets and embedded datasets in reports which use shared datasets. Shared datasets should use stored procedures to receive data so you will be able to cover your SQL logic by unit tests.</p>
+<p>So you will have the next types of files in your project:</p>
+<ol>
+<li>*.rdl - reports</li>
+<li>*.rsd - shared datasets</li>
+<li>*.rds - shared datasources</li>
+</ol>
+<p>To deploy them to clean SSRS server we can use <a href="https://docs.microsoft.com/en-us/sql/reporting-services/tools/rs-exe-utility-ssrs">RS tool</a>. And that is a bat file to call it:</p>
+<pre><code>REM SSRS server, you can provide also user and password to RS tool if you can&#39;t use Windows credentials (default behaviour)
+set varServerPath=http://desktop-h33a7aa/reportserver
+REM name of folder at SSRS server for reports
+set varReportFolder=My_Reports
+REM name of folder at SSRS server for datasets
+Set varDatasetFolder=Datasets
+REM name of folder at SSRS server for data sources
+set varDataSourceFolder=Data Sources
+REM path to a folder with reports, datasets and datasources
+set varReportFilePath=.\Project\Reports\My_Reports
+
+&quot;C:\Program Files\Microsoft SQL Server Reporting Services\Shared Tools\rs.exe&quot; -i Commonscript.rss -s %varServerPath% -v ReportFolder=&quot;%varReportFolder%&quot; -v DataSetFolder=&quot;%varDatasetFolder%&quot; -v DataSourceFolder=&quot;%varDataSourceFolder%&quot; -v filePath=&quot;%varReportFilePath%&quot; -e Mgmt2010
+</code></pre><p>All logic is described in Commonscript.rss. It creates folders in SSRS server for reports, datasets and datasources (using CreateFolders method), later it reads all <em>.rds files in varReportFilePath and create datasources for each file if it doesn&#39;t exist. After it reads all </em>.rsd files in varReportFilePath, create datasets and connects a dataset with a datasource. In the end it read all *.rdl files in varReportFilePath, create reports and connects a report with a dataset.</p>
+<pre><code>Dim definition As [Byte]() = Nothing
+Dim bytedefinition as [Byte]() = nothing
+Dim warnings As Warning() = Nothing
+
+&#39;Main Entry point of utility
+Public Sub Main()
+    Console.WriteLine()
+    Console.WriteLine(&quot;Initiating Deployment&quot;)
+    rs.Credentials = System.Net.CredentialCache.DefaultCredentials
+    Try
+        &#39;Create the shared data source
+        CreateFolders(DataSourceFolder,&quot;/&quot;,&quot;Data Sources&quot;,&quot;Visible&quot;)
+        &#39;Create the folder that will contain the shared data sets
+        CreateFolders(DataSetFolder, &quot;/&quot;, &quot;Data Set Folder&quot;, &quot;Visible&quot;)
+        &#39;Create the folder that will contain the deployed reports
+        CreateFolders(ReportFolder, &quot;/&quot;, &quot;Report Folder&quot;,&quot;Visible&quot;)
+    Catch goof As Exception
+        Console.WriteLine(goof.Message)
+    End Try
+    ReadFiles(filepath, &quot;*.rds&quot;)
+    ReadFiles(filepath, &quot;*.rsd&quot;)
+    ReadFiles(filepath, &quot;*.rdl&quot;)
+End Sub
+
+&#39;Utility for creation of folders
+Public Sub CreateFolders(ByVal folderName as string, ByVal parentPath as string, ByVal description as String, ByVal visible as string)
+    Console.WriteLine()
+    Console.WriteLine(&quot;Checking for Target Folders&quot;)
+    &#39;CatalogItem properties
+    Dim descriptionProp as new [Property]
+    descriptionProp.Name = &quot;Description&quot;
+    descriptionProp.Value= description
+    Dim visibleProp as new [Property]
+    visibleProp.Name = &quot;Visible&quot;
+    visibleProp.value= visible
+    Dim props(1) as [Property]
+    props(0) = descriptionProp
+    props(1) = visibleProp
+    Try
+        rs.CreateFolder(folderName,parentPath,props)
+        Console.WriteLine(&quot;Folder {0} successfully created&quot;, foldername)
+    Catch goof as SoapException
+        If goof.Message.Indexof(&quot;AlreadyExists&quot;)&gt;0 Then
+            Console.WriteLine(&quot;Folder {0} already exists&quot;,foldername)
+        End If
+    End Try
+End Sub
+
+&#39;Utility for reading files from the Report Sevices Project
+Public sub ReadFiles(filepath as string, fileextension as string)
+    Console.WriteLine()
+    Console.WriteLine(&quot;Reading Files from Report Services Project&quot;)
+    Dim rptdirinfo As System.IO.DirectoryInfo
+    rptdirinfo = New System.IO.DirectoryInfo(filepath)
+    Dim filedoc As FileInfo()
+    filedoc = rptdirinfo.GetFiles(fileextension)
+    Try
+        For rptcount As Integer = 0 To filedoc.Length-1
+            If Not filedoc(rptcount).Name.ToString.Trim.ToUpper.Contains(&quot;BACKUP&quot;) Then
+                SELECT Case fileextension
+                Case &quot;*.rds&quot;
+                    CreateDataSource(filedoc(rptcount).tostring.trim)
+                Case &quot;*.rsd&quot;
+                    CreateDataSet(filedoc(rptcount).tostring.trim)
+                Case &quot;*.rdl&quot;
+                    PublishReport(filedoc(rptcount).tostring.trim)
+                End Select
+            End If
+        Next
+    Catch goof as Exception
+        Console.WriteLine(&quot;In ReadFiles &quot; + goof.message)
+    End Try
+End Sub
+
+&#39;Utility for Creating Shared Data Sets contained in the project
+Public Sub CreateDataSet(ByVal filename as string)
+    Dim valstart as integer
+    Dim valend as integer
+    Dim DSDefinitionStr as string
+    Dim DataSourceName as string
+    Dim QueryString as string
+    Try
+        Dim stream As FileStream = File.OpenRead(filePath + &quot;\&quot; + filename )
+        definition = New [Byte](stream.Length-1) {}
+        stream.Read(definition, 0, CInt(stream.Length))
+        stream.Close()
+        For i As Integer = 0 To definition.Length - 1
+            DSDefinitionStr = DSDefinitionStr + Convert.ToString(Convert.ToChar(Convert.ToInt16(definition(i).ToString)))
+        Next
+        valstart=DSDefinitionStr.ToString.Indexof(&quot;&lt;DataSourceReference&gt;&quot;)
+        If valstart &gt; 0 Then
+            valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;DataSourceReference&gt;&quot;) + 21
+            valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/DataSourceReference&gt;&quot;)
+            DataSourceName=DSDefinitionStr.ToString.Substring(valstart, valend - valstart)
+            Console.WriteLine(DataSourceName)
+        End If
+    Catch e As IOException
+        Console.WriteLine(e.Message)
+    End Try
+    filename=filename.tostring.replace(&quot;.rsd&quot;,&quot;&quot;)
+    Console.WriteLine(&quot;Attempting to Deploy DataSet {0}&quot;, filename)
+    Try
+        Dim item as CatalogItem
+        item=rs.CreateCatalogItem(&quot;DataSet&quot;,filename, &quot;/&quot; + DataSetFolder, false, definition, nothing, warnings)
+        If Not (warnings Is Nothing) Then
+            Dim warning As Warning
+            For Each warning In warnings
+                if warning.message.tostring.tolower.contains(&quot;refers to the shared data source&quot;) then
+                    Console.WriteLine(&quot;Connecting DataSet {0} to Data Source {1}&quot;,filename, DataSourceName)
+                    Dim referenceData() as ItemReferenceData = rs.GetItemReferences(&quot;/&quot; + DataSetFolder + &quot;/&quot; + filename,&quot;DataSet&quot;)
+                    Dim references(0) as ItemReference
+                    Dim reference as New ItemReference()
+                    Dim datasourceURL = &quot;/&quot; + DataSourceFolder + &quot;/&quot; + DataSourceName
+                    reference.name=referenceData(0).Name
+                    Console.WriteLine(&quot;Reference name = &quot; + reference.name)
+                    reference.Reference=datasourceURL
+                    references(0)=reference
+                    rs.SetItemReferences(&quot;/&quot; + DataSetFolder + &quot;/&quot; + filename, references)
+                else
+                    Console.WriteLine(warning.Message)
+                end if
+            Next warning
+        Else
+            Console.WriteLine(&quot;DataSet: {0} published successfully with no warnings&quot;, filename)
+        End If
+    Catch goof as SoapException
+        If goof.Message.Indexof(&quot;AlreadyExists&quot;)&gt;0 Then
+            Console.WriteLine(&quot;The DataSet {0} already exists&quot;,fileName.ToString)
+        Else
+            If goof.Message.IndexOf(&quot;published&quot;)=-1 Then
+                Console.Writeline(goof.Message)
+            End If
+        End If
+    End Try
+End Sub
+
+&#39;Utility for creating Data Sources on the Server
+Public Sub CreateDataSource(filename as string)
+    &#39;Define the data source definition.
+    Dim dsDefinition As New DataSourceDefinition()
+    Dim DataSourceName as string
+    Dim valstart As Integer
+    Dim valend As Integer
+    Dim ConnectionString As String
+    Dim Extension As String
+    Dim IntegratedSec As String
+    Dim DataSourceID As String
+    Dim PromptStr As String
+    PromptStr=&quot;&quot;
+    Dim DSDefinitionStr As String
+    DSDefinitionStr = &quot;&quot;
+    DataSourceName=filename.tostring.trim.substring(0,filename.tostring.trim.length-4)
+    Console.WriteLine(&quot;Attempting to Deploy Data Source {0}&quot;, DataSourceName)
+    Try
+        Dim stream As FileStream = File.OpenRead(filepath + &quot;\&quot; + filename)
+        bytedefinition = New [Byte](stream.Length-1) {}
+        stream.Read(bytedefinition, 0, CInt(stream.Length))
+        stream.Close()
+        For i As Integer = 0 To bytedefinition.Length - 1
+            DSDefinitionStr = DSDefinitionStr + Convert.ToString(Convert.ToChar(Convert.ToInt16(bytedefinition(i).ToString)))
+        Next
+    Catch goof As IOException
+        Console.WriteLine(goof.Message)
+    End Try
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;ConnectString&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/ConnectString&gt;&quot;) Then
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;ConnectString&gt;&quot;) + 15
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/ConnectString&gt;&quot;)
+        ConnectionString = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)
+    End If
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;Extension&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/Extension&gt;&quot;) Then
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;Extension&gt;&quot;) + 11
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/Extension&gt;&quot;)
+        Extension = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)
+    End If
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;IntegratedSecurity&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/IntegratedSecurity&gt;&quot;) Then
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;IntegratedSecurity&gt;&quot;) + 20
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/IntegratedSecurity&gt;&quot;)
+        IntegratedSec = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)
+    End If
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;DataSourceID&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/DataSourceID&gt;&quot;) Then
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;DataSourceID&gt;&quot;) + 14
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/DataSourceID&gt;&quot;)
+        DataSourceID = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)
+    End If
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;Prompt&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/Prompt&gt;&quot;) Then
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;Prompt&gt;&quot;) + 8
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/Prompt&gt;&quot;)
+        PromptStr = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)
+    End If
+    dsdefinition.CredentialRetrieval = CredentialRetrievalEnum.Integrated
+    dsdefinition.ConnectString = ConnectionString
+    dsdefinition.Enabled = True
+    dsdefinition.EnabledSpecified = True
+    dsdefinition.Extension = extension
+    dsdefinition.ImpersonateUser = False
+    dsdefinition.ImpersonateUserSpecified = True
+    &#39;Use the default prompt string.
+    If PromptStr.ToString.Length=0 Then
+        dsdefinition.Prompt = Nothing
+    Else
+        dsdefinition.Prompt = PromptStr
+    End if
+    dsdefinition.WindowsCredentials = False
+    Try
+        rs.CreateDataSource(DataSourceName, &quot;/&quot; + DataSourceFolder, False, dsdefinition, Nothing)
+        Console.WriteLine(&quot;Data source {0} created successfully&quot;, DataSourceName.ToString)
+    Catch goof as SoapException
+        If goof.Message.Indexof(&quot;AlreadyExists&quot;)&gt;0 Then
+            Console.WriteLine(&quot;The Data Source name {0} already exists&quot;,DataSourceName.ToString)
+        End If
+    End Try
+End Sub
+
+&#39;Utility to Publish the Reports
+Public Sub PublishReport(ByVal reportName As String)
+    Console.WriteLine(&quot;Publishing &quot; + reportName)
+    Dim DSDefinitionStr As String
+    DSDefinitionStr = &quot;&quot;
+    Try
+        Dim stream As FileStream = File.OpenRead(filePath + &quot;\&quot; + reportName )
+        definition = New [Byte](stream.Length-1) {}
+        stream.Read(definition, 0, CInt(stream.Length))
+        stream.Close()
+        For i As Integer = 0 To definition.Length - 1
+            DSDefinitionStr = DSDefinitionStr + Convert.ToString(Convert.ToChar(Convert.ToInt16(definition(i).ToString)))
+        Next
+    Catch e As IOException
+        Console.WriteLine(e.Message)
+    End Try
+    reportname=reportname.tostring.replace(&quot;.rdl&quot;,&quot;&quot;)
+    Console.WriteLine(&quot;Attempting to Deploy Report Name {0}&quot;, reportname.tostring)
+    Try
+        Dim item as CatalogItem
+        item=rs.CreateCatalogItem(&quot;Report&quot;,reportname, &quot;/&quot; + ReportFolder, false, definition,nothing, warnings)
+        &#39;warnings = rs.CreateCatalogItem(reportName, &quot;/&quot; + ReportFolder, False, definition, Nothing)
+        If Not (warnings Is Nothing) Then
+            If item.Name &lt;&gt; &quot;&quot; then 
+                Console.WriteLine(&quot;Report: {0} published successfully with warnings&quot;, reportName)
+                UpdateDataSources_report(reportName)
+                UpdateDataSet_report(reportName, DSDefinitionStr)
+            else
+                Dim warning As Warning
+                For Each warning In warnings
+                    Console.WriteLine(warning.Message)
+                Next warning
+            End If
+        Else
+            Console.WriteLine(&quot;Report: {0} published successfully with no warnings&quot;, reportName)
+            UpdateDataSources_report(reportName)
+            UpdateDataSet_report(reportName, DSDefinitionStr)
+        End If
+    Catch goof as SoapException
+        If goof.Message.Indexof(&quot;AlreadyExists&quot;)&gt;0 Then
+            Console.WriteLine(&quot;The Report Name {0} already exists&quot;,reportName.ToString)
+        Else
+            If goof.Message.IndexOf(&quot;published&quot;)=-1 Then
+            Console.WriteLine(goof.Message)
+            End If
+        End If
+    End Try
+End Sub
+
+&#39;Utility to Update The Data Sources on the Server
+Public Sub UpdateDataSources_report(ReportName as string)
+    rs.Credentials = System.Net.CredentialCache.DefaultCredentials
+    Dim item as CatalogItem
+    Dim items as CatalogItem()
+    Try
+        Dim dataSources() as DataSource = rs.GetItemDataSources( &quot;/&quot; +  ReportFolder + &quot;/&quot; + ReportName)
+        For Each ds as DataSource in dataSources
+            Dim sharedDs(0) as DataSource
+            sharedDs(0)=GetDataSource(DataSourceFolder, ds.Name)
+            rs.SetItemDataSources(&quot;/&quot; +  ReportFolder + &quot;/&quot; + ReportName, sharedDs)
+            Console.WriteLine(&quot;Set &quot; &amp; ds.Name &amp; &quot; datasource for &quot; &amp; &quot;/&quot; +  ReportFolder + &quot;/&quot; + ReportName &amp; &quot; report&quot;)
+        Next
+        Console.WriteLine(&quot;All the shared data source reference set for report {0} &quot;, &quot;/&quot; + ReportFolder + &quot;/&quot; + ReportName)
+    Catch goof As SoapException
+    Console.WriteLine(goof.Detail.InnerXml.ToString())
+    End Try
+End Sub
+
+&#39;Utility to link The Dataset with the Report
+Public Sub UpdateDataSet_report(ReportName as string, DSDefinitionStr as string)
+    Dim valstart As Integer
+    Dim valend As Integer
+    Dim sharedDataSetReference As string
+    rs.Credentials = System.Net.CredentialCache.DefaultCredentials
+    Try
+        Dim dataSets As ItemReferenceData() = rs.GetItemReferences(&quot;/&quot; +  ReportFolder + &quot;/&quot; + ReportName, &quot;DataSet&quot;)
+        If dataSets IsNot Nothing AndAlso dataSets.Length &gt; 0 AndAlso Not String.IsNullOrEmpty(dataSets(0).Name) Then
+            For i as integer = 0 to dataSets.Length -1
+                If DSDefinitionStr.ToString.Contains(&quot;&lt;DataSet Name=&quot;&quot;&quot;&amp; dataSets(i).Name &amp;&quot;&quot;&quot;&gt;&quot;) Then
+                    valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;SharedDataSetReference&gt;&quot;, DSDefinitionStr.ToString.IndexOf(&quot;&lt;DataSet Name=&quot;&quot;&quot;&amp; dataSets(i).Name &amp;&quot;&quot;&quot;&gt;&quot;)) + 24
+                    valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/SharedDataSetReference&gt;&quot;, DSDefinitionStr.ToString.IndexOf(&quot;&lt;DataSet Name=&quot;&quot;&quot;&amp; dataSets(i).Name &amp;&quot;&quot;&quot;&gt;&quot;))
+                    sharedDataSetReference = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)
+                End If
+                Dim sharedDataSetName as String = dataSets(i).Name
+                Dim references(0) as ItemReference
+                Dim sharedDataSet = New ItemReference() 
+                sharedDataSet.Name = sharedDataSetName
+                Console.WriteLine(&quot;Attempting to Link Dataset {0}&quot;, sharedDataSetName)
+                sharedDataSet.Reference = &quot;/&quot; + DataSetFolder + &quot;/&quot; + sharedDataSetReference 
+                references(0)=sharedDataSet
+                rs.SetItemReferences(&quot;/&quot; + ReportFolder + &quot;/&quot; + ReportName, references)
+                Console.WriteLine(&quot;Report &quot; + ReportName + &quot; Linked to data set &quot; + &quot;/&quot; + DataSetFolder + &quot;/&quot; + Convert.ToString(sharedDataSet.Name))
+            Next
+        End If
+    Catch goof As SoapException
+        Console.WriteLine(goof.Detail.InnerXml.ToString())
+    End Try
+End Sub
+
+&#39;Function to Reference Data Sources
+Private Function GetDataSource(sharedDataSourcePath as string, dataSourceName as String) as DataSource
+    Dim reference As New DataSourceReference()
+    Dim ds As New DataSource
+    reference.Reference = &quot;/&quot; &amp; sharedDataSourcePath &amp; &quot;/&quot; &amp; dataSourceName
+    ds.Item = CType(reference, DataSourceDefinitionOrReference)
+    ds.Name = dataSourceName
+    Console.WriteLine(&quot;Attempting to Publish Data Source {0}&quot;, ds.Name)
+    GetDataSource=ds
+End Function
+</code></pre><p>This script is based on <a href="https://blogs.msdn.microsoft.com/johndesch/2012/12/17/using-the-rs-exe-utility-to-deploy-a-report-server-project-and-shared-dataset/">this article</a>.</p>
+<p>Thanks!</p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>
