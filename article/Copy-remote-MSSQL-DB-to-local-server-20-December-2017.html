@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Copy remote MSSQL DB to local server - 20 December, 2017</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="dotnet,mssql">
+    <meta name="author" content="Eugene Pyl">
+    <link rel="icon" href="./../favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+            /* ie8 */
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: #fcfcfc;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        code.has-jax {
+            font: inherit;
+            font-size: 100%;
+            background: inherit;
+            border: inherit;
+        }
+        
+        .night body {
+            background: #fffedd;
+        }
+        
+        .markdown-body pre {
+            border: 1px solid black;
+        }
+        
+        div.shareit {
+            margin-top: 0.5rem;
+        }
+        
+        article>h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="markdown-body">
+        <h2 id="copy-remote-mssql-db-to-local-server-20-december-2017">Copy remote MSSQL DB to local server - 20 December, 2017</h2>
+<p>Tags: dotnet, mssql</p>
+<p>I faced with one issue how to automatically download and restore databases from remote server to my local MSSQL server. It sounds like very generic task so I tried to find a solution in Internet without success. So there is a small console application which does the next things:</p>
+<ol>
+<li>Backup selected databases on remote server;</li>
+<li>Copy backups to local folder;</li>
+<li>Restore copied databases to local MSSQL;</li>
+<li>Change the owner of databases to current user;</li>
+</ol>
+<p>A small snippet with implementation is below. </p>
+<pre><code>/*
+You need to add next NuGet packages:
+&quot;Microsoft.Extensions.Configuration&quot;: &quot;2.0.0&quot;,
+&quot;Microsoft.Extensions.Configuration.FileExtensions&quot;: &quot;2.0.0&quot;,
+&quot;Microsoft.Extensions.Configuration.Json&quot;: &quot;2.0.0&quot;,
+&quot;System.Data.Common&quot;: &quot;4.3.0&quot;,
+&quot;System.Data.SqlClient&quot;: &quot;4.4.2&quot;,
+&quot;System.Runtime&quot;: &quot;4.3.0&quot;
+*/
+class Program
+{
+    private static IConfigurationRoot Configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(&quot;appsettings.json&quot;).Build();
+
+    private static string[] dbs { get; } = Configuration.GetSection(&quot;dbs&quot;)
+        .GetChildren().Select(x=&gt;x.Value).ToArray();
+
+    private static string remoteServer { get; } = Configuration[&quot;connectionStrings:remoteServer&quot;];
+    private static string localServer { get; } = Configuration[&quot;connectionStrings:localServer&quot;];
+    private static string currentUser { get; } = Configuration[&quot;currentUser&quot;];
+    private static string remoteServerPathWithBackups { get; } = Configuration[&quot;remoteServerPathWithBackups&quot;];
+    private static string serverPathWithBackups { get; } = Configuration[&quot;serverPathWithBackups&quot;];
+    private static string userNameToLogInToServer { get; } = Configuration[&quot;userNameToLogInToServer&quot;];
+    private static string passwordToLogInToServer { get; } = Configuration[&quot;passwordToLogInToServer&quot;];
+    private static string localPathToCopyBackups { get; } = Configuration[&quot;localPathToCopyBackups&quot;];
+    private static string backupFileName = Configuration[&quot;backupFileName&quot;];
+
+    private const string changeOwnerOfDb = @&quot;
+USE {0}
+EXEC sp_changedbowner &#39;{1}&#39;&quot;;
+
+    private const string changeToSingleUser = @&quot;
+ALTER DATABASE[{0}] SET Single_User WITH Rollback Immediate&quot;;
+
+    private const string changeToMultiUser = @&quot;
+ALTER DATABASE [{0}] SET Multi_User&quot;;
+
+    private const string AddNetPath = &quot;NET USE {0} {1} /USER:{2}&quot;;
+    private const string DeleteNetPath = &quot;NET USE {0} /DELETE&quot;;
+    private const string CopyReport = &quot;robocopy {0} {1} {2}&quot;;
+
+    private const string restoreDb = @&quot;
+RESTORE DATABASE {0} FROM DISK = &#39;{1}&#39; WITH REPLACE, RECOVERY;&quot;;
+    private const string backupDb = @&quot;
+BACKUP DATABASE {0} TO DISK=&#39;{1}&#39; WITH INIT, COPY_ONLY, FORMAT, COMPRESSION;&quot;;
+
+    static void Main(string[] args)
+    {
+        foreach (var db in dbs)
+        {
+            Console.WriteLine({BODY}quot;Backup {db}&quot;);
+            BackupTargetDatabase(remoteServer, db);
+
+            Console.WriteLine({BODY}quot;Copy created backup to local - {db}&quot;);
+            CopyBackupToLocal(db);
+
+            Console.WriteLine({BODY}quot;Change to single user mode - {db}&quot;);
+            ChangeToSingleUser(localServer, db);
+
+            Console.WriteLine({BODY}quot;Restore db locally - {db}&quot;);
+            RestoreTargetDatabase(localServer, db);
+
+            Console.WriteLine({BODY}quot;Change the owner - {db}&quot;);
+            ChangeOwnerOfDb(localServer, db);
+
+            Console.WriteLine({BODY}quot;Reset to multi user mode - {db}&quot;);
+            ChangeToMultiUser(localServer, db);
+        }
+    }
+
+    private static void ChangeToMultiUser(string localServer, string db) =&gt;
+        ExecuteSqlCommand(localServer, string.Format(changeToMultiUser, db));
+
+    private static void ChangeToSingleUser(string localServer, string db) =&gt;
+        ExecuteSqlCommand(localServer, string.Format(changeToSingleUser, db));
+
+    private static void ChangeOwnerOfDb(string localServer, string db) =&gt;
+        ExecuteSqlCommand(localServer, string.Format(changeOwnerOfDb, db, currentUser));
+
+    private static void CopyBackupToLocal(string database)
+    {
+        ExecuteCommand(string.Format(AddNetPath, remoteServerPathWithBackups, passwordToLogInToServer, userNameToLogInToServer));
+        ExecuteCommand(string.Format(CopyReport, remoteServerPathWithBackups, localPathToCopyBackups, string.Format(backupFileName, database)));
+        ExecuteCommand(string.Format(DeleteNetPath, remoteServerPathWithBackups));
+    }
+
+    private static void ExecuteCommand(string command)
+    {
+        var processInfo = new ProcessStartInfo(&quot;cmd.exe&quot;, &quot;/c &quot; + command);
+        processInfo.CreateNoWindow = true;
+        processInfo.UseShellExecute = false;
+        processInfo.RedirectStandardError = true;
+        processInfo.RedirectStandardOutput = true;
+
+        Console.WriteLine(command);
+
+        var process = Process.Start(processInfo);
+
+        process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =&gt;
+            Console.WriteLine({BODY}quot;{e.Data}&quot;);
+        process.BeginOutputReadLine();
+
+        process.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =&gt;
+            Console.WriteLine({BODY}quot;{e.Data}&quot;);
+        process.BeginErrorReadLine();
+
+        process.WaitForExit();
+        if (process.ExitCode &gt; 0)
+            Console.WriteLine({BODY}quot;Error {nameof(process.ExitCode)}: {process.ExitCode}&quot;);
+        process.Close();
+    }
+
+    private static void RestoreTargetDatabase(string connectionString, string database) =&gt;
+        ExecuteSqlCommand(connectionString, string.Format(restoreDb, database, Path.Combine(localPathToCopyBackups, string.Format(backupFileName, database))));
+
+    private static void BackupTargetDatabase(string connectionString, string database) =&gt;
+        ExecuteSqlCommand(connectionString, string.Format(backupDb, database, Path.Combine(serverPathWithBackups, string.Format(backupFileName, database))));
+
+    private static void ExecuteSqlCommand(string connectionString, string query)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            using (var command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                command.CommandTimeout = 300;
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+}
+</code></pre><p>Thanks.</p>
+
+    </article>
+    <div class="sharethis-inline-share-buttons"></div>
+    <div id="disqus_thread"></div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = '//eapyl-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <script>
+        hljs.configure({
+            // classPrefix: 'lang'
+        });
+        hljs.initHighlighting();
+    </script>
+    <script>
+        function timeCheck() {
+            var currentTime = new Date().getHours();
+            if (currentTime > 18 || currentTime < 6) {
+                document.documentElement.classList.add('night');
+            } else {
+                document.documentElement.classList.remove('night');
+            }
+        }
+        timeCheck();
+        setInterval(timeCheck(), 1000 * 60 * 60);
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-87583712-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>
