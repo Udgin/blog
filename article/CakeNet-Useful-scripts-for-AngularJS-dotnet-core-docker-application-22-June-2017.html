@@ -7,8 +7,8 @@
     <meta name="keywords" content="dotnet,angular,docker,cake.net,git">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -66,7 +66,7 @@
 <p>I started using it and created some useful scripts to Release and Publish new version of application.</p>
 <p>I am using AngularJS as frontend framework, asp net core (dotnet core) as backend framework, git as source system and docker to deploy and run application on remote server.</p>
 <p>So it is a small cake script to release a new version of application:</p>
-<pre><code class="cake">#addin &quot;Cake.Docker&quot;
+<pre><code class="language-csharp">#addin &quot;Cake.Docker&quot;
 #addin &quot;Cake.FileHelpers&quot;
 
 // Release: ./build.sh -t Release &quot;-packageVersion=x.x.x.x&quot;
@@ -272,7 +272,7 @@ Task(&quot;CheckAllCommitted&quot;)
 RunTarget(target);
 </code></pre>
 <p>It is a script to build released version and publish a docker container to a server:</p>
-<pre><code class="cake">// Release: ./build.sh -t Release &quot;-packageVersion=x.x.x.x&quot;
+<pre><code class="language-csharp">// Release: ./build.sh -t Release &quot;-packageVersion=x.x.x.x&quot;
 // Publish: ./build.sh -t Publish &quot;-packageVersion=x.x.x.x&quot; &quot;-env=counterra&quot;
 // Delete release: ./build.sh -t Delete &quot;-packageVersion=x.x.x.x&quot;
 var target = Argument&lt;string&gt;(&quot;target&quot;);
@@ -452,7 +452,7 @@ Task(&quot;CheckAllCommitted&quot;)
 RunTarget(target);
 </code></pre>
 <p>I am running service using docker compose like:</p>
-<pre><code class="yml">version: &#39;2&#39;
+<pre><code class="language-yaml">version: &#39;2&#39;
 services:
     ContainerName:
         image: ContainerName:x.x.x.x
@@ -470,12 +470,6 @@ services:
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -511,6 +505,7 @@ services:
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

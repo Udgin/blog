@@ -7,8 +7,8 @@
     <meta name="keywords" content="">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -62,7 +62,7 @@
     <article class="markdown-body">
         <h2 id="vs-2010-attach-to-process-w3wp-exe-20-july-2012">VS 2010 Attach to process w3wp.exe - 20 July, 2012</h2>
 <p>Need to create the macros:</p>
-<pre><code>Public Module AttachToProcess
+<pre><code class="language-vbnet">Public Module AttachToProcess
 Public Function AttachToProcess(ByVal ProcessName As String) As Boolean
 Dim proc As EnvDTE.Process
 Dim attached As Boolean
@@ -82,7 +82,8 @@ System.Windows.Forms.MessageBox.Show(&quot;Cannot attach to process&quot;)
 End If
 End Sub
 End Module
-</code></pre><p><a href="http://habrahabr.ru/post/131937/">Link</a></p>
+</code></pre>
+<p><a href="http://habrahabr.ru/post/131937/">Link</a></p>
 
     </article>
     <div class="sharethis-inline-share-buttons"></div>
@@ -95,12 +96,6 @@ End Module
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -136,6 +131,7 @@ End Module
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

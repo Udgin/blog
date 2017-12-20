@@ -7,8 +7,8 @@
     <meta name="keywords" content="">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -64,7 +64,7 @@
 <p><a href="">StyleCop</a> is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...</p>
 <p>Unfortunately, the rule SA1201 is not so good for me. So i just want to create the similar rule, but a little else.</p>
 <p>You can see the rule that changes the order of document&#39;s element to the next:</p>
-<pre><code class="xml">&lt;element name=&quot;File&quot; order=&quot;0&quot;&gt;&lt;/element&gt;
+<pre><code class="language-xml">&lt;element name=&quot;File&quot; order=&quot;0&quot;&gt;&lt;/element&gt;
 &lt;element name=&quot;Root&quot; order=&quot;1&quot;&gt;&lt;/element&gt;
 &lt;element name=&quot;ExternAliasDirective&quot; order=&quot;2&quot;&gt;&lt;/element&gt;
 &lt;element name=&quot;UsingDirective&quot; order=&quot;3&quot;&gt;&lt;/element&gt;
@@ -103,12 +103,6 @@ Further the source code of my rule. You can see the original source code of SA12
         })();
     </script>
     <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
-    </script>
-    <script>
         function timeCheck() {
             var currentTime = new Date().getHours();
             if (currentTime > 18 || currentTime < 6) {
@@ -142,6 +136,7 @@ Further the source code of my rule. You can see the original source code of SA12
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

@@ -7,8 +7,8 @@
     <meta name="keywords" content="linux,ubuntu">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -63,7 +63,7 @@
         <h2 id="giving-full-read-write-permissions-to-a-folder-by-all-users-and-apps-10-april-2017">Giving full read+write permissions to a folder by all users and apps - 10 April, 2017</h2>
 <p>Tags: linux, ubuntu</p>
 <p>Allows delete, write and edit all files in a particular folder:</p>
-<pre><code class="bash">chmod -R 777 &lt;desired folder&gt;
+<pre><code class="language-batch">chmod -R 777 &lt;desired folder&gt;
 </code></pre>
 
     </article>
@@ -77,12 +77,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -118,6 +112,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

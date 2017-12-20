@@ -7,8 +7,8 @@
     <meta name="keywords" content="machine learning">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -116,10 +116,11 @@
 <li>Use gradient descent or a built-in optimization function to minimize the cost function with the weights in theta.</li>
 </ol>
 <p>When we perform forward and back propagation, we loop on every training example:</p>
-<pre><code>for i = 1:m,
+<pre><code class="language-none">for i = 1:m,
    Perform forward propagation and backpropagation using example (x(i),y(i))
    (Get activations a(l) and delta terms d(l) for l = 2,...,L
-</code></pre><p>More info:
+</code></pre>
+<p>More info:
 <a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
 
     </article>
@@ -133,12 +134,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -174,6 +169,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

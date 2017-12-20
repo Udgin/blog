@@ -7,8 +7,8 @@
     <meta name="keywords" content="influxdb,docker">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -65,7 +65,7 @@
 <p>If you want to backup your InfluxDB in Docker you can probably can start with this wonderful <a href="https://devblog.digimondo.io/how-to-backup-influxdb-running-in-a-docker-container-615938dbab90?gi=78ccabcf77cf">article</a>.</p>
 <p>Later I will just describe how I am doing backup to local folder instead of S3 storage.</p>
 <p>It is my docker-compose:</p>
-<pre><code class="dockerfile">    db:
+<pre><code class="language-docker">    db:
         image: &quot;influxdb:1.2&quot;
         restart: always
         ports: 
@@ -86,7 +86,7 @@
             DATABASES: entity_db
 </code></pre>
 <p>So there are two containers: influxdb is the standard <a href="https://docs.influxdata.com/influxdb/v1.2/introduction/getting_started/">InfluxDB</a> and influxdb-backup:1.2 (see dockerfile for this image below).</p>
-<pre><code class="dockerfile">FROM influxdb:1.2-alpine
+<pre><code class="language-docker">FROM influxdb:1.2-alpine
 
 # Backup the following databases, separator &quot;:&quot;
 ENV DATABASES=entity_db
@@ -108,13 +108,13 @@ COPY cron.conf /var/spool/cron/crontabs/root
 CMD crond -l 0 -f
 </code></pre>
 <p>So we are running cron job to run our <code>backup.sh</code>. The configuration (cron.conf):</p>
-<pre><code class="bash"># do daily/weekly/monthly maintenance
+<pre><code class="language-batch"># do daily/weekly/monthly maintenance
 # min    hour    day    month    weekday    command
 0 0 * * * /bin/backup.sh
 # run every day at 00:00:00
 </code></pre>
 <p>There is backup.sh with the next content:</p>
-<pre><code class="bash">#!/bin/bash
+<pre><code class="language-batch">#!/bin/bash
 set -e
 
 : ${INFLUX_HOST:?&quot;INFLUX_HOST env variable is required&quot;}
@@ -156,12 +156,6 @@ done
         })();
     </script>
     <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
-    </script>
-    <script>
         function timeCheck() {
             var currentTime = new Date().getHours();
             if (currentTime > 18 || currentTime < 6) {
@@ -195,6 +189,7 @@ done
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

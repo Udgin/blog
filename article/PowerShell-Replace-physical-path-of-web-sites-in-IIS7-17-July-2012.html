@@ -7,8 +7,8 @@
     <meta name="keywords" content="powershell">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -62,7 +62,7 @@
     <article class="markdown-body">
         <h2 id="powershell-replace-physical-path-of-web-sites-in-iis7-17-july-2012">PowerShell, Replace physical path of web sites in IIS7 - 17 July, 2012</h2>
 <p>Tags: powershell</p>
-<pre><code class="PowerShell">param([String]$numb)
+<pre><code class="language-powershell">param([String]$numb)
 
 [Void][Reflection.Assembly]::LoadWithPartialName(&quot;Microsoft.Web.Administration&quot;)
 
@@ -101,12 +101,13 @@ $rootVdir.PhysicalPath = $newPath
 $serverManager.CommitChanges()
 </code></pre>
 <p>Bat file to call PowerShell file</p>
-<pre><code>@echo off
+<pre><code class="language-batch">@echo off
 
 set /p delBuild=Enter the number of gmp project?
 powershell -noprofile Set-ExecutionPolicy Unrestricted
 powershell .\setUpSite.ps1 -numb %delBuild%
-</code></pre><p>One variable to set current version of projects!
+</code></pre>
+<p>One variable to set current version of projects!
 Thanks!</p>
 
     </article>
@@ -120,12 +121,6 @@ Thanks!</p>
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -161,6 +156,7 @@ Thanks!</p>
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

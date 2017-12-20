@@ -7,8 +7,8 @@
     <meta name="keywords" content="">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -62,7 +62,7 @@
     <article class="markdown-body">
         <h2 id="iis-7-httpmodule-logger-6-december-2011">IIS 7 HttpModule Logger - 6 December, 2011</h2>
 <p>Простой модуль-лог для IIS 7 (Classic mode)</p>
-<pre><code class="csharp">using System;
+<pre><code class="language-csharp">using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -163,7 +163,7 @@ namespace IISWsgLogger
 }
 </code></pre>
 <p>web.config :</p>
-<pre><code class="xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;configuration&gt;
  &lt;configSections&gt;
   ...
@@ -190,12 +190,6 @@ namespace IISWsgLogger
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -231,6 +225,7 @@ namespace IISWsgLogger
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

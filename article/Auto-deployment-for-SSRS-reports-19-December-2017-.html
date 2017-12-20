@@ -7,8 +7,8 @@
     <meta name="keywords" content="ssrs">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -70,7 +70,7 @@
 <li>*.rds - shared datasources</li>
 </ol>
 <p>To deploy them to clean SSRS server we can use <a href="https://docs.microsoft.com/en-us/sql/reporting-services/tools/rs-exe-utility-ssrs">RS tool</a>. And that is a bat file to call it:</p>
-<pre><code>REM SSRS server, you can provide also user and password to RS tool if you can&#39;t use Windows credentials (default behaviour)
+<pre><code class="language-batch">REM SSRS server, you can provide also user and password to RS tool if you can&#39;t use Windows credentials (default behaviour)
 set varServerPath=http://desktop-h33a7aa/reportserver
 REM name of folder at SSRS server for reports
 set varReportFolder=My_Reports
@@ -82,8 +82,9 @@ REM path to a folder with reports, datasets and datasources
 set varReportFilePath=.\Project\Reports\My_Reports
 
 &quot;C:\Program Files\Microsoft SQL Server Reporting Services\Shared Tools\rs.exe&quot; -i Commonscript.rss -s %varServerPath% -v ReportFolder=&quot;%varReportFolder%&quot; -v DataSetFolder=&quot;%varDatasetFolder%&quot; -v DataSourceFolder=&quot;%varDataSourceFolder%&quot; -v filePath=&quot;%varReportFilePath%&quot; -e Mgmt2010
-</code></pre><p>All logic is described in Commonscript.rss. It creates folders in SSRS server for reports, datasets and datasources (using CreateFolders method), later it reads all <em>.rds files in varReportFilePath and create datasources for each file if it doesn&#39;t exist. After it reads all </em>.rsd files in varReportFilePath, create datasets and connects a dataset with a datasource. In the end it read all *.rdl files in varReportFilePath, create reports and connects a report with a dataset.</p>
-<pre><code>Dim definition As [Byte]() = Nothing
+</code></pre>
+<p>All logic is described in Commonscript.rss. It creates folders in SSRS server for reports, datasets and datasources (using CreateFolders method), later it reads all <em>.rds files in varReportFilePath and create datasources for each file if it doesn&#39;t exist. After it reads all </em>.rsd files in varReportFilePath, create datasets and connects a dataset with a datasource. In the end it read all *.rdl files in varReportFilePath, create reports and connects a report with a dataset.</p>
+<pre><code class="language-vbnet">Dim definition As [Byte]() = Nothing
 Dim bytedefinition as [Byte]() = nothing
 Dim warnings As Warning() = Nothing
 
@@ -405,7 +406,8 @@ Private Function GetDataSource(sharedDataSourcePath as string, dataSourceName as
     Console.WriteLine(&quot;Attempting to Publish Data Source {0}&quot;, ds.Name)
     GetDataSource=ds
 End Function
-</code></pre><p>This script is based on <a href="https://blogs.msdn.microsoft.com/johndesch/2012/12/17/using-the-rs-exe-utility-to-deploy-a-report-server-project-and-shared-dataset/">this article</a>.</p>
+</code></pre>
+<p>This script is based on <a href="https://blogs.msdn.microsoft.com/johndesch/2012/12/17/using-the-rs-exe-utility-to-deploy-a-report-server-project-and-shared-dataset/">this article</a>.</p>
 <p>Thanks!</p>
 
     </article>
@@ -419,12 +421,6 @@ End Function
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -460,6 +456,7 @@ End Function
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

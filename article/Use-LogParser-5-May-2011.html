@@ -7,8 +7,8 @@
     <meta name="keywords" content=".net">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -68,7 +68,7 @@
 <li>Include Interop.MSUtil.dll in a project.
 4.</li>
 </ol>
-<pre><code class="csharp">using LogQuery = Interop.MSUtil.LogQueryClassClass;
+<pre><code class="language-csharp">using LogQuery = Interop.MSUtil.LogQueryClassClass;
 using IISW3CInputFormat = Interop.MSUtil.COMIISW3CInputContextClassClass;
 using CsvOutputFormat = Interop.MSUtil.COMCSVOutputContextClassClass;
 using LogRecordSet = Interop.MSUtil.ILogRecordset;
@@ -99,12 +99,6 @@ oRecordSet.close();
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -140,6 +134,7 @@ oRecordSet.close();
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

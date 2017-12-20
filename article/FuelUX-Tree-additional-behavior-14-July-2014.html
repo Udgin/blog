@@ -7,8 +7,8 @@
     <meta name="keywords" content="javascript">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -65,7 +65,7 @@
 <p>Add &quot;Show All&quot; to the FuelUX Tree like this.</p>
 <p><img src="./../images/fuelux-tree.gif" alt="example"></p>
 <p>There is the <a href="https://exacttarget.github.io/fuelux/#tree">tree plugin</a>. You can add the next code after initialization of the tree:</p>
-<pre><code class="javascript">scope.find(&#39;#MyTree&#39;).on(&#39;selected&#39;, function (event, data) {
+<pre><code class="language-javascript">scope.find(&#39;#MyTree&#39;).on(&#39;selected&#39;, function (event, data) {
     if (data.target.additionalParameters.id == 0) {
         scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item&#39;).removeClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;icon-ok&#39;).addClass(&#39;tree-dot&#39;);
         scope.find(&#39;#MyTree&#39;).find(&#39;.tree-item:eq(1)&#39;).addClass(&#39;tree-selected&#39;).find(&#39;i&#39;).removeClass(&#39;tree-dot&#39;).addClass(&#39;icon-ok&#39;);
@@ -92,12 +92,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -133,6 +127,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

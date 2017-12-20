@@ -7,8 +7,8 @@
     <meta name="keywords" content="rxjs,javascript,async.js">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -63,7 +63,7 @@
         <h2 id="implementing-async-queue-using-rxjs-18-december-2016">Implementing async.queue using rxjs - 18 December, 2016</h2>
 <p>Tags: rxjs, javascript, async.js</p>
 <p>There is an example of queue using rxjs:</p>
-<pre><code class="javascript">Rx.Observable.from([&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;, &#39;bay&#39;, &#39;bax&#39;, &#39;bar&#39;, &#39;cat&#39;])
+<pre><code class="language-javascript">Rx.Observable.from([&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;, &#39;bay&#39;, &#39;bax&#39;, &#39;bar&#39;, &#39;cat&#39;])
     .do(x =&gt; console.log((new Date).toLocaleTimeString() + &quot; &quot; + x))
     // grouping by 2 
     .bufferCount(2)
@@ -121,12 +121,6 @@
         })();
     </script>
     <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
-    </script>
-    <script>
         function timeCheck() {
             var currentTime = new Date().getHours();
             if (currentTime > 18 || currentTime < 6) {
@@ -160,6 +154,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

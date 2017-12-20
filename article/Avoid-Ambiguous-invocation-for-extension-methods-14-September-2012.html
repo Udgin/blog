@@ -7,8 +7,8 @@
     <meta name="keywords" content="asp.net mvc">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -65,8 +65,9 @@
 <p>I m using ASP.NET MVC. And work with my view, where I have the View </p>
 <p><img src="./../images/invocation.png" alt="example"></p>
 <p>It gives me the exception</p>
-<pre><code>The call is ambiguous between the following methods or properties: &#39;GMP.MvcWebSite.StringExtensions.TrimOrEmpty(string)&#39; and &#39;System.StringHelper.TrimOrEmpty(string)&#39;
-</code></pre><p>So i just rebuild my view as</p>
+<pre><code class="language-none">The call is ambiguous between the following methods or properties: &#39;GMP.MvcWebSite.StringExtensions.TrimOrEmpty(string)&#39; and &#39;System.StringHelper.TrimOrEmpty(string)&#39;
+</code></pre>
+<p>So i just rebuild my view as</p>
 <p><img src="./../images/invocation2.png" alt="example2"></p>
 
     </article>
@@ -80,12 +81,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -121,6 +116,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

@@ -7,8 +7,8 @@
     <meta name="keywords" content="machine learning">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -70,13 +70,14 @@
 <li>Move centroid: compute the averages for all the points inside each of the two cluster centroid groups, then move the cluster centroid points to those averages.</li>
 <li>Re-run (2) and (3) until we have found our clusters.</li>
 </ol>
-<pre><code>Randomly initialize K cluster centroids mu(1), mu(2), ..., mu(K)
+<pre><code class="language-none">Randomly initialize K cluster centroids mu(1), mu(2), ..., mu(K)
 Repeat:
    for i = 1 to m:
       c(i):= index (from 1 to K) of cluster centroid closest to x(i)
    for k = 1 to K:
       mu(k):= average (mean) of points assigned to cluster k
-</code></pre><p>The first for-loop is the &#39;Cluster Assignment&#39; step. We make a vector c where c(i) represents the centroid assigned to example x(i).</p>
+</code></pre>
+<p>The first for-loop is the &#39;Cluster Assignment&#39; step. We make a vector c where c(i) represents the centroid assigned to example x(i).</p>
 <p><code>\[c^{(i)} = argmin_k\ ||x^{(i)} - \mu_k||^2\]</code></p>
 <p><code>\[||x^{(i)} - \mu_k|| = ||\quad\sqrt{(x_1^i - \mu_{1(k)})^2 + (x_2^i - \mu_{2(k)})^2 + (x_3^i - \mu_{3(k)})^2 + ...}\quad||\]</code></p>
 <p>The second for-loop is the &#39;Move Centroid&#39; step where we move each centroid to the average of its group.</p>
@@ -131,16 +132,18 @@ Repeat:
 <ol>
 <li>Compute &quot;eigenvectors&quot; of covariance matrix Σ</li>
 </ol>
-<pre><code>[U,S,V] = svd(Sigma);
-</code></pre><ol>
+<pre><code class="language-none">[U,S,V] = svd(Sigma);
+</code></pre>
+<ol>
 <li>Take the first k columns of the U matrix and compute z</li>
 </ol>
 <p>Summarize:</p>
-<pre><code>Sigma = (1/m) * X&#39; * X; % compute the covariance matrix
+<pre><code class="language-none">Sigma = (1/m) * X&#39; * X; % compute the covariance matrix
 [U,S,V] = svd(Sigma);   % compute our projected directions
 Ureduce = U(:,1:k);     % take the first k directions
 Z = X * Ureduce;        % compute the projected data points
-</code></pre><h3 id="reconstruction-from-compressed-representation">Reconstruction from Compressed Representation</h3>
+</code></pre>
+<h3 id="reconstruction-from-compressed-representation">Reconstruction from Compressed Representation</h3>
 <p><code>\[x_{approx}^{(1)} = U_{reduce} \cdot z^{(1)}\]</code></p>
 <h3 id="choosing-the-number-of-principal-components">Choosing the Number of Principal Components</h3>
 <p>Algorithm for choosing k</p>
@@ -172,12 +175,6 @@ Z = X * Ureduce;        % compute the projected data points
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -213,6 +210,7 @@ Z = X * Ureduce;        % compute the projected data points
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

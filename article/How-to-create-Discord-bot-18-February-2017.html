@@ -7,8 +7,8 @@
     <meta name="keywords" content="discord,javascript">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -70,7 +70,7 @@
 <li>Install <a href="https://discord.js.org/#/">Discrod.js</a>: <code>npm install --save discordjs</code></li>
 <li>Create index.js in this folder:</li>
 </ul>
-<pre><code class="js">/*
+<pre><code class="language-javascript">/*
   A ping pong bot, whenever you send &quot;ping&quot;, it replies &quot;pong&quot;.
 */
 
@@ -112,7 +112,7 @@ bot.login(token);
 </ul>
 <p>Well done! You created your Discord bot! Thank you.</p>
 <p>Here is a simple rss bot for discord:</p>
-<pre><code class="js">const Discord = require(&#39;discord.js&#39;);
+<pre><code class="language-javascript">const Discord = require(&#39;discord.js&#39;);
 var Store = require(&quot;jfs&quot;); // using jfs to save already posted rss news
 var db = new Store(&quot;rssfeeds&quot;);
 const client = new Discord.Client();
@@ -238,12 +238,6 @@ function rssfeed(url) {
         })();
     </script>
     <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
-    </script>
-    <script>
         function timeCheck() {
             var currentTime = new Date().getHours();
             if (currentTime > 18 || currentTime < 6) {
@@ -277,6 +271,7 @@ function rssfeed(url) {
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

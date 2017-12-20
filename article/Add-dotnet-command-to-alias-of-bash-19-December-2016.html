@@ -7,8 +7,8 @@
     <meta name="keywords" content="bash,ubuntu,dotnet">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -65,16 +65,20 @@
 <h3 id="dotnet-commands">Dotnet commands</h3>
 <p>I am using sample application created by <code>dotnet run</code>.</p>
 <p>To run dotnet core application on Ubuntu with <strong>compilation</strong>:</p>
-<pre><code>dotnet run -p {pathToFolderWithProjectJson} -- {arguments}
-</code></pre><p>To run compiled application:</p>
-<pre><code>dotnet {pathToCompiledDll} {arguments}
-</code></pre><p>where <code>pathToCompiledDll</code> is a path to dll (it is in <code>/bin/Debug/netcoreapp1.1/</code> be default).</p>
+<pre><code class="language-docker">dotnet run -p {pathToFolderWithProjectJson} -- {arguments}
+</code></pre>
+<p>To run compiled application:</p>
+<pre><code class="language-batch">dotnet {pathToCompiledDll} {arguments}
+</code></pre>
+<p>where <code>pathToCompiledDll</code> is a path to dll (it is in <code>/bin/Debug/netcoreapp1.1/</code> be default).</p>
 <h3 id="bash-commands">Bash commands</h3>
 <p>To add dotnet alias (shortcut) to bash set of commands:</p>
-<pre><code>nano ~/.bash_aliases
-</code></pre><p>And you need to add the next line to this file (bash_aliases):</p>
-<pre><code>alias helloWorld=&quot;dotnet run -p ~/projects/helloWorld -- ~/Peter&quot;
-</code></pre><p>where </p>
+<pre><code class="language-batch">nano ~/.bash_aliases
+</code></pre>
+<p>And you need to add the next line to this file (bash_aliases):</p>
+<pre><code class="language-batch">alias helloWorld=&quot;dotnet run -p ~/projects/helloWorld -- ~/Peter&quot;
+</code></pre>
+<p>where </p>
 <ul>
 <li>~/projects/helloWorld is path to the project;</li>
 <li>~/Peter is an argument passed to the application;</li>
@@ -98,12 +102,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -139,6 +137,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

@@ -7,8 +7,8 @@
     <meta name="keywords" content="dotnet,fsharp">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -68,7 +68,7 @@ This service is for grabbing data from external services via HTTP and putting ag
 <h4 id="i-started-with-rewriting-cron-scheduling-">I started with rewriting cron scheduling.</h4>
 <p>So there is implementation in F# below:</p>
 <p>Let&#39;s start with two helper objects: <code>String.split</code> and <code>TooMuchArgumentsException</code> exception.</p>
-<pre><code class="fs">type System.String with 
+<pre><code class="language-fsharp">type System.String with 
     static member split c (value: string) =
         value.Split c
 
@@ -83,7 +83,7 @@ exception TooMuchArgumentsException of int
 <li>&#39;5&#39; - one value only, e.g. only at 5th minute</li>
 <li>&#39;5,10,15,45&#39; - list value, e.g. run at 5th, 10th, 15th and 45th minutes</li>
 </ol>
-<pre><code class="fs">open System
+<pre><code class="language-fsharp">open System
 open System.Text.RegularExpressions
 
 module Schedule =
@@ -196,7 +196,7 @@ module Schedule =
 <li>isTime is to check if we need to run a job in passed date time </li>
 </ul>
 <p>Small sets of unit tests written using mstest:</p>
-<pre><code class="fs">namespace FsharpTest
+<pre><code class="language-fsharp">namespace FsharpTest
 
 open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
@@ -277,12 +277,6 @@ type ScheduleTests () =
         })();
     </script>
     <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
-    </script>
-    <script>
         function timeCheck() {
             var currentTime = new Date().getHours();
             if (currentTime > 18 || currentTime < 6) {
@@ -316,6 +310,7 @@ type ScheduleTests () =
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

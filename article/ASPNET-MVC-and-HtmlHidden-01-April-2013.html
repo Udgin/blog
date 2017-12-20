@@ -7,8 +7,8 @@
     <meta name="keywords" content=".net,asp.net mvc">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -64,7 +64,7 @@
 <p>Tags: .net, asp.net mvc</p>
 <p>There is interesting bug connected with Html.Hidden.
 There are two model:</p>
-<pre><code class="csharp">public class  Model1{
+<pre><code class="language-csharp">public class  Model1{
 public int ID{get;set;}
 public Model2 Model2Model{get;set;}
 }
@@ -73,7 +73,7 @@ public int ID{get;set;}
 }
 </code></pre>
 <p>Page:</p>
-<pre><code class="html">&lt;html&gt;
+<pre><code class="language-markup">&lt;html&gt;
 ...
 &lt;body&gt;
 @Html.Partial(&quot;partial&quot;
@@ -92,12 +92,6 @@ public int ID{get;set;}
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -133,6 +127,7 @@ public int ID{get;set;}
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

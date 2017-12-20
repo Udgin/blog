@@ -7,8 +7,8 @@
     <meta name="keywords" content="dotnet,fsharp,cron">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -65,7 +65,7 @@
 <p>As continuation for <a href="https://eapyl.github.io/article/Daemon-cron-using-F-19-May-2017.html">my previous post</a> I want to create a nancy service to run my cron jobs.</p>
 <p>The source is <a href="https://github.com/eapyl/fsharp-nancy-service">here</a>.</p>
 <p>A service to run jobs:</p>
-<pre><code class="fs">module Service =
+<pre><code class="language-fsharp">module Service =
     let start (logger:ILogger) (items:Item[]) =
         let version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion
         logger.LogInformation(&quot;Staring service {version}&quot;, version)
@@ -98,12 +98,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -139,6 +133,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

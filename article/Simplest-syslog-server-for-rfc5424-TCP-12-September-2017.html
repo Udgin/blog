@@ -7,8 +7,8 @@
     <meta name="keywords" content="docker,dotnet,syslog,logspout,serilog">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -66,7 +66,7 @@
 <p>There are nice project which allows automatically read docker container logs and push them to one syslog server - <a href="https://github.com/gliderlabs/logspout">logspout</a>.</p>
 <p>We tried to find simple syslog server without success. So there is a <a href="https://github.com/eapyl/syslog-collector">small syslog server</a> written in dotnet core. I used serilog to write logs to files (<a href="https://github.com/serilog/serilog-sinks-rollingfile">Rolling File</a>).</p>
 <p>So docker-compose configuration looks like:</p>
-<pre><code>  #another containers
+<pre><code class="language-yaml">  #another containers
   logspout:
     image: gliderlabs/logspout
     command: syslog+tcp://logcollector:5000
@@ -78,7 +78,8 @@
     image: eapyl/syslog-collector
     volumes: 
       - $PWD/../logs:/log/logs
-</code></pre><p>After that logs from all our containers are in logs folder! Very simple and easy!</p>
+</code></pre>
+<p>After that logs from all our containers are in logs folder! Very simple and easy!</p>
 <p>Please find docker image <a href="https://hub.docker.com/r/eapyl/syslog-collector/">here</a>.</p>
 <p>P.S. We started to write log message to stdout or stderr using <a href="https://github.com/serilog/serilog-sinks-literate">serilog</a>. So it was just small configuration change in all our projects to use Serilog.Literate instead of Serilog.RollingFile .</p>
 <p>Thanks!</p>
@@ -94,12 +95,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -135,6 +130,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

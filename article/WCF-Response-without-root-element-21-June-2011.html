@@ -7,8 +7,8 @@
     <meta name="keywords" content="">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -62,7 +62,7 @@
     <article class="markdown-body">
         <h2 id="wcf-response-without-root-element-21-june-2011">WCF/ Response without root element - 21 June, 2011</h2>
 <p>Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service should expose 1 operation (let it be &quot;GetResponse_1&quot;) with the following structure (just an example, please combine schema for the service):</p>
-<pre><code class="xml">&lt;GetResponse_Request_1&gt;
+<pre><code class="language-xml">&lt;GetResponse_Request_1&gt;
     &lt;element1&gt;text1&lt;/element1&gt;&lt;!-- at least 1 &quot;element1&quot; --&gt;
     &lt;element1&gt;text2&lt;/element1&gt;
     &lt;element1&gt;text3&lt;/element1&gt;
@@ -72,7 +72,7 @@
 &lt;/GetResponse_Request_1&gt;
 </code></pre>
 <p>Response should contain &quot;planed&quot; element1 and element2 sets, just comma separated values:</p>
-<pre><code class="xml">&lt;GetResponse_Response_1&gt;
+<pre><code class="language-xml">&lt;GetResponse_Response_1&gt;
     &lt;element1_plane&gt;text1, text2, text3&lt;/element1&gt;
     &lt;element2_plane&gt;textn, textn+1, textn+2&lt;/element2&gt;
 &lt;/GetResponse_Response_1&gt;
@@ -89,12 +89,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -130,6 +124,7 @@
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

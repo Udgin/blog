@@ -7,8 +7,8 @@ I faced with one issue how to automatically download and restore databases from 
 3. Restore copied databases to local MSSQL;
 4. Change the owner of databases to current user;
 
-A small snippet with implementation is below. 
-```
+A small snippet with implementation is below.
+```language-csharp
 /*
 You need to add next NuGet packages:
 "Microsoft.Extensions.Configuration": "2.0.0",
@@ -157,7 +157,7 @@ So you will have the next types of files in your project:
 3. *.rds - shared datasources
 
 To deploy them to clean SSRS server we can use [RS tool](https://docs.microsoft.com/en-us/sql/reporting-services/tools/rs-exe-utility-ssrs). And that is a bat file to call it:
-```
+```language-batch
 REM SSRS server, you can provide also user and password to RS tool if you can't use Windows credentials (default behaviour)
 set varServerPath=http://desktop-h33a7aa/reportserver
 REM name of folder at SSRS server for reports
@@ -174,7 +174,7 @@ set varReportFilePath=.\Project\Reports\My_Reports
 
 All logic is described in Commonscript.rss. It creates folders in SSRS server for reports, datasets and datasources (using CreateFolders method), later it reads all *.rds files in varReportFilePath and create datasources for each file if it doesn't exist. After it reads all *.rsd files in varReportFilePath, create datasets and connects a dataset with a datasource. In the end it read all *.rdl files in varReportFilePath, create reports and connects a report with a dataset.
 
-```
+```language-vbnet
 Dim definition As [Byte]() = Nothing
 Dim bytedefinition as [Byte]() = nothing
 Dim warnings As Warning() = Nothing
@@ -513,7 +513,7 @@ In this small article I will describer how to create a small console application
 
 One note: each SP, function and view should have the next comment in their code:
 
-```
+```language-sql
 -- =============================================
 -- Author:      FirstName LastName
 -- Create date: yyyyMMdd
@@ -522,7 +522,7 @@ One note: each SP, function and view should have the next comment in their code:
 ```
 
 SQL query which shows information about SP, functions and views is:
-```
+```language-csharp
 const string GetAllObjects = @"
 DECLARE @StopString nvarchar(MAX) = '-- =============================================';
 
@@ -550,7 +550,7 @@ WHERE
 ```
 
 As I usully use [Dapper](https://github.com/StackExchange/Dapper) to work with DB there is a list of DTOs:
-```
+```language-csharp
 internal class DBObject
 {
     public string Name { get; set; }
@@ -596,7 +596,7 @@ internal class Table
 ```
 
 And to get the list of SP, functions and views we can use the next method:
-```
+```language-csharp
 public IEnumerable<(DBObject Object, HelpInfo Info, IEnumerable<Parameter> Parameters, IEnumerable<Table> OutputTables)> GetAllDbObjects()
 {
     var objs = _sqlExecutor.Query<DBObject>(GetAllObjects);
@@ -678,7 +678,7 @@ Unfortunately there is no SQLCover package in NuGet, but we can download it from
 
 Create a new command line application, add references to SQLCover.dll and Microsoft.SqlServer.TransactSql.ScriptDom.dll.
 After that there is an example of Program.cs:
-```
+```language-csharp
     private const string RunAllSqlTestsCommand = "exec tSQLt.RunAll;";
     private const string DefaultDatabaseName = "MyDB";
 
@@ -711,7 +711,7 @@ There are nice project which allows automatically read docker container logs and
 We tried to find simple syslog server without success. So there is a [small syslog server](https://github.com/eapyl/syslog-collector) written in dotnet core. I used serilog to write logs to files ([Rolling File](https://github.com/serilog/serilog-sinks-rollingfile)).
 
 So docker-compose configuration looks like:
-```
+```language-yaml
   #another containers
   logspout:
     image: gliderlabs/logspout
@@ -740,7 +740,7 @@ Tags: docker, influxdb, docker
 
 It is not easy to restore influxdb in an official container. Unfortunately it is not possible directly. You need to restore db out of a container and mount restored db to the container.
 
-```
+```language-batch
 # Restoring a backup requires that influxd is stopped (note that stopping the process kills the container).
 docker stop "$CONTAINER_ID"
 
@@ -784,7 +784,7 @@ Please find the steps below:
 2. And that is all, to start our application need to run `ionic serve`.
 3. As I want to listen an online radio, I need to create a provider to listen online stream: Html5Audio:
 
-```typescript
+```language-typescript
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
 @Injectable()
@@ -876,7 +876,7 @@ I am using AngularJS as frontend framework, asp net core (dotnet core) as backen
 
 So it is a small cake script to release a new version of application:
 
-```cake
+```language-csharp
 #addin "Cake.Docker"
 #addin "Cake.FileHelpers"
 
@@ -1086,7 +1086,7 @@ RunTarget(target);
 
 It is a script to build released version and publish a docker container to a server:
 
-```cake
+```language-csharp
 // Release: ./build.sh -t Release "-packageVersion=x.x.x.x"
 // Publish: ./build.sh -t Publish "-packageVersion=x.x.x.x" "-env=counterra"
 // Delete release: ./build.sh -t Delete "-packageVersion=x.x.x.x"
@@ -1269,7 +1269,7 @@ RunTarget(target);
 
 I am running service using docker compose like:
 
-```yml
+```language-yaml
 version: '2'
 services:
     ContainerName:
@@ -1287,7 +1287,7 @@ As continuation for [my previous post](https://eapyl.github.io/article/Daemon-cr
 The source is [here](https://github.com/eapyl/fsharp-nancy-service).
 
 A service to run jobs:
-```fs
+```language-fsharp
 module Service =
     let start (logger:ILogger) (items:Item[]) =
         let version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion
@@ -1318,7 +1318,7 @@ Tags: dotnet, fsharp
 
 As continuation for [my previous post](https://eapyl.github.io/article/Cron-schedule-using-F-1-May-2017.html) I want to create a daemon which runs jobs using created cron code.
 
-```fs
+```language-fsharp
 module Daemon =
     [<Literal>]
     let INTERVAL = 30000
@@ -1360,7 +1360,7 @@ module Daemon =
 
 How to use the daemon above:
 
-```fs
+```language-fsharp
 type Job = { action: Async<unit>; cron: string }
 
 let act id =
@@ -1394,7 +1394,7 @@ So there is implementation in F# below:
 
 Let's start with two helper objects: `String.split` and `TooMuchArgumentsException` exception.
 
-```fs
+```language-fsharp
 type System.String with 
     static member split c (value: string) =
         value.Split c
@@ -1411,7 +1411,7 @@ My internal cron supports the next template: 'minute hour dayOfMonth month dayOf
 4. '5' - one value only, e.g. only at 5th minute
 5. '5,10,15,45' - list value, e.g. run at 5th, 10th, 15th and 45th minutes
 
-```fs
+```language-fsharp
 open System
 open System.Text.RegularExpressions
 
@@ -1526,7 +1526,7 @@ So Schedule module contains two methods and one type:
 
 Small sets of unit tests written using mstest:
 
-```fs
+```language-fsharp
 namespace FsharpTest
 
 open System
@@ -1607,7 +1607,7 @@ Later I will just describe how I am doing backup to local folder instead of S3 s
 
 It is my docker-compose:
 
-```dockerfile
+```language-docker
     db:
         image: "influxdb:1.2"
         restart: always
@@ -1631,7 +1631,7 @@ It is my docker-compose:
 
 So there are two containers: influxdb is the standard [InfluxDB](https://docs.influxdata.com/influxdb/v1.2/introduction/getting_started/) and influxdb-backup:1.2 (see dockerfile for this image below).
 
-```dockerfile
+```language-docker
 FROM influxdb:1.2-alpine
 
 # Backup the following databases, separator ":"
@@ -1655,7 +1655,7 @@ CMD crond -l 0 -f
 ```
 
 So we are running cron job to run our `backup.sh`. The configuration (cron.conf):
-```bash
+```language-batch
 # do daily/weekly/monthly maintenance
 # min	hour	day	month	weekday	command
 0 0 * * * /bin/backup.sh
@@ -1663,7 +1663,7 @@ So we are running cron job to run our `backup.sh`. The configuration (cron.conf)
 ```
 
 There is backup.sh with the next content:
-```bash
+```language-batch
 #!/bin/bash
 set -e
 
@@ -1700,7 +1700,7 @@ Thank you!
 Tags: linux, ubuntu
 
 Allows delete, write and edit all files in a particular folder:
-```bash
+```language-batch
 chmod -R 777 <desired folder>
 ```
 
@@ -1710,7 +1710,7 @@ Tags: interview, dotnet
 
 How to do planning of two threads so none of them can leave a circle (X is global value and default value is 0)?
 
-```csharp
+```language-csharp
 while (X == 0)
 {
     X = 1 - X;
@@ -1729,7 +1729,7 @@ That is a manual how to create simple ping-pong discord bot using javascript (no
 * Install [Discrod.js](https://discord.js.org/#/): `npm install --save discordjs`
 * Create index.js in this folder:
 
-```js
+```language-javascript
 /*
   A ping pong bot, whenever you send "ping", it replies "pong".
 */
@@ -1773,7 +1773,7 @@ Well done! You created your Discord bot! Thank you.
 
 Here is a simple rss bot for discord:
 
-```js
+```language-javascript
 const Discord = require('discord.js');
 var Store = require("jfs"); // using jfs to save already posted rss news
 var db = new Store("rssfeeds");
@@ -1898,7 +1898,7 @@ Please find the source code of sample application [here](https://github.com/eapy
 
 Want to mention that I had to install the next lib:
 
-```bash
+```language-batch
 sudo apt-get install libunwind8
 ```
 
@@ -1906,7 +1906,7 @@ to actually run my service on remote server - Ubuntu 16.04 x64. There was the ne
 
 Also project.json is set up to build self-contained application:
 
-```bash
+```language-batch
 dotnet publish -c Release -r ubuntu.16.04-x64 -o packages/ubuntu
 ```
 
@@ -1918,7 +1918,7 @@ Tags: pip, ubuntu, streamlink
 
 To update application installed by pip, e.g. [streamlink](https://github.com/streamlink/streamlink):
 
-```bash
+```language-batch
 sudo pip install -U streamlink
 ```
 
@@ -2065,7 +2065,7 @@ A container uses the host machine’s Linux/Windows kernel, and consists of any 
 
 When you use the docker run CLI command or the equivalent API, the Docker Engine client instructs the Docker daemon to run a container. For example:
 
-```bash
+```language-docker
 $ docker run -i -t ubuntu /bin/bash
 ```
 
@@ -2201,7 +2201,7 @@ Unsupervised learning is contrasted from supervised learning because it uses an 
 3. Move centroid: compute the averages for all the points inside each of the two cluster centroid groups, then move the cluster centroid points to those averages.
 4. Re-run (2) and (3) until we have found our clusters.
 
-```
+```language-none
 Randomly initialize K cluster centroids mu(1), mu(2), ..., mu(K)
 Repeat:
    for i = 1 to m:
@@ -2286,7 +2286,7 @@ The goal of PCA is to reduce the average of all the distances of every feature t
 
 2. Compute "eigenvectors" of covariance matrix Σ
 
-```
+```language-none
 [U,S,V] = svd(Sigma);
 ```
 
@@ -2294,7 +2294,7 @@ The goal of PCA is to reduce the average of all the distances of every feature t
 
 Summarize:
 
-```
+```language-none
 Sigma = (1/m) * X' * X; % compute the covariance matrix
 [U,S,V] = svd(Sigma);   % compute our projected directions
 Ureduce = U(:,1:k);     % take the first k directions
@@ -2542,7 +2542,7 @@ I was not able to run influxdb as a service after [installing](https://docs.infl
 
 Command `sudo service influxd status` showed:
 
-```
+```language-none
 ● influxdb.service - InfluxDB is an open-source, distributed, time series database
    Loaded: loaded (/lib/systemd/system/influxdb.service; enabled; vendor preset: enabled)
    Active: inactive (dead) (Result: exit-code) since Fri 2016-12-23 15:05:34 CET; 3min 47s ago
@@ -2563,7 +2563,7 @@ But the simple command `influxd` worked well.
 
 I found that there is the next code in `/lib/systemd/system/influxdb.service`:
 
-```
+```language-none
 # If you modify this, please also make sure to edit init.sh
 
 [Unit]
@@ -2587,7 +2587,7 @@ Alias=influxd.service
 
 All is working well after I commended the next two lines:
 
-```
+```language-none
 [Service]
 # User=influxdb
 # Group=influxdb
@@ -2604,13 +2604,13 @@ I am using sample application created by `dotnet run`.
 
 To run dotnet core application on Ubuntu with **compilation**:
 
-```
+```language-docker
 dotnet run -p {pathToFolderWithProjectJson} -- {arguments}
 ```
 
 To run compiled application:
 
-```
+```language-batch
 dotnet {pathToCompiledDll} {arguments}
 ```
 where `pathToCompiledDll` is a path to dll (it is in `/bin/Debug/netcoreapp1.1/` be default).
@@ -2619,13 +2619,13 @@ where `pathToCompiledDll` is a path to dll (it is in `/bin/Debug/netcoreapp1.1/`
 
 To add dotnet alias (shortcut) to bash set of commands:
 
-```
+```language-batch
 nano ~/.bash_aliases
 ```
 
 And you need to add the next line to this file (bash_aliases):
 
-```
+```language-batch
 alias helloWorld="dotnet run -p ~/projects/helloWorld -- ~/Peter"
 ```
 where 
@@ -2645,7 +2645,7 @@ Tags: C#, interview, dotnet
 
 There is the next code:
 
-```csharp
+```language-csharp
 public static void Main(string[] args) {
     Console.WriteLine(Test());
 }
@@ -2675,7 +2675,7 @@ Tags: rxjs, javascript, async.js
 
 There is an example of queue using rxjs:
 
-```javascript
+```language-javascript
 Rx.Observable.from(['foo', 'bar', 'baz', 'bay', 'bax', 'bar', 'cat'])
     .do(x => console.log((new Date).toLocaleTimeString() + " " + x))
     // grouping by 2 
@@ -2801,7 +2801,7 @@ First, pick a network architecture; choose the layout of your neural network, in
 
 When we perform forward and back propagation, we loop on every training example:
 
-```
+```language-none
 for i = 1:m,
    Perform forward propagation and backpropagation using example (x(i),y(i))
    (Get activations a(l) and delta terms d(l) for l = 2,...,L
@@ -2902,7 +2902,7 @@ Information is from this wonderful [course](https://www.coursera.org/learn/machi
 
 ### Basic operations
 
-```Octave
+```language-none
 %% Change Octave prompt  
 PS1('>> ');
 %% Change working directory in windows example:
@@ -2967,7 +2967,7 @@ help help
 
 ### Moving Data Around
 
-```Octave
+```language-none
 %% dimensions
 sz = size(A) % 1x2 matrix: [(number of rows) (number of columns)]
 size(A,1) % number of rows
@@ -3010,7 +3010,7 @@ C = [A; B] % Concatenating A and B top and bottom
 
 ### Computing on Data
 
-```Octave
+```language-none
 %% initialize variables
 A = [1 2;3 4;5 6]
 B = [11 12;13 14;15 16]
@@ -3068,7 +3068,7 @@ pinv(A)        % inv(A'*A)*A'
 
 ### Plotting Data
 
-```Octave
+```language-none
 %% plotting
 t = [0:0.01:0.98];
 y1 = sin(2*pi*4*t); 
@@ -3101,7 +3101,7 @@ a=1;b=2;c=3;
 
 ### Control statements: for, while, if statements
 
-```Octave
+```language-none
 v = zeros(10,1);
 for i=1:10, 
     v(i) = 2^i;
@@ -3136,13 +3136,13 @@ end
 
 To create a function, type the function code in a text editor (e.g. gedit or notepad), and save the file as "functionName.m"
 
-```Octave
+```language-none
 function y = squareThisNumber(x)
 
 y = x^2;
 ```
 
-```Octave
+```language-none
 function [y1, y2] = squareandCubeThisNo(x)
 y1 = x^2
 y2 = x^3
@@ -3204,7 +3204,7 @@ More information about [IndexedDb](https://developer.mozilla.org/en-US/docs/Web/
 
 Let's define base interfaces for our task:
 
-```javascript
+```language-typescript
 export interface IItem {
     id: string;
     value: string;
@@ -3237,7 +3237,7 @@ Here I am using [rxjs](http://reactivex.io/) to handle results. IItem is an inte
 
 A short example how to implement mentioned interface using in-memory array:
 
-```javascript
+```language-typescript
 export class MemoryStorage<T extends IItem> implements IStorage<T> {
     private storage: { [key: string]: T } = {};
 
@@ -3274,7 +3274,7 @@ export class MemoryStorage<T extends IItem> implements IStorage<T> {
 
 Simple implementation of IItem:
 
-```javascript
+```language-typescript
 class TestKeyValue implements IItem {
   public id: string;
   public value: string;
@@ -3283,7 +3283,7 @@ class TestKeyValue implements IItem {
 
 Unit tests for MemoryStorage:
 
-```javascript
+```language-typescript
 describe('MemoryStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
@@ -3337,7 +3337,7 @@ describe('MemoryStorage: Class', () => {
 
 Current implementation just just for objects where key (string) is unique string value, value (string) is a payload.
 
-```javascript
+```language-typescript
 export class WebSQLStorage<T extends IItem> implements IStorage<T> {
     private db: Database;
     private databaseName: string = 'TripNoteDB';
@@ -3460,7 +3460,7 @@ export class WebSQLStorage<T extends IItem> implements IStorage<T> {
 }
 ```
 
-```javascript
+```language-typescript
 describe('WebSQLStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
@@ -3528,7 +3528,7 @@ describe('WebSQLStorage: Class', () => {
 How to use IndexedDB is [here](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB).
 There are very useful [tricks](https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb).
 
-```javascript
+```language-typescript
 export class IndexedDBStorage<T extends IItem> implements IStorage<T> {
     private databaseName: string = 'TripNoteDB';
     private name: string;
@@ -3681,7 +3681,7 @@ export class IndexedDBStorage<T extends IItem> implements IStorage<T> {
 
 Unit tests for indexedDB:
 
-```javascript
+```language-typescript
 describe('IndexedDBStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
@@ -4041,7 +4041,7 @@ The value of a point is the sum of values of types ('one', 'two').
 ![image](./../images/highchart_add_info.png)
 
 The code:
-```javascript
+```language-javascript
 $(function () {
     $('#container').highcharts({
         chart: {
@@ -4089,7 +4089,7 @@ Tags: winRT, .net
 There is a good [question](http://stackoverflow.com/questions/13534334/how-to-compute-hash-md5-or-sha-of-a-large-file-with-c-sharp-in-windows-store-a) about this.
 
 Also there is a code. I have used MD5 algorithm for my purposes.
-```csharp
+```language-csharp
   public async Task<string> GetFileChecksumAsync(string fileName)
   {
    HashAlgorithmProvider alg = Windows.Security.Cryptography.Core.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
@@ -4122,7 +4122,7 @@ Add "Show All" to the FuelUX Tree like this.
 ![example](./../images/fuelux-tree.gif)
 
 There is the [tree plugin](https://exacttarget.github.io/fuelux/#tree). You can add the next code after initialization of the tree:
-```javascript
+```language-javascript
 scope.find('#MyTree').on('selected', function (event, data) {
     if (data.target.additionalParameters.id == 0) {
         scope.find('#MyTree').find('.tree-item').removeClass('tree-selected').find('i').removeClass('icon-ok').addClass('tree-dot');
@@ -4169,7 +4169,7 @@ If you use bootstrap and recaptcha, you may face a problem like wrong padding|ma
 
 You should add next css style to yours:
 
-```css
+```language-css
 body{ line-height:1}
 ```
 
@@ -4189,7 +4189,7 @@ Tags: .net, asp.net mvc
 
 There is interesting bug connected with Html.Hidden.
 There are two model:
-```csharp
+```language-csharp
 public class  Model1{
 public int ID{get;set;}
 public Model2 Model2Model{get;set;}
@@ -4199,7 +4199,7 @@ public int ID{get;set;}
 }
 ```
 Page:
-```html
+```language-markup
 <html>
 ...
 <body>
@@ -4213,7 +4213,7 @@ Page:
 
 It is possible to create script of MSSQL using SMO: ([link](http://pastebin.com/AQkprTS7#))
 
-```csharp
+```language-csharp
 private static void Main(string[] args)
 {
     var arguments = args.Select(x => x.ToLower()).ToList();
@@ -4361,7 +4361,7 @@ Tags: .net, linq
 
 After reading a lot of articles about this theme, I start to use the next [extensions](http://pastebin.com/As5as2pE)
 
-```csharp
+```language-csharp
 public static class Linq
 {
     public static IEnumerable<T> Except<T>(this IEnumerable<T> source, IEnumerable<T> target, Func<T, T, bool> func)
@@ -4487,7 +4487,7 @@ So, according to [http://stackoverflow.com/questions/13635889/delete-team-projec
 
 You can use the following command from the "Developer Command Prompt":
 
-```
+```language-none
 TfsDeleteProject /collection:https://mytfs.visualstudio.com/DefaultCollection MyProject
 ```
 
@@ -4503,7 +4503,7 @@ I m using ASP.NET MVC. And work with my view, where I have the View
 
 It gives me the exception
 
-```
+```language-none
 The call is ambiguous between the following methods or properties: 'GMP.MvcWebSite.StringExtensions.TrimOrEmpty(string)' and 'System.StringHelper.TrimOrEmpty(string)'
 ```
 
@@ -4541,7 +4541,7 @@ You see there is secret key and application key. We need them to working with fa
 
 There is the step 4 (we get the code from redirecting response).
 
-```csharp
+```language-csharp
 public void GetAccessToken()
 {
     if (HttpContext.Current.Request.Params.AllKeys.Contains("code"))
@@ -4574,7 +4574,7 @@ public void GetAccessToken()
 
 That is my facebook controller
 
-```csharp
+```language-csharp
 public ActionResult Index()
 {
     if (!Client.IsAuthorizated)
@@ -4593,7 +4593,7 @@ public ActionResult Authorizate()
 
 After getting code we need to get the id of the page:
 
-```csharp
+```language-csharp
 private void GetUserInformation()
 {
     string request = "https://graph.facebook.com/me?access_token=" + accessToken;
@@ -4616,7 +4616,7 @@ private void GetPagesInformation()
 
 3. OK, let's start to posting something. Here is my configuration:
 
-```csharp
+```language-csharp
 private static readonly Dictionary<string, string> Config = new Dictionary<string, string>
 {
     {"AuthorizationEndpoint", "https://graph.facebook.com/oauth/authorize?client_id={0}&redirect_uri={1}&scope=manage_pages,create_event,publish_stream"},
@@ -4630,7 +4630,7 @@ private static readonly Dictionary<string, string> Config = new Dictionary<strin
 
 Posting video.
 
-```csharp
+```language-csharp
 public string CreateVideo(MemoryStream imageMemoryStream, string title, string fileName)
 {
     string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
@@ -4695,7 +4695,7 @@ public string CreateVideo(MemoryStream imageMemoryStream, string title, string f
 4. Change the information about the page.
 
 WebHelper class:
-```csharp
+```language-csharp
 public static class WebWorker
 {
     private static void AddPostParameter(Dictionary<string, string> values, StringBuilder postBody)
@@ -4726,7 +4726,7 @@ public static class WebWorker
     }
 }
 ```
-```csharp
+```language-csharp
 private string CreateStatus(Dictionary<string, string> values)
 {
     string request = "https://graph.facebook.com/" + page.SelectToken("id") + "/feed?access_token=" +
@@ -4756,7 +4756,7 @@ Just enable BundleModule and all will be OK ! ;)
 
 Need to create the macros:
 
-```
+```language-vbnet
 Public Module AttachToProcess
 Public Function AttachToProcess(ByVal ProcessName As String) As Boolean
 Dim proc As EnvDTE.Process
@@ -4785,7 +4785,7 @@ End Module
 ## PowerShell, Replace physical path of web sites in IIS7 - 17 July, 2012
 Tags: powershell
 
-```PowerShell
+```language-powershell
 param([String]$numb)
 
 [Void][Reflection.Assembly]::LoadWithPartialName("Microsoft.Web.Administration")
@@ -4827,7 +4827,7 @@ $serverManager.CommitChanges()
 
 Bat file to call PowerShell file
 
-```
+```language-batch
 @echo off
 
 set /p delBuild=Enter the number of gmp project?
@@ -4846,7 +4846,7 @@ I have found that the page load indefinitely. And the reason was I add @Html.Ren
 
 So the solution of the problem to add the next code to rendered view:
 
-```
+```language-css
 @{
       Layout = null;
 }
@@ -4868,7 +4868,7 @@ So it's happens.
 The error was connected with GET requests. ApplicationPool was set in Classic mode.
 There is HttpModule, which throws this type of exceptions:
 
-```
+```language-none
 System.Web.HttpException (0x80004005): Failed to Execute URL.
 at System.Web.Hosting.ISAPIWorkerRequestInProcForIIS6.BeginExecuteUrl(String url, String method, String childHeaders, Boolean sendHeaders, Boolean addUserIndo, IntPtr token, String name, String authType, Byte[] entity, AsyncCallback cb, Object state)
 at System.Web.HttpResponse.BeginExecuteUrlForEntireResponse(String pathOverride, NameValueCollection requestHeaders, AsyncCallback cb, Object state)
@@ -4879,13 +4879,13 @@ at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& complete
 
 contained the next source code in event context.BeginRequest:
 
-```
+```language-csharp
 app.Context.RewritePath(app.Context.Request.Path);
 ```
 
 The solve of the problem is:
 
-```
+```language-csharp
 app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, string.Empty);
 ```
 
@@ -4895,7 +4895,7 @@ Tags: powershell
 
 1. How to set folder's permission?
 
-```powershell
+```language-powershell
  #set owner and principals for %SystemRoot%\TEMP
  #http://channel9.msdn.com/Forums/Coffeehouse/Powershell-subinacl-ownership-of-directories
  Write-Host -ForegroundColor green "Set owner and principals for %SystemRoot%\TEMP"
@@ -5058,7 +5058,7 @@ public class PermissionsSetter
 
 2. How to register Asp.Net & WCF in IIS?
 
-```powershell
+```language-powershell
  $pathToFramework = "$env:windir\Microsoft.NET\Framework"
  if (test-path "$env:windir\Microsoft.NET\Framework64")
  {
@@ -5097,7 +5097,7 @@ public class PermissionsSetter
 
 3. How to enable windows features?
 
-```powershell
+```language-powershell
  #check the windows features
  $features = @(("IIS-ASPNET", "unknown"), ("IIS-HttpCompressionDynamic", "unknown"), ("IIS-ManagementScriptingTools", "unknown"), ("IIS-IIS6ManagementCompatibility", "unknown"), ("IIS-Metabase", "unknown"), ("IIS-WMICompatibility", "unknown"), ("IIS-LegacyScripts", "unknown"), ("IIS-LegacySnapIn", "unknown"))
  
@@ -5149,7 +5149,7 @@ public class PermissionsSetter
 
 4. How to avoid exception "The OS handle’s position is not what FileStream expected"?
 
-```powershell
+```language-powershell
 #this code is for exception such as The OS handle’s position is not what FileStream expected
 #see http://www.leeholmes.com/blog/2008/07/30/workaround-the-os-handles-position-is-not-what-filestream-expected/
 $bindingFlags = [Reflection.BindingFlags] “Instance,NonPublic,GetField”
@@ -5166,13 +5166,13 @@ $field2.SetValue($consoleHost, [Console]::Out)
 
 5. How to load module?
 
-```powershell
+```language-powershell
 Import-Module WebAdministration
 ```
 
 6. How to load another script file?
 
-```powershell
+```language-powershell
 #load external functions
 . (Join-Path $curFolder \Functions\DevSetupFunctions.ps1)
 ```
@@ -5186,7 +5186,7 @@ Unfortunately, the rule SA1201 is not so good for me. So i just want to create t
 
 You can see the rule that changes the order of document's element to the next:
 
-```xml
+```language-xml
 <element name="File" order="0"></element>
 <element name="Root" order="1"></element>
 <element name="ExternAliasDirective" order="2"></element>
@@ -5226,7 +5226,7 @@ The source code: [FiddlerZip](https://drive.google.com/file/d/0BwVmorgjT-W1NDFlZ
 
 The main code:
 
-```csharp
+```language-csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5282,7 +5282,7 @@ namespace FiddlerZip
 
 Простой модуль-лог для IIS 7 (Classic mode)
 
-```csharp
+```language-csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5386,7 +5386,7 @@ namespace IISWsgLogger
 
 web.config :
 
-```xml
+```language-xml
 <?xml version="1.0"?>
 <configuration>
  <configSections>
@@ -5408,7 +5408,7 @@ web.config :
 
 Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service should expose 1 operation (let it be "GetResponse_1") with the following structure (just an example, please combine schema for the service):
 
-```xml
+```language-xml
 <GetResponse_Request_1>
     <element1>text1</element1><!-- at least 1 "element1" -->
     <element1>text2</element1>
@@ -5421,7 +5421,7 @@ Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service shoul
 
 Response should contain "planed" element1 and element2 sets, just comma separated values:
 
-```xml
+```language-xml
 <GetResponse_Response_1>
     <element1_plane>text1, text2, text3</element1>
     <element2_plane>textn, textn+1, textn+2</element2>
@@ -5441,7 +5441,7 @@ Tags: .net
 3. Include Interop.MSUtil.dll in a project.
 4.
 
-```csharp
+```language-csharp
 using LogQuery = Interop.MSUtil.LogQueryClassClass;
 using IISW3CInputFormat = Interop.MSUtil.COMIISW3CInputContextClassClass;
 using CsvOutputFormat = Interop.MSUtil.COMCSVOutputContextClassClass;
@@ -5467,7 +5467,7 @@ oRecordSet.close();
 
 Library can be downloaded. License is LPGL 2.1.
 
-```csharp
+```language-csharp
 if (dates.Count > 0 && dates.Count == values.Count)
 {
     double max = FindMax(values);
@@ -5533,7 +5533,7 @@ Tags: .net
 
 Больше о флагах tcp-пакета можно посмотреть [http://www.firewall.cx.](http://www.firewall.cx/) 
 
-```csharp
+```language-csharp
 ///<summary>
 ///class for connection
 ///</summary>
@@ -5604,7 +5604,7 @@ internal class Connection
 
 Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому "принадлежит" этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к "полезным" данным последовательно (AddHostData и AddClientData) 
 
-```csharp
+```language-csharp
 /// <summary>
 /// Main class for sniffering
 /// </summary>
@@ -5921,7 +5921,7 @@ Initially, we choose to do all the settings using a simple SQL query.        els
 2. Не проверяется контрольная сумма принятого пакета;
 3. Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр
 
-```csharp
+```language-csharp
 (public void RunSniffer(string filter)) 
 ```
 
@@ -5936,7 +5936,7 @@ Description. There are modules that have the input and output parameters (type a
 The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
 Initially, we choose to do all the settings using a simple SQL query.
 
-```csharp
+```language-csharp
 private static SqlCeDataReader SelectAllParamterAndModuleName()
 {
     return ExecuteDataReader(String.Format(QSelectAllParamterANdModuleName));
@@ -5945,7 +5945,7 @@ private static SqlCeDataReader SelectAllParamterAndModuleName()
 
 where QSelectAllParamterANdModuleName is text of the query.
 
-```csharp
+```language-csharp
 private static IEnumerable<ParameterType> SelectAllParameterToArray()
 {
     var query =
@@ -5963,7 +5963,7 @@ private static IEnumerable<ParameterType> SelectAllParameterToArray()
 
 create from selected SqlReader array of elements of ParameterType. The result can be cached.
 
-```csharp
+```language-csharp
 public static List<ModuleType> SelectModuleByInputParameter(List<ParameterType> inputParameter)
 {
     if (inputParameter == null)

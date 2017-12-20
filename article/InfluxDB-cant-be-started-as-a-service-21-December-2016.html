@@ -7,8 +7,8 @@
     <meta name="keywords" content="influxdb,ubuntu">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -64,7 +64,7 @@
 <p>Tags: influxdb, ubuntu</p>
 <p>I was not able to run influxdb as a service after <a href="https://docs.influxdata.com/influxdb/v1.1/introduction/installation/">installing</a> influxdb on my local ubuntu:</p>
 <p>Command <code>sudo service influxd status</code> showed:</p>
-<pre><code>● influxdb.service - InfluxDB is an open-source, distributed, time series database
+<pre><code class="language-none">● influxdb.service - InfluxDB is an open-source, distributed, time series database
    Loaded: loaded (/lib/systemd/system/influxdb.service; enabled; vendor preset: enabled)
    Active: inactive (dead) (Result: exit-code) since Fri 2016-12-23 15:05:34 CET; 3min 47s ago
      Docs: https://docs.influxdata.com/influxdb/
@@ -78,9 +78,10 @@ Dec 23 15:05:34 fes-U36SG systemd[1]: influxdb.service: Service hold-off time ov
 Dec 23 15:05:34 fes-U36SG systemd[1]: Stopped InfluxDB is an open-source, distributed, time series database.
 Dec 23 15:05:34 fes-U36SG systemd[1]: influxdb.service: Start request repeated too quickly.
 Dec 23 15:05:34 fes-U36SG systemd[1]: Failed to start InfluxDB is an open-source, distributed, time series database.
-</code></pre><p>But the simple command <code>influxd</code> worked well.</p>
+</code></pre>
+<p>But the simple command <code>influxd</code> worked well.</p>
 <p>I found that there is the next code in <code>/lib/systemd/system/influxdb.service</code>:</p>
-<pre><code># If you modify this, please also make sure to edit init.sh
+<pre><code class="language-none"># If you modify this, please also make sure to edit init.sh
 
 [Unit]
 Description=InfluxDB is an open-source, distributed, time series database
@@ -99,11 +100,13 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 Alias=influxd.service
-</code></pre><p>All is working well after I commended the next two lines:</p>
-<pre><code>[Service]
+</code></pre>
+<p>All is working well after I commended the next two lines:</p>
+<pre><code class="language-none">[Service]
 # User=influxdb
 # Group=influxdb
-</code></pre><p>Thanks!</p>
+</code></pre>
+<p>Thanks!</p>
 
     </article>
     <div class="sharethis-inline-share-buttons"></div>
@@ -116,12 +119,6 @@ Alias=influxd.service
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -157,6 +154,7 @@ Alias=influxd.service
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

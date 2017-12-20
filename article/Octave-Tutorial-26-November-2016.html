@@ -7,8 +7,8 @@
     <meta name="keywords" content="octave">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -64,7 +64,7 @@
 <p>Tags: octave</p>
 <p>Information is from this wonderful <a href="https://www.coursera.org/learn/machine-learning/">course</a>.</p>
 <h3 id="basic-operations">Basic operations</h3>
-<pre><code class="Octave">%% Change Octave prompt  
+<pre><code class="language-none">%% Change Octave prompt  
 PS1(&#39;&gt;&gt; &#39;);
 %% Change working directory in windows example:
 cd &#39;c:/path/to/desired/directory name&#39;
@@ -126,7 +126,7 @@ help rand
 help help
 </code></pre>
 <h3 id="moving-data-around">Moving Data Around</h3>
-<pre><code class="Octave">%% dimensions
+<pre><code class="language-none">%% dimensions
 sz = size(A) % 1x2 matrix: [(number of rows) (number of columns)]
 size(A,1) % number of rows
 size(A,2) % number of cols
@@ -166,7 +166,7 @@ C = [A, B] % concatenating A and B matrices side by side
 C = [A; B] % Concatenating A and B top and bottom
 </code></pre>
 <h3 id="computing-on-data">Computing on Data</h3>
-<pre><code class="Octave">%% initialize variables
+<pre><code class="language-none">%% initialize variables
 A = [1 2;3 4;5 6]
 B = [11 12;13 14;15 16]
 C = [1 1;2 2]
@@ -221,7 +221,7 @@ sum(sum( A .* flipud(eye(9)) ))
 pinv(A)        % inv(A&#39;*A)*A&#39;
 </code></pre>
 <h3 id="plotting-data">Plotting Data</h3>
-<pre><code class="Octave">%% plotting
+<pre><code class="language-none">%% plotting
 t = [0:0.01:0.98];
 y1 = sin(2*pi*4*t); 
 plot(t,y1);
@@ -251,7 +251,7 @@ a=1,b=2,c=3
 a=1;b=2;c=3;
 </code></pre>
 <h3 id="control-statements-for-while-if-statements">Control statements: for, while, if statements</h3>
-<pre><code class="Octave">v = zeros(10,1);
+<pre><code class="language-none">v = zeros(10,1);
 for i=1:10, 
     v(i) = 2^i;
 end;
@@ -282,11 +282,11 @@ end
 </code></pre>
 <h3 id="functions">Functions</h3>
 <p>To create a function, type the function code in a text editor (e.g. gedit or notepad), and save the file as &quot;functionName.m&quot;</p>
-<pre><code class="Octave">function y = squareThisNumber(x)
+<pre><code class="language-none">function y = squareThisNumber(x)
 
 y = x^2;
 </code></pre>
-<pre><code class="Octave">function [y1, y2] = squareandCubeThisNo(x)
+<pre><code class="language-none">function [y1, y2] = squareandCubeThisNo(x)
 y1 = x^2
 y2 = x^3
 </code></pre>
@@ -304,12 +304,6 @@ y2 = x^3
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -345,6 +339,7 @@ y2 = x^3
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

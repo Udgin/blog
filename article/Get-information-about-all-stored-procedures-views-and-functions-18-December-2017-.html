@@ -7,8 +7,8 @@
     <meta name="keywords" content="mssql,dotnet">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -65,13 +65,14 @@
 <p>When your primary work is adding functionality to MSSQL database (like implementing business logic in stored procedures, functions and view) it is very useful to have the list of all SP, functions and views with their description, name of authors, created dates and input/output parameters.</p>
 <p>In this small article I will describer how to create a small console application which will get information from DB and create a list with this information in memory. Later I am creating HTML report using this information. But creating HTML report is not described in this article.</p>
 <p>One note: each SP, function and view should have the next comment in their code:</p>
-<pre><code>-- =============================================
+<pre><code class="language-sql">-- =============================================
 -- Author:      FirstName LastName
 -- Create date: yyyyMMdd
 -- Description: Short description
 -- =============================================
-</code></pre><p>SQL query which shows information about SP, functions and views is:</p>
-<pre><code>const string GetAllObjects = @&quot;
+</code></pre>
+<p>SQL query which shows information about SP, functions and views is:</p>
+<pre><code class="language-csharp">const string GetAllObjects = @&quot;
 DECLARE @StopString nvarchar(MAX) = &#39;-- =============================================&#39;;
 
 SELECT DISTINCT
@@ -95,8 +96,9 @@ WHERE
     s.name = &#39;dbo&#39; and
     (o.type_desc = &#39;VIEW&#39; or o.type_desc = &#39;SQL_STORED_PROCEDURE&#39; or o.type_desc = &#39;SQL_INLINE_TABLE_VALUED_FUNCTION&#39; or o.type_desc = &#39;SQL_SCALAR_FUNCTION&#39;)
 &quot;;
-</code></pre><p>As I usully use <a href="https://github.com/StackExchange/Dapper">Dapper</a> to work with DB there is a list of DTOs:</p>
-<pre><code>internal class DBObject
+</code></pre>
+<p>As I usully use <a href="https://github.com/StackExchange/Dapper">Dapper</a> to work with DB there is a list of DTOs:</p>
+<pre><code class="language-csharp">internal class DBObject
 {
     public string Name { get; set; }
     public string Schema { get; set; }
@@ -138,8 +140,9 @@ internal class Table
     public string FixedLenNullInSource { get; set; }
     public string Collation { get; set; }
 }
-</code></pre><p>And to get the list of SP, functions and views we can use the next method:</p>
-<pre><code>public IEnumerable&lt;(DBObject Object, HelpInfo Info, IEnumerable&lt;Parameter&gt; Parameters, IEnumerable&lt;Table&gt; OutputTables)&gt; GetAllDbObjects()
+</code></pre>
+<p>And to get the list of SP, functions and views we can use the next method:</p>
+<pre><code class="language-csharp">public IEnumerable&lt;(DBObject Object, HelpInfo Info, IEnumerable&lt;Parameter&gt; Parameters, IEnumerable&lt;Table&gt; OutputTables)&gt; GetAllDbObjects()
 {
     var objs = _sqlExecutor.Query&lt;DBObject&gt;(GetAllObjects);
     foreach (var data in objs.OrderBy(x =&gt; x.Created))
@@ -199,7 +202,8 @@ public (T, IEnumerable&lt;K&gt;, IEnumerable&lt;M&gt;) QueryMultiple&lt;T, K, M&
         }
     }
 }
-</code></pre><p>So mentioned GetAllDbObjects returns a list of tuples, where DBObject contains general information about SP, function or view; HelpInfo contains additional information about DBObject; IEnumerable<Parameter> contains information about input/output parameters for SP and functions; IEnumerable<Table> contains information about a view design (as view returns data in table format).</p>
+</code></pre>
+<p>So mentioned GetAllDbObjects returns a list of tuples, where DBObject contains general information about SP, function or view; HelpInfo contains additional information about DBObject; IEnumerable<Parameter> contains information about input/output parameters for SP and functions; IEnumerable<Table> contains information about a view design (as view returns data in table format).</p>
 <p>We can use this list to create different kinds of report like HTML report or delta report which shows only modified db objects.</p>
 <p>Thanks!</p>
 
@@ -214,12 +218,6 @@ public (T, IEnumerable&lt;K&gt;, IEnumerable&lt;M&gt;) QueryMultiple&lt;T, K, M&
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -255,6 +253,7 @@ public (T, IEnumerable&lt;K&gt;, IEnumerable&lt;M&gt;) QueryMultiple&lt;T, K, M&
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

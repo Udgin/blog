@@ -7,8 +7,8 @@
     <meta name="keywords" content="">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -63,17 +63,20 @@
         <h2 id="0x80004005-failed-to-execute-url-12-december-2011">0x80004005: Failed to Execute URL - 12 December, 2011</h2>
 <p>The error was connected with GET requests. ApplicationPool was set in Classic mode.
 There is HttpModule, which throws this type of exceptions:</p>
-<pre><code>System.Web.HttpException (0x80004005): Failed to Execute URL.
+<pre><code class="language-none">System.Web.HttpException (0x80004005): Failed to Execute URL.
 at System.Web.Hosting.ISAPIWorkerRequestInProcForIIS6.BeginExecuteUrl(String url, String method, String childHeaders, Boolean sendHeaders, Boolean addUserIndo, IntPtr token, String name, String authType, Byte[] entity, AsyncCallback cb, Object state)
 at System.Web.HttpResponse.BeginExecuteUrlForEntireResponse(String pathOverride, NameValueCollection requestHeaders, AsyncCallback cb, Object state)
 at System.Web.DefaultHttpHandler.BeginProcessRequest(HttpContext context, AsyncCallback callback, Object state)
 at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
 at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously)
-</code></pre><p>contained the next source code in event context.BeginRequest:</p>
-<pre><code>app.Context.RewritePath(app.Context.Request.Path);
-</code></pre><p>The solve of the problem is:</p>
-<pre><code>app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, string.Empty);
 </code></pre>
+<p>contained the next source code in event context.BeginRequest:</p>
+<pre><code class="language-csharp">app.Context.RewritePath(app.Context.Request.Path);
+</code></pre>
+<p>The solve of the problem is:</p>
+<pre><code class="language-csharp">app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathInfo, string.Empty);
+</code></pre>
+
     </article>
     <div class="sharethis-inline-share-buttons"></div>
     <div id="disqus_thread"></div>
@@ -85,12 +88,6 @@ at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; comp
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -126,6 +123,7 @@ at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; comp
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

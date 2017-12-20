@@ -7,8 +7,8 @@
     <meta name="keywords" content="dotnet,mssql">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -69,8 +69,8 @@
 <li>Restore copied databases to local MSSQL;</li>
 <li>Change the owner of databases to current user;</li>
 </ol>
-<p>A small snippet with implementation is below. </p>
-<pre><code>/*
+<p>A small snippet with implementation is below.</p>
+<pre><code class="language-csharp">/*
 You need to add next NuGet packages:
 &quot;Microsoft.Extensions.Configuration&quot;: &quot;2.0.0&quot;,
 &quot;Microsoft.Extensions.Configuration.FileExtensions&quot;: &quot;2.0.0&quot;,
@@ -202,7 +202,8 @@ BACKUP DATABASE {0} TO DISK=&#39;{1}&#39; WITH INIT, COPY_ONLY, FORMAT, COMPRESS
         }
     }
 }
-</code></pre><p>Thanks.</p>
+</code></pre>
+<p>Thanks.</p>
 
     </article>
     <div class="sharethis-inline-share-buttons"></div>
@@ -215,12 +216,6 @@ BACKUP DATABASE {0} TO DISK=&#39;{1}&#39; WITH INIT, COPY_ONLY, FORMAT, COMPRESS
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -256,6 +251,7 @@ BACKUP DATABASE {0} TO DISK=&#39;{1}&#39; WITH INIT, COPY_ONLY, FORMAT, COMPRESS
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>

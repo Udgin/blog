@@ -7,8 +7,8 @@
     <meta name="keywords" content="dotnet,fsharp">
     <meta name="author" content="Eugene Pyl">
     <link rel="icon" href="./../favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="./../prism.css">
+    
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
     <style>
@@ -63,7 +63,7 @@
         <h2 id="daemon-cron-using-f-19-may-2017">Daemon cron using F# - 19 May, 2017</h2>
 <p>Tags: dotnet, fsharp</p>
 <p>As continuation for <a href="https://eapyl.github.io/article/Cron-schedule-using-F-1-May-2017.html">my previous post</a> I want to create a daemon which runs jobs using created cron code.</p>
-<pre><code class="fs">module Daemon =
+<pre><code class="language-fsharp">module Daemon =
     [&lt;Literal&gt;]
     let INTERVAL = 30000
 
@@ -102,7 +102,7 @@
     let run jobs = internalRun INTERVAL now jobs
 </code></pre>
 <p>How to use the daemon above:</p>
-<pre><code class="fs">type Job = { action: Async&lt;unit&gt;; cron: string }
+<pre><code class="language-fsharp">type Job = { action: Async&lt;unit&gt;; cron: string }
 
 let act id =
     async {
@@ -129,12 +129,6 @@ let daemon = run jobs
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        hljs.configure({
-            // classPrefix: 'lang'
-        });
-        hljs.initHighlighting();
     </script>
     <script>
         function timeCheck() {
@@ -170,6 +164,7 @@ let daemon = run jobs
     ga('send', 'pageview');
 
 </script>
+<script src="./../prism.js"></script>
 </body>
 
 </html>
