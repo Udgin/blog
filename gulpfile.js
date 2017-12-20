@@ -57,7 +57,7 @@ gulp.task('splitmarkdown', function() {
         createdDates.push(createdDate);
 
         var nameOfFile = normalName.trim()
-            .replace(/[\!\"\#\$\%\&\'()\*\+\,.\/\:\;\<\=\>\?\@\^\_\`\{\|\}\~-]/g, '')
+            .replace(/[\!\"\#\$\%\&\'()\*\+\,.\/\:\;\<\=\>\?\@\^\_\`\{\|\}\~]/g, '')
             .replace(/[\s]/g, '-')
             .replace(/-+/g, '-');
 

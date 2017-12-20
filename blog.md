@@ -146,7 +146,7 @@ BACKUP DATABASE {0} TO DISK='{1}' WITH INIT, COPY_ONLY, FORMAT, COMPRESSION;";
 Thanks.
 
 ---
-## Auto deployment for SSRS reports - 19 December, 2017
+## Auto deployment for SSRS reports - 19 December, 2017-
 Tags: ssrs
 
 If you work with SSRS it is not so easy to create CI build for SSRS project. It looks like the best approach is to use shared datasources, shared datasets and embedded datasets in reports which use shared datasets. Shared datasets should use stored procedures to receive data so you will be able to cover your SQL logic by unit tests.
@@ -504,7 +504,7 @@ This script is based on [this article](https://blogs.msdn.microsoft.com/johndesc
 Thanks!
 
 ---
-## Get information about all stored procedures, views and functions - 18 December, 2017
+## Get information about all stored procedures, views and functions - 18 December, 2017-
 Tags: mssql, dotnet
 
 When your primary work is adding functionality to MSSQL database (like implementing business logic in stored procedures, functions and view) it is very useful to have the list of all SP, functions and views with their description, name of authors, created dates and input/output parameters.
@@ -666,7 +666,7 @@ We can use this list to create different kinds of report like HTML report or del
 Thanks!
 
 ---
-## How to set up SQL code coverage - 15 December, 2017
+## How to set up SQL code coverage - 15 December, 2017-
 Tags: mssql, code coverage, sql, dotnet
 
 If you are creating a lot of SQL code, it is a good idea to do unit testing for it and see [code coverage](https://en.wikipedia.org/wiki/Code_coverage). Luckly there is two nice tools/libs to do it: [tSQLt](http://tsqlt.org/) and [SQLCover](https://github.com/GoEddie/SQLCover).
