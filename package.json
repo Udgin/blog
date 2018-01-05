@@ -4,14 +4,14 @@
   "description": "Tags: .NET, Xamarin, IIS, JQuery, JavaScript, C#, CSharp, PowerShell, Linux, Git, Team City, Highchart, WinRT, Bootstrap, ASP.NET MVC, MSSQL, Database, TFS, LINQ, Fiddle, API Facebook, TCP, Sniffer, StyleCop, WCF,",
   "main": "index.html",
   "dependencies": {
+  },
+  "devDependencies": {
+    "gulp-filelist": "^0.5.0",
     "gulp": "^3.9.1",
     "gulp-markdown": "^2.0.1",
     "gulp-marked": "^1.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4"
-  },
-  "devDependencies": {
-    "gulp-filelist": "^0.5.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
