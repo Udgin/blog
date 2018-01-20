@@ -1,3 +1,13 @@
+## Install docker on raspberry PI - 20 January, 2018
+Tags: docker, raspberry
+
+Need to run the next command:
+```
+curl -sSL https://get.docker.com | sh
+```
+After installation need to execute `sudo usermod -aG docker $USER` and relogin.
+
+---
 ## Generate EF Core model from database using SQL script - 22 December, 2017
 Tags: sql, efcore, dotnet
 
