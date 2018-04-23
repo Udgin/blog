@@ -67,18 +67,17 @@
 <li>Download lates version of OS from <a href="https://www.raspberrypi.org/downloads/raspbian/">here</a>;</li>
 <li>Follow instructions from <a href="https://www.raspberrypi.org/documentation/installation/installing-images/README.md">here</a>.</li>
 <li>To ruen on ssh open create empty <code>/boot/ssh</code> file;</li>
-<li>Open <code>Boot</code> foolder and create <code>/boot/wpa_supplicant.conf</code>:
-```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-country=AU</li>
+<li>Open <code>Boot</code> foolder and create <code>/boot/wpa_supplicant.conf</code>:</li>
 </ol>
-<p>network={
+<pre><code>ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=AU
+
+network={
     ssid=&quot;ESSID&quot;
     psk=&quot;Your_wifi_password&quot;
 }
-```</p>
-<ol>
+</code></pre><ol>
 <li>Put SD card to Raspberry Pi.</li>
 </ol>
 <p>Thanks.</p>

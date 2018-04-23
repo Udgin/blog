@@ -6,6 +6,7 @@ Steps:
 2. Follow instructions from [here](https://www.raspberrypi.org/documentation/installation/installing-images/README.md).
 3. To ruen on ssh open create empty `/boot/ssh` file;
 4. Open `Boot` foolder and create `/boot/wpa_supplicant.conf`:
+
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -16,6 +17,7 @@ network={
     psk="Your_wifi_password"
 }
 ```
+
 5. Put SD card to Raspberry Pi.
 
 Thanks.
