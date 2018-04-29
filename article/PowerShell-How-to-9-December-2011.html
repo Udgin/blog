@@ -63,6 +63,11 @@
         <h2 id="powershell-how-to-9-december-2011">PowerShell How to ... ? - 9 December, 2011</h2>
 <p>Tags: powershell</p>
 <ol>
+<li>How to delete all bin, obj folders?</li>
+</ol>
+<pre><code class="language-powershell">Get-ChildItem .\ -include bin,obj -Recurse | foreach ($_) { remove-item $_.fullname -Force -Recurse }
+</code></pre>
+<ol>
 <li>How to set folder&#39;s permission?</li>
 </ol>
 <pre><code class="language-powershell"> #set owner and principals for %SystemRoot%\TEMP

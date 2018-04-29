@@ -5192,6 +5192,12 @@ app.Context.RewritePath(app.Context.Request.FilePath, app.Context.Request.PathIn
 ## PowerShell How to ... ? - 9 December, 2011
 Tags: powershell
 
+0. How to delete all bin, obj folders?
+
+```language-powershell
+Get-ChildItem .\ -include bin,obj -Recurse | foreach ($_) { remove-item $_.fullname -Force -Recurse }
+```
+
 1. How to set folder's permission?
 
 ```language-powershell
