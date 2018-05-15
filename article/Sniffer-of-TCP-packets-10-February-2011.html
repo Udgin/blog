@@ -451,7 +451,7 @@ Initially, we choose to do all the settings using a simple SQL query.        els
 <li>Не проверяется контрольная сумма принятого пакета;</li>
 <li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</li>
 </ol>
-<pre><code class="language-csharp">(public void RunSniffer(string filter))
+<pre><code class="language-csharp">(public void RunSniffer(string filter)) 
 </code></pre>
 <p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
 

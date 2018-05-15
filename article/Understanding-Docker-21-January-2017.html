@@ -62,7 +62,7 @@
     <article class="markdown-body">
         <h2 id="understanding-docker-21-january-2017">Understanding Docker - 21 January, 2017</h2>
 <p>Tags: docker</p>
-<h3 id="-what-is-docker-https-www-docker-com-what-docker-"><a href="https://www.docker.com/what-docker">What is Docker?</a></h3>
+<h3 id="what-is-docker-"><a href="https://www.docker.com/what-docker">What is Docker?</a></h3>
 <p>Docker is the world&#39;s leading software containerization platform</p>
 <blockquote>
 <p>Note: Docker is licensed under the open source <a href="https://inteist.com/how-to-use-apache-2-0-in-commercial-products-explained-in-simple-terms/">Apache 2.0</a> license.</p>
@@ -73,11 +73,11 @@
 <li>Lightweight</li>
 </ol>
 <p>Containers running on a single machine share the same operating system kernel; they start instantly and use less RAM. Images are constructed from layered filesystems and share common files, making disk usage and image downloads much more efficient.</p>
-<ol>
+<ol start="2">
 <li>Open and supported by community</li>
 </ol>
 <p>Docker containers are based on open standards, enabling containers to run on all major Linux distributions and on Microsoft Windows - and on top of any infrastructure. In addition, because Docker&#39;s <a href="http://www.zdnet.com/article/what-is-docker-and-why-is-it-so-darn-popular/">partnering</a> with the other container powers, including Canonical, Google, Red Hat, and Parallels, on its key open-source component <a href="https://github.com/opencontainers/runc">runc</a>, it&#39;s brought standardization to containers. More info is <a href="https://www.opencontainers.org/">here</a>.</p>
-<ol>
+<ol start="3">
 <li>Secure by default</li>
 </ol>
 <p>Containers isolate applications from one another and the underlying infrastructure, while providing an added layer of protection for the application.</p>
@@ -108,14 +108,14 @@
 </ul>
 <p>Docker makes it easy to identify issues, isolate the problem container, quickly roll back to make the necessary changes, and then push the updated container into production. Isolation between containers makes these changes less disruptive than in traditional software models.</p>
 <p>In summary: docker allows to deploy, use and support containers on production easier and safer than previous approaches. On the other hand, developers can use Docker to pack, ship, and run any application as a lightweight, portable, self sufficient LXC container that can run virtually anywhere.</p>
-<h3 id="-docker-toolset-https-docs-docker-com-engine-understanding-docker-what-is-the-docker-platform-"><a href="https://docs.docker.com/engine/understanding-docker/#/what-is-the-docker-platform">Docker toolset</a></h3>
+<h3 id="docker-toolset"><a href="https://docs.docker.com/engine/understanding-docker/#/what-is-the-docker-platform">Docker toolset</a></h3>
 <p>Docker provides tooling and a platform to manage the lifecycle of your containers:</p>
 <ul>
 <li>Encapsulate your applications (and supporting components) into Docker containers</li>
 <li>Distribute and ship those containers to your teams for further development and testing</li>
 <li>Deploy those applications to your production environment, whether it is in a local data center or the Cloud</li>
 </ul>
-<h3 id="-docker-engine-https-docs-docker-com-engine-understanding-docker-what-is-docker-engine-"><a href="https://docs.docker.com/engine/understanding-docker/#/what-is-docker-engine">Docker Engine</a></h3>
+<h3 id="docker-engine"><a href="https://docs.docker.com/engine/understanding-docker/#/what-is-docker-engine">Docker Engine</a></h3>
 <p>Docker Engine is a client-server application with these major components:</p>
 <ul>
 <li>A server which is a type of long-running program called a daemon process.</li>
@@ -123,14 +123,14 @@
 <li>A command line interface (CLI) client.</li>
 </ul>
 <p><img src="./../images/engine-components-flow.png" alt="image"></p>
-<h3 id="-what-can-i-use-docker-for-https-docs-docker-com-engine-understanding-docker-what-can-i-use-docker-for-"><a href="https://docs.docker.com/engine/understanding-docker/#/what-can-i-use-docker-for">What can I use Docker for?</a></h3>
+<h3 id="what-can-i-use-docker-for-"><a href="https://docs.docker.com/engine/understanding-docker/#/what-can-i-use-docker-for">What can I use Docker for?</a></h3>
 <p>Docker can streamline the development lifecycle by allowing developers to work in standardized environments using local containers which provide your applications and services. You can also integrate Docker into your continuous integration and continuous deployment (CI/CD) workflow.</p>
 <p>Docker’s portability and lightweight nature also make it easy to dynamically manage workloads, scaling up or tearing down applications and services as business needs dictate, in near real time.</p>
 <p>Docker is lightweight and fast. It provides a viable, cost-effective alternative to hypervisor-based virtual machines, allowing you to use more of your compute capacity to achieve your business goals.</p>
-<h3 id="-docker-s-architecture-https-docs-docker-com-engine-understanding-docker-what-is-dockers-architecture-"><a href="https://docs.docker.com/engine/understanding-docker/#/what-is-dockers-architecture">Docker’s architecture</a></h3>
+<h3 id="docker-s-architecture"><a href="https://docs.docker.com/engine/understanding-docker/#/what-is-dockers-architecture">Docker’s architecture</a></h3>
 <p>Docker uses a client-server architecture. The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface. One client can even communicate with multiple unrelated daemons.</p>
 <p><img src="./../images/architecture.svg" alt="image"></p>
-<h3 id="-inside-docker-https-docs-docker-com-engine-understanding-docker-inside-docker-"><a href="https://docs.docker.com/engine/understanding-docker/#/inside-docker">Inside Docker</a></h3>
+<h3 id="inside-docker"><a href="https://docs.docker.com/engine/understanding-docker/#/inside-docker">Inside Docker</a></h3>
 <ul>
 <li>Docker images</li>
 </ul>
@@ -151,7 +151,7 @@
 </ul>
 <p>A Docker service allows a swarm of Docker nodes to work together, running a defined number of instances of a replica task, which is itself a Docker image. You can specify the number of concurrent replica tasks to run, and the swarm manager ensures that the load is spread evenly across the worker nodes. To the consumer, the Docker service appears to be a single application.</p>
 <h4 id="docker-services-are-the-scalability-component-of-docker-">Docker services are the scalability component of Docker.</h4>
-<h3 id="-docker-image-work-https-docs-docker-com-engine-understanding-docker-how-does-a-docker-image-work-"><a href="https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-image-work">Docker image work</a></h3>
+<h3 id="docker-image-work"><a href="https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-image-work">Docker image work</a></h3>
 <p>Docker images are read-only templates from which Docker containers are instantiated. Each image consists of a series of layers. Docker uses union file systems to combine these layers into a single image. Union file systems allow files and directories of separate file systems, known as branches, to be transparently overlaid, forming a single coherent file system.</p>
 <p>These layers are one of the reasons Docker is so lightweight. When you change a Docker image, such as when you update an application to a new version, a new layer is built and replaces only the layer it updates. The other layers remain intact. To distribute the update, you only need to transfer the updated layer. Layering speeds up distribution of Docker images. Docker determines which layers need to be updated at runtime.</p>
 <p>An image is defined in a Dockerfile. Every image starts from a base image, such as ubuntu (Note: <a href="https://hub.docker.com/">Docker Hub</a> is a public registry and stores images). The base image is defined using the FROM keyword in the dockerfile. There are a set of <a href="https://docs.docker.com/engine/reference/builder/#/parser-directives">intructions</a> after this world usually. Each instruction creates a new layer in the image:</p>
@@ -164,9 +164,9 @@
 <li>What process to run when launching a container from this image (<a href="https://docs.docker.com/engine/reference/builder/#/cmd">CMD</a>)</li>
 </ul>
 <p>Docker reads this Dockerfile when you request a build of an image, executes the instructions, and returns the image.</p>
-<h3 id="-docker-registry-work-https-docs-docker-com-engine-understanding-docker-how-does-a-docker-registry-work-"><a href="https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-registry-work">Docker registry work</a></h3>
+<h3 id="docker-registry-work"><a href="https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-registry-work">Docker registry work</a></h3>
 <p>A Docker registry stores Docker images. After you build a Docker image, you can push it to a public registry such as Docker Hub or to a private registry running behind your firewall. You can also search for existing images and pull them from the registry to a host.</p>
-<h3 id="-container-work-https-docs-docker-com-engine-understanding-docker-how-does-a-container-work-"><a href="https://docs.docker.com/engine/understanding-docker/#/how-does-a-container-work">Container work</a></h3>
+<h3 id="container-work"><a href="https://docs.docker.com/engine/understanding-docker/#/how-does-a-container-work">Container work</a></h3>
 <p>A container uses the host machine’s Linux/Windows kernel, and consists of any extra files you add when the image is created, along with metadata associated with the container at creation or when the container is started. Each container is built from an image. The image defines the container’s contents, which process to run when the container is launched, and a variety of other configuration details. The Docker image is read-only. When Docker runs a container from an image, it adds a read-write layer on top of the image in which your application runs.</p>
 <h4 id="what-happens-when-you-run-a-container-">What happens when you run a container?</h4>
 <p>When you use the docker run CLI command or the equivalent API, the Docker Engine client instructs the Docker daemon to run a container. For example:</p>
@@ -183,9 +183,9 @@
 <li><strong>Captures and provides application output</strong>: Connects and logs standard input, outputs and errors for you to see how your application is running, because you requested interactive mode.</li>
 </ul>
 <p>You can manage and interact with it, use the services and applications it provides, and eventually stop and remove it.</p>
-<h3 id="-the-underlying-technology-https-docs-docker-com-engine-understanding-docker-the-underlying-technology-"><a href="https://docs.docker.com/engine/understanding-docker/#/the-underlying-technology">The underlying technology</a></h3>
+<h3 id="the-underlying-technology"><a href="https://docs.docker.com/engine/understanding-docker/#/the-underlying-technology">The underlying technology</a></h3>
 <p>Docker is written in Go programming language.</p>
-<h4 id="-namespaces-https-www-toptal-com-linux-separation-anxiety-isolating-your-system-with-linux-namespaces-"><a href="https://www.toptal.com/linux/separation-anxiety-isolating-your-system-with-linux-namespaces">Namespaces</a></h4>
+<h4 id="namespaces"><a href="https://www.toptal.com/linux/separation-anxiety-isolating-your-system-with-linux-namespaces">Namespaces</a></h4>
 <p>Docker uses a technology called namespaces to provide the isolated workspace called the container. When you run a container, Docker creates a set of namespaces for that container.</p>
 <p>These namespaces provide a layer of isolation. Each aspect of a container runs in a separate namespace and its access is limited to that namespace.</p>
 <p>Docker Engine uses namespaces such as the following on Linux:</p>
@@ -196,11 +196,11 @@
 <li>The <code>mnt</code> namespace: Managing filesystem mount points (MNT: Mount).</li>
 <li>The <code>uts</code> namespace: Isolating kernel and version identifiers. (UTS: Unix Timesharing System).</li>
 </ul>
-<h4 id="-control-groups-https-en-wikipedia-org-wiki-cgroups-"><a href="https://en.wikipedia.org/wiki/Cgroups">Control groups</a></h4>
+<h4 id="control-groups"><a href="https://en.wikipedia.org/wiki/Cgroups">Control groups</a></h4>
 <p>Docker Engine on Linux also relies on another technology called <em>control groups</em> (<code>cgroups</code>). A cgroup limits an application to a specific set of resources. Control groups allow Docker Engine to share available hardware resources to containers and optionally enforce limits and constraints. For example, you can limit the memory available to a specific container.</p>
-<h4 id="-union-file-systems-https-en-wikipedia-org-wiki-unionfs-"><a href="https://en.wikipedia.org/wiki/UnionFS">Union file systems</a></h4>
+<h4 id="union-file-systems"><a href="https://en.wikipedia.org/wiki/UnionFS">Union file systems</a></h4>
 <p>Union file systems, or UnionFS, are file systems that operate by creating layers, making them very lightweight and fast. Docker Engine uses UnionFS to provide the building blocks for containers.</p>
-<h4 id="-container-format-https-blog-docker-com-2015-07-open-container-format-progress-report-"><a href="https://blog.docker.com/2015/07/open-container-format-progress-report/">Container format</a></h4>
+<h4 id="container-format"><a href="https://blog.docker.com/2015/07/open-container-format-progress-report/">Container format</a></h4>
 <p>Docker Engine combines the namespaces, control groups, and UnionFS into a wrapper called a container format.</p>
 <p>Resourses:</p>
 <ul>

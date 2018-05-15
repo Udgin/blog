@@ -4,8 +4,8 @@ Tags: raspberry
 Steps:
 1. Download lates version of OS from [here](https://www.raspberrypi.org/downloads/raspbian/);
 2. Follow instructions from [here](https://www.raspberrypi.org/documentation/installation/installing-images/README.md).
-3. To ruen on ssh open create empty `/boot/ssh` file;
-4. Open `Boot` foolder and create `/boot/wpa_supplicant.conf`:
+3. To enable ssh need to create empty `/boot/ssh` file;
+4. To turn on WiFi need to create `/boot/wpa_supplicant.conf`:
 
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev

@@ -72,7 +72,7 @@ Link to the project.</p>
 </ol>
 <p><img src="./../images/facebook1.png" alt="example"></p>
 <p>You see there is secret key and application key. We need them to working with facebook through our application.</p>
-<ol>
+<ol start="2">
 <li>Authorization (OAuth 2.0).</li>
 </ol>
 <p><img src="./../images/facebook2.png" alt="example"></p>
@@ -148,7 +148,7 @@ private void GetPagesInformation()
     page = userPages.SelectToken(&quot;data&quot;).First(x =&gt; x.SelectToken(&quot;name&quot;).ToString().Equals(_pageName));
 }
 </code></pre>
-<ol>
+<ol start="3">
 <li>OK, let&#39;s start to posting something. Here is my configuration:</li>
 </ol>
 <pre><code class="language-csharp">private static readonly Dictionary&lt;string, string&gt; Config = new Dictionary&lt;string, string&gt;
@@ -222,7 +222,7 @@ private void GetPagesInformation()
     return string.Empty;
 }
 </code></pre>
-<ol>
+<ol start="4">
 <li>Change the information about the page.</li>
 </ol>
 <p>WebHelper class:</p>

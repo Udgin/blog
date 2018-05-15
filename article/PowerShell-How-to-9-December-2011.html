@@ -62,7 +62,7 @@
     <article class="markdown-body">
         <h2 id="powershell-how-to-9-december-2011">PowerShell How to ... ? - 9 December, 2011</h2>
 <p>Tags: powershell</p>
-<ol>
+<ol start="0">
 <li>How to delete all bin, obj folders?</li>
 </ol>
 <pre><code class="language-powershell">Get-ChildItem .\ -include bin,obj -Recurse | foreach ($_) { remove-item $_.fullname -Force -Recurse }
@@ -229,7 +229,7 @@ public class PermissionsSetter
  set-acl -Path $Path -AclObject $acl
  [void][WSG.Utils.PermissionsSetter]::RemovePrivilege([WSG.Utils.PermissionsSetter]::SE_RESTORE_NAME)
 </code></pre>
-<ol>
+<ol start="2">
 <li>How to register Asp.Net &amp; WCF in IIS?</li>
 </ol>
 <pre><code class="language-powershell"> $pathToFramework = &quot;$env:windir\Microsoft.NET\Framework&quot;
@@ -267,7 +267,7 @@ public class PermissionsSetter
   &amp; &quot;$pathToFramework\v4.0.30319\aspnet_regiis.exe&quot; -ir -enable
  }
 </code></pre>
-<ol>
+<ol start="3">
 <li>How to enable windows features?</li>
 </ol>
 <pre><code class="language-powershell"> #check the windows features
@@ -318,7 +318,7 @@ public class PermissionsSetter
   }
  }
 </code></pre>
-<ol>
+<ol start="4">
 <li>How to avoid exception &quot;The OS handle’s position is not what FileStream expected&quot;?</li>
 </ol>
 <pre><code class="language-powershell">#this code is for exception such as The OS handle’s position is not what FileStream expected
@@ -334,12 +334,12 @@ $field.SetValue($consoleHost, [Console]::Out)
 $field2 = $consoleHost.GetType().GetField(“standardErrorWriter”, $bindingFlags)
 $field2.SetValue($consoleHost, [Console]::Out)
 </code></pre>
-<ol>
+<ol start="5">
 <li>How to load module?</li>
 </ol>
 <pre><code class="language-powershell">Import-Module WebAdministration
 </code></pre>
-<ol>
+<ol start="6">
 <li>How to load another script file?</li>
 </ol>
 <pre><code class="language-powershell">#load external functions
