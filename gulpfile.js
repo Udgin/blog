@@ -14,6 +14,7 @@ var coloursIndex = 0;
 
 var mdFileNameToNormalName = {};
 var mdFileNameToTags = {};
+var mdFileNameToScripts = {};
 var createdDateToFileName = {};
 var createdDates = [];
 
@@ -32,8 +33,17 @@ gulp.task('splitmarkdown', function() {
                 mdFileNameToTags[name].push(tagObj);
             });
         }
-
     }
+
+    function readingScript(body, name) {
+        var scriptIndex = body.indexOf('SCRIPT:');
+        if (scriptIndex > 0) {
+            var scriptBegin = body.indexOf('\n', scriptIndex + 1);
+            var script = body.substring(scriptBegin + 1).replace(/^\s+|\s+$/g, '');
+            mdFileNameToScripts[name] = script;
+        }
+    }
+
     fs.readdirSync(tempPath).forEach(function(file, index) {
         var curPath = tempPath + file;
         fs.unlinkSync(curPath);
@@ -63,6 +73,12 @@ gulp.task('splitmarkdown', function() {
         createdDateToFileName[createdDate] = nameOfFile;
         mdFileNameToNormalName[nameOfFile] = normalName;
         readingTags(cleanBody, nameOfFile);
+        readingScript(cleanBody, nameOfFile);
+
+        var scriptIndex = val.indexOf('SCRIPT:');
+        if (scriptIndex > 0) {
+            val = val.substring(0, scriptIndex).replace(/^\s+|\s+$/g, '');
+        }
 
         fs.writeFileSync(tempPath + nameOfFile + '.md', val);
     });
@@ -95,9 +111,11 @@ gulp.task('replaceArticle', ['markdownv2'], function() {
             var curPath = tempPath + file;
             var val = fs.readFileSync(curPath, 'utf8');
             var tags = mdFileNameToTags[file.replace('.html', '')];
+            var script = mdFileNameToScripts[file.replace('.html', '')];
             fs.writeFileSync(articlePath + file, template.replace(/\{BODY\}/g, val)
                 .replace(/\{PAGE_TITLE\}/g, mdFileNameToNormalName[file.replace('.html', '')])
                 .replace(/\{TAGS\}/g, tags ? tags.map(x => x.Tag).join() : "")
+                .replace(/\{SCRIPT\}/g, script ? script : "")
             );
         }
     });

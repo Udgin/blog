@@ -19,6 +19,9 @@ You should take small breaks as often as possible when working at computer or wi
 
 Thanks.
 
+SCRIPT:
+// reminder for each 20 minutes
+setInterval(function(){alert("Take rest!");}, 1000 * 60 * 20);
 ---
 ## Proverbs - 1 September, 2018
 Tags: english
