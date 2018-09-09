@@ -40,7 +40,6 @@ gulp.task('splitmarkdown', function() {
     });
     var body = fs.readFileSync('blog.md', 'utf8');
     var bodies = body.split(/---\r?\n/);
-    var name = 0;
     bodies.map(function(val) {
         var cleanBody = val.replace(/^\s+|\s+$/g, '');
 
