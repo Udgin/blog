@@ -21,12 +21,13 @@
         
         body {
             font-family: 'Verdana', sans-serif;
+            line-height: 1.3rem;
             box-sizing: border-box;
             min-width: 200px;
             max-width: 980px;
             margin: 0 auto;
             padding: 1rem;
-            background-color: #fcfcfc;
+            background-image: url(./../bg01.png)
         }
         
         h2 {
@@ -38,10 +39,6 @@
             font-size: 100%;
             background: inherit;
             border: inherit;
-        }
-        
-        .night body {
-            background: #fffedd;
         }
         
         .markdown-body pre {
@@ -89,18 +86,6 @@
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
         })();
-    </script>
-    <script>
-        function timeCheck() {
-            var currentTime = new Date().getHours();
-            if (currentTime > 18 || currentTime < 6) {
-                document.documentElement.classList.add('night');
-            } else {
-                document.documentElement.classList.remove('night');
-            }
-        }
-        timeCheck();
-        setInterval(timeCheck(), 1000 * 60 * 60);
     </script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] } }); MathJax.Hub.Queue(function() { // Fix <code> tags after MathJax finishes running. This is a
