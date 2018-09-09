@@ -26,9 +26,15 @@
             min-width: 200px;
             max-width: 980px;
             margin: 0 auto;
-            padding: 1rem;
+            background-image: url(./../bg02.png);
+            background-color: #e8e8e8;
+        }
+
+        body > div {
             background-image: url(./../bg02.png);
             background-color: #fff;
+            padding: 1rem;
+            box-shadow: 0 0 0.25em 0em rgba(0, 0, 0, 0.25);
         }
         
         h2 {
@@ -57,6 +63,7 @@
 </head>
 
 <body>
+    <div>
     <article class="markdown-body">
         <h2 id="copy-remote-mssql-db-to-local-server-20-december-2017">Copy remote MSSQL DB to local server - 20 December, 2017</h2>
 <p>Tags: dotnet, mssql</p>
@@ -238,6 +245,7 @@ BACKUP DATABASE {0} TO DISK=&#39;{1}&#39; WITH INIT, COPY_ONLY, FORMAT, COMPRESS
 
 </script>
 <script src="./../prism.js"></script>
+</div>
 </body>
 
 </html>
