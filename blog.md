@@ -35,6 +35,7 @@ function notifyMe() {
     Notification.requestPermission();
   else {
     var notification = new Notification('Take a break!', {
+      icon: 'https://eapyl.github.io/favicon.ico',
       body: "Hey there! You have been working 20 min.",
     });
   }
