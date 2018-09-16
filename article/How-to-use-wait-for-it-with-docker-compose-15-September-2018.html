@@ -71,22 +71,29 @@
 It allows you to wait some docker containers which have long-running initialization process like databases.</p>
 <p>And there is step-by-step explanation how to use it:</p>
 <ol>
-<li>Copy <a href="https://github.com/vishnubob/wait-for-it/blob/master/wait-for-it.sh">wait-for-it.sh</a> to your project
-<img src="./../service-project.png" alt="image"></li>
-<li>Copy it to your docker image<pre><code>FROM ...
+<li>Copy <a href="https://github.com/vishnubob/wait-for-it/blob/master/wait-for-it.sh">wait-for-it.sh</a> to your project</li>
+</ol>
+<p><img src="./../images/service-project.png" alt="image"></p>
+<ol start="2">
+<li><p>Copy it to your docker image</p>
+<pre><code class="language-markup">FROM ...
 ...
 COPY wait-for-it.sh .
 ...
 CMD ...
-</code></pre></li>
-<li>Modify docker-compose.yml to call wait-for-it script:<pre><code>service:
+</code></pre>
+</li>
+<li><p>Modify docker-compose.yml to call wait-for-it script:</p>
+<pre><code class="language-markup">service:
  image: service:latest
  expose:
      - &quot;80&quot;
  depends_on:
      - database
  command: [&quot;./wait-for-it.sh&quot;, &quot;database:3306&quot;, &quot;--timeout=360&quot;, &quot;--&quot;, &quot;command&quot;]
-</code></pre>where<ul>
+</code></pre>
+<p>where</p>
+<ul>
 <li><code>command</code> is a command which will be called by wait-for-it script after timeout or successful ping result to database:3306</li>
 </ul>
 </li>

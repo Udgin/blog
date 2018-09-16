@@ -6,17 +6,20 @@ It allows you to wait some docker containers which have long-running initializat
 
 And there is step-by-step explanation how to use it:
 1. Copy [wait-for-it.sh](https://github.com/vishnubob/wait-for-it/blob/master/wait-for-it.sh) to your project
-![image](./../service-project.png)
+
+![image](./../images/service-project.png)
+
 2. Copy it to your docker image
-```
+```language-markup
 FROM ...
 ...
 COPY wait-for-it.sh .
 ...
 CMD ...
 ```
+
 3. Modify docker-compose.yml to call wait-for-it script:
-```
+```language-markup
 service:
     image: service:latest
     expose:
