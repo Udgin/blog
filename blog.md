@@ -1,3 +1,36 @@
+## How to use wait-for-it with docker compose - 15 September, 2018
+Tags: docker, docker-compose
+
+There is a possibility to control startup order in Compose using great script - [wait-for-it](https://github.com/vishnubob/wait-for-it).
+It allows you to wait some docker containers which have long-running initialization process like databases.
+
+And there is step-by-step explanation how to use it:
+1. Copy [wait-for-it.sh](https://github.com/vishnubob/wait-for-it/blob/master/wait-for-it.sh) to your project
+![image](./../service-project.png)
+2. Copy it to your docker image
+```
+FROM ...
+...
+COPY wait-for-it.sh .
+...
+CMD ...
+```
+3. Modify docker-compose.yml to call wait-for-it script:
+```
+service:
+    image: service:latest
+    expose:
+        - "80"
+    depends_on:
+        - database
+    command: ["./wait-for-it.sh", "database:3306", "--timeout=360", "--", "command"]
+```
+where
+    - `command` is a command which will be called by wait-for-it script after timeout or successful ping result to database:3306
+
+Thanks.
+
+---
 ## Help to your eyes - 9 September, 2018
 Tags: health, eyes
 
