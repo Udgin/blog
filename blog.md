@@ -1,3 +1,56 @@
+## Dotnet global tool, radio player - 20 September, 2018
+Tags: dotnet, tool, radio
+
+Do you like listen radio? Have you installed dotnet core locally? So there is nice dotnet tool "plr" to listen radio!
+
+To install:
+
+```
+dotnet tool install --global plr
+```
+
+Listen
+
+* using powershell:
+
+```
+start radio
+```
+
+* using cmd
+
+```
+radio
+```
+
+Common way to start listening the first radio from the list:
+
+```
+-l
+-p 1
+```
+
+To see supported commands:
+
+```
+-h
+--help
+```
+
+Example:
+
+![image](./../images/cross-radio-exampe.png)
+
+[The source code](https://github.com/eapyl/crossRadio) is on GitHub.
+
+[All descriptions of stations](https://github.com/eapyl/radio-stations/blob/master/db.json) are hosted at GitHub.
+
+List task is [todo](https://github.com/eapyl/crossRadio/blob/master/todo).
+
+Thanks.
+
+---
+
 ## How to use wait-for-it with docker compose - 15 September, 2018
 Tags: docker, docker-compose
 
