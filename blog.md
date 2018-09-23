@@ -1,7 +1,7 @@
 ## Dotnet global tool, radio player - 20 September, 2018
 Tags: dotnet, tool, radio
 
-Do you like listen radio? Have you installed dotnet core locally? So there is nice dotnet tool "plr" to listen radio!
+Do you like listen radio? Have you installed dotnet core locally? So there is a nice dotnet tool "plr" to listen radio!
 
 To install:
 
