@@ -5,7 +5,7 @@ Do you like listen radio? Have you installed dotnet core locally? So there is ni
 
 To install:
 
-```
+```language-markup
 dotnet tool install --global plr
 ```
 
@@ -13,26 +13,26 @@ Listen
 
 * using powershell:
 
-```
+```language-markup
 start radio
 ```
 
 * using cmd
 
-```
+```language-markup
 radio
 ```
 
 Common way to start listening the first radio from the list:
 
-```
+```language-markup
 -l
 -p 1
 ```
 
 To see supported commands:
 
-```
+```language-markup
 -h
 --help
 ```
