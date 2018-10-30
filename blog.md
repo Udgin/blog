@@ -1,6 +1,878 @@
+## Ubranie - 8 October, 2018
+Tags: polish, slowy
+
+### Ubranie damskie
+1. kapelusz
+2. kostium
+3. żakiet
+4. spódnica
+5. bluzka
+6. rajstopy
+7. półbut
+8. czapka
+9. sweter
+10. płaszcz
+11. but
+12. sukienka
+13. beret
+14. golf
+15. bluza
+16. dżinsy
+17. skarpetka
+18. adidasy
+19. bielizna
+20. biustonosz
+21. figi
+22. halka
+23. podkolanówka
+24. sandal
+25. szlafrok
+26. koszula nocna
+
+### Dodatki damskie
+1. pasek
+2. torebka
+3. apaszka
+4. szalik
+5. parasolka
+6. rękawiczka
+
+### Biżuteria
+1. pierścionek
+2. kolia
+3. bransoletka
+4. łańcuszek
+5. kolczyk
+6. klips
+
+### Ubranie i dodatki męskie
+1. kapelusz
+2. płaszcz
+3. szalik
+4. rękawiczka
+5. laska
+6. okulary
+7. garnitur
+8. marynarka
+9. kamizelka
+10. krawat
+11. spodnie
+12. koszula
+13. kołnierzyk
+14. rękaw
+15. mankiet
+16. kieszeń
+17. szorty
+18. skarpetka
+19. kurtka
+20. dżinsy
+21. but
+22. bielizna
+23. slipy
+24. podkoszulek
+25. piżama
+
+---
+
+## Rodzina - 7 October, 2018
+Tags: polish, slowy
+
+1. pradziadek
+2. prababcia
+3. dziadek
+4. babcia
+5. teść
+6. teściowa
+7. ojciec
+8. matka
+9. wuj
+10. ciotka
+11. brat
+12. siostra
+13. kuzyn
+14. kuzynka
+15. syn
+16. synowa
+17. córka
+18. zięć
+19. bratanek
+20. bratanica
+21. siostrzeniec
+22. siostrzenica
+23. wnuk
+24. wnuczka
+25. prawnuk
+26. prawnuczka
+27. mąż
+28. żona
+
+---
+
+## Ludzi - 6 October, 2018
+Tags: polish, slowy
+
+### Dorośli
+1. mężczyzna
+2. kobieta
+3. staruszek
+4. staruszka
+
+### Młodzież
+5. chłopiec
+6. dziewczyna
+
+### Dzieci
+7. niemowlę
+8. dziewczynka
+9. chłopczyk
+10. dziecko
+
+---
+
+## Człowiek - 5 October, 2018
+Tags: polish, slowy
+
+### Twarz
+1. włosy
+2. czoło
+3. brew
+4. ucho
+5. rzęsa
+6. oko
+7. nos
+8. policzek
+9. wąs
+10. usta
+11. język
+12. ząb
+13. warga
+14. broda
+
+### Szkielet
+1. czaszka
+2. obojczyk
+3. mostek
+4. żebro
+5. kręgosłup
+6. miednica
+7. kość
+
+### Narządy wewnętrzne
+1. mózg
+2. płuco
+3. serce
+4. mięsień
+5. tętnica
+6. krew
+7. wątroba
+8. żołądek
+9. jelito
+10. nerka
+11. pęcherz
+12. żyła
+
+### Ciało ludzkie
+1. głowa
+2. szyja
+3. gardło
+4. ręka
+5. ramię
+6. lokieć
+7. dłoń
+8. palec
+9. paznokieć
+10. pacha
+11. tułów
+12. brzuch
+13. biodro
+14. noga
+15. udo
+16. kołano
+17. łydka
+18. stopa
+19. kostka
+20. pięta
+21. kark
+22. pierś
+23. plecy
+24. talia
+25. pośladek
+
+---
+
+## Świat zwierząt - 4 October, 2018
+Tags: polish, slowy
+
+### Zwierzęta domowe
+1. pies
+2. szczeniak
+3. kot
+4. kotek
+5. koń
+6. źrebak
+7. krowa
+8. cielak
+9. baran
+10. owca
+11. świnia
+12. królik
+13. kura
+14. kogut
+15. kurczątko
+16. indyk
+17. kaczka
+18. kaczątko
+19. gęś
+20. koza
+
+### Zwierzęta leśne
+1. lis
+2. wilk
+3. borsuk
+4. niedźwiedż
+5. żubr
+6. ryś
+7. loś
+8. sarna
+9. jeleń
+10. zając
+11. wiewiórka
+12. jeż
+13. mysz
+14. dzik
+
+### Zwierzęta egzotyczne
+1. lama
+2. wielbląd
+3. kangur
+4. sloń
+5. żyrafa
+6. tygrys
+7. lew
+8. lampart
+9. pantera
+10. zebra
+11. nosorożec
+12. małpa
+13. hipopotam
+14. antylopa
+15. foka
+16. osioł
+17. delfin
+
+### Ryby, gady, płazy
+1. karp
+2. rekin
+3. węgorz
+4. śledź
+5. wąż
+6. jaszczurka
+7. kameleon
+8. krokodyl
+9. żaba
+10. zółw
+
+### Ptaki
+1. orzeł
+2. sowa
+3. jastrząb
+4. bażant
+5. wróbel
+6. jaskółka
+7. wrona
+8. struś
+9. pingwin
+10. łabędź
+11. gołąb
+12. papuga
+13. paw
+14. kanarek
+15. bocian
+16. dzięcioł
+
+### Owady
+1. mucha
+2. pszczoła
+3. osa
+4. chrząszcz
+5. konil polny
+6. ważka
+7. motyl
+8. ćma
+9. komar
+10. mrówka
+11. pająk
+
+---
+
+## Świat roślin - 3 October, 2018
+Tags: polish, slowy
+
+### Owoce
+1. jabłko
+2. gruszka
+3. śliwka
+4. truskawka
+5. porzeczka
+6. agrest
+7. malina
+8. czereśnia
+9. orzech
+10. poziomka
+11. jagoda
+12. brzoskwinia
+13. winogrono
+14. banan
+15. pomarańcza
+16. cytryna
+17. ananas
+18. grejprfryt
+
+### Warzywa
+1. ziemniak
+2. burak
+3. papryka
+4. marchewka
+5. pietruszka
+6. por
+7. seler
+8. kapusta
+9. sałata
+10. kalafior
+11. groch
+12. pomidor
+13. ogórek
+14. cebula
+15. rzodkiewka
+
+### Zboża
+1. żyto
+2. pszenica
+3. jęczmień
+4. owies
+5. kukurydza
+
+### Kwiaty
+1. róża
+2. goździk
+3. gerbera
+4. żonkil
+5. tulipan
+6. frezja
+7. stokrotka
+8. fiołek
+9. konwalia
+10. słonecznik
+11. lilia
+12. mak
+
+### Drzewa
+1. brzoza
+2. dąb
+3. klon
+4. kasztan
+5. wierzba płaczącz
+6. topola
+7. sosna
+
+### Drzewo - elementy drzewa
+1. pień
+2. gałąź
+3. kora
+4. liść
+
+### Kwiat - elementy kwiatu
+1. łodyga
+2. pąk
+3. płatek
+
+---
+
+## Pogoda, pory roky i przyroda - 2 October, 2018
+Tags: polish, slowy
+
+* wiosna
+* łato
+* jesień
+* zima
+
+### mapa pogody
+1. słońce
+2. zachmurzenie małe
+3. zachmurzenie umiarkowane
+4. zachmurzenie duże
+5. opady deszczu / deszcz
+6. opady śniegu / śnieg
+7. burza
+8. wiatr
+9. temperatura
+
+### termometr
+1. rtęć
+2. skala
+3. temperatura
+
+### przyroda
+1. słońce
+2. powietrze
+3. woda
+4. ziemia
+5. niebo
+6. tęcza
+7. wiatr
+8. błyskawica
+9. chmura
+
+---
+
+## Wymowa - 1 October, 2018
+Tags: polish
+
+|Samogłoski| | |
+|-|-|-|
+|a|e|i|
+|y|ę|ą|
+|o|u//ó||
+
+|Spółgłoski| | |
+|-|-|-|
+|k|g||
+|t|d||
+|p|b||
+|f|w||
+|j|||
+|h//ch|||
+|m|n|ń//ni|
+|l|r|ł|
+
+| | | |
+|-|-|-|
+|s|ś//si|sz|
+|z|ż//zi|ż//rz|
+|c|ć//ci|cz|
+|dz|dź//dzi|dż|
+
+> Inna ortografia, taka sama wymowa!  
+ó = u, ch = h, rz = ż, ci = ć, dzi = dź, ni = ń, si = ś, zi = ż
+
+---
+
+## Czasownik - 30 September, 2018
+Tags: polish, gramatyka
+
+||być|mieć|mieszkać|rozumieć|przepraszać|czytać|pytać|mówić|lubić|robić|uczyć się|tańczyć|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|(ja) -ę, -m|jestem|mam|mieszkam|rozumiem|przepraszam|czytam|pytam|mówię|lubię|robię|uczę się|tańczę|
+|(ty) -sz, -ś|jesteś|masz|mieszkasz|rozumiesz|przepraszasz|czytasz|pytasz|mówisz|lubisz|robisz|uczysz się|tańczysz|
+|(on/ona/ono) -Ø|jest|ma|mieszka|rozumie|przeprasza|czyta|pyta|mówi|lubi|robi|uczy się|tańczy|
+|(my) -my|jesteśmy|mamy|mieszkamy|rozymiemy|przepraszamy|czytamy|pytamy|mówimy|lubimy|robimy|uczymy się|tańczymy
+|(wy) -cie|jesteście|macie|mieszkacie|rozumiecie|prepraszacie|czytacie|pytacie|mówicie|lubicie|robicie|uczycie się|taczycie
+|(oni/one) -ą, -ją|są|mają|mieszkają|rozumieją|przepraszają|czytają|pytają|mówią|lubią|robią|uczą się|tańczą|
+
+||jeść|wiedzieć|chodzić|chcieć|pisać|moć|pracować|iść|jechać|jeździć|brać|pieć|pić|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|(ja) -ę, -m|jem|wiem|chodzę|chcę|piszę|mogę|pracuję|idę|jadę|jeżdżę|biorę|||
+|(ty) -sz, -ś|jesz|wiedziesz|chdzisz|chcesz|piszesz|możesz|pracujesz|idziesh|jedziesz|jeździsz|bierzesz|||
+|(on/ona/ono) -Ø|je|wie|chodzi|chce|pisze|może|pracuje|idzie|jedzie|jeździ|bierze|||
+|(my) -my|jemy|wiemy|chodzimy|chcemy|piszemy|możemy|pracujemy|idziemy|jedziemy|jeżdzimy|bierzemy|||
+|(wy) -cie|jecie|wiecie|chodzicie|chcecie|piszecie|możecie|pracujecie|idziecie|jedziecie|jeżdzicie|bierzecie|||
+|(oni/one) -ą, -ją|jedzą|wiedzą|chodzą|chcą|piszą|mogą|pracują|idą|jadą|jeżdżą|bierzą||||
+
+---
+
+## Czas przeszły - 29 September, 2018
+Tags: polish, gramatyka
+
+|robić|rodzaj męski|rodzaj żeński|rodzaj nijaki
+|-|-|-|-|
+|ja|robiłem|robiłam||
+|ty|robiłeś|robiłaś||
+|on/ona/ono|robił|robiła|robiło|
+|my|robiliśmy|robiłyśmy||
+|wy|robiliście|robiłyście||
+|oni/one|robili|robiły|||
+
+|jeść|rodzaj męski|rodzaj żeński|rodzaj nijaki
+|-|-|-|-|
+|ja|jadłem|jadłam||
+|ty|jadłeś|jadłaś||
+|on/ona/ono|jadł|jadła|jadło|
+|my|jedliśmy|jadłyśmy||
+|wy|jedliście|jedłyście||
+|oni/one|jedli|jedły|||
+
+|moć|rodzaj męski|rodzaj żeński|rodzaj nijaki
+|-|-|-|-|
+|ja|mogłem|mogłam||
+|ty|mogłeś|mogłaś||
+|on/ona/ono|mógł|mogła|mogło|
+|my|mogliśmy|mogłyśmy||
+|wy|mogliście|mogłyście||
+|oni/one|mogli|mogły|||
+
+|iść|rodzaj męski|rodzaj żeński|rodzaj nijaki
+|-|-|-|-|
+|ja|szedłem|szłam||
+|ty|szedłeś|szłaś||
+|on/ona/ono|szedł|szła|szło|
+|my|szliśmy|szłyśmy||
+|wy|szliście|szłyście||
+|oni/one|szli|szły|||
+
+|(-eć)|rodzaj męski|rodzaj żeński|rodzaj nijaki
+|-|-|-|-|
+|ja|miałem|miałam||
+|ty|miałeś|miałaś||
+|on/ona/ono|miał|miała|miało|
+|my|mieliśmy|miałyśmy||
+|wy|mieliście|miałyście||
+|oni/one|mieli|miały|||
+
+---
+## By
+Tags: polish, gramatyka
+
+|by|rodzaj męski|rodzaj żeński|rodzaj nijaki
+|-|-|-|-|
+|ja|miałbym|miałabym||
+|ty|miałbyś|miałabyś||
+|on/ona/ono|miałby|miałaby|miałoby|
+|my|mielibyśmy|miałybyśmy||
+|wy|mielibyście|miałybyście||
+|oni/one|mieliby|miałyby|||
+
+---
+## 
+Tags: polish, gramatyka
+
+być - bądż
+mieć - miej
+wziąć - weż
+zrobić - zrób
+pokazać - pokaż
+brać - bierz
+wyjąć - wyjmij
+
+---
+
+## Czas przyszły - 28 September, 2018
+Tags: polish, gramatyka
+
+||||
+|-|-|-|
+|ja będę|bezokolicznik|Co będziesz robić jutro?|
+|ty będziesz|bezokolicznik|Jutro będę uczyć się polskiego|
+|on/ona/ono będzie|bezokolicznik||
+|my będzeimy|bezokolicznik|Kiedy będziecie w Krakowie?|
+|wy będziecie|bezokolicznik|Będziemy w Krakowie w przyszłym tygodniu.|
+|oni/one będą|bezokolicznik||
+||
+|ja będę|+3 os. I poj.|Będę mógł robić to, co będę chciał.|
+|ty będziesz|+3 os. I poj.|Będę mógła robić to, co będę chciała.|
+|on/ona/ono będzie|+3 os. I poj.||
+|my będzeimy|+3 os. I mn.|Będziemy mogli robić to, co będziemy chcieli.|
+|wy będziecie|+3 os. I mn.|Będziemy mogły robić to, co będziemy chciały.|
+|oni/one będą|+3 os. I mn.|||
+
+---
+
+## Przymiotnik - 27 September, 2018
+Tags: polish, gramatyka
+
+|rodzaj męski - jaki?|rodzaj żeński - jaka?|rodzaj nijaki - jakie?
+|-|-|-|
+|Jaki to (jest) samochód?|Jaka to (jest) literatura?|Jakie to (jest) nazwisko?|
+|To (jest) japoński samochód|To (jest) literatura francuska|To (jest) hiszpańskie nazwisko|
+|-y|-a|-e|
+|(-k, -g) -i| |(-k, -g) -ie||
+
+---
+
+## Porownawcze formy przymiotnika - 9 October, 2018
+Tags: polish, gramatyka
+
+||||
+|-|-|-|
+|duży|większy|największy|
+|mały|mniejszy|najmnieszy|
+|drogi|droższy|najdroższy|
+|tani|tańszy|najtańszy|
+||bardzej|
+
+---
+## Przysłówek (jak?)
+Tags: polish, gramatyka
+
+-o lub -e
+
+Dziś jest zimno, ale słonecznie.
+
+---
+## Rzeczownik odczasownikowy
+Tags: polish, gramatyka
+
+-nie: bezakolicznik -ać, -ować, -eć - plywanie, fotografowanie, rozumienie
+-enie: bezakolicznik -ić, -yć - chodzenie, uczenie się
+-enie: bezakolicznik -ić, -yć - chodzenie, uczenie się
+-cie: krótkie czasowniki typu myć, pić i bezakolicznik -ąć - mycie, zamknięcie
+
+---
+
+
+musieć
+powinien
+
+---
+
+## Przypadki - 26 September, 2018
+Tags: polish, gramatyka
+
+### Liczba pojeduncza
+|skrót|nazwa|pytanie|M|Ż|N|
+|-|-|-|-|-|-|
+|M.|Mianownik|Kto? Co?|lekarz, pies|książka|okno|
+|D.|Dopełniacz|Kogo? Czego?|lekarza, psa|książki|okna|
+|C.|Celownik|Komu? Czemu?|lekarzowi, psu|książce|oknu|
+|B.|Biernik|Kogo? Co?|lekarza, psa|książkę|okno|
+|N.|Narzędnik|Z kim? Z czym?|lekrzem, psem|książką|oknem|
+|Msc.|Miejscownik|O kim? O czym?|(o) lekarzu, psie|książce|oknie|
+|W.|Wolacz|O!|lekarzu! psie!|książko!|okno!||
+### Liczba mnoga
+|skrót|nazwa|pytanie|M|nie M|
+|-|-|-|-|-|-|
+|M.|Mianownik|Kto? Co?|lekarze|psy, książki, okna|
+|D.|Dopełniacz|Kogo? Czego?|lekarzy|psów, książek, okien|
+|C.|Celownik|Komu? Czemu?|lekarzom|psom, książkom, oknom|
+|B.|Biernik|Kogo? Co?|lekarzy|psy, książki, okna|
+|N.|Narzędnik|Z kim? Z czym?|lekrzami|psami, książkami, oknami|
+|Msc.|Miejscownik|O kim? O czym?|(o) lekarzach|psach, książkach, oknach|
+|W.|Wolacz|O!|lekarze!|psy! książki! okna!||
+
+---
+
+## Mianownik i biernik liczby mnogiej - 25 September, 2018
+Tags: polish, gramatyka
+
+||rodzaj męski i żeński|rodzaj nijaki
+|-|-|-|
+|rzeczownik|-y sofa - sofy<br>-k,-g + -i stolik - stoliki<br>-ni,ń,sz,cz,rz,ż,l,j,c,dz,ś,ć,ź + -e materac - materace|-a lustro - lustra|
+|przymiotnik|-e biurowy - biurowe<br>-k,-g + -ie drogi - drogie|||
+
+---
+
+## Dopełniacz (kogo? czego?), liczba pojedyncza - 24 September, 2018
+Tags: polish, gramatyka
+
+jakiego? jakiej? jakiego?
+
+|||przymiotnik|rzeczownik||
+|-|-|-|-|-|
+|jedziemy do:|Paryża, nowego klubu|-ego|-a/-u|rodzaj męski nieżywotny|
+|nie lubię:|żółtego sera, makaronu||||
+||mojego kuzyna|-ego|-a|rodzaj męski żywotny|
+||dobrej restauracji|-ej|-y /(-k, -g, -j, miękkie) -i|rodzaj żenski|
+||nowego kina|-ego|-a|rodzaj nijaki||
+
+---
+
+## Dopełniacz (kogo? czego?), liczba mnoga - 23 September, 2018
+Tags: polish, gramatyka
+
+||przymiotnik, rzeczownik|
+|-|-|
+||kiło młodych ziemniaków, hiszpańskich cytryn, polskich jabłek|
+|przymiotnik:| -ych / (-k, -g) -ich|
+|rzeczownik:||
+|-ów:|(mianownik liczba pojedyncza spółgłoska - ziemniak, pomidor, banan)|
+||kilo ziemniaków, pomidorów, bananów|
+|-Ø|(mianownik liczba pojedyncza -a, -i, -e, -o - cytryna, jabłko, jajko)|
+||kiło cytryn, jabłek, jajek||
+
+---
+
+## Biernik (kogo? co? dokąd?), liczba pojedyncza - 22 September, 2018
+Tags: polish, gramatyka
+
+Jaki? Jakiego? Jaką? Jakie?
+
+|S|V|O|przymiotnik|rzeczownik||
+|-|-|-|-|-|-|
+|on|ma|sympatyczną matkę, siostrę i córkę| -ą | -ę| rodzaj żeński
+|ja| mam| dobrego ojca, brata i syna| -ego| -a | rodzaj męski żywotny|
+|ty| masz| ładnego psa i kota| -ego| -a | rodzaj męski żywotny|
+|my|mamy|ładny dom i samochód| = mianownik||rodzaj męski nieżywotny|
+|oni|mają|małe dziecko| = mianownik||rodzaj nijaki|
+
+> tak + biernik, nie + dopełniacz  
+Ale: nie interesuję się sportem, interesuję się teatrem; nie jestem Polakiem, jestem Francuzem.
+
+---
+
+## Narzędnik ( kim? czym?) liczba pojedyncza - 21 September, 2018
+Tags: polish, gramatyka
+
+||mianownik: kto? co?|narzędnik: kim? czym?|końcówki|końcówki|
+|-|-|-|-|-|-|
+|M|sympatyczny nauczyciel|sympatycznym nauczycielem| -ym| -em|
+|M|sympatyczny Polak|sympatycznym Polakiem| | -k, -g + -iem|
+|M|wysoki mężczyzna|wysokim mężczyzną| -k, -g + im| -ą|
+|Ż|sympatyczna nauczycielka|sympatyczną nauczycielką|-ą|-ą|
+|Ż|wysoka kobita|wysoką kobietą|-ą|-ą|
+|Ż|mila pani|milą panią|-ą|-ą|
+|N|polskie kino| polskim kinem|-k, -g + im| -em|
+|N|sympatyczne dziecko|sympatycznym dzieckiem|-ym|-k, -g + -iem|
+> -e/-ie:Ø
+minist**e**r - ministrem
+Niem**ie**c - Niemcem
+
+---
+
+## Narzędnik(kim? czym?), liczba mnoga - 19 September, 2018
+Tags: polish, gramatyka
+
+||mianownik: kto? co? liczba pojedyncza|narzędnik: kim? czym?|końcówki|końcówki|
+|-|-|-|-|-|
+|M|sympatyczny nauczyciel|sympatycznymi nauczycielami| -ymi| -ami|
+|M|sympatyczny Polak|sympatycznymi mężczyznami| -ymi| -ami|
+|Ż|wysoka kobita|wysokimi kobietami|-k, -g + -imi| -ami|
+|Ż|sympatyczna nauczycielka|sympatycznymi nauczycielkami| -ymi| -ami|
+|N|dobre auto| dobrymi autami| -ymi| -ami|
+
+> dziecko - dziećmi
+
+---
+
+## Miescownik (o kim? o czym? w, na, o, po, przy), liczba poejdyncza - 18 September, 2018
+Tags: polish, gramatyka
+
+#### Przymiotnik
+||||
+|-|-|-|
+|Od roku pracuję w novym biurze.|-ym/(-k, -g) -im| rodzay męski, rodzaj nijaki|
+|Uczę się w polskiej szkole w Warszawie| -ej/(-k, -g) -iej| rodzaj żeński|
+
+#### Rzeczownik
+|mianownik|rodzaj męski, rodzay żeński,rodzaj niajki||
+|-|-|-|
+|b,p,m,n,w,f,s,z|w klubie, w sklepie, o mamie, na oknie, w Warszawie, o szefie, w klasie, w Efexie|-ie|
+|t:cie,d:dzie,st:ście,zd:żdzie,sł:śle,r:rze,ł:le|na uniwersytecie, na snowboardzie, w mieście, o gwieździe, na krześle, w teatrze, na stole|-e|
+
+|mianownik|rodzaj męski|rodzay żeński|rodzaj niajki|
+|-|-|-|-|
+|k,g,ch,h|-u<br> w kiosku, w rogu, na dachu|-e<br> w Polsce k:ce <br> w Pradze g:dze <br> o musze ch:sze|-u <br> w jabłku <br> w tangu <br> w uchu
+|c,dz,cz,sz,rz,ż|-u<br>na kocu, w Grudziądzu, o meczu, w koszu, o mężu|-y<br>w pracy, o władzy, na daczy, o suszy, na wieży|-u<br>w slońcu|
+|l,j,i,ś,ń,ć,ź|-u<br>w fotelu, w maju, o Jasiu, na koniu|-i<br>w sali, w restauracji, w Belgii, o Kasi, w kuchni, o babci, o Zuzi|
+> syn - o synu, pan - o panu, dom - w domu, muzeum - w muzeum, liceum - w liceum
+
+> wieś - na wsi, Austria - w Austrii, ekonomia - o ekonomii
+
+> ó:o/e stół - na stole, kościól - w kościole
+
+> a:e miasto - w mieście
+
+---
+
+## Miescownik (o kim? o czym? w, na, o, po, przy), liczba mnoga - 17 September, 2018
+Tags: polish, gramatyka
+
+Ubrania kupuję w drogich sklepach. Studenci uczą się w nowoczesnych bibliotekach. Premiery filmów są w dużych kinach.
+
+przymiotnik: -ych / (-k, -g) -ich
+rzeczownik: -ach
+> Niemcy - w Niemczech, Włochy - we Włoszech, Węgry - na Węgrzech
+
+---
+
+## Przyimki (statycznie i dynamicznie)
+Tags: polish
+
+|dynamicznie|do+... <br>do kogo?<br>dopełniacz|do+...<br>dokąd?<br>dopełniacz|na+...<br>dokąd?<br>biernik|na+...<br>na co?<br>biernik|w+...<br>dokąd?<br>biernik|nad+...<br>dokąd?<br>biernik|
+|-|-|-|-|-|-|-|
+|idę, jadę, iecę|do kolegi<br>do przyjaciół<br>do rodziny<br>do fryzjera|do Polski<br>do Krakowa<br>do domu<br>do kawiarni<br>do kina<br>do parku|na plac<br>na peron<br>na parking<br>na Mazury<br>**na pacztę**<br>**na uniwersytet**<br>**na dworzec**|na kawę<br>na piwo<br>na spacer<br>na wykład<br>na kurs|w góry<br>w Tatry<br>w Alpy<br>w Sudety<br>w Bieszczady|nad morze<br>nad jezioro<br>nad rzekę<br>nad Bałtyk<br>nad Wisłę|
+
+|statycznie|u+... <br>u kogo?<br>dopełniacz|w+...<br>gdzie?<br>miescownik|na+...<br>gdzie?<br>miescownik|na+...<br>na czym?<br>miescownik|w+...<br>gdzie?<br>miescownik|nad+...<br>gdzie?<br>narzędnik|
+|-|-|-|-|-|-|-|
+|jestem mieszkam|u kolegi<br>u przyjaciół<br>u rodziny<br>u fryzjera|w Polsce<br>w Krakowie<br>w domu<br>w kawiarni<br>w kinie<br>w parku|na placu<br>na peronie<br>na parkingu<br>na Mazurach<br>**na paczcie**<br>**na uniwersytecie**<br>**na dworcu**|na kawie<br>na piwie<br> na spacerze<br>na wykładzie<br>na kursie|w górach<br>w Tatrach<br>w Alpach<br>w Sudetach<br>w Bieszczadach|nad morzem<br>nad jeziorem<br>nad rzeką<br>nad Bałtykiem<br>nad Wislą|
+
+---
+
+## Lat|lata, złoty|złotych, minutę|minuty, godzinę|godziny - 16 September, 2018
+Tags: polish, gramatyka
+
+### Lat czy lata?
+|||
+|-|-|
+|1|rok|
+|x5 - x1| lat|
+|x2, x3, x4| lata|
+
+### Złoty czy złotych
+|||||
+|-|-|-|-|
+|1|złoty|1|grosz|
+|x2, x3, x4|złote|x2, x3, x4|grosze|
+|x1, x5-x9|złotych|x1, x5-x9|groszy|
+
+### Jak dlugo?
+|||
+|-|-|
+|1 (jedną)|minutę/godzinę|
+|x2, x3, x4| minuty / godziny|
+|x5 - x1| minut / godzin|
+|30 minut|pół godziny|
+
+---
+
+## Zaimki osobowe - 14 September, 2018
+Tags: polish, gramatyka
+
+|Mianownik|Dopełniacz(kogo? czego?)|Celownik(komu? czemy?)|Biernik(kogo? co?)|Narzędnik(z kim? z czym?)|Miejscownik(o kim? o czym?)|
+|-|-|-|-|-|-|
+|ja|mnie|mi, mnie|mnie|mną|mnie|
+|ty|ciebie, cię|ci, tobie|ciebie, cię|tobą|tobie|
+|on|go, jego, niego|mu, jemu, niemu|go, niego, jego|nim|nim|
+|ona|jej, niej|jej, niej|ją, nią|nią|niej|
+|ono|go, jego, niego|mu, jemu, niemu|je, nie|nim|nim|
+|pan|pana|panu|pana|panem|panu|
+|panowie|panów|panim|panów|panami|panach|
+|pani|pani|pani|panią|panią|pani|
+|panie|pań|paniom|panie|paniami|paniach|
+|państwo|państwa|państwu|państwa|państwem|państwu|
+|my|nas|nam|nas|nami|nas|
+|wy|was|wam|was|wami|was|
+|oni|ich, nich|im, nim|ich, nich|nimi|nich|
+|one|ich, nich|im, nim|je, nie|nimi|nich|
+|reflexive|siebie, się|sobie|siebie, się|sobą|sobie|
+|ten|tego|temu|ten, tego|tym|tym|
+|to|tego|temu|to|tym|tym|
+|ta|tej|tej|tę|tą|tej|
+|ci|tych|tym|tych|tymi|tych|
+|te|tych|tym|te|tymi|tych|
+|co|czego|czemu|co|czym|czym|
+|kto|kogo|komu|kogo|kim|kim|
+|nic|nic, niczego|niczemu|nic|niczym|nikim|
+|nikt|nikogo|nikomu|nikogo|nikim|nikim|
+|mój|mojego,mego|mojemu,memu|mój/mojego|moim, mym|moim, mym|
+|moja, ma|mojej,mej|mojej,mej|moich,mych|moją,mą|mojej, mej|
+|moje, me|mojego,mego|mojemu, memu|moją, mą|moim, mym|moim, mym|
+|twój||||||
+|twoja||||||
+|twoje||||||
+|jego||||||
+|jej||||||
+|nasz||||||
+|nasza||||||
+|nasze||||||
+|wasz||||||
+|wasza||||||
+|wasze||||||
+|ich||||||
+
+---
+
 ## Dotnet global tool, radio player - 20 September, 2018
 Tags: dotnet, tool, radio
-
+ 
 Do you like listen radio? Have you installed dotnet core locally? So there is a nice dotnet tool "plr" to listen radio!
 
 To install:
