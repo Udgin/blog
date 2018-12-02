@@ -67,8 +67,8 @@
 <p>The Support Vector Machine (SVM) is yet another type of supervised machine learning algorithm. It is sometimes cleaner and more powerful.</p>
 <h3 id="cost-function">Cost function</h3>
 <p><span class="math">\(\text{cost}_1(z)\)</span> and <span class="math">\(\text{cost}_0(z)\)</span> (respectively, note that <span class="math">\(\text{cost}_1(z)\)</span> is the cost for classifying when y=1, and <span class="math">\(\text{cost}_0(z)\)</span> is the cost for classifying when y=0)</p>
-<p><img src="../images/Svm_hing.png" alt="image" />
-<img src="../images/Svm_hinge_negative_class.png" alt="image" /></p>
+<p><img src="Optimization-Objective\Svm_hing.png" alt="image" />
+<img src="Optimization-Objective\Svm_hinge_negative_class.png" alt="image" /></p>
 <p><span class="math">\[J(\theta) = C\sum_{i=1}^m y^{(i)} \ \text{cost}_1(\theta^Tx^{(i)}) + (1 - y^{(i)}) \ \text{cost}_0(\theta^Tx^{(i)}) + \dfrac{1}{2}\sum_{j=1}^n \Theta^2_j\]</span></p>
 <p>Note that the hypothesis of the Support Vector Machine is not interpreted as the probability of y being 1 or 0 (as it is for the hypothesis of logistic regression). Instead, it outputs either 1 or 0. (In technical terms, it is a discriminant function.)</p>
 <p><span class="math">\[h_\theta(x) =\begin{cases}    1 &amp; \text{if} \ \Theta^Tx \geq 0 \\    0 &amp; \text{otherwise}\end{cases}\]</span></p>
