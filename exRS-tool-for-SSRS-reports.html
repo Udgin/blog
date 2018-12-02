@@ -1,0 +1,169 @@
+<html>
+
+<head>
+    <title>exRS-tool-for-SSRS-reports</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <link rel="stylesheet" href="prism.css"></link>
+    <style>
+        .columns .column {
+            padding: .4rem;
+        }
+        #sidebar-id {
+            padding: .4rem;
+        }
+        code {
+            padding: 0;
+            overflow-x: scroll;
+        }
+        img {
+            max-width: 100%;
+        }
+        .off-canvas .off-canvas-sidebar
+        {
+            background: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="off-canvas off-canvas-sidebar-show">
+        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
+            <i class="icon icon-menu"></i>
+        </a>
+        <div id="sidebar-id" class="off-canvas-sidebar">
+            <ul class="menu">
+                <li class="menu-item">
+                    <div class="tile tile-centered">
+                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
+                                alt="Avatar"></div>
+                        <div class="tile-content">Yauhen Pyl</div>
+                    </div>
+                </li>
+                <li class="divider" data-content="LINKS">
+                </li>
+                <li class="menu-item">
+                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://github.com/eapyl">GitHub</a>
+                </li>
+                <li class="menu-item">
+                    <a href="mailto:gromkaktus@gmail.com">Email</a>
+                </li>
+            </ul>
+        </div>
+        <a class="off-canvas-overlay" href="#close"></a>
+        <div class="off-canvas-content">
+            <div class="container grid-lg">
+                <h1 id="exrs-tool-to-deploy-ssrs-reports-and-subscriptions">exRS tool to deploy SSRS reports and subscriptions</h1>
+<p>There is a nice tool to deploy reports and/or subscription to SSRS - <a href="https://docs.microsoft.com/en-us/sql/reporting-services/tools/rs-exe-utility-ssrs">RS tool</a>. And I described a way to use this tool <a href="https://eapyl.github.io/article/Auto-deployment-for-SSRS-reports-19-December-2017-.html">here</a>.</p>
+<p>But it is not so easy to support VB scripts, so there is a new tool <a href="https://github.com/eapyl/exRS">exRS</a>. This tool helps to deploy reports and create subscriptions for reports.</p>
+<p>Currently there is a small console application with name exRSConsole.</p>
+<blockquote>
+<p>To deploy sample Report1 report and it's subscription from Report1.xml:
+exRSConsole.exe -n Report1 -p SampleReport -r -s</p>
+</blockquote>
+<p>Also this tool allows to delete all folders at SSRS server:</p>
+<blockquote>
+<p>exRSConsole.exe -d</p>
+</blockquote>
+<p>And backup all existing reports to local folder:</p>
+<blockquote>
+<p>exRSConsole.exe -b</p>
+</blockquote>
+<p>To configure exRS you need to change configuration file:</p>
+<pre><code class="language-markup">&lt;applicationSettings&gt;
+    &lt;exRS.Properties.Settings&gt;
+        &lt;!-- URI of SSRS server --&gt;
+        &lt;setting name=&quot;exRS_SSRSService_ReportingService2010&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;http://desktop-name:80/ReportServer/ReportService2010.asmx&lt;/value&gt;
+        &lt;/setting&gt;
+    &lt;/exRS.Properties.Settings&gt;
+&lt;/applicationSettings&gt;
+&lt;userSettings&gt;
+    &lt;exRS.Properties.Settings&gt;
+        &lt;!-- a user to connect to SSRS server --&gt;
+        &lt;setting name=&quot;SSRSUser&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;desktop-name\user&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a password to connect to SSRS server --&gt;
+        &lt;setting name=&quot;SSRSPassword&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a path to folder where put reports and subscriptions during backup process --&gt;
+        &lt;setting name=&quot;backupPath&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;C:\Temp&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a name of folder with subscription configuration for reports (near exRSConsole.exe) --&gt;
+        &lt;setting name=&quot;subscriptionSettingsFolder&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;Subscriptions&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a user name to connect to DB for data sources --&gt;
+        &lt;setting name=&quot;dbUserForDataSource&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;test&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a password name to connect to DB for data sources --&gt;
+        &lt;setting name=&quot;dbPasswordForDataSource&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;test&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a path at SSRS server where put reports created by subscription --&gt;
+        &lt;setting name=&quot;subscriptionFileSharePath&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;\\DESKTOP-NAME\Temp&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a name of folder with reports (*.rdl, *rds and *.rsd files) (near exRSConsole.exe) --&gt;
+        &lt;setting name=&quot;sourceFolderPath&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;.\Reports&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a name of folder at SSRS server with data sources --&gt;
+        &lt;setting name=&quot;datasourcesServerFolderName&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;Data Sources&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a name of folder at SSRS server with datasets--&gt;
+        &lt;setting name=&quot;datasetsServerFolderName&quot; serializeAs=&quot;String&quot;&gt;
+            &lt;value&gt;Datasets&lt;/value&gt;
+        &lt;/setting&gt;
+    &lt;/exRS.Properties.Settings&gt;
+&lt;/userSettings&gt;
+</code></pre>
+<p>After deployment you should see 3 folders in SSRS: &quot;Data Sources&quot;, &quot;Datasets&quot; and &quot;SampleReport&quot;.
+Please find the source code <a href="https://github.com/eapyl/exRS">here</a>.</p>
+<p>Thanks.</p>
+
+                <div class="sharethis-inline-share-buttons"></div>
+                <div id="disqus_thread"></div>
+                <script>
+                    (function() { // DON'T EDIT BELOW THIS LINE
+                        var d = document,
+                            s = d.createElement('script');
+                        s.src = '//eapyl-github-io.disqus.com/embed.js';
+                        s.setAttribute('data-timestamp', +new Date());
+                        (d.head || d.body).appendChild(s);
+                    })();
+                </script>
+            </div>
+        </div>
+    </div>
+    <script async src="prism.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    
+        ga('create', 'UA-87583712-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+</body>
+
+</html>

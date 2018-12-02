@@ -1,0 +1,259 @@
+<html>
+
+<head>
+    <title>How-to-create-Discord-bot</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <link rel="stylesheet" href="prism.css"></link>
+    <style>
+        .columns .column {
+            padding: .4rem;
+        }
+        #sidebar-id {
+            padding: .4rem;
+        }
+        code {
+            padding: 0;
+            overflow-x: scroll;
+        }
+        img {
+            max-width: 100%;
+        }
+        .off-canvas .off-canvas-sidebar
+        {
+            background: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="off-canvas off-canvas-sidebar-show">
+        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
+            <i class="icon icon-menu"></i>
+        </a>
+        <div id="sidebar-id" class="off-canvas-sidebar">
+            <ul class="menu">
+                <li class="menu-item">
+                    <div class="tile tile-centered">
+                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
+                                alt="Avatar"></div>
+                        <div class="tile-content">Yauhen Pyl</div>
+                    </div>
+                </li>
+                <li class="divider" data-content="LINKS">
+                </li>
+                <li class="menu-item">
+                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://github.com/eapyl">GitHub</a>
+                </li>
+                <li class="menu-item">
+                    <a href="mailto:gromkaktus@gmail.com">Email</a>
+                </li>
+            </ul>
+        </div>
+        <a class="off-canvas-overlay" href="#close"></a>
+        <div class="off-canvas-content">
+            <div class="container grid-lg">
+                <h1 id="how-to-create-discord-bot">How to create Discord bot</h1>
+<p>That is a manual how to create simple ping-pong discord bot using javascript (nodejs).</p>
+<ul>
+<li>Install nodejs and npm</li>
+<li>Create a folder for your discord bot</li>
+<li>Run <code>npm init</code> in the folder</li>
+<li>Install <a href="https://discord.js.org/#/">Discrod.js</a>: <code>npm install --save discordjs</code></li>
+<li>Create index.js in this folder:</li>
+</ul>
+<pre><code class="language-javascript">/*
+  A ping pong bot, whenever you send &quot;ping&quot;, it replies &quot;pong&quot;.
+*/
+
+// import the discord.js module
+const Discord = require('discord.js');
+
+// create an instance of a Discord Client, and call it bot
+const bot = new Discord.Client();
+
+// the token of your bot - https://discordapp.com/developers/applications/me
+const token = 'your bot token here';
+
+// the ready event is vital, it means that your bot will only start reacting to information
+// from Discord _after_ ready is emitted.
+bot.on('ready', () =&gt; {
+  console.log('I am ready!');
+});
+
+// create an event listener for messages
+bot.on('message', message =&gt; {
+  // if the message is &quot;ping&quot;,
+  if (message.content === 'ping') {
+    // send &quot;pong&quot; to the same channel.
+    message.channel.sendMessage('pong');
+  }
+});
+
+// log our bot in
+bot.login(token);
+</code></pre>
+<ul>
+<li>Got to <a href="https://discordapp.com/developers/applications/me">https://discordapp.com/developers/applications/me</a> and create your bot</li>
+<li>Put all needed values, click &quot;Create Application&quot;. On the next page scroll down until you see &quot;Create a bot user&quot;, click that.</li>
+<li>After that you will be able to copy a token of your bot. Copy it and post it in created index.js</li>
+<li>Go to <a href="https://discordapp.com/oauth2/authorize?&amp;client_id=YOUR_CLIENT_ID_HERE&amp;scope=bot&amp;permissions=0">https://discordapp.com/oauth2/authorize?&amp;client_id=YOUR_CLIENT_ID_HERE&amp;scope=bot&amp;permissions=0</a>. You should replace YOUR_CLIENT_ID_HERE with Client ID (it should be in App Details on the web page where you got your token).</li>
+<li>Add your bot to the server.</li>
+<li>Run created bot by command <code>node index.js</code></li>
+<li>You should be able to see a bot in Discord at your server. Write 'ping' to the bot. The answer should be 'pong'.</li>
+</ul>
+<p>Well done! You created your Discord bot! Thank you.</p>
+<p>Here is a simple rss bot for discord:</p>
+<pre><code class="language-javascript">const Discord = require('discord.js');
+var Store = require(&quot;jfs&quot;); // using jfs to save already posted rss news
+var db = new Store(&quot;rssfeeds&quot;);
+const client = new Discord.Client();
+
+var currentNews = [];
+var postedNews = [];
+var interval;
+
+function log(message) {
+    console.log(new Date() + &quot;: &quot; + message);
+}
+
+/// load all posted rss news
+db.all(function (err, objs) {
+    if (err) log(err);
+    for (var id in objs) {
+        postedNews.push({ id: id, value: objs[id] });
+        log(&quot;Restored posted news &quot; + id);
+    }
+    loadFeeds();
+});
+
+client.on('ready', () =&gt; {
+    log('I am ready!');
+    var generalChannel = client.channels.get(&quot;25466045464298784169786&quot;);
+    if (!interval) {
+        interval = setInterval(() =&gt; {
+            if (currentNews.length &gt; 0) {
+                var newsToPost = currentNews.shift();
+                generalChannel.sendMessage(newsToPost.title + &quot; - &quot; + newsToPost.link);
+                db.save(newsToPost, function (err, id) {
+                    if (err) log(err);
+                    log(&quot;Saved posted news &quot; + id);
+                    postedNews.push({ id: id, value: newsToPost });
+                });
+
+                log(&quot;Post &quot; + newsToPost.link);
+                log(&quot;Left in array - &quot; + currentNews.length);
+            }
+        }, 60000 * 30);
+    }
+});
+
+setInterval(() =&gt; {
+    log(&quot;Updating news&quot;);
+    loadFeeds();
+}, 60000 * 60 * 24);
+
+setInterval(() =&gt; {
+    while (postedNews.length &gt; 1000) {
+        var oldNewsToDelete = postedNews.shift();
+        log(&quot;deleting &quot; + oldNewsToDelete.id)
+        db.delete(oldNewsToDelete.id, function (err) {
+            if (err) log(err);
+        });
+    }
+}, 60000 * 60 * 24);
+
+client.login('MjgyNDg5MjQ0MDEyNzczMzc2.C4nUkw.Na6H7ZVrXbMZbXv4Wt9p8cZaj2Q');
+
+// rss.json should contain information about rss, like:
+//{
+//    &quot;bbc&quot;: {
+//        &quot;description&quot; : &quot;bbc news&quot;,
+//        &quot;url&quot; : &quot;https://bbs.com/rss&quot;
+//    }
+//}
+var rssFeeds = require(&quot;./rss.json&quot;);
+
+/// load feeds from Resources
+function loadFeeds() {
+    for (var feedName in rssFeeds) {
+        rssfeed(rssFeeds[feedName].url);
+    }
+}
+
+function rssfeed(url) {
+    var FeedParser = require('feedparser');
+    var feedparser = new FeedParser();
+    var request = require('request');
+    request(url).pipe(feedparser);
+    feedparser.on('error', function (error) {
+        log(error);
+    });
+    feedparser.on('readable', function () {
+        var stream = this;
+        var meta = this.meta; // **NOTE** the &quot;meta&quot; is always available in the context of the feedparser instance
+        var item;
+
+        while (item = stream.read()) {
+            if (postedNews &amp;&amp; postedNews.some(x =&gt; x.value.title == item.title)) continue;
+            if (currentNews.some(x =&gt; x.title == item.title)) continue;
+            log('Add news to current news array ' + item.link);
+            currentNews.push({
+                title: item.title,
+                link: item.link,
+                date: item.date
+            });
+            if (currentNews.length &gt; 100) currentNews.shift();
+        }
+    });
+}
+</code></pre>
+<p>Links:</p>
+<ul>
+<li><a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">Creating a discord bot &amp; getting a token</a></li>
+<li><a href="https://discord.js.org/#/">Discord.js</a></li>
+<li><a href="https://discord.js.org/#/docs/main/stable/examples/ping">Ping-Pong example</a></li>
+<li><a href="https://discordapp.com/developers/applications/me">Discord Developers</a></li>
+<li><a href="https://discordapp.com/">Discord</a></li>
+</ul>
+
+                <div class="sharethis-inline-share-buttons"></div>
+                <div id="disqus_thread"></div>
+                <script>
+                    (function() { // DON'T EDIT BELOW THIS LINE
+                        var d = document,
+                            s = d.createElement('script');
+                        s.src = '//eapyl-github-io.disqus.com/embed.js';
+                        s.setAttribute('data-timestamp', +new Date());
+                        (d.head || d.body).appendChild(s);
+                    })();
+                </script>
+            </div>
+        </div>
+    </div>
+    <script async src="prism.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    
+        ga('create', 'UA-87583712-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+</body>
+
+</html>

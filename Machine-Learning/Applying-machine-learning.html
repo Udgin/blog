@@ -1,0 +1,185 @@
+<html>
+
+<head>
+    <title>Applying-machine-learning</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    
+    <style>
+        .columns .column {
+            padding: .4rem;
+        }
+        #sidebar-id {
+            padding: .4rem;
+        }
+        code {
+            padding: 0;
+            overflow-x: scroll;
+        }
+        img {
+            max-width: 100%;
+        }
+        .off-canvas .off-canvas-sidebar
+        {
+            background: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="off-canvas off-canvas-sidebar-show">
+        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
+            <i class="icon icon-menu"></i>
+        </a>
+        <div id="sidebar-id" class="off-canvas-sidebar">
+            <ul class="menu">
+                <li class="menu-item">
+                    <div class="tile tile-centered">
+                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
+                                alt="Avatar"></div>
+                        <div class="tile-content">Yauhen Pyl</div>
+                    </div>
+                </li>
+                <li class="divider" data-content="LINKS">
+                </li>
+                <li class="menu-item">
+                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://github.com/eapyl">GitHub</a>
+                </li>
+                <li class="menu-item">
+                    <a href="mailto:gromkaktus@gmail.com">Email</a>
+                </li>
+            </ul>
+        </div>
+        <a class="off-canvas-overlay" href="#close"></a>
+        <div class="off-canvas-content">
+            <div class="container grid-lg">
+                <h1 id="applying-machine-learning">Applying machine learning</h1>
+<p>Errors in your predictions can be troubleshooted by:</p>
+<ul>
+<li>Getting more training examples</li>
+<li>Trying smaller sets of features</li>
+<li>Trying additional features</li>
+<li>Trying polynomial features</li>
+<li>Increasing or decreasing λ</li>
+</ul>
+<p>It is good to use test error factor to understand the correctness of our algorithm:</p>
+<p><span class="math">\[\text{Test Error}= \dfrac{1}{m_{test}} \sum^{m_{test}}_{i=1} err(h_\Theta(x^{(i)}_{test}), y^{(i)}_{test})\]</span></p>
+<p>and this factor is calculated using completely separate training set (test set).</p>
+<p>Using <strong>Cross Validation Set</strong> our test set will give us an accurate, non-optimistic error.</p>
+<p>One example way to break down our dataset into the three sets is:</p>
+<ul>
+<li>Training set: 60%</li>
+<li>Cross validation set: 20%</li>
+<li>Test set: 20%
+We can now calculate three separate error values for the three different sets.</li>
+</ul>
+<p>With the Validation Set (note: this method presumes we do not also use the CV set for regularization)</p>
+<ol>
+<li>Optimize the parameters in Θ using the training set for each polynomial degree.</li>
+<li>Find the polynomial degree d with the least error using the cross validation set.</li>
+<li>Estimate the generalization error using the test set with <span class="math">\(J_{test}(\Theta^{(d)})\)</span>, (d = theta from polynomial with lower error).</li>
+</ol>
+<h3 id="diagnosing-bias-vs.variance">Diagnosing Bias vs. Variance</h3>
+<p>High bias is underfitting and high variance is overfitting.</p>
+<p><img src="../images/features-and-polynom-degree.png" alt="image" /></p>
+<h2 id="regularization-and-biasvariance">Regularization and Bias/Variance</h2>
+<ul>
+<li>Large λ: High bias (underfitting)</li>
+<li>Small λ: High variance (overfitting)</li>
+</ul>
+<p><img src="../images/features-and-polynom-degree-fix2.png" alt="image" /></p>
+<p>In order to choose the model and the regularization λ, we need:</p>
+<ol>
+<li>Create a list of lambda (i.e. λ∈{0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24});</li>
+<li>Select a lambda to compute;</li>
+<li>Create a model set like degree of the polynomial or others;</li>
+<li>Select a model to learn Θ;</li>
+<li>Learn the parameter Θ for the model selected, using <span class="math">\(J_{train}(\Theta)\)</span> with λ selected (this will learn Θ for the next step);</li>
+<li>Compute the train error using the learned Θ (computed with λ ) on the <span class="math">\(J_{train}(\Theta)\)</span> without regularization or λ = 0;</li>
+<li>Compute the cross validation error using the learned Θ (computed with λ) on the <span class="math">\(J_{CV}(\Theta)\)</span> without regularization or λ = 0;</li>
+<li>Do this for the entire model set and lambdas, then select the best combo that produces the lowest error on the cross validation set;</li>
+<li>Now if you need visualize to help you understand your decision, you can plot to the figure like above with: (λ x Cost <span class="math">\(J_{train}(\Theta)\)</span> and (λ x Cost <span class="math">\(J_{CV}(\Theta)\)</span>);</li>
+<li>Now using the best combo Θ and λ, apply it on <span class="math">\(J_{test}(\Theta)\)</span> to see if it has a good generalization of the problem.</li>
+<li>To help decide the best polynomial degree and λ to use, we can diagnose with the learning curves.</li>
+</ol>
+<h3 id="learning-curves">Learning Curves</h3>
+<p>If a learning algorithm is suffering from high variance, getting more training data is likely to help.
+If a learning algorithm is suffering from high bias, getting more training data will not (by itself) help much.</p>
+<p><img src="../images/Learning1.png" alt="image" />
+<img src="../images/Learning2.png" alt="image" /></p>
+<h3 id="deciding-what-to-do-next-revisited">Deciding What to Do Next Revisited</h3>
+<p>Decision process can be broken down as follows:</p>
+<ol>
+<li>Getting more training examples - Fixes high variance</li>
+<li>Trying smaller sets of features - Fixes high variance</li>
+<li>Adding features - Fixes high bias</li>
+<li>Adding polynomial features - Fixes high bias</li>
+<li>Decreasing λ - Fixes high bias</li>
+<li>Increasing λ - Fixes high variance</li>
+</ol>
+<h3 id="diagnosing-neural-networks">Diagnosing Neural Networks</h3>
+<ul>
+<li>A neural network with fewer parameters is prone to underfitting. It is also computationally cheaper.</li>
+<li>A large neural network with more parameters is prone to overfitting. It is also computationally expensive. In this case you can use regularization (increase λ) to address the overfitting.</li>
+</ul>
+<p>Using a single hidden layer is a good starting default. You can train your neural network on a number of hidden layers using your cross validation set.</p>
+<h2 id="error-analysis">Error Analysis</h2>
+<p>The recommended approach to solving machine learning problems is:</p>
+<ul>
+<li>Start with a simple algorithm, implement it quickly, and test it early.</li>
+<li>Plot learning curves to decide if more data, more features, etc. will help</li>
+<li>Error analysis: manually examine the errors on examples in the cross validation set and try to spot a trend.</li>
+</ul>
+<p>It's important to get error results as a single, numerical value. Otherwise it is difficult to assess your algorithm's performance.</p>
+<h3 id="error-metrics-for-skewed-classes">Error Metrics for Skewed Classes</h3>
+<p>Precision:</p>
+<p><span class="math">\[\dfrac{\text{True Positives}}{\text{Total number of predicted positives}} = \dfrac{\text{True Positives}}{\text{True Positives}+\text{False positives}}\]</span></p>
+<p>Recall:</p>
+<p><span class="math">\[\dfrac{\text{True Positives}}{\text{Total number of actual positives}}= \dfrac{\text{True Positives}}{\text{True Positives}+\text{False negatives}}\]</span></p>
+<h3 id="trading-off-precision-and-recall">Trading Off Precision and Recall</h3>
+<p>A better way is to compute the F Score (or F1 score):</p>
+<p><span class="math">\[\text{F Score} = 2\dfrac{PR}{P + R}\]</span></p>
+<p>In order for the F Score to be large, both precision and recall must be large. We want to train precision and recall on the cross validation set so as not to bias our test set.</p>
+<p>More info:
+<a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
+
+                <div class="sharethis-inline-share-buttons"></div>
+                <div id="disqus_thread"></div>
+                <script>
+                    (function() { // DON'T EDIT BELOW THIS LINE
+                        var d = document,
+                            s = d.createElement('script');
+                        s.src = '//eapyl-github-io.disqus.com/embed.js';
+                        s.setAttribute('data-timestamp', +new Date());
+                        (d.head || d.body).appendChild(s);
+                    })();
+                </script>
+            </div>
+        </div>
+    </div>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    
+        ga('create', 'UA-87583712-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+</body>
+
+</html>

@@ -1,0 +1,609 @@
+<html>
+
+<head>
+    <title>Style-Cop-I-don't-like-SA-1201</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <link rel="stylesheet" href="prism.css"></link>
+    <style>
+        .columns .column {
+            padding: .4rem;
+        }
+        #sidebar-id {
+            padding: .4rem;
+        }
+        code {
+            padding: 0;
+            overflow-x: scroll;
+        }
+        img {
+            max-width: 100%;
+        }
+        .off-canvas .off-canvas-sidebar
+        {
+            background: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="off-canvas off-canvas-sidebar-show">
+        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
+            <i class="icon icon-menu"></i>
+        </a>
+        <div id="sidebar-id" class="off-canvas-sidebar">
+            <ul class="menu">
+                <li class="menu-item">
+                    <div class="tile tile-centered">
+                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
+                                alt="Avatar"></div>
+                        <div class="tile-content">Yauhen Pyl</div>
+                    </div>
+                </li>
+                <li class="divider" data-content="LINKS">
+                </li>
+                <li class="menu-item">
+                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://github.com/eapyl">GitHub</a>
+                </li>
+                <li class="menu-item">
+                    <a href="mailto:gromkaktus@gmail.com">Email</a>
+                </li>
+            </ul>
+        </div>
+        <a class="off-canvas-overlay" href="#close"></a>
+        <div class="off-canvas-content">
+            <div class="container grid-lg">
+                <h1 id="style-cop-i-dont-like-sa-1201">Style Cop I don't like SA 1201</h1>
+<p><a href="">StyleCop</a> is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...</p>
+<p>Unfortunately, the rule SA1201 is not so good for me. So i just want to create the similar rule, but a little else.</p>
+<p>You can see the rule that changes the order of document's element to the next:</p>
+<pre><code class="language-xml">&lt;element name=&quot;File&quot; order=&quot;0&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Root&quot; order=&quot;1&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;ExternAliasDirective&quot; order=&quot;2&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;UsingDirective&quot; order=&quot;3&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;AssemblyAttribute&quot; order=&quot;4&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Namespace&quot; order=&quot;5&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Field&quot; order=&quot;6&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Constructor&quot; order=&quot;10&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Destructor&quot; order=&quot;11&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Delegate&quot; order=&quot;8&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Event&quot; order=&quot;9&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Enum&quot; order=&quot;13&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Interface&quot; order=&quot;14&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Property&quot; order=&quot;7&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Accessor&quot; order=&quot;15&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Indexer&quot; order=&quot;16&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Method&quot; order=&quot;12&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;Struct&quot; order=&quot;17&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;EnumItem&quot; order=&quot;18&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;ConstructorInitializer&quot; order=&quot;19&quot;&gt;&lt;/element&gt;
+&lt;element name=&quot;EmptyElement&quot; order=&quot;20&quot;&gt;&lt;/element&gt;
+</code></pre>
+<p>It saves in configuration file, so it is possible to change it in any time.
+Further the source code of my rule. You can see the original source code of SA1201 using the <a href="http://www.jetbrains.com/decompiler/">DotPeek</a> for example:</p>
+<pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Configuration;
+using System.Linq;
+ 
+using StyleCop;
+using StyleCop.CSharp;
+using System.Xml.Serialization;
+using System.IO;
+ 
+ 
+namespace Wsg.Rules
+{
+    /// &lt;summary&gt;
+    /// Wsg StyleCOp custom rules
+    /// &lt;/summary&gt;
+    [SourceAnalyzer(typeof(CsParser))]
+    public class WsgStyleCopCustomRules : SourceAnalyzer
+    {
+        private Rule ws1000 = null;
+ 
+        public Rule Ws1000
+        {
+            get
+            {
+                if (ws1000 == null)
+                {
+                    lock (ws1000)
+                    {
+                        if (ws1000 == null)
+                        {
+                            XmlSerializer serializer = new XmlSerializer(typeof(Rule));
+ 
+                            TextReader tr = new StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), &quot;WS1000.config&quot;));
+                            ws1000 = (Rule)serializer.Deserialize(tr);
+                            tr.Close();
+                        }
+                    }
+                }
+ 
+                return ws1000;
+            }
+        }
+ 
+        public override void AnalyzeDocument(CodeDocument document)
+        {
+            Param.RequireNotNull((object)document, &quot;document&quot;);
+            CsDocument csDocument = (CsDocument)document;
+            if (csDocument.RootElement == null)
+                return;
+            bool checkGeneratedCode = true;
+            if (document.Settings != null)
+            {
+                BooleanProperty booleanProperty = this.GetSetting(document.Settings, &quot;GeneratedCodeElementOrder&quot;) as BooleanProperty;
+                if (booleanProperty != null)
+                    checkGeneratedCode = booleanProperty.Value;
+                this.ProcessElements((CsElement)csDocument.RootElement, checkGeneratedCode);
+            }
+            this.CheckUsingDirectiveOrder((CsElement)csDocument.RootElement);
+        }
+ 
+        public override bool DoAnalysis(CodeDocument document)
+        {
+            Param.RequireNotNull((object)document, &quot;document&quot;);
+            CsDocument csDocument = (CsDocument)document;
+            if (csDocument.FileHeader != null)
+                return !csDocument.FileHeader.UnStyled;
+            else
+                return true;
+        }
+ 
+        private bool ProcessElements(CsElement element, bool checkGeneratedCode)
+        {
+            if (this.Cancel)
+                return false;
+            this.CheckElementOrder(element, checkGeneratedCode);
+            return true;
+        }
+ 
+        private void CheckElementOrder(CsElement element, bool checkGeneratedCode)
+        {
+            if (!element.Generated &amp;&amp; (element.ElementType == ElementType.Class || element.ElementType == ElementType.Field || (element.ElementType == ElementType.Enum || element.ElementType == ElementType.Struct) || (element.ElementType == ElementType.Interface || element.ElementType == ElementType.Delegate || (element.ElementType == ElementType.Event || element.ElementType == ElementType.Property)) || (element.ElementType == ElementType.Indexer || element.ElementType == ElementType.Method || (element.ElementType == ElementType.Constructor || element.ElementType == ElementType.Accessor))))
+                this.CheckDeclarationKeywordOrder(element);
+            this.CheckUsingDirectivePlacement(element);
+            this.CheckChildElementOrdering(element, checkGeneratedCode);
+        }
+ 
+        private void CheckChildElementOrdering(CsElement element, bool checkGeneratedCode)
+        {
+            if (element.ChildElements.Count &lt;= 0)
+                return;
+            bool flag = true;
+            CsElement[] array = new CsElement[element.ChildElements.Count];
+            element.ChildElements.CopyTo(array, 0);
+            for (int index1 = 0; index1 &lt; array.Length; ++index1)
+            {
+                CsElement csElement = array[index1];
+               
+                for (int index2 = index1 + 1; index2 &lt; array.Length; ++index2)
+                {
+                    CsElement second = array[index2];
+                    if ((checkGeneratedCode &amp;&amp; (!csElement.Generated || !second.Generated) || !checkGeneratedCode &amp;&amp; !csElement.Generated &amp;&amp; !second.Generated))
+                    {
+                        if (!this.CompareItems(csElement, second, !flag))
+                        {
+                            if (flag)
+                                csElement.AnalyzerTag = (object)false;
+                            else
+                                second.AnalyzerTag = (object)false;
+                        }
+                        else if (flag)
+                            flag = false;
+                        if (csElement.ElementType == ElementType.Accessor &amp;&amp; second.ElementType == ElementType.Accessor)
+                        {
+                            Accessor accessor1 = (Accessor)csElement;
+                            Accessor accessor2 = (Accessor)second;
+                            if (accessor1.AccessorType == AccessorType.Set &amp;&amp; accessor2.AccessorType == AccessorType.Get)
+                                this.AddViolation((ICodeElement)csElement, &quot;PropertyAccessorsMustFollowOrder&quot;, new object[0]);
+                            else if (accessor1.AccessorType == AccessorType.Remove &amp;&amp; accessor2.AccessorType == AccessorType.Add)
+                                this.AddViolation((ICodeElement)csElement, &quot;EventAccessorsMustFollowOrder&quot;, new object[0]);
+                        }
+                    }
+                }
+ 
+                this.CheckElementOrder(csElement, checkGeneratedCode);
+            }
+        }
+ 
+        public bool CompareElementType(ElementType first, ElementType second)
+        {
+            if (Ws1000 != null)
+            {
+                return Ws1000.Order.First(x =&gt; x.name == System.Enum.GetName(typeof(ElementType), first)).order &gt; Ws1000.Order.First(x =&gt; x.name == System.Enum.GetName(typeof(ElementType), second)).order;
+            }
+            return false;
+        }
+ 
+        private bool CompareItems(CsElement first, CsElement second, bool foundFirst)
+        {
+            if (first.ElementType != ElementType.EmptyElement &amp;&amp; second.ElementType != ElementType.EmptyElement &amp;&amp; (first.ElementType != ElementType.Accessor || second.ElementType != ElementType.Accessor))
+            {
+                CsElement csElement1 = second;
+                if (!foundFirst)
+                    csElement1 = first;
+                if (CompareElementType(first.ElementType, second.ElementType))
+                {
+                    this.AddViolation((ICodeElement)first, csElement1.LineNumber, &quot;ElementsMustAppearInTheCorrectOrder&quot;, (object)first.FriendlyPluralTypeText, (object)second.FriendlyPluralTypeText);
+                    return false;
+                }
+                else if (first.ElementType == second.ElementType &amp;&amp; first.Declaration != null &amp;&amp; second.Declaration != null)
+                {
+                    if (first.Declaration.AccessModifierType &lt; second.Declaration.AccessModifierType)
+                    {
+                        if (first.ElementType == ElementType.Constructor &amp;&amp; second.ElementType == ElementType.Constructor)
+                        {
+                            if (first.Declaration.ContainsModifier(new CsTokenType[1] { CsTokenType.Static}))
+                            {
+                                if (!second.Declaration.ContainsModifier(new CsTokenType[1] { CsTokenType.Static}))
+                                    goto label_31;
+                            }
+                        }
+                        if (!first.Declaration.AccessModifier &amp;&amp; first.ElementType != ElementType.Method)
+                        {
+                            if (first.Declaration.ContainsModifier(new CsTokenType[1] {CsTokenType.Partial}))
+                                goto label_14;
+                        }
+                        if (!second.Declaration.AccessModifier &amp;&amp; second.ElementType != ElementType.Method)
+                        {
+                            if (second.Declaration.ContainsModifier(new CsTokenType[1] { CsTokenType.Partial }))
+                                goto label_14;
+                        }
+                        this.AddViolation((ICodeElement)first, csElement1.LineNumber, &quot;ElementsMustBeOrderedByAccess&quot;, (object)WsgStyleCopCustomRules.AccessModifierTypeString(first.Declaration.AccessModifierType), (object)first.FriendlyPluralTypeText, (object)WsgStyleCopCustomRules.AccessModifierTypeString(second.Declaration.AccessModifierType), (object)second.FriendlyPluralTypeText);
+                        goto label_19;
+                    label_14:
+                        CsElement csElement2 = first;
+                        if (!first.Declaration.AccessModifier)
+                        {
+                            if (first.Declaration.ContainsModifier(new CsTokenType[1]{  CsTokenType.Partial}))
+                                goto label_17;
+                        }
+                        csElement2 = second;
+                    label_17:
+                        this.AddViolation((ICodeElement)csElement2, &quot;PartialElementsMustDeclareAccess&quot;, new object[2]
+                                                    {
+                                                      (object) csElement2.FriendlyTypeText,
+                                                      (object) csElement2.FriendlyPluralTypeText
+                                                    });
+                    label_19:
+                        return false;
+                    }
+                    else if (first.Declaration.AccessModifierType == second.Declaration.AccessModifierType)
+                    {
+                        bool flag1 = false;
+                        bool flag2 = false;
+                        Field field1 = first as Field;
+                        Field field2 = second as Field;
+                        if (field1 != null &amp;&amp; field2 != null)
+                        {
+                            flag1 = field1.Const;
+                            flag2 = field1.Readonly;
+                            if ((field2.Const || field2.Readonly) &amp;&amp; (!field1.Const &amp;&amp; !field1.Readonly))
+                            {
+                                this.AddViolation((ICodeElement)first, csElement1.LineNumber, &quot;ConstantsMustAppearBeforeFields&quot;, (object)WsgStyleCopCustomRules.AccessModifierTypeString(first.Declaration.AccessModifierType), (object)first.FriendlyPluralTypeText, (object)WsgStyleCopCustomRules.AccessModifierTypeString(second.Declaration.AccessModifierType), (object)second.FriendlyPluralTypeText);
+                                return false;
+                            }
+                        }
+                        if (second.Declaration.ContainsModifier(new CsTokenType[1] {  CsTokenType.Static }))
+                        {
+                            if (!first.Declaration.ContainsModifier(new CsTokenType[1] { CsTokenType.Static}) &amp;&amp; !flag1 &amp;&amp; !flag2)
+                            {
+                                this.AddViolation((ICodeElement)first, csElement1.LineNumber, &quot;StaticElementsMustAppearBeforeInstanceElements&quot;, (object)WsgStyleCopCustomRules.AccessModifierTypeString(first.Declaration.AccessModifierType), (object)first.FriendlyPluralTypeText, (object)WsgStyleCopCustomRules.AccessModifierTypeString(second.Declaration.AccessModifierType), (object)second.FriendlyPluralTypeText);
+                                return false;
+                            }
+                        }
+                        if (first.Declaration.ElementType != ElementType.UsingDirective &amp;&amp; second.Declaration.ElementType != ElementType.UsingDirective)
+                        {
+                            if (string.Compare(first.Declaration.Name, second.Declaration.Name) &gt; 0)
+                            {
+                                this.AddViolation((ICodeElement)first, csElement1.LineNumber, &quot;UsingNamesMustBeOrderedAlphabetically&quot;, (object)WsgStyleCopCustomRules.AccessModifierTypeString(first.Declaration.AccessModifierType), (object)first.FriendlyPluralTypeText, (object)WsgStyleCopCustomRules.AccessModifierTypeString(second.Declaration.AccessModifierType), (object)second.FriendlyPluralTypeText);
+                                return false;
+                            }
+                        }
+                    }
+                    else if (first.ElementType == ElementType.Constructor &amp;&amp; second.ElementType == ElementType.Constructor)
+                    {
+                        if (second.Declaration.ContainsModifier(new CsTokenType[1] { CsTokenType.Static }))
+                        {
+                            if (!first.Declaration.ContainsModifier(new CsTokenType[1]{ CsTokenType.Static}))
+                            {
+                                this.AddViolation((ICodeElement)first, csElement1.LineNumber, &quot;StaticElementsMustAppearBeforeInstanceElements&quot;, (object)WsgStyleCopCustomRules.AccessModifierTypeString(first.Declaration.AccessModifierType), (object)first.FriendlyPluralTypeText, (object)WsgStyleCopCustomRules.AccessModifierTypeString(second.Declaration.AccessModifierType), (object)second.FriendlyPluralTypeText);
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        label_31:
+            return true;
+        }
+ 
+        private static string AccessModifierTypeString(AccessModifierType type)
+        {
+            switch (type)
+            {
+                case AccessModifierType.Public:
+                    return &quot;public&quot;;
+                case AccessModifierType.Internal:
+                    return &quot;internal&quot;;
+                case AccessModifierType.ProtectedInternal:
+                    return &quot;protected internal&quot;;
+                case AccessModifierType.Protected:
+                    return &quot;protected&quot;;
+                case AccessModifierType.Private:
+                    return &quot;private&quot;;
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+ 
+        private void CheckUsingDirectivePlacement(CsElement element)
+        {
+            if (element.Generated || element.ElementType != ElementType.UsingDirective)
+                return;
+            CsElement parentElement = ICodePartExtensions.FindParentElement((ICodePart)element);
+            if (parentElement == null)
+                return;
+            if (parentElement.ElementType != ElementType.Root)
+            {
+                this.AddViolation((ICodeElement)element, &quot;UsingDirectivesMustBePlacedWithoutNamespace&quot;, new object[0]);
+            }
+        }
+ 
+        private void CheckDeclarationKeywordOrder(CsElement element)
+        {
+            int num1 = -1;
+            int num2 = -1;
+            int num3 = -1;
+            int num4 = 0;
+            foreach (CsToken csToken in (ItemList&lt;CsToken&gt;)element.Declaration.Tokens)
+            {
+                switch (csToken.CsTokenType)
+                {
+                    case CsTokenType.Private:
+                    case CsTokenType.Public:
+                    case CsTokenType.Protected:
+                    case CsTokenType.Internal:
+                        if (num1 == -1)
+                        {
+                            num1 = num4++;
+                            continue;
+                        }
+                        else
+                            continue;
+                    case CsTokenType.Static:
+                        if (num2 == -1)
+                        {
+                            num2 = num4++;
+                            continue;
+                        }
+                        else
+                            continue;
+                    case CsTokenType.WhiteSpace:
+                    case CsTokenType.EndOfLine:
+                    case CsTokenType.SingleLineComment:
+                    case CsTokenType.MultiLineComment:
+                        continue;
+                    default:
+                        if (num3 == -1)
+                        {
+                            num3 = num4++;
+                            continue;
+                        }
+                        else
+                            continue;
+                }
+            }
+            if (num1 != -1)
+            {
+                if (num2 &gt; -1 &amp;&amp; num2 &lt; num1)
+                {
+                    WsgStyleCopCustomRules orderingRules = this;
+                    CsElement csElement = element;
+                    // ISSUE: variable of a boxed type
+                    var local = &quot;DeclarationKeywordsMustFollowOrder&quot;;
+                    object[] objArray1 = new object[2] {(object) &quot;AccessModifier&quot;, null};
+                    objArray1[1] = (object)string.Format((IFormatProvider)CultureInfo.InvariantCulture, &quot;'{0}'&quot;, new object[1] { (object) &quot;Static&quot; });
+                    object[] objArray2 = objArray1;
+                    orderingRules.AddViolation((ICodeElement)csElement, local, objArray2);
+                }
+                if (num3 &gt; -1 &amp;&amp; num3 &lt; num1)
+                {
+                    WsgStyleCopCustomRules orderingRules = this;
+                    CsElement csElement = element;
+                    // ISSUE: variable of a boxed type
+                    var local = &quot;DeclarationKeywordsMustFollowOrder&quot;;
+                    object[] objArray1 = new object[2] { (object)&quot;AccessModifier&quot;, null };
+                    objArray1[1] = (object)string.Format((IFormatProvider)CultureInfo.InvariantCulture, &quot;'{0}'&quot;, new object[1] { (object) &quot;Other&quot; });
+                    object[] objArray2 = objArray1;
+                    orderingRules.AddViolation((ICodeElement)csElement, local, objArray2);
+                }
+            }
+            if (num2 &gt; -1 &amp;&amp; num3 &gt; -1 &amp;&amp; num3 &lt; num2)
+                this.AddViolation((ICodeElement)element, &quot;DeclarationKeywordsMustFollowOrder&quot;, new object[2] {
+                      (object) string.Format((IFormatProvider) CultureInfo.InvariantCulture, &quot;'{0}'&quot;, new object[1]
+                      {
+                        (object) &quot;Static&quot;
+                      }),
+                      (object) string.Format((IFormatProvider) CultureInfo.InvariantCulture, &quot;'{0}'&quot;, new object[1]
+                      {
+                        (object) &quot;Other&quot;
+                      })
+                    });
+            if (element.Declaration.AccessModifierType != AccessModifierType.ProtectedInternal)
+                return;
+            bool flag = false;
+            foreach (CsToken csToken in (ItemList&lt;CsToken&gt;)element.Declaration.Tokens)
+            {
+                if (flag)
+                {
+                    if (csToken.CsTokenType == CsTokenType.Internal)
+                        break;
+                    if (csToken.CsTokenType != CsTokenType.WhiteSpace)
+                    {
+                        this.AddViolation((ICodeElement)element, &quot;ProtectedMustComeBeforeInternal&quot;, new object[0]);
+                        break;
+                    }
+                }
+                else if (csToken.CsTokenType == CsTokenType.Protected)
+                    flag = true;
+                else if (csToken.CsTokenType == CsTokenType.Internal)
+                {
+                    this.AddViolation((ICodeElement)element, &quot;ProtectedMustComeBeforeInternal&quot;, new object[0]);
+                    break;
+                }
+            }
+        }
+ 
+        private void CheckUsingDirectiveOrder(CsElement rootElement)
+        {
+            if (rootElement.Generated)
+                return;
+            this.CheckOrderOfUsingDirectivesUnderElement(rootElement);
+            foreach (CsElement rootElement1 in (IEnumerable&lt;CsElement&gt;)rootElement.ChildElements)
+            {
+                if (rootElement1.ElementType == ElementType.Namespace)
+                    this.CheckUsingDirectiveOrder(rootElement1);
+            }
+        }
+ 
+        private void CheckOrderOfUsingDirectivesUnderElement(CsElement element)
+        {
+            List&lt;UsingDirective&gt; usings = (List&lt;UsingDirective&gt;)null;
+            foreach (CsElement csElement in (IEnumerable&lt;CsElement&gt;)element.ChildElements)
+            {
+                if (csElement.ElementType == ElementType.UsingDirective)
+                {
+                    if (usings == null)
+                        usings = new List&lt;UsingDirective&gt;();
+                    usings.Add((UsingDirective)csElement);
+                }
+                else if (csElement.ElementType != ElementType.ExternAliasDirective)
+                    break;
+            }
+            if (usings == null)
+                return;
+            this.CheckOrderOfUsingDirectivesInList(usings);
+        }
+ 
+        private void CheckOrderOfUsingDirectivesInList(List&lt;UsingDirective&gt; usings)
+        {
+            for (int index1 = 0; index1 &lt; usings.Count; ++index1)
+            {
+                UsingDirective firstUsing = usings[index1];
+                for (int index2 = index1 + 1; index2 &lt; usings.Count; ++index2)
+                {
+                    UsingDirective secondUsing = usings[index2];
+                    if (!this.CompareOrderOfUsingDirectives(firstUsing, secondUsing))
+                        break;
+                }
+            }
+        }
+ 
+        private bool CompareOrderOfUsingDirectives(UsingDirective firstUsing, UsingDirective secondUsing)
+        {
+            if (string.IsNullOrEmpty(firstUsing.Alias))
+            {
+                if (string.IsNullOrEmpty(secondUsing.Alias))
+                {
+                    bool flag1 = firstUsing.NamespaceType.StartsWith(&quot;System&quot;, StringComparison.Ordinal) || firstUsing.NamespaceType.StartsWith(&quot;global::System&quot;, StringComparison.Ordinal);
+                    bool flag2 = secondUsing.NamespaceType.StartsWith(&quot;System&quot;, StringComparison.Ordinal) || secondUsing.NamespaceType.StartsWith(&quot;global::System&quot;, StringComparison.Ordinal);
+                    if (flag2 &amp;&amp; !flag1)
+                    {
+                        this.AddViolation((ICodeElement)secondUsing, &quot;SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives&quot;, new object[0]);
+                        return false;
+                    }
+                    else if ((flag1 &amp;&amp; flag2 || !flag1 &amp;&amp; !flag2) &amp;&amp; !WsgStyleCopCustomRules.CheckNamespaceOrdering(firstUsing.NamespaceType, secondUsing.NamespaceType))
+                    {
+                        this.AddViolation((ICodeElement)firstUsing, &quot;UsingDirectivesMustBeOrderedAlphabeticallyByNamespace&quot;, new object[0]);
+                        return false;
+                    }
+                }
+            }
+            else if (string.IsNullOrEmpty(secondUsing.Alias))
+            {
+                this.AddViolation((ICodeElement)firstUsing, &quot;UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives&quot;, new object[0]);
+                return false;
+            }
+            else if (string.Compare(firstUsing.Alias, secondUsing.Alias, StringComparison.OrdinalIgnoreCase) &gt; 0)
+            {
+                this.AddViolation((ICodeElement)firstUsing, &quot;UsingAliasDirectivesMustBeOrderedAlphabeticallyByAliasName&quot;, new object[0]);
+                return false;
+            }
+            return true;
+        }
+ 
+        private static bool CheckNamespaceOrdering(string namespace1, string namespace2)
+        {
+            string[] strArray1 = namespace1.Split(new char[1] {'.'});
+            string[] strArray2 = namespace2.Split(new char[1] {'.'});
+            strArray1[0] = StringExtensions.SubstringAfter(strArray1[0], &quot;global::&quot;, StringComparison.InvariantCulture);
+            strArray2[0] = StringExtensions.SubstringAfter(strArray2[0], &quot;global::&quot;, StringComparison.InvariantCulture);
+            int num1 = Math.Min(strArray1.Length, strArray2.Length);
+            for (int index = 0; index &lt; num1; ++index)
+            {
+                int num2 = string.Compare(strArray1[index], strArray2[index], StringComparison.InvariantCultureIgnoreCase);
+                if (num2 &lt; 0)
+                    return true;
+                if (num2 &gt; 0)
+                    return false;
+                int num3 = string.Compare(strArray1[index], strArray2[index], StringComparison.InvariantCulture);
+                if (num3 &lt; 0)
+                    return true;
+                if (num3 &gt; 0)
+                    return false;
+            }
+            if (strArray1.Length == strArray2.Length)
+                return true;
+            else
+                return strArray1.Length &lt; strArray2.Length;
+        }
+    }
+}
+</code></pre>
+<p>Methods AnalyzeDocument и DoAnalysis are the most important, so i suggest to start the learning code from them. The project in VS2010 is StyleCopOrder.Thanks.</p>
+
+                <div class="sharethis-inline-share-buttons"></div>
+                <div id="disqus_thread"></div>
+                <script>
+                    (function() { // DON'T EDIT BELOW THIS LINE
+                        var d = document,
+                            s = d.createElement('script');
+                        s.src = '//eapyl-github-io.disqus.com/embed.js';
+                        s.setAttribute('data-timestamp', +new Date());
+                        (d.head || d.body).appendChild(s);
+                    })();
+                </script>
+            </div>
+        </div>
+    </div>
+    <script async src="prism.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    
+        ga('create', 'UA-87583712-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+</body>
+
+</html>
