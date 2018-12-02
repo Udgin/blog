@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Description>Static blog generator</Description>
+    <Product>blog</Product>
+    <Company>Yauhen Pyl</Company>
+    <Authors>Yauhen Pyl</Authors>
+    <Owners>Yauhen Pyl</Owners>
+    <Copyright>Copyright 2017-2018</Copyright>
+    <PackageTags>Blog, Dotnet, Tool</PackageTags>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>blog</ToolCommandName>
+    <Version>0.0.1</Version>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DryIoc.dll" Version="3.1.0-preview-06" />
+    <PackageReference Include="Markdig" Version="0.15.4" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+  </ItemGroup>
+
+</Project>
