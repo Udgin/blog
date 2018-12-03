@@ -32,7 +32,7 @@ namespace blg
         public async Task Create(string path, List<CardEntity> cards)
         {
             var fullPathForIndexPage = Path.Combine(_configuration.TargetFolder, path);
-            var htmlFilePath = Path.Combine(fullPathForIndexPage, "Index.html");
+            var htmlFilePath = Path.Combine(fullPathForIndexPage, "index.html");
 
             var htmlCards = new List<string>();
             var tags = new Dictionary<string, int>();
@@ -83,7 +83,7 @@ namespace blg
 
             var contentOfIndex = _indexTemplate.Value.Replace("{{BODY}}", string.Join(string.Empty, htmlCards));
             var folderName = Path.GetFileNameWithoutExtension(path);
-            contentOfIndex = contentOfIndex.Replace("{{TITLE}}", string.IsNullOrEmpty(folderName) ? "Index" : folderName);
+            contentOfIndex = contentOfIndex.Replace("{{TITLE}}", string.IsNullOrEmpty(folderName) ? "Main" : folderName);
             contentOfIndex = contentOfIndex.Replace("{{TAGS}}", tagsHtml);
             await _fileSystem.WriteAllTextAsync(htmlFilePath, contentOfIndex);
         }

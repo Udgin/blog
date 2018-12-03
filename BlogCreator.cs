@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Markdig;
 
@@ -16,9 +18,6 @@ namespace blg
         private readonly IFileSystem _fileSystem;
         private readonly IBlogConfiguration _configuration;
         private readonly IIndexPageCreator _indexPageCreator;
-
-        private string _cardTemplate { get; set; }
-
         public BlogCreator(
             IFileSystem fileSystem,
             IBlogConfiguration configuration,
@@ -31,33 +30,41 @@ namespace blg
             _configuration = configuration;
             _indexPageCreator = indexPageCreator;
         }
-        private string PathToFolderImage =>
-            Path.Combine(_configuration.TargetFolder, Path.GetFileName(_configuration.FolderImagePath));
-        private string PathToPrismCSS =>
-            Path.Combine(_configuration.TargetFolder, Path.GetFileName(_configuration.PrismCSS));
-        private string PathToPrismJS =>
-            Path.Combine(_configuration.TargetFolder, Path.GetFileName(_configuration.PrismJS));
+        private string PathToStaticResource(string path) =>
+            Path.Combine(_configuration.TargetFolder, Path.GetFileName(path));
         public async Task Generate()
         {
-            _cardTemplate = await _fileSystem.ReadAllTextAsync(_configuration.CardTemplatePath);
+            CleanUpFolder(_configuration.TargetFolder);
 
-            if (_fileSystem.DirectoryExists(_configuration.TargetFolder))
-                _fileSystem.DirectoryDelete(_configuration.TargetFolder);
-            _fileSystem.DirectoryCreate(_configuration.TargetFolder);
+            CopyStaticCommonResources();
 
+            await CreateFolder(string.Empty);
+        }
+        private void CopyStaticCommonResources()
+        {
             _fileSystem.CopyFile(
                 _configuration.FolderImagePath,
-                PathToFolderImage);
+                PathToStaticResource(_configuration.FolderImagePath));
 
             _fileSystem.CopyFile(
                 _configuration.PrismCSS,
-                PathToPrismCSS);
+                PathToStaticResource(_configuration.PrismCSS));
 
             _fileSystem.CopyFile(
                 _configuration.PrismJS,
-                PathToPrismJS);
+                PathToStaticResource(_configuration.PrismJS));
 
-            await CreateFolder(string.Empty);
+            _fileSystem.CopyFile(
+                _configuration.Favicon,
+                PathToStaticResource(_configuration.Favicon));
+        }
+
+        private void CleanUpFolder(string path)
+        {
+            foreach (var file in _fileSystem.EnumerateFiles(path, "*"))
+                _fileSystem.FileDelete(file);
+            foreach (var folder in _fileSystem.EnumerateDirectories(path).Where(x => !x.EndsWith("git")))
+                _fileSystem.DirectoryDelete(folder);
         }
 
         private string GetTargetFolderPath(string folderPath)
@@ -97,12 +104,12 @@ namespace blg
                 Tags = new Dictionary<string, string> {
                     ["Title"] = Path.GetFileNameWithoutExtension(relativeFolderPath)
                 },
-                RelativePath = Path.GetFileNameWithoutExtension(relativeFolderPath) + "/Index.html",
+                RelativePath = Path.GetFileNameWithoutExtension(relativeFolderPath) + "/index.html",
                 ImageRelativePath = Utils.RelativePath (
                     Path.GetDirectoryName(relativeFolderPath) == null ?
                         _configuration.TargetFolder :
                         Path.Combine(_configuration.TargetFolder, Path.GetDirectoryName(relativeFolderPath)),
-                    PathToFolderImage
+                    PathToStaticResource(_configuration.FolderImagePath)
                 )
             };
         }
