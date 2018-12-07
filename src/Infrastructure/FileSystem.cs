@@ -1,24 +1,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using blg.Application;
 
-namespace blg
+namespace blg.Infrastructure
 {
-    interface IFileSystem
-    {
-        Task<string[]> ReadAllLinesAsync(string path);
-        Task<string> ReadAllTextAsync(string path);
-        string ReadAllText(string path);
-        bool DirectoryExists(string path);
-        void DirectoryDelete(string path);
-        void DirectoryCreate(string path);
-        IEnumerable<string> EnumerateFiles(string path, string pattern = "*.md");
-        Task WriteAllTextAsync(string path, string text);
-        IEnumerable<string> EnumerateDirectories(string path);
-        void CopyFile(string source, string target);
-        bool FileExists(string path);
-        void FileDelete(string path);
-    }
     internal class FileSystem : IFileSystem
     {
         public async Task<string[]> ReadAllLinesAsync(string path) => await File.ReadAllLinesAsync(path);

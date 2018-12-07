@@ -2,43 +2,56 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using blg.Common;
+using blg.Domain;
+using MediatR;
 
-namespace blg
+namespace blg.Application
 {
-    internal interface IIndexPageCreator
+    internal class CreateIndexPageCommand : IRequest<CardEntity>
     {
-        Task Create(string path, List<CardEntity> cards);
+        public CreateIndexPageCommand(
+            string sourceFolder,
+            IList<CardEntity> cardEntities,
+            string pathToIndexFolder)
+        {
+            SourceFolder = sourceFolder;
+            CardEntities = cardEntities;
+            PathToIndexFolder = pathToIndexFolder;
+        }
+
+        public string SourceFolder { get; }
+        public IList<CardEntity> CardEntities { get; }
+        public string PathToIndexFolder { get; }
     }
-    internal class IndexPageCreator : IIndexPageCreator
+    internal class CreateIndexPageCommandHandler : IRequestHandler<CreateIndexPageCommand, CardEntity>
     {
         private readonly IFileSystem _fileSystem;
-        private readonly IBlogConfiguration _configuration;
-        private readonly Lazy<string> _cardTemplate;
-        private readonly Lazy<string> _indexTemplate;
-        private readonly Lazy<string> _tagTemplate;
+        private readonly IMediator _mediator;
 
-        public IndexPageCreator(
-            IFileSystem fileSystem,
-            IBlogConfiguration configuration
-        )
+        public CreateIndexPageCommandHandler(IFileSystem fileSystem,
+            IMediator mediator)
         {
             _fileSystem = fileSystem;
-            _configuration = configuration;
-            _cardTemplate = new Lazy<string>(() => _fileSystem.ReadAllText(_configuration.CardTemplatePath));
-            _indexTemplate = new Lazy<string>(() => _fileSystem.ReadAllText(_configuration.IndexTemplatePath));
-            _tagTemplate = new Lazy<string>(() => _fileSystem.ReadAllText(_configuration.TagTemplatePath));
+            _mediator = mediator;
         }
-        public async Task Create(string path, List<CardEntity> cards)
+        public async Task<CardEntity> Handle(CreateIndexPageCommand request, CancellationToken cancellationToken)
         {
-            var fullPathForIndexPage = Path.Combine(_configuration.TargetFolder, path);
+            var configuration = await _mediator.Send(new GetConfigurationCommand(request.SourceFolder));
+            var cardTemplate = await _mediator.Send(new GetTemplateCommand(configuration.CardTemplatePath));
+            var tagTemplate = await _mediator.Send(new GetTemplateCommand(configuration.TagTemplatePath));
+            var indexTemplate = await _mediator.Send(new GetTemplateCommand(configuration.IndexTemplatePath));
+
+            var fullPathForIndexPage = request.PathToIndexFolder;
             var htmlFilePath = Path.Combine(fullPathForIndexPage, "index.html");
 
             var htmlCards = new List<string>();
             var tags = new Dictionary<string, int>();
-            foreach (var card in cards.OrderByDescending(x => x.SortDate))
+            foreach (var card in request.CardEntities.OrderByDescending(x => x.SortDate))
             {
-                var htmlCard = _cardTemplate.Value;
+                var htmlCard = cardTemplate;
                 if (!card.Tags.ContainsKey("Title"))
                 {
                     throw new Exception($"{card.RelativePath} doesn't have title");
@@ -69,7 +82,6 @@ namespace blg
                 htmlCard = htmlCard.Replace("{{DATE}}", date);
                 htmlCard = htmlCard.Replace("{{SUBTITLE}}", tagsValue);
                 htmlCard = htmlCard.Replace("{{LINK}}", card.RelativePath);
-                htmlCard = htmlCard.Replace("{{IMAGE_LINK}}", card.ImageRelativePath);
                 htmlCards.Add(htmlCard);
             }
 
@@ -77,15 +89,22 @@ namespace blg
 
             foreach (var key in tags.Keys)
             {
-                var tagTemplate = _tagTemplate.Value;
                 tagsHtml += tagTemplate.Replace("{{COUNT}}", tags[key].ToString()).Replace("{{NAME}}", key);
             }
 
-            var contentOfIndex = _indexTemplate.Value.Replace("{{BODY}}", string.Join(string.Empty, htmlCards));
-            var folderName = Path.GetFileNameWithoutExtension(path);
+            var contentOfIndex = indexTemplate.Replace("{{BODY}}", string.Join(string.Empty, htmlCards));
+            var folderName = Path.GetFileNameWithoutExtension(fullPathForIndexPage);
             contentOfIndex = contentOfIndex.Replace("{{TITLE}}", string.IsNullOrEmpty(folderName) ? "Main" : folderName);
             contentOfIndex = contentOfIndex.Replace("{{TAGS}}", tagsHtml);
+
             await _fileSystem.WriteAllTextAsync(htmlFilePath, contentOfIndex);
+
+            return new CardEntity {
+                Tags = new Dictionary<string, string> {
+                    ["Title"] = folderName
+                },
+                RelativePath = folderName + "/index.html"
+            };
         }
     }
 }

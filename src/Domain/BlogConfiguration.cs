@@ -1,32 +1,15 @@
 using System.IO;
 
-namespace blg
+namespace blg.Domain
 {
-    internal interface IBlogConfiguration
+    internal class BlogConfiguration
     {
-        string SourceFolder { get; }
-        string TargetFolder { get; }
-        string CardTemplatePath { get; }
-        string ArticleTemplatePath { get; }
-        string IndexTemplatePath { get; }
-        string FolderImagePath { get; }
-        string PrismJS { get; }
-        string PrismCSS { get; }
-        string TagTemplatePath { get; }
-        string PathToMathJS { get; }
-        string ArticlesFolder { get; }
-        string Favicon { get; }
-    }
-    internal class BlogConfiguration : IBlogConfiguration
-    {
-        private readonly string _currentFolder;
-        public BlogConfiguration(string currentFolder)
+        public BlogConfiguration(string sourceFolder)
         {
-            _currentFolder = currentFolder;
+            SourceFolder = sourceFolder;
         }
-        public string SourceFolder { get { return  _currentFolder; } }
+        public string SourceFolder { get; }
         public string ArticlesFolder { get { return Path.Combine(SourceFolder, "articles"); } }
-        public string TargetFolder { get; } = @"C:\Users\ea_pyl\projects\blog";
         public string CardTemplatePath { get { return Path.Combine(SourceFolder, @"theme\card.template.html"); } }
         public string ArticleTemplatePath { get { return Path.Combine(SourceFolder, @"theme\article.template.html"); } }
         public string IndexTemplatePath { get { return Path.Combine(SourceFolder, @"theme\index.template.html"); } }
