@@ -91,12 +91,12 @@ namespace blg.Application
 
             string AddScripts(string content, string html, string relativePath)
             {
-                var pathToPrismCSS = Path.Combine(request.TargetFolder, Path.GetFileName(configuration.PrismCSS));
+                var pathToPrismJs = Path.Combine(request.TargetFolder, Path.GetFileName(configuration.PrismJS));
                 var template = "<script async src=\"{0}\"></script>";
                 var scripts = string.Empty;
                 if (html.Contains("<code"))
                 {
-                    scripts += string.Format(template, GetRelativePathToStaticResource(relativePath, pathToPrismCSS));
+                    scripts += string.Format(template, GetRelativePathToStaticResource(relativePath, pathToPrismJs));
                 }
                 if (html.Contains("<span class=\"math\""))
                 {
@@ -107,12 +107,12 @@ namespace blg.Application
 
             string AddStyles(string content, string html, string relativePath)
             {
-                var pathToPrismJS = Path.Combine(request.TargetFolder, Path.GetFileName(configuration.PrismJS));
+                var pathToPrismCss = Path.Combine(request.TargetFolder, Path.GetFileName(configuration.PrismCSS));
                 var template = "<link rel=\"stylesheet\" href=\"{0}\"></link>";
                 var cssStyles = string.Empty;
                 if (html.Contains("<code"))
                 {
-                    cssStyles += string.Format(template, GetRelativePathToStaticResource(relativePath, pathToPrismJS));
+                    cssStyles += string.Format(template, GetRelativePathToStaticResource(relativePath, pathToPrismCss));
                 }
                 return content.Replace("{{STYLES}}", cssStyles);
             }

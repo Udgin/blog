@@ -14,7 +14,9 @@ namespace blg
     {
         static async Task Main(string[] args) =>
             await SetUpMediator().Send(
-                new CreateBlogCommand(Directory.GetCurrentDirectory(), @"C:\Users\ea_pyl\projects\blog"));
+                new CreateBlogCommand(
+                    Directory.GetCurrentDirectory(),
+                    args[0]));
 
         private static IMediator SetUpMediator()
         {
