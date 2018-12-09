@@ -54,7 +54,7 @@ namespace blg.Application
 
             var htmlCards = new List<string>();
             var tags = new Dictionary<string, int>();
-            foreach (var childCards in request.CardEntities.OrderBy(x => x.SortDate))
+            foreach (var childCards in request.CardEntities.OrderByDescending(x => x.ArticleTitle.Date))
             {
                 var htmlCard = cardTemplate;
                 htmlCard = htmlCard.Replace("{{TITLE}}", childCards.ArticleTitle.Title);
@@ -92,6 +92,7 @@ namespace blg.Application
             var card = new CardEntity {
                 ArticleTitle = new ArticleTitle {
                     Title = folderName,
+                    Date = DateTime.MaxValue
                 },
                 RelativePath = folderName + "/index.html"
             };

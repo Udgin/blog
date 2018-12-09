@@ -11,7 +11,7 @@ namespace blg.Domain
 
         public string SortDate {
             get {
-                return ArticleTitle.Date == DateTime.MinValue ? string.Empty : ArticleTitle.Date.ToString("D");
+                return ArticleTitle.Date == DateTime.MaxValue ? string.Empty : ArticleTitle.Date.ToString("d MMMM, yyyy");
             }
         }
     }
