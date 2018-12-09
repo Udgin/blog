@@ -5,7 +5,7 @@ using MediatR;
 
 namespace blg.Application
 {
-    internal class CopyStaticCommonResourcesCommand : IRequest
+    internal class CopyStaticCommonResourcesCommand : IRequest, ILoggedRequest
     {
         public CopyStaticCommonResourcesCommand(string path, string targetFolder)
         {
@@ -14,6 +14,8 @@ namespace blg.Application
         }
         public string Path { get; }
         public string TargetFolder { get; }
+
+        public string Trace() => $"{nameof(CopyStaticCommonResourcesCommand)}: {Path}, {TargetFolder}";
     }
 
     internal class CopyStaticCommonResourcesCommandHandler : IRequestHandler<CopyStaticCommonResourcesCommand>

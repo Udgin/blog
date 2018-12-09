@@ -4,7 +4,7 @@ using MediatR;
 
 namespace blg.Application
 {
-    internal class GetTemplateCommand : IRequest<string>
+    internal class GetTemplateCommand : IRequest<string>, ILoggedRequest
     {
         public GetTemplateCommand(string path)
         {
@@ -12,6 +12,8 @@ namespace blg.Application
         }
 
         public string Path { get; }
+
+        public string Trace() => $"{nameof(GetTemplateCommand)}: {Path}";
     }
 
     internal class GetTemplateCommandHandler : IRequestHandler<GetTemplateCommand, string>

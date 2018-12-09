@@ -9,17 +9,17 @@ using MediatR;
 
 namespace blg.Application
 {
-    internal class CopyFolderCommand : IRequest<CardEntity>
+    internal class CopyFolderCommand : IRequest<CardEntity>, ILoggedRequest
     {
-        public CopyFolderCommand(string folderPath, string sourceFolder, string targetFolder)
+        public CopyFolderCommand(string folderPath, string sourceFolder)
         {
             SourceFolder = sourceFolder;
             FolderPath = folderPath;
-            TargetFolder = targetFolder;
         }
         public string SourceFolder { get; }
         public string FolderPath { get; }
-        public string TargetFolder { get; }
+
+        public string Trace() => $"{nameof(CopyFolderCommand)}: {SourceFolder}, {FolderPath}";
     }
     internal class CopyFolderCommandHandler : IRequestHandler<CopyFolderCommand, CardEntity>
     {
@@ -37,7 +37,7 @@ namespace blg.Application
             var configuration = await _mediator.Send(new GetConfigurationCommand(request.SourceFolder));
 
             var fullPathToFolder = Path.Combine(configuration.ArticlesFolder, request.FolderPath);
-            var fullPathToTargetFolder = Path.Combine(request.TargetFolder, request.FolderPath);
+            var fullPathToTargetFolder = Path.Combine(configuration.TargetFolder, request.FolderPath);
 
             if (!_fileSystem.DirectoryExists(fullPathToTargetFolder))
             {
@@ -52,19 +52,18 @@ namespace blg.Application
                 cards.Add(await _mediator.Send(
                     new CopyFolderCommand(
                         Utils.RelativePath(configuration.ArticlesFolder, directory),
-                        request.SourceFolder,
-                        request.TargetFolder)));
+                        request.SourceFolder)));
             }
 
             foreach (var path in filePathes)
             {
                 cards.Add(await _mediator.Send(
-                    new CreateArticlePageCommand(Utils.RelativePath(configuration.ArticlesFolder, path), request.SourceFolder, request.TargetFolder)
+                    new CreateArticlePageCommand(Utils.RelativePath(configuration.ArticlesFolder, path), request.SourceFolder)
                 ));
             }
 
             return await _mediator.Send(
-                new CreateIndexPageCommand(request.SourceFolder, cards, Path.Combine(request.TargetFolder, request.FolderPath))
+                new CreateIndexPageCommand(request.SourceFolder, cards, Path.Combine(configuration.TargetFolder, request.FolderPath))
             );
         }
     }

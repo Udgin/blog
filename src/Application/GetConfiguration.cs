@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace blg.Application
 {
-    internal class GetConfigurationCommand : IRequest<BlogConfiguration>
+    internal class GetConfigurationCommand : IRequest<BlogConfiguration>, ILoggedRequest
     {
         public GetConfigurationCommand(string sourceFolder)
         {
@@ -13,6 +13,8 @@ namespace blg.Application
         }
 
         public string SourceFolder { get; }
+
+        public string Trace() => $"{nameof(GetConfigurationCommand)}: {SourceFolder}";
     }
 
     internal class GetConfigurationCommandHandler : IRequestHandler<GetConfigurationCommand, BlogConfiguration>

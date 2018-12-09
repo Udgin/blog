@@ -5,10 +5,12 @@ using MediatR;
 
 namespace blg.Application
 {
-    internal class CleanFolderCommand : IRequest
+    internal class CleanFolderCommand : IRequest, ILoggedRequest
     {
         public CleanFolderCommand(string path) => Path = path;
         public string Path { get; }
+
+        public string Trace() => $"{nameof(CleanFolderCommand)}: {Path}";
     }
 
     internal class CleanFolderCommandHandler : IRequestHandler<CleanFolderCommand>

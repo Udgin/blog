@@ -9,6 +9,7 @@ namespace blg.Domain
             SourceFolder = sourceFolder;
         }
         public string SourceFolder { get; }
+        public string TargetFolder { get { return Path.Combine(SourceFolder, "blog"); } }
         public string ArticlesFolder { get { return Path.Combine(SourceFolder, "articles"); } }
         public string CardTemplatePath { get { return Path.Combine(SourceFolder, @"theme\card.template.html"); } }
         public string ArticleTemplatePath { get { return Path.Combine(SourceFolder, @"theme\article.template.html"); } }

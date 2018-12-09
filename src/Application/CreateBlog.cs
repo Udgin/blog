@@ -5,16 +5,16 @@ using MediatR;
 
 namespace blg.Application
 {
-    internal class CreateBlogCommand : IRequest
+    internal class CreateBlogCommand : IRequest, ILoggedRequest
     {
-        public CreateBlogCommand(string sourceFolder, string targetFolder)
+        public CreateBlogCommand(string sourceFolder)
         {
-            TargetFolder = targetFolder;
             SourceFolder = sourceFolder;
         }
 
-        public string TargetFolder { get; }
         public string SourceFolder { get; }
+
+        public string Trace() => $"{nameof(CreateBlogCommand)}: {SourceFolder}";
     }
     internal class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand>
     {
@@ -28,14 +28,14 @@ namespace blg.Application
         {
             var configuration = await _mediator.Send(new GetConfigurationCommand(request.SourceFolder));
 
-            await _mediator.Send(new CleanFolderCommand(request.TargetFolder));
+            await _mediator.Send(new CleanFolderCommand(configuration.TargetFolder));
 
-            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.FolderImagePath, request.TargetFolder));
-            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.PrismCSS, request.TargetFolder));
-            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.PrismJS, request.TargetFolder));
-            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.Favicon, request.TargetFolder));
+            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.FolderImagePath, configuration.TargetFolder));
+            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.PrismCSS, configuration.TargetFolder));
+            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.PrismJS, configuration.TargetFolder));
+            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.Favicon, configuration.TargetFolder));
 
-            await _mediator.Send(new CopyFolderCommand(string.Empty, request.SourceFolder, request.TargetFolder));
+            await _mediator.Send(new CopyFolderCommand(string.Empty, request.SourceFolder));
 
             return Unit.Value;
         }

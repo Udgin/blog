@@ -7,7 +7,20 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/blg.csproj"
+                "${workspaceFolder}/src/blg.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run",
+            "command": "dotnet",
+            "type": "process",
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "args": [
+                "run",
+                "C:\\Users\\ea_pyl\\projects\\blog_source"
             ],
             "problemMatcher": "$msCompile"
         }

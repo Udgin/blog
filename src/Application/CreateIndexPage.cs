@@ -10,7 +10,7 @@ using MediatR;
 
 namespace blg.Application
 {
-    internal class CreateIndexPageCommand : IRequest<CardEntity>
+    internal class CreateIndexPageCommand : IRequest<CardEntity>, ILoggedRequest
     {
         public CreateIndexPageCommand(
             string sourceFolder,
@@ -25,6 +25,8 @@ namespace blg.Application
         public string SourceFolder { get; }
         public IList<CardEntity> CardEntities { get; }
         public string PathToIndexFolder { get; }
+
+        public string Trace() => $"{nameof(CreateIndexPageCommand)}: {SourceFolder}, {CardEntities.Count}, {PathToIndexFolder}";
     }
     internal class CreateIndexPageCommandHandler : IRequestHandler<CreateIndexPageCommand, CardEntity>
     {

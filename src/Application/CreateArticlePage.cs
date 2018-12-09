@@ -12,17 +12,17 @@ using MediatR;
 
 namespace blg.Application
 {
-    internal class CreateArticlePageCommand : IRequest<CardEntity>
+    internal class CreateArticlePageCommand : IRequest<CardEntity>, ILoggedRequest
     {
-        public CreateArticlePageCommand(string relativePath, string sourceFolder, string targetFolder)
+        public CreateArticlePageCommand(string relativePath, string sourceFolder)
         {
             SourceFolder = sourceFolder;
             RelativePath = relativePath;
-            TargetFolder = targetFolder;
         }
         public string SourceFolder { get; }
         public string RelativePath { get; }
-        public string TargetFolder { get; }
+
+        public string Trace() => $"{nameof(CreateArticlePageCommand)}: {SourceFolder}, {RelativePath}";
     }
     internal class CreateArticlePageCommandHandler : IRequestHandler<CreateArticlePageCommand, CardEntity>
     {
@@ -45,7 +45,7 @@ namespace blg.Application
             var parsedTitle = ParseTitle(linesOfMarkdownArticle);
 
             var fullPathToHtmlArticle =
-                    Path.Combine(request.TargetFolder,
+                    Path.Combine(configuration.TargetFolder,
                         request.RelativePath.TrimStart('\\').TrimStart('/')).Replace(".md", ".html");
 
             var bodyOfArticle = linesOfMarkdownArticle.Skip(parsedTitle.Item2);
@@ -91,7 +91,7 @@ namespace blg.Application
 
             string AddScripts(string content, string html, string relativePath)
             {
-                var pathToPrismJs = Path.Combine(request.TargetFolder, Path.GetFileName(configuration.PrismJS));
+                var pathToPrismJs = Path.Combine(configuration.TargetFolder, Path.GetFileName(configuration.PrismJS));
                 var template = "<script async src=\"{0}\"></script>";
                 var scripts = string.Empty;
                 if (html.Contains("<code"))
@@ -107,7 +107,7 @@ namespace blg.Application
 
             string AddStyles(string content, string html, string relativePath)
             {
-                var pathToPrismCss = Path.Combine(request.TargetFolder, Path.GetFileName(configuration.PrismCSS));
+                var pathToPrismCss = Path.Combine(configuration.TargetFolder, Path.GetFileName(configuration.PrismCSS));
                 var template = "<link rel=\"stylesheet\" href=\"{0}\"></link>";
                 var cssStyles = string.Empty;
                 if (html.Contains("<code"))
@@ -120,8 +120,8 @@ namespace blg.Application
             string GetRelativePathToStaticResource(string relativePath, string pathToResource) =>
                 Utils.RelativePath (
                     Path.GetDirectoryName(relativePath) == null ?
-                        request.TargetFolder :
-                        Path.Combine(request.TargetFolder, Path.GetDirectoryName(relativePath)),
+                        configuration.TargetFolder :
+                        Path.Combine(configuration.TargetFolder, Path.GetDirectoryName(relativePath)),
                     pathToResource
                 );
         }
@@ -149,7 +149,7 @@ namespace blg.Application
         private readonly IFileSystem _fileSystem;
         private readonly IMediator _mediator;
         private readonly MarkdownPipeline _pipeline;
-        private string[] _headers = new[] { "Title:", "Date:", "Tags:"};
+        private string[] _headers = new[] { "Title:", "Date:", "Tags:", "Status:"};
         private (IDictionary<string, string>, int) ParseTitle(string[] lines)
         {
             var tags = new Dictionary<string, string>();
