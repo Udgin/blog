@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using blg.Common;
 using blg.Domain;
 using MediatR;
+using FluentValidation;
 
 namespace blg.Application
 {
@@ -32,12 +33,14 @@ namespace blg.Application
     {
         private readonly IFileSystem _fileSystem;
         private readonly IMediator _mediator;
+        private readonly IValidator<CardEntity> _cardValidator;
 
         public CreateIndexPageCommandHandler(IFileSystem fileSystem,
-            IMediator mediator)
+            IMediator mediator, IValidator<CardEntity> cardValidator)
         {
             _fileSystem = fileSystem;
             _mediator = mediator;
+            _cardValidator = cardValidator;
         }
         public async Task<CardEntity> Handle(CreateIndexPageCommand request, CancellationToken cancellationToken)
         {
@@ -51,39 +54,24 @@ namespace blg.Application
 
             var htmlCards = new List<string>();
             var tags = new Dictionary<string, int>();
-            foreach (var card in request.CardEntities.OrderByDescending(x => x.SortDate))
+            foreach (var childCards in request.CardEntities.OrderByDescending(x => x.ArticleTitle.Date))
             {
                 var htmlCard = cardTemplate;
-                if (!card.Tags.ContainsKey("Title"))
+                htmlCard = htmlCard.Replace("{{TITLE}}", childCards.ArticleTitle.Title);
+                foreach(var cardTag in childCards.ArticleTitle.Tags)
                 {
-                    throw new Exception($"{card.RelativePath} doesn't have title");
-                }
-                htmlCard = htmlCard.Replace("{{TITLE}}", card.Tags["Title"]);
-                var tagsValue = string.Empty;
-                if (card.Tags.ContainsKey("Tags"))
-                {
-                    tagsValue = card.Tags["Tags"];
-                    var cardTags = card.Tags["Tags"].Split(',').Select(x => x.Trim());
-                    foreach(var cardTag in cardTags)
+                    if (tags.ContainsKey(cardTag))
                     {
-                        if (tags.ContainsKey(cardTag))
-                        {
-                            tags[cardTag]++;
-                        }
-                        else
-                        {
-                            tags[cardTag] = 1;
-                        }
+                        tags[cardTag]++;
+                    }
+                    else
+                    {
+                        tags[cardTag] = 1;
                     }
                 }
-                var date = string.Empty;
-                if (card.Tags.ContainsKey("Date"))
-                {
-                    date = card.Tags["Date"];
-                }
-                htmlCard = htmlCard.Replace("{{DATE}}", date);
-                htmlCard = htmlCard.Replace("{{SUBTITLE}}", tagsValue);
-                htmlCard = htmlCard.Replace("{{LINK}}", card.RelativePath);
+                htmlCard = htmlCard.Replace("{{DATE}}", childCards.ArticleTitle.Date.ToString("D"));
+                htmlCard = htmlCard.Replace("{{SUBTITLE}}", string.Join(", ", childCards.ArticleTitle.Tags));
+                htmlCard = htmlCard.Replace("{{LINK}}", childCards.RelativePath);
                 htmlCards.Add(htmlCard);
             }
 
@@ -101,12 +89,16 @@ namespace blg.Application
 
             await _fileSystem.WriteAllTextAsync(htmlFilePath, contentOfIndex);
 
-            return new CardEntity {
-                Tags = new Dictionary<string, string> {
-                    ["Title"] = folderName
+            var card = new CardEntity {
+                ArticleTitle = new ArticleTitle {
+                    Title = folderName,
                 },
                 RelativePath = folderName + "/index.html"
             };
+
+            await _cardValidator.ValidateAndThrowAsync(card, "index");
+
+            return card;
         }
     }
 }

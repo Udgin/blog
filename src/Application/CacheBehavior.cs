@@ -16,6 +16,8 @@ namespace blg.Application
 
             var response = await next();
 
+            Console.WriteLine("Missed cache");
+
             _cache[request.Path] = response;
             return response;
         }

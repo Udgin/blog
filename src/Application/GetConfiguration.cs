@@ -2,6 +2,7 @@ using MediatR;
 using blg.Domain;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace blg.Application
 {
@@ -19,9 +20,21 @@ namespace blg.Application
 
     internal class GetConfigurationCommandHandler : IRequestHandler<GetConfigurationCommand, BlogConfiguration>
     {
-        public Task<BlogConfiguration> Handle(GetConfigurationCommand request, CancellationToken cancellationToken)
+        private IValidator<BlogConfiguration> _validator;
+
+        public GetConfigurationCommandHandler(IValidator<BlogConfiguration> validator)
         {
-            return Task.FromResult(new BlogConfiguration(request.SourceFolder));
+            _validator = validator;
+        }
+        public async Task<BlogConfiguration> Handle(GetConfigurationCommand request, CancellationToken cancellationToken)
+        {
+            var configuration = new BlogConfiguration {
+                SourceFolder = request.SourceFolder
+            };
+
+            await _validator.ValidateAndThrowAsync(configuration, cancellationToken: cancellationToken);
+
+            return configuration;
         }
     }
 }

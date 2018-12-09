@@ -9,6 +9,7 @@ using blg.Common;
 using blg.Domain;
 using Markdig;
 using MediatR;
+using FluentValidation;
 
 namespace blg.Application
 {
@@ -26,11 +27,21 @@ namespace blg.Application
     }
     internal class CreateArticlePageCommandHandler : IRequestHandler<CreateArticlePageCommand, CardEntity>
     {
-        public CreateArticlePageCommandHandler(IFileSystem fileSystem, IMediator mediator, MarkdownPipeline pipeline)
+        private readonly IFileSystem _fileSystem;
+        private readonly IMediator _mediator;
+        private readonly MarkdownPipeline _pipeline;
+        private readonly IValidator<CardEntity> _cardValidator;
+        public CreateArticlePageCommandHandler(
+            IFileSystem fileSystem,
+            IMediator mediator,
+            MarkdownPipeline pipeline,
+            IValidator<CardEntity> cardValidator
+            )
         {
             _fileSystem = fileSystem;
             _mediator = mediator;
             _pipeline = pipeline;
+            _cardValidator = cardValidator;
         }
         public async Task<CardEntity> Handle(CreateArticlePageCommand request, CancellationToken cancellationToken)
         {
@@ -42,13 +53,13 @@ namespace blg.Application
 
             var linesOfMarkdownArticle = await _fileSystem.ReadAllLinesAsync(fullPathToArticle);
 
-            var parsedTitle = ParseTitle(linesOfMarkdownArticle);
+            var title = await _mediator.Send(new ParseTitleCommand(linesOfMarkdownArticle));
 
             var fullPathToHtmlArticle =
                     Path.Combine(configuration.TargetFolder,
                         request.RelativePath.TrimStart('\\').TrimStart('/')).Replace(".md", ".html");
 
-            var bodyOfArticle = linesOfMarkdownArticle.Skip(parsedTitle.Item2);
+            var bodyOfArticle = linesOfMarkdownArticle.Skip(title.Size);
 
             var htmlContent = Markdown.ToHtml(string.Join(Environment.NewLine, bodyOfArticle), _pipeline);
 
@@ -84,10 +95,14 @@ namespace blg.Application
 
             await _fileSystem.WriteAllTextAsync(fullPathToHtmlArticle, contentOfArticle);
 
-            return new CardEntity {
-                Tags = parsedTitle.Item1,
+            var cardEntity = new CardEntity {
+                ArticleTitle = title,
                 RelativePath = Path.GetFileNameWithoutExtension(request.RelativePath) + ".html"
             };
+
+            await _cardValidator.ValidateAndThrowAsync(cardEntity);
+
+            return cardEntity;
 
             string AddScripts(string content, string html, string relativePath)
             {
@@ -143,31 +158,6 @@ namespace blg.Application
                     }
                 }
             }
-        }
-
-        private const string MetaDataStart = "---";
-        private readonly IFileSystem _fileSystem;
-        private readonly IMediator _mediator;
-        private readonly MarkdownPipeline _pipeline;
-        private string[] _headers = new[] { "Title:", "Date:", "Tags:", "Status:"};
-        private (IDictionary<string, string>, int) ParseTitle(string[] lines)
-        {
-            var tags = new Dictionary<string, string>();
-
-            if (lines[0] != MetaDataStart) return (tags, 0);
-            string line;
-            var i = 1;
-            while ((line = lines[i++]) != MetaDataStart)
-            {
-                foreach (var head in _headers)
-                {
-                    if (line.StartsWith(head) && !string.IsNullOrWhiteSpace(line.Substring(head.Length)))
-                    {
-                        tags[head.TrimEnd(':')] = line.Substring(head.Length).Trim();
-                    }
-                }
-            }
-            return (tags, i);
         }
     }
 }

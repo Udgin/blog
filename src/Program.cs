@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using blg.Application;
 using blg.Infrastructure;
 using DryIoc;
+using FluentValidation;
 using Markdig;
 using MediatR;
 using MediatR.Pipeline;
@@ -22,22 +23,15 @@ namespace blg
         {
             var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
 
-            container.RegisterDelegate<ServiceFactory>(r => r.Resolve);
             container.RegisterDelegate(r => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             container.Register<IFileSystem, FileSystem>();
-            container.Register(typeof(IPipelineBehavior<GetTemplateCommand, string>), typeof(CacheBehaviour), reuse: Reuse.Singleton);
-            container.RegisterMany(new []{ typeof(Mediator).Assembly }, t => t.IsInterface);
-            container.RegisterMany(new []{ typeof(Program).Assembly }, t =>
-            {
-                return
-                t.Name == typeof(IRequest).Name ||
-                t.Name == typeof(IRequestPreProcessor<>).Name ||
-                t.Name == typeof(IRequest<>).Name ||
-                t.Name == typeof(IRequestHandler<>).Name ||
-                t.Name == typeof(IRequestHandler<,>).Name;
-            });
 
-            //container.RegisterMany(new[] { typeof(IMediator).GetAssembly(), typeof(Program).GetAssembly() }, Registrator.Interfaces);
+            container.RegisterMany(new []{ typeof(Mediator).Assembly }, t => t.IsInterface);
+            container.RegisterDelegate<ServiceFactory>(r => r.Resolve);
+            
+            container.RegisterMany(new []{ typeof(Program).Assembly }, t => t.IsInterface);
+
+            container.Register(typeof(IPipelineBehavior<GetTemplateCommand, string>), typeof(CacheBehaviour), reuse: Reuse.Singleton, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
 
             return container.Resolve<IMediator>();
         }
