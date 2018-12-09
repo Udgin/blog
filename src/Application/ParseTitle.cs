@@ -38,7 +38,12 @@ namespace blg.Application
                         result.Date = DateTime.Parse(splitted[1].Trim());
                         break;
                     case "Tags":
-                        result.Tags = splitted[1].Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
+                        result.Tags =
+                            splitted[1]
+                            .Split(", ", StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x.Trim())
+                            .Where(x => !string.IsNullOrEmpty(x))
+                            .ToArray();
                         break;
                     case "Status":
                         result.Status = splitted[1].Trim();

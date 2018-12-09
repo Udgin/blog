@@ -54,7 +54,7 @@ namespace blg.Application
 
             var htmlCards = new List<string>();
             var tags = new Dictionary<string, int>();
-            foreach (var childCards in request.CardEntities.OrderByDescending(x => x.ArticleTitle.Date))
+            foreach (var childCards in request.CardEntities.OrderBy(x => x.SortDate))
             {
                 var htmlCard = cardTemplate;
                 htmlCard = htmlCard.Replace("{{TITLE}}", childCards.ArticleTitle.Title);
@@ -69,7 +69,7 @@ namespace blg.Application
                         tags[cardTag] = 1;
                     }
                 }
-                htmlCard = htmlCard.Replace("{{DATE}}", childCards.ArticleTitle.Date.ToString("D"));
+                htmlCard = htmlCard.Replace("{{DATE}}", childCards.SortDate);
                 htmlCard = htmlCard.Replace("{{SUBTITLE}}", string.Join(", ", childCards.ArticleTitle.Tags));
                 htmlCard = htmlCard.Replace("{{LINK}}", childCards.RelativePath);
                 htmlCards.Add(htmlCard);
