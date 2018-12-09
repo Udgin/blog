@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <title>Partitioning</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    
+    <style>
+        .columns .column {
+            padding: .4rem;
+        }
+        #sidebar-id {
+            padding: .4rem;
+        }
+        code {
+            padding: 0;
+            overflow-x: scroll;
+        }
+        img {
+            max-width: 100%;
+        }
+        .off-canvas .off-canvas-sidebar
+        {
+            background: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="off-canvas off-canvas-sidebar-show">
+        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
+            <i class="icon icon-menu"></i>
+        </a>
+        <div id="sidebar-id" class="off-canvas-sidebar">
+            <ul class="menu">
+                <li class="menu-item">
+                    <div class="tile tile-centered">
+                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
+                                alt="Avatar"></div>
+                        <div class="tile-content">Yauhen Pyl</div>
+                    </div>
+                </li>
+                <li class="divider" data-content="LINKS">
+                </li>
+                <li class="menu-item">
+                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
+                </li>
+                <li class="menu-item">
+                    <a href="https://github.com/eapyl">GitHub</a>
+                </li>
+                <li class="menu-item">
+                    <a href="mailto:gromkaktus@gmail.com">Email</a>
+                </li>
+            </ul>
+        </div>
+        <a class="off-canvas-overlay" href="#close"></a>
+        <div class="off-canvas-content">
+            <div class="container grid-lg">
+                <p>В этой главе мы рассмотрели различные методы секционирования большого набора данных на меньшие поднаборы. Секционирование требуется, когда размер набора более не позволяет хранить и обрабатывать его на одной машине.</p>
+<p>Цель секционирования заключается в распределении нагрузки по данным и запросам равномерно по нескольким машинам, а также в том, чтобы избежать горячих точек (узлов с непропорционально высокой нагрузкой). Это требует выбора подходящей для набора данных схемы секционирования и перебалансировки секций при добавлении или удалении узлов из кластера.</p>
+<p>Мы обсудили два основных подхода к секционированию.</p>
+<ul>
+<li>Секционирование по диапазонам значений ключа, при котором ключи сортируются и секция содержит все ключи, начиная с определенного минимума до
+определенного максимума. Преимущество сортировки состоит в возможности выполнять эффективные запросы по диапазонам; но если приложение часто
+обращается к расположенным близко (в соответствии с сортировкой) ключам, то возникает риск возникновения горячих точек.</li>
+</ul>
+<p>При этом подходе обычно производится динамическая перебалансировка секций с помощью разбиения диапазона на два поддиапазона в случае, когда
+секция становится слишком велика.</p>
+<ul>
+<li><p>Хеш-секционирование, при котором вычисляется хеш-функция каждого ключа и к каждой секции относится определенный диапазон хешей. Этот метод нарушает упорядоченность ключей, делая запросы по диапазонам неэффективными, но позволяет более равномерно распределять нагрузку.</p>
+</li>
+<li><p>При хеш-секционировании часто заранее создается фиксированное количество секций, по нескольку для каждого узла, а при добавлении или удалении узлов между узлами часто перемещаются целые секции. При этом также можно использовать динамическое секционирование.</p>
+</li>
+</ul>
+<p>Возможны и гибридные подходы, например с составным ключом: применение одной части ключа для идентификации секции, а другой — для определения порядка сортировки.</p>
+<p>Кроме того, мы обсудили взаимосвязь между секционированием и вторичными индексами. Последние тоже необходимо секционировать, для чего существуют
+два метода.</p>
+<ul>
+<li><p>Секционирование индексов по документам (локальные индексы). Вторичные индексы хранятся в одной секции с первичным ключом и значением. Это значит, что при операции записи нужно обновлять только одну секцию, но чтение вторичного индекса требует фрагментированного чтения по всем секциям.</p>
+</li>
+<li><p>Секционирование индексов по термам (глобальные индексы), при котором вторичные индексы секционируются отдельно, с использованием индексированных значений. Элемент этого вторичного индекса может включать записи из всех секций первичного ключа. При записи документа приходится обновлять несколько секций вторичного индекса, однако результат чтения можно выдать из одной секции.</p>
+</li>
+</ul>
+<p>Наконец, мы обсудили методы маршрутизации запросов к соответствующей секции, начиная с простого, учитывающего секции балансировщика нагрузки и заканчивая сложными параллельными механизмами выполнения запросов.</p>
+<p>Все секции умышленно работают практически независимо — это позволяет масштабировать секционированную базу данных на несколько машин. Однако остается вопрос с операциями, для которых требуется запись в несколько секций: например, что будет, если операция записи в одну секцию завершится успешно, а в другую — нет? Мы займемся этим вопросом в следующих главах.</p>
+
+                <div class="sharethis-inline-share-buttons"></div>
+                <div id="disqus_thread"></div>
+                <script>
+                    (function() { // DON'T EDIT BELOW THIS LINE
+                        var d = document,
+                            s = d.createElement('script');
+                        s.src = '//eapyl-github-io.disqus.com/embed.js';
+                        s.setAttribute('data-timestamp', +new Date());
+                        (d.head || d.body).appendChild(s);
+                    })();
+                </script>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    
+        ga('create', 'UA-87583712-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
+</body>
+
+</html>
