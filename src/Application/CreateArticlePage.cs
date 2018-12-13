@@ -93,7 +93,10 @@ namespace blg.Application
 
             var linkWithImage =  linksInArticle.FirstOrDefault(x => x.EndsWith(".jpg") || x.EndsWith(".png"));
 
-            await _fileSystem.WriteAllTextAsync(fullPathToHtmlArticle, contentOfArticle);
+            if (title.Publish)
+            {
+                await _fileSystem.WriteAllTextAsync(fullPathToHtmlArticle, contentOfArticle);
+            }
 
             var cardEntity = new CardEntity {
                 ArticleTitle = title,

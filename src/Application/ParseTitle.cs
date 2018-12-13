@@ -45,8 +45,8 @@ namespace blg.Application
                             .Where(x => !string.IsNullOrEmpty(x))
                             .ToArray();
                         break;
-                    case "Status":
-                        result.Status = splitted[1].Trim();
+                    case "Publish":
+                        result.Publish = Convert.ToBoolean(splitted[1].Trim());
                         break;
                     case "Script":
                         result.Script = splitted[1].Trim();

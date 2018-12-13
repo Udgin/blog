@@ -54,7 +54,9 @@ namespace blg.Application
 
             var htmlCards = new List<string>();
             var tags = new Dictionary<string, int>();
-            foreach (var childCards in request.CardEntities.OrderByDescending(x => x.ArticleTitle.Date))
+            foreach (var childCards in request.CardEntities
+                .Where(x => x.ArticleTitle.Publish)
+                .OrderByDescending(x => x.ArticleTitle.Date))
             {
                 var htmlCard = cardTemplate;
                 htmlCard = htmlCard.Replace("{{TITLE}}", childCards.ArticleTitle.Title);

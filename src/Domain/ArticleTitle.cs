@@ -11,6 +11,6 @@ namespace blg.Domain
         public string[] Tags { get; set; } = new string[0];
         public string Script { get; set; } = "";
         public int Size { get; set;} = 0;
-        public string Status { get; set; } = "";
+        public bool Publish { get; set; } = true;
     }
 }
