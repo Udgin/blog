@@ -66,13 +66,13 @@ namespace blg.Application
             var contentOfArticle = articleTemplate.Replace("{{BODY}}", htmlContent);
 
             contentOfArticle = AddStyles(contentOfArticle, htmlContent, request.RelativePath);
-            contentOfArticle = AddScripts(contentOfArticle, htmlContent, request.RelativePath);
+            contentOfArticle = AddScripts(contentOfArticle, htmlContent, title.Script, request.RelativePath);
 
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fullPathToHtmlArticle);
 
             contentOfArticle = contentOfArticle.Replace("{{TITLE}}", fileNameWithoutExtension);
 
-            var linksInArticle = FindLinks(bodyOfArticle);
+            var linksInArticle = await _mediator.Send(new FindLinksCommand(bodyOfArticle));
             var folderForAssets = Path.GetDirectoryName(fullPathToHtmlArticle);
 
             foreach (var link in linksInArticle)
@@ -104,7 +104,7 @@ namespace blg.Application
 
             return cardEntity;
 
-            string AddScripts(string content, string html, string relativePath)
+            string AddScripts(string content, string html, string customScript, string relativePath)
             {
                 var pathToPrismJs = Path.Combine(configuration.TargetFolder, Path.GetFileName(configuration.PrismJS));
                 var template = "<script async src=\"{0}\"></script>";
@@ -116,6 +116,10 @@ namespace blg.Application
                 if (html.Contains("<span class=\"math\""))
                 {
                     scripts += string.Format(template, configuration.PathToMathJS);
+                }
+                if (!string.IsNullOrWhiteSpace(customScript))
+                {
+                    scripts += $"<scripts>{customScript}</script>";
                 }
                 return content.Replace("{{SCRIPTS}}", scripts);
             }
@@ -139,25 +143,6 @@ namespace blg.Application
                         Path.Combine(configuration.TargetFolder, Path.GetDirectoryName(relativePath)),
                     pathToResource
                 );
-        }
-
-        private readonly Regex linkRegex
-            = new Regex(@"\[.+\]\((?<url>.+)\)", RegexOptions.Compiled);
-
-        private IEnumerable<string> FindLinks(IEnumerable<string> lines)
-        {
-            foreach (var line in lines)
-            {
-                foreach (Match match in linkRegex.Matches(line))
-                {
-                    for (int i = 0; i < match.Groups.Count; i++)
-                    {
-                        Group group = match.Groups[i];
-                        if (group.Success && group.Name == "url")
-                            yield return group.Value;
-                    }
-                }
-            }
         }
     }
 }

@@ -48,6 +48,9 @@ namespace blg.Application
                     case "Status":
                         result.Status = splitted[1].Trim();
                         break;
+                    case "Script":
+                        result.Script = splitted[1].Trim();
+                        break;
                     default:
                         break;
                 }

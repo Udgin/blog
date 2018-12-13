@@ -77,9 +77,9 @@ namespace blg.Application
 
             var tagsHtml = string.Empty;
 
-            foreach (var key in tags.Keys)
+            foreach (var pair in tags.OrderByDescending(x => x.Value).Take(7))
             {
-                tagsHtml += tagTemplate.Replace("{{COUNT}}", tags[key].ToString()).Replace("{{NAME}}", key);
+                tagsHtml += tagTemplate.Replace("{{COUNT}}", pair.Value.ToString()).Replace("{{NAME}}", pair.Key);
             }
 
             var contentOfIndex = indexTemplate.Replace("{{BODY}}", string.Join(string.Empty, htmlCards));
