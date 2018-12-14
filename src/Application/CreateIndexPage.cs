@@ -26,7 +26,6 @@ namespace blg.Application
         public string SourceFolder { get; }
         public IList<CardEntity> CardEntities { get; }
         public string PathToIndexFolder { get; }
-
         public string Trace() => $"{nameof(CreateIndexPageCommand)}: {SourceFolder}, {CardEntities.Count}, {PathToIndexFolder}";
     }
     internal class CreateIndexPageCommandHandler : IRequestHandler<CreateIndexPageCommand, CardEntity>
@@ -88,6 +87,8 @@ namespace blg.Application
             var folderName = Path.GetFileNameWithoutExtension(fullPathForIndexPage);
             contentOfIndex = contentOfIndex.Replace("{{TITLE}}", string.IsNullOrEmpty(folderName) ? "Main" : folderName);
             contentOfIndex = contentOfIndex.Replace("{{TAGS}}", tagsHtml);
+            contentOfIndex = contentOfIndex.Replace("{{LINK}}",
+                Utils.RelativePath(request.PathToIndexFolder, Path.Combine(configuration.TargetFolder, "index.html")));
 
             await _fileSystem.WriteAllTextAsync(htmlFilePath, contentOfIndex);
 
