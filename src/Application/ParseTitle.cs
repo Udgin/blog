@@ -28,28 +28,31 @@ namespace blg.Application
             var i = 1;
             while ((line = request.Lines[i++]) != MetaDataStart)
             {
-                var splitted = line.Split(":");
-                switch (splitted[0])
+                var index = line.IndexOf(":");
+                if (index == -1) continue;
+                var key = line.Substring(0, index);
+                var value = line.Substring(index + 1).Trim();
+                switch (key)
                 {
                     case "Title":
-                        result.Title = splitted[1].Trim();
+                        result.Title = value;
                         break;
                     case "Date":
-                        result.Date = DateTime.Parse(splitted[1].Trim());
+                        result.Date = DateTime.Parse(value);
                         break;
                     case "Tags":
                         result.Tags =
-                            splitted[1]
+                            value
                             .Split(", ", StringSplitOptions.RemoveEmptyEntries)
                             .Select(x => x.Trim())
                             .Where(x => !string.IsNullOrEmpty(x))
                             .ToArray();
                         break;
                     case "Publish":
-                        result.Publish = Convert.ToBoolean(splitted[1].Trim());
+                        result.Publish = Convert.ToBoolean(value);
                         break;
                     case "Script":
-                        result.Script = splitted[1].Trim();
+                        result.Script = value;
                         break;
                     default:
                         break;

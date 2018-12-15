@@ -122,7 +122,7 @@ namespace blg.Application
                 }
                 if (!string.IsNullOrWhiteSpace(customScript))
                 {
-                    scripts += $"<scripts>{customScript}</script>";
+                    scripts += $"<script>{customScript}</script>";
                 }
                 return content.Replace("{{SCRIPTS}}", scripts);
             }
