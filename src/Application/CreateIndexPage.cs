@@ -90,7 +90,9 @@ namespace blg.Application
             contentOfIndex = contentOfIndex.Replace("{{LINK}}",
                 Utils.RelativePath(request.PathToIndexFolder, Path.Combine(configuration.TargetFolder, "index.html")));
 
-            await _fileSystem.WriteAllTextAsync(htmlFilePath, contentOfIndex);
+            var uglified = await _mediator.Send(new UglifyHtmlCommand(contentOfIndex));
+
+            await _fileSystem.WriteAllTextAsync(htmlFilePath, uglified);
 
             var card = new CardEntity {
                 ArticleTitle = new ArticleTitle {

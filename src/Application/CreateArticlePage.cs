@@ -95,7 +95,8 @@ namespace blg.Application
 
             if (title.Publish)
             {
-                await _fileSystem.WriteAllTextAsync(fullPathToHtmlArticle, contentOfArticle);
+                var uglified = await _mediator.Send(new UglifyHtmlCommand(contentOfArticle));
+                await _fileSystem.WriteAllTextAsync(fullPathToHtmlArticle, uglified);
             }
 
             var cardEntity = new CardEntity {
