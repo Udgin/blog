@@ -1,156 +1,82 @@
-<html>
-
-<head>
-    <title>Remote-MSSQL-to-local-server</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-    <link rel="stylesheet" href="prism.css"></link>
-    <style>
-        .columns .column {
-            padding: .4rem;
-        }
-        #sidebar-id {
-            padding: .4rem;
-        }
-        code {
-            padding: 0;
-            overflow-x: scroll;
-        }
-        img {
-            max-width: 100%;
-        }
-        .off-canvas .off-canvas-sidebar
-        {
-            background: none;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="off-canvas off-canvas-sidebar-show">
-        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
-            <i class="icon icon-menu"></i>
-        </a>
-        <div id="sidebar-id" class="off-canvas-sidebar">
-            <ul class="menu">
-                <li class="menu-item">
-                    <div class="tile tile-centered">
-                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
-                                alt="Avatar"></div>
-                        <div class="tile-content">Yauhen Pyl</div>
-                    </div>
-                </li>
-                <li class="divider" data-content="LINKS">
-                </li>
-                <li class="menu-item">
-                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://github.com/eapyl">GitHub</a>
-                </li>
-                <li class="menu-item">
-                    <a href="mailto:gromkaktus@gmail.com">Email</a>
-                </li>
-            </ul>
-        </div>
-        <a class="off-canvas-overlay" href="#close"></a>
-        <div class="off-canvas-content">
-            <div class="container grid-lg">
-                <h1 id="copy-remote-mssql-db-to-local-server">Copy remote MSSQL DB to local server</h1>
-<p>I faced with one issue how to automatically download and restore databases from remote server to my local MSSQL server. It sounds like very generic task so I tried to find a solution in Internet without success. So there is a small console application which does the next things:</p>
-<ol>
-<li>Backup selected databases on remote server;</li>
-<li>Copy backups to local folder;</li>
-<li>Restore copied databases to local MSSQL;</li>
-<li>Change the owner of databases to current user;</li>
-</ol>
-<p>A small snippet with implementation is below.</p>
-<pre><code class="language-csharp">/*
+<title>Remote-MSSQL-to-local-server</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-exp.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-icons.min.css><link rel=stylesheet href=prism.css><link><style>.columns .column{padding:.4rem}#sidebar-id{padding:.4rem}code{padding:0;overflow-x:scroll}img{max-width:100%}.off-canvas .off-canvas-sidebar{background:none}</style><div class="off-canvas off-canvas-sidebar-show"><a class="off-canvas-toggle btn btn-primary btn-action" href=#sidebar-id><i class="icon icon-menu"></i></a><div id=sidebar-id class=off-canvas-sidebar><ul class=menu><li class=menu-item><div class="tile tile-centered"><div class=tile-icon><img class=avatar src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U" alt=Avatar></div><div class=tile-content>Yauhen Pyl</div></div><li class=divider data-content=LINKS><li class=menu-item><a href=https://plus.google.com/+UdginPyl>Google+</a><li class=menu-item><a href=https://www.facebook.com/yauhen.pyl>Facebook</a><li class=menu-item><a href=https://pl.linkedin.com/in/eugenepyl>LinkedIn</a><li class=menu-item><a href=https://github.com/eapyl>GitHub</a><li class=menu-item><a href=mailto:gromkaktus@gmail.com>Email</a></ul></div><a class=off-canvas-overlay href=#close></a><div class=off-canvas-content><div class="container grid-lg"><h1 id=copy-remote-mssql-db-to-local-server>Copy remote MSSQL DB to local server</h1><p>I faced with one issue how to automatically download and restore databases from remote server to my local MSSQL server. It sounds like very generic task so I tried to find a solution in Internet without success. So there is a small console application which does the next things:<ol><li>Backup selected databases on remote server;<li>Copy backups to local folder;<li>Restore copied databases to local MSSQL;<li>Change the owner of databases to current user;</ol><p>A small snippet with implementation is below.
+<pre><code class=language-csharp>/*
 You need to add next NuGet packages:
-&quot;Microsoft.Extensions.Configuration&quot;: &quot;2.0.0&quot;,
-&quot;Microsoft.Extensions.Configuration.FileExtensions&quot;: &quot;2.0.0&quot;,
-&quot;Microsoft.Extensions.Configuration.Json&quot;: &quot;2.0.0&quot;,
-&quot;System.Data.Common&quot;: &quot;4.3.0&quot;,
-&quot;System.Data.SqlClient&quot;: &quot;4.4.2&quot;,
-&quot;System.Runtime&quot;: &quot;4.3.0&quot;
+"Microsoft.Extensions.Configuration": "2.0.0",
+"Microsoft.Extensions.Configuration.FileExtensions": "2.0.0",
+"Microsoft.Extensions.Configuration.Json": "2.0.0",
+"System.Data.Common": "4.3.0",
+"System.Data.SqlClient": "4.4.2",
+"System.Runtime": "4.3.0"
 */
 class Program
 {
     private static IConfigurationRoot Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(&quot;appsettings.json&quot;).Build();
+            .AddJsonFile("appsettings.json").Build();
 
-    private static string[] dbs { get; } = Configuration.GetSection(&quot;dbs&quot;)
-        .GetChildren().Select(x=&gt;x.Value).ToArray();
+    private static string[] dbs { get; } = Configuration.GetSection("dbs")
+        .GetChildren().Select(x=>x.Value).ToArray();
 
-    private static string remoteServer { get; } = Configuration[&quot;connectionStrings:remoteServer&quot;];
-    private static string localServer { get; } = Configuration[&quot;connectionStrings:localServer&quot;];
-    private static string currentUser { get; } = Configuration[&quot;currentUser&quot;];
-    private static string remoteServerPathWithBackups { get; } = Configuration[&quot;remoteServerPathWithBackups&quot;];
-    private static string serverPathWithBackups { get; } = Configuration[&quot;serverPathWithBackups&quot;];
-    private static string userNameToLogInToServer { get; } = Configuration[&quot;userNameToLogInToServer&quot;];
-    private static string passwordToLogInToServer { get; } = Configuration[&quot;passwordToLogInToServer&quot;];
-    private static string localPathToCopyBackups { get; } = Configuration[&quot;localPathToCopyBackups&quot;];
-    private static string backupFileName = Configuration[&quot;backupFileName&quot;];
+    private static string remoteServer { get; } = Configuration["connectionStrings:remoteServer"];
+    private static string localServer { get; } = Configuration["connectionStrings:localServer"];
+    private static string currentUser { get; } = Configuration["currentUser"];
+    private static string remoteServerPathWithBackups { get; } = Configuration["remoteServerPathWithBackups"];
+    private static string serverPathWithBackups { get; } = Configuration["serverPathWithBackups"];
+    private static string userNameToLogInToServer { get; } = Configuration["userNameToLogInToServer"];
+    private static string passwordToLogInToServer { get; } = Configuration["passwordToLogInToServer"];
+    private static string localPathToCopyBackups { get; } = Configuration["localPathToCopyBackups"];
+    private static string backupFileName = Configuration["backupFileName"];
 
-    private const string changeOwnerOfDb = @&quot;
+    private const string changeOwnerOfDb = @"
 USE {0}
-EXEC sp_changedbowner '{1}'&quot;;
+EXEC sp_changedbowner '{1}'";
 
-    private const string changeToSingleUser = @&quot;
-ALTER DATABASE[{0}] SET Single_User WITH Rollback Immediate&quot;;
+    private const string changeToSingleUser = @"
+ALTER DATABASE[{0}] SET Single_User WITH Rollback Immediate";
 
-    private const string changeToMultiUser = @&quot;
-ALTER DATABASE [{0}] SET Multi_User&quot;;
+    private const string changeToMultiUser = @"
+ALTER DATABASE [{0}] SET Multi_User";
 
-    private const string AddNetPath = &quot;NET USE {0} {1} /USER:{2}&quot;;
-    private const string DeleteNetPath = &quot;NET USE {0} /DELETE&quot;;
-    private const string CopyReport = &quot;robocopy {0} {1} {2}&quot;;
+    private const string AddNetPath = "NET USE {0} {1} /USER:{2}";
+    private const string DeleteNetPath = "NET USE {0} /DELETE";
+    private const string CopyReport = "robocopy {0} {1} {2}";
 
-    private const string restoreDb = @&quot;
-RESTORE DATABASE {0} FROM DISK = '{1}' WITH REPLACE, RECOVERY;&quot;;
-    private const string backupDb = @&quot;
-BACKUP DATABASE {0} TO DISK='{1}' WITH INIT, COPY_ONLY, FORMAT, COMPRESSION;&quot;;
+    private const string restoreDb = @"
+RESTORE DATABASE {0} FROM DISK = '{1}' WITH REPLACE, RECOVERY;";
+    private const string backupDb = @"
+BACKUP DATABASE {0} TO DISK='{1}' WITH INIT, COPY_ONLY, FORMAT, COMPRESSION;";
 
     static void Main(string[] args)
     {
         foreach (var db in dbs)
         {
-            Console.WriteLine($&quot;Backup {db}&quot;);
+            Console.WriteLine($"Backup {db}");
             BackupTargetDatabase(remoteServer, db);
 
-            Console.WriteLine($&quot;Copy created backup to local - {db}&quot;);
+            Console.WriteLine($"Copy created backup to local - {db}");
             CopyBackupToLocal(db);
 
-            Console.WriteLine($&quot;Change to single user mode - {db}&quot;);
+            Console.WriteLine($"Change to single user mode - {db}");
             ChangeToSingleUser(localServer, db);
 
-            Console.WriteLine($&quot;Restore db locally - {db}&quot;);
+            Console.WriteLine($"Restore db locally - {db}");
             RestoreTargetDatabase(localServer, db);
 
-            Console.WriteLine($&quot;Change the owner - {db}&quot;);
+            Console.WriteLine($"Change the owner - {db}");
             ChangeOwnerOfDb(localServer, db);
 
-            Console.WriteLine($&quot;Reset to multi user mode - {db}&quot;);
+            Console.WriteLine($"Reset to multi user mode - {db}");
             ChangeToMultiUser(localServer, db);
         }
     }
 
-    private static void ChangeToMultiUser(string localServer, string db) =&gt;
+    private static void ChangeToMultiUser(string localServer, string db) =>
         ExecuteSqlCommand(localServer, string.Format(changeToMultiUser, db));
 
-    private static void ChangeToSingleUser(string localServer, string db) =&gt;
+    private static void ChangeToSingleUser(string localServer, string db) =>
         ExecuteSqlCommand(localServer, string.Format(changeToSingleUser, db));
 
-    private static void ChangeOwnerOfDb(string localServer, string db) =&gt;
+    private static void ChangeOwnerOfDb(string localServer, string db) =>
         ExecuteSqlCommand(localServer, string.Format(changeOwnerOfDb, db, currentUser));
 
     private static void CopyBackupToLocal(string database)
@@ -162,7 +88,7 @@ BACKUP DATABASE {0} TO DISK='{1}' WITH INIT, COPY_ONLY, FORMAT, COMPRESSION;&quo
 
     private static void ExecuteCommand(string command)
     {
-        var processInfo = new ProcessStartInfo(&quot;cmd.exe&quot;, &quot;/c &quot; + command);
+        var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
         processInfo.CreateNoWindow = true;
         processInfo.UseShellExecute = false;
         processInfo.RedirectStandardError = true;
@@ -172,24 +98,24 @@ BACKUP DATABASE {0} TO DISK='{1}' WITH INIT, COPY_ONLY, FORMAT, COMPRESSION;&quo
 
         var process = Process.Start(processInfo);
 
-        process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =&gt;
-            Console.WriteLine($&quot;{e.Data}&quot;);
+        process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
+            Console.WriteLine($"{e.Data}");
         process.BeginOutputReadLine();
 
-        process.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =&gt;
-            Console.WriteLine($&quot;{e.Data}&quot;);
+        process.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
+            Console.WriteLine($"{e.Data}");
         process.BeginErrorReadLine();
 
         process.WaitForExit();
-        if (process.ExitCode &gt; 0)
-            Console.WriteLine($&quot;Error {nameof(process.ExitCode)}: {process.ExitCode}&quot;);
+        if (process.ExitCode > 0)
+            Console.WriteLine($"Error {nameof(process.ExitCode)}: {process.ExitCode}");
         process.Close();
     }
 
-    private static void RestoreTargetDatabase(string connectionString, string database) =&gt;
+    private static void RestoreTargetDatabase(string connectionString, string database) =>
         ExecuteSqlCommand(connectionString, string.Format(restoreDb, database, Path.Combine(localPathToCopyBackups, string.Format(backupFileName, database))));
 
-    private static void BackupTargetDatabase(string connectionString, string database) =&gt;
+    private static void BackupTargetDatabase(string connectionString, string database) =>
         ExecuteSqlCommand(connectionString, string.Format(backupDb, database, Path.Combine(serverPathWithBackups, string.Format(backupFileName, database))));
 
     private static void ExecuteSqlCommand(string connectionString, string query)
@@ -205,36 +131,4 @@ BACKUP DATABASE {0} TO DISK='{1}' WITH INIT, COPY_ONLY, FORMAT, COMPRESSION;&quo
         }
     }
 }
-</code></pre>
-<p>Thanks.</p>
-
-                <div class="sharethis-inline-share-buttons"></div>
-                <div id="disqus_thread"></div>
-                <script>
-                    (function() { // DON'T EDIT BELOW THIS LINE
-                        var d = document,
-                            s = d.createElement('script');
-                        s.src = '//eapyl-github-io.disqus.com/embed.js';
-                        s.setAttribute('data-timestamp', +new Date());
-                        (d.head || d.body).appendChild(s);
-                    })();
-                </script>
-            </div>
-        </div>
-    </div>
-    <script async src="prism.js"></script>
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    
-        ga('create', 'UA-87583712-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
-</body>
-
-</html>
+</code></pre><p>Thanks.<div class=sharethis-inline-share-buttons></div><div id=disqus_thread></div><script>(function(){var n=document,t=n.createElement("script");t.src="//eapyl-github-io.disqus.com/embed.js";t.setAttribute("data-timestamp",+new Date);(n.head||n.body).appendChild(t)})()</script></div></div></div><script async src=prism.js></script><script>(function(n,t,i,r,u,f,e){n.GoogleAnalyticsObject=u;n[u]=n[u]||function(){(n[u].q=n[u].q||[]).push(arguments)};n[u].l=1*new Date;f=t.createElement(i);e=t.getElementsByTagName(i)[0];f.async=1;f.src=r;e.parentNode.insertBefore(f,e)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create","UA-87583712-1","auto");ga("send","pageview")</script><script src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>

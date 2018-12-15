@@ -1,117 +1,46 @@
-<html>
-
-<head>
-    <title>Use-WebSQL-and-IndexedDB-in-Typescript</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-    <link rel="stylesheet" href="prism.css"></link>
-    <style>
-        .columns .column {
-            padding: .4rem;
-        }
-        #sidebar-id {
-            padding: .4rem;
-        }
-        code {
-            padding: 0;
-            overflow-x: scroll;
-        }
-        img {
-            max-width: 100%;
-        }
-        .off-canvas .off-canvas-sidebar
-        {
-            background: none;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="off-canvas off-canvas-sidebar-show">
-        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
-            <i class="icon icon-menu"></i>
-        </a>
-        <div id="sidebar-id" class="off-canvas-sidebar">
-            <ul class="menu">
-                <li class="menu-item">
-                    <div class="tile tile-centered">
-                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
-                                alt="Avatar"></div>
-                        <div class="tile-content">Yauhen Pyl</div>
-                    </div>
-                </li>
-                <li class="divider" data-content="LINKS">
-                </li>
-                <li class="menu-item">
-                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://github.com/eapyl">GitHub</a>
-                </li>
-                <li class="menu-item">
-                    <a href="mailto:gromkaktus@gmail.com">Email</a>
-                </li>
-            </ul>
-        </div>
-        <a class="off-canvas-overlay" href="#close"></a>
-        <div class="off-canvas-content">
-            <div class="container grid-lg">
-                <h1 id="use-websql-and-indexeddb-in-typescript">Use WebSQL and IndexedDB in Typescript</h1>
-<p>More information about <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDb</a> or <a href="https://www.w3.org/TR/webdatabase/">WebSQL</a>.</p>
-<p>Let's define base interfaces for our task:</p>
-<pre><code class="language-typescript">export interface IItem {
+<title>Use-WebSQL-and-IndexedDB-in-Typescript</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-exp.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-icons.min.css><link rel=stylesheet href=prism.css><link><style>.columns .column{padding:.4rem}#sidebar-id{padding:.4rem}code{padding:0;overflow-x:scroll}img{max-width:100%}.off-canvas .off-canvas-sidebar{background:none}</style><div class="off-canvas off-canvas-sidebar-show"><a class="off-canvas-toggle btn btn-primary btn-action" href=#sidebar-id><i class="icon icon-menu"></i></a><div id=sidebar-id class=off-canvas-sidebar><ul class=menu><li class=menu-item><div class="tile tile-centered"><div class=tile-icon><img class=avatar src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U" alt=Avatar></div><div class=tile-content>Yauhen Pyl</div></div><li class=divider data-content=LINKS><li class=menu-item><a href=https://plus.google.com/+UdginPyl>Google+</a><li class=menu-item><a href=https://www.facebook.com/yauhen.pyl>Facebook</a><li class=menu-item><a href=https://pl.linkedin.com/in/eugenepyl>LinkedIn</a><li class=menu-item><a href=https://github.com/eapyl>GitHub</a><li class=menu-item><a href=mailto:gromkaktus@gmail.com>Email</a></ul></div><a class=off-canvas-overlay href=#close></a><div class=off-canvas-content><div class="container grid-lg"><h1 id=use-websql-and-indexeddb-in-typescript>Use WebSQL and IndexedDB in Typescript</h1><p>More information about <a href=https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API>IndexedDb</a> or <a href=https://www.w3.org/TR/webdatabase/ >WebSQL</a>.<p>Let's define base interfaces for our task:
+<pre><code class=language-typescript>export interface IItem {
     id: string;
     value: string;
 }
 
-export interface IStorage&lt;T extends IItem&gt; {
+export interface IStorage&lt;T extends IItem> {
     // Initial method to create storage
-    init(name: string): Observable&lt;IStorage&lt;T&gt;&gt;;
+    init(name: string): Observable&lt;IStorage&lt;T>>;
 
     // Get the value by unique key
-    get(key: string): Observable&lt;T&gt;;
+    get(key: string): Observable&lt;T>;
 
     // Clear/remove all data in the storage
-    clear(): Observable&lt;T&gt;;
+    clear(): Observable&lt;T>;
 
     // Put specific value into the storage
-    put(value: T): Observable&lt;T&gt;;
+    put(value: T): Observable&lt;T>;
 
     // Get all values using the set of keys
-    getDenseBatch(keys: string[]): Observable&lt;T&gt;;
+    getDenseBatch(keys: string[]): Observable&lt;T>;
 
     // Get all values from the storage
-    all(): Observable&lt;T&gt;;
+    all(): Observable&lt;T>;
 }
-</code></pre>
-<p>Here I am using <a href="http://reactivex.io/">rxjs</a> to handle results. IItem is an interface for items which we are saving, IStorage is an interface for a specific storage.</p>
-<h3 id="in-memory-implementation">In Memory implementation</h3>
-<p>A short example how to implement mentioned interface using in-memory array:</p>
-<pre><code class="language-typescript">export class MemoryStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+</code></pre><p>Here I am using <a href=http://reactivex.io/ >rxjs</a> to handle results. IItem is an interface for items which we are saving, IStorage is an interface for a specific storage.<h3 id=in-memory-implementation>In Memory implementation</h3><p>A short example how to implement mentioned interface using in-memory array:
+<pre><code class=language-typescript>export class MemoryStorage&lt;T extends IItem> implements IStorage&lt;T> {
     private storage: { [key: string]: T } = {};
 
-    init(name: string): Observable&lt;MemoryStorage&lt;T&gt;&gt; {
+    init(name: string): Observable&lt;MemoryStorage&lt;T>> {
         return Observable.of(this);
     }
 
-    get(key: string): Observable&lt;T&gt; {
+    get(key: string): Observable&lt;T> {
         return Observable.of(this.storage[key]);
     }
 
-    clear(): Observable&lt;T&gt; {
+    clear(): Observable&lt;T> {
         this.storage = {};
-        return Observable.empty&lt;T&gt;();
+        return Observable.empty&lt;T>();
     }
 
-    put(value: T): Observable&lt;T&gt; {
+    put(value: T): Observable&lt;T> {
         if (!value.id) {
             value.id = Math.random().toString(36).substring(7);
         }
@@ -119,73 +48,69 @@ export interface IStorage&lt;T extends IItem&gt; {
         return Observable.of(value);
     }
 
-    getDenseBatch(keys: string[]): Observable&lt;T&gt; {
-        return Observable.from(keys.map(x =&gt; this.storage[x]));
+    getDenseBatch(keys: string[]): Observable&lt;T> {
+        return Observable.from(keys.map(x => this.storage[x]));
     }
 
-    all(): Observable&lt;T&gt; {
-        return Observable.from(Object.keys(this.storage).map(x =&gt; this.storage[x]));
+    all(): Observable&lt;T> {
+        return Observable.from(Object.keys(this.storage).map(x => this.storage[x]));
     }
 }
-</code></pre>
-<p>Simple implementation of IItem:</p>
-<pre><code class="language-typescript">class TestKeyValue implements IItem {
+</code></pre><p>Simple implementation of IItem:
+<pre><code class=language-typescript>class TestKeyValue implements IItem {
   public id: string;
   public value: string;
 }
-</code></pre>
-<p>Unit tests for MemoryStorage:</p>
-<pre><code class="language-typescript">describe('MemoryStorage: Class', () =&gt; {
+</code></pre><p>Unit tests for MemoryStorage:
+<pre><code class=language-typescript>describe('MemoryStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
 
-  function init(): MemoryStorage&lt;TestKeyValue&gt; {
-    let storage = new MemoryStorage&lt;TestKeyValue&gt;();
+  function init(): MemoryStorage&lt;TestKeyValue> {
+    let storage = new MemoryStorage&lt;TestKeyValue>();
     storage.init('test');
     return storage;
   }
 
-  it('should create empty storage', async(() =&gt; {
+  it('should create empty storage', async(() => {
     let storage = init();
-    storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+    storage.all().isEmpty().subscribe(isAny => expect(isAny).toBeTruthy());
   }));
 
-  it('should save one item', async(() =&gt; {
+  it('should save one item', async(() => {
     let storage = init();
     storage.put({ id: key1, value: value1 });
-    storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeFalsy());
+    storage.all().isEmpty().subscribe(isAny => expect(isAny).toBeFalsy());
   }));
 
-  it('should save/get one item', async(() =&gt; {
+  it('should save/get one item', async(() => {
     let storage = init();
     let item = { id: key1, value: value1 };
     storage.put(item);
-    storage.get(key1).subscribe(value =&gt; expect(value).toEqual(item));
+    storage.get(key1).subscribe(value => expect(value).toEqual(item));
   }));
 
-  it('should save/get two items', async(() =&gt; {
+  it('should save/get two items', async(() => {
     let storage = init();
     let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
     storage.put(items[0]);
     storage.put(items[1]);
     let i = 0;
-    storage.getDenseBatch([key1, key2]).subscribe(value =&gt; expect(value).toEqual(items[i++]));
+    storage.getDenseBatch([key1, key2]).subscribe(value => expect(value).toEqual(items[i++]));
   }));
 
-  it('should clear saved items', async(() =&gt; {
+  it('should clear saved items', async(() => {
     let storage = init();
     let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
     storage.put(items[0]);
     storage.put(items[1]);
 
     storage.clear();
-    storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+    storage.all().isEmpty().subscribe(isAny => expect(isAny).toBeTruthy());
   }));
 });
-</code></pre>
-<h3 id="websql-implementation">WebSQL implementation</h3>
-<p>Current implementation just just for objects where key (string) is unique string value, value (string) is a payload.</p>
-<pre><code class="language-typescript">export class WebSQLStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+</code></pre><h3 id=websql-implementation>WebSQL implementation</h3><p>Current implementation just just for objects where key (string) is unique string value, value (string) is a payload.
+<pre><code class=language-typescript>export class WebSQLStorage&lt;T extends IItem> implements IStorage&lt;T> {
     private db: Database;
     private databaseName: string = 'TripNoteDB';
     private name: string;
@@ -194,17 +119,17 @@ export interface IStorage&lt;T extends IItem&gt; {
         this.db = window.openDatabase(this.databaseName, '1.0', `Store information`, 40 * 1024 * 1024);
     }
 
-    init(name: string): Observable&lt;WebSQLStorage&lt;T&gt;&gt; {
+    init(name: string): Observable&lt;WebSQLStorage&lt;T>> {
         this.name = name;
-        return Observable.create((observer: Observer&lt;WebSQLStorage&lt;T&gt;&gt;) =&gt; {
+        return Observable.create((observer: Observer&lt;WebSQLStorage&lt;T>>) => {
             this.db.transaction(
-                (tx) =&gt; tx.executeSql(`CREATE TABLE IF NOT EXISTS ${name} (key unique, value string)`,
+                (tx) => tx.executeSql(`CREATE TABLE IF NOT EXISTS ${name} (key unique, value string)`,
                     [],
-                    (t, results) =&gt; {
+                    (t, results) => {
                         observer.next(this);
                         observer.complete();
                     },
-                    (t, message) =&gt; {
+                    (t, message) => {
                         observer.error(message.message.toString());
                         return true;
                     })
@@ -212,11 +137,11 @@ export interface IStorage&lt;T extends IItem&gt; {
         });
     }
 
-    get(key: string): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            this.db.transaction((tx) =&gt; {
+    get(key: string): Observable&lt;T> {
+        return Observable.create((observer: Observer&lt;T>) => {
+            this.db.transaction((tx) => {
                 tx.executeSql(`SELECT * FROM ${this.name} WHERE key='${key}'`, [],
-                    (t, results) =&gt; {
+                    (t, results) => {
                         let len = results.rows.length;
                         if (len === 0) {
                             observer.next(undefined);
@@ -227,7 +152,7 @@ export interface IStorage&lt;T extends IItem&gt; {
                         }
                         observer.complete();
                     },
-                    (t, message) =&gt; {
+                    (t, message) => {
                         observer.error(message.message.toString());
                         return true;
                     });
@@ -236,9 +161,9 @@ export interface IStorage&lt;T extends IItem&gt; {
     }
 
     clear() {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            this.db.transaction((tx) =&gt; {
-                tx.executeSql(`DELETE FROM ${this.name}`, [], (t, r) =&gt; observer.complete(), (t, e) =&gt; {
+        return Observable.create((observer: Observer&lt;T>) => {
+            this.db.transaction((tx) => {
+                tx.executeSql(`DELETE FROM ${this.name}`, [], (t, r) => observer.complete(), (t, e) => {
                     observer.error(e.message.toString());
                     return true;
                 });
@@ -246,18 +171,18 @@ export interface IStorage&lt;T extends IItem&gt; {
         });
     }
 
-    all(): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            this.db.transaction((tx) =&gt; {
+    all(): Observable&lt;T> {
+        return Observable.create((observer: Observer&lt;T>) => {
+            this.db.transaction((tx) => {
                 tx.executeSql(`SELECT * FROM ${this.name}`,
                     [],
-                    (t, results) =&gt; {
+                    (t, results) => {
                         for (let i = 0; i &lt; results.rows.length; i++) {
                             observer.next(results.rows.item(i));
                         }
                         observer.complete();
                     },
-                    (t, message) =&gt; {
+                    (t, message) => {
                         observer.error(message.message.toString());
                         return true;
                     });
@@ -265,15 +190,15 @@ export interface IStorage&lt;T extends IItem&gt; {
         });
     }
 
-    put(value: T): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            this.db.transaction((tx) =&gt; {
+    put(value: T): Observable&lt;T> {
+        return Observable.create((observer: Observer&lt;T>) => {
+            this.db.transaction((tx) => {
                 tx.executeSql(`INSERT OR REPLACE INTO ${this.name} VALUES (?, ?)`, [value.id, value.value],
-                    () =&gt; {
+                    () => {
                         observer.next(value);
                         observer.complete();
                     },
-                    (t, e) =&gt; {
+                    (t, e) => {
                         observer.error(e.message.toString());
                         return true;
                     });
@@ -281,23 +206,23 @@ export interface IStorage&lt;T extends IItem&gt; {
         });
     }
 
-    getDenseBatch(keys: string[]): Observable&lt;T&gt; {
+    getDenseBatch(keys: string[]): Observable&lt;T> {
         if (keys.length === 0) {
-            return Observable.empty&lt;T&gt;();
+            return Observable.empty&lt;T>();
         };
 
-        return Observable.create((observer: Observer&lt;T[]&gt;) =&gt; {
-            this.db.transaction((tx) =&gt; {
-                let key = keys.map(x =&gt; '\'' + x + '\'').join(',');
+        return Observable.create((observer: Observer&lt;T[]>) => {
+            this.db.transaction((tx) => {
+                let key = keys.map(x => '\'' + x + '\'').join(',');
                 tx.executeSql(`SELECT * FROM ${this.name} WHERE key IN (${key})`,
                     [],
-                    (t, results) =&gt; {
+                    (t, results) => {
                         for (let i = 0; i &lt; results.rows.length; i++) {
                             observer.next(results.rows.item(i));
                         }
                         observer.complete();
                     },
-                    (t, e) =&gt; {
+                    (t, e) => {
                         observer.error(e.message.toString());
                         return true;
                     });
@@ -306,32 +231,32 @@ export interface IStorage&lt;T extends IItem&gt; {
     }
 }
 </code></pre>
-<pre><code class="language-typescript">describe('WebSQLStorage: Class', () =&gt; {
+<pre><code class=language-typescript>describe('WebSQLStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
 
-  it('should create empty storage', async(() =&gt; {
-    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
-    storage.init('test1').subscribe(() =&gt; {
-      storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+  it('should create empty storage', async(() => {
+    let storage = new WebSQLStorage&lt;TestKeyValue>();
+    storage.init('test1').subscribe(() => {
+      storage.all().isEmpty().subscribe(isAny => expect(isAny).toBeTruthy());
     });
   }));
 
-  it('should save one item ', async(() =&gt; {
-    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
-    storage.init('test2').subscribe(() =&gt; {
-      storage.put({ id: key1, value: value1 }).subscribe(() =&gt; {
-        storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeFalsy());
+  it('should save one item ', async(() => {
+    let storage = new WebSQLStorage&lt;TestKeyValue>();
+    storage.init('test2').subscribe(() => {
+      storage.put({ id: key1, value: value1 }).subscribe(() => {
+        storage.all().isEmpty().subscribe(isAny => expect(isAny).toBeFalsy());
       });
     });
   }));
 
-  it('should save/get one item', async(() =&gt; {
-    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
-    storage.init('test3').subscribe(() =&gt; {
+  it('should save/get one item', async(() => {
+    let storage = new WebSQLStorage&lt;TestKeyValue>();
+    storage.init('test3').subscribe(() => {
       let item = { id: key1, value: value1 };
-      storage.put(item).subscribe(() =&gt; {
-        storage.get(key1).subscribe(value =&gt; {
+      storage.put(item).subscribe(() => {
+        storage.get(key1).subscribe(value => {
           expect(value.value).toEqual(item.value);
         });
 
@@ -339,70 +264,67 @@ export interface IStorage&lt;T extends IItem&gt; {
     });
   }));
 
-  it('should save/get two items', async(() =&gt; {
-    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
-    storage.init('test4').subscribe(() =&gt; {
+  it('should save/get two items', async(() => {
+    let storage = new WebSQLStorage&lt;TestKeyValue>();
+    storage.init('test4').subscribe(() => {
       let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
       storage.put(items[0])
-      .subscribe(() =&gt; storage.put(items[1])
-        .subscribe(() =&gt; {
+      .subscribe(() => storage.put(items[1])
+        .subscribe(() => {
           let i = 0;
           storage.getDenseBatch([key1, key2])
-            .subscribe(value =&gt; expect(value.value).toEqual(items[i++].value));
+            .subscribe(value => expect(value.value).toEqual(items[i++].value));
         }));
     });
   }));
 
-  it('should clear saved items', async(() =&gt; {
-    let storage = new WebSQLStorage&lt;TestKeyValue&gt;();
-    storage.init('test5').subscribe(() =&gt; {
+  it('should clear saved items', async(() => {
+    let storage = new WebSQLStorage&lt;TestKeyValue>();
+    storage.init('test5').subscribe(() => {
       let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
       storage.put(items[0])
-        .zip(() =&gt; storage.put(items[1]))
-        .subscribe(() =&gt; storage.clear()
-        .subscribe(() =&gt; {
-          storage.all().isEmpty().subscribe(isAny =&gt; expect(isAny).toBeTruthy());
+        .zip(() => storage.put(items[1]))
+        .subscribe(() => storage.clear()
+        .subscribe(() => {
+          storage.all().isEmpty().subscribe(isAny => expect(isAny).toBeTruthy());
         }));
     });
   }));
 });
-</code></pre>
-<h3 id="indexeddb-implementation">IndexedDB implementation</h3>
-<p>How to use IndexedDB is <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">here</a>.
-There are very useful <a href="https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb">tricks</a>.</p>
-<pre><code class="language-typescript">export class IndexedDBStorage&lt;T extends IItem&gt; implements IStorage&lt;T&gt; {
+</code></pre><h3 id=indexeddb-implementation>IndexedDB implementation</h3><p>How to use IndexedDB is <a href=https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB>here</a>. There are very useful <a href=https://www.codeproject.com/articles/744986/how-to-do-some-magic-with-indexeddb>tricks</a>.
+<pre><code class=language-typescript>export class IndexedDBStorage&lt;T extends IItem> implements IStorage&lt;T> {
     private databaseName: string = 'TripNoteDB';
     private name: string;
 
-    private getDb(version?: number, storeName?: string): Observable&lt;IDBDatabase&gt; {
-        return Observable.create((observer: Observer&lt;number&gt;) =&gt; {
-            let req = version &amp;&amp; version &gt; 0 ? window.indexedDB.open(this.databaseName, version)
+    private getDb(version?: number, storeName?: string): Observable&lt;IDBDatabase> {
+        return Observable.create((observer: Observer&lt;number>) => {
+            let req = version &amp;&amp; version > 0 ? window.indexedDB.open(this.databaseName, version)
                 : window.indexedDB.open(this.databaseName);
-            req.onsuccess = (e) =&gt; {
-                let db = (&lt;any&gt;event.target).result;
+            req.onsuccess = (e) => {
+                let db = (&lt;any>event.target).result;
                 observer.next(db);
                 db.close();
                 observer.complete();
             };
-            req.onupgradeneeded = (e) =&gt; {
-                let db = (&lt;any&gt;e.target).result;
+            req.onupgradeneeded = (e) => {
+                let db = (&lt;any>e.target).result;
                 if (storeName &amp;&amp; !db.objectStoreNames.contains(storeName)) {
                     db.createObjectStore(storeName, { keyPath: 'id' });
-                    let transaction = (&lt;any&gt;e.target).transaction;
-                    transaction.oncomplete = (event) =&gt; {
+                    let transaction = (&lt;any>e.target).transaction;
+                    transaction.oncomplete = (event) => {
                         observer.next(db);
                         db.close();
                         observer.complete();
                     };
                 };
             };
-            req.onblocked = (event) =&gt; observer.error('IndexedDB is blocked');
-            req.onerror = (e) =&gt; observer.error(e.error);
+            req.onblocked = (event) => observer.error('IndexedDB is blocked');
+            req.onerror = (e) => observer.error(e.error);
         });
     }
 
-    private getVersionOfDb(name: string): Observable&lt;number&gt; {
-        return this.getDb().map(db =&gt; {
+    private getVersionOfDb(name: string): Observable&lt;number> {
+        return this.getDb().map(db => {
             if (!db.objectStoreNames.contains(this.name)) {
                 return db.version + 1;
             } else {
@@ -411,11 +333,11 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
         });
     }
 
-    init(name: string): Observable&lt;IndexedDBStorage&lt;T&gt;&gt; {
+    init(name: string): Observable&lt;IndexedDBStorage&lt;T>> {
         this.name = name;
-        return Observable.create((observer: Observer&lt;IndexedDBStorage&lt;T&gt;&gt;) =&gt; {
-            this.getVersionOfDb(name).subscribe((version) =&gt; {
-                this.getDb(version, name).subscribe(db =&gt; {
+        return Observable.create((observer: Observer&lt;IndexedDBStorage&lt;T>>) => {
+            this.getVersionOfDb(name).subscribe((version) => {
+                this.getDb(version, name).subscribe(db => {
                     observer.next(this);
                     observer.complete();
                 });
@@ -423,30 +345,30 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
         });
     }
 
-    all(): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            this.getDb().subscribe(db =&gt; {
+    all(): Observable&lt;T> {
+        return Observable.create((observer: Observer&lt;T>) => {
+            this.getDb().subscribe(db => {
                 let req = db.transaction(this.name, 'readwrite').objectStore(this.name)
                     .openCursor();
-                req.onsuccess = (e) =&gt; {
-                    let res = (&lt;any&gt;event.target).result;
+                req.onsuccess = (e) => {
+                    let res = (&lt;any>event.target).result;
                     if (res) {
                         observer.next(res.value);
                         res.continue();
                     }
                     observer.complete();
                 };
-                req.onerror = (e) =&gt; observer.error(e.error);
+                req.onerror = (e) => observer.error(e.error);
             });
         });
     }
 
-    get(key: string): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            this.getDb().subscribe(db =&gt; {
+    get(key: string): Observable&lt;T> {
+        return Observable.create((observer: Observer&lt;T>) => {
+            this.getDb().subscribe(db => {
                 let req = db.transaction(this.name).objectStore(this.name).get(key);
-                req.onerror = (e) =&gt; observer.error(e.error);
-                req.onsuccess = (e) =&gt; {
+                req.onerror = (e) => observer.error(e.error);
+                req.onsuccess = (e) => {
                     observer.next(req.result);
                     observer.complete();
                 };
@@ -454,12 +376,12 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
         });
     }
 
-    clear(): Observable&lt;IStorage&lt;T&gt;&gt; {
-        return Observable.create((observer: Observer&lt;IStorage&lt;T&gt;&gt;) =&gt; {
-            this.getDb().subscribe(db =&gt; {
+    clear(): Observable&lt;IStorage&lt;T>> {
+        return Observable.create((observer: Observer&lt;IStorage&lt;T>>) => {
+            this.getDb().subscribe(db => {
                 let req = db.transaction(this.name, 'readwrite').objectStore(this.name).clear();
-                req.onerror = (e) =&gt; observer.error(e.error);
-                req.onsuccess = (e) =&gt; {
+                req.onerror = (e) => observer.error(e.error);
+                req.onsuccess = (e) => {
                     observer.next(this);
                     observer.complete();
                 };
@@ -467,14 +389,14 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
         });
     }
 
-    put(value: T): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            this.getDb().subscribe(db =&gt; {
+    put(value: T): Observable&lt;T> {
+        return Observable.create((observer: Observer&lt;T>) => {
+            this.getDb().subscribe(db => {
                 let req = db.transaction(this.name, 'readwrite').objectStore(this.name).put(value);
-                req.onerror = (e) =&gt; {
+                req.onerror = (e) => {
                     observer.error(e.error);
                 };
-                req.onsuccess = (e) =&gt; {
+                req.onsuccess = (e) => {
                     observer.next(value);
                     observer.complete();
                 };
@@ -482,18 +404,18 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
         });
     }
 
-    getDenseBatch(keys: string[]): Observable&lt;T&gt; {
-        return Observable.create((observer: Observer&lt;T&gt;) =&gt; {
-            this.getDb().subscribe(db =&gt; {
+    getDenseBatch(keys: string[]): Observable&lt;T> {
+        return Observable.create((observer: Observer&lt;T>) => {
+            this.getDb().subscribe(db => {
                 let set = keys.sort();
                 let i = 0;
                 let req = db.transaction(this.name).objectStore(this.name)
                     .openCursor();
-                req.onsuccess = (e) =&gt; {
-                    let cursor = (&lt;any&gt;event.target).result;
+                req.onsuccess = (e) => {
+                    let cursor = (&lt;any>event.target).result;
                     if (!cursor) { observer.complete(); return; }
                     let key = cursor.key;
-                    while (key &gt; set[i]) {
+                    while (key > set[i]) {
                         // The cursor has passed beyond this key. Check next.
                         ++i;
                         if (i === set.length) {
@@ -513,32 +435,31 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
                         cursor.continue(set[i]);
                     }
                 };
-                req.onerror = (e) =&gt; observer.error(e.error);
+                req.onerror = (e) => observer.error(e.error);
             });
         });
     }
 }
-</code></pre>
-<p>Unit tests for indexedDB:</p>
-<pre><code class="language-typescript">describe('IndexedDBStorage: Class', () =&gt; {
+</code></pre><p>Unit tests for indexedDB:
+<pre><code class=language-typescript>describe('IndexedDBStorage: Class', () => {
   let key1 = 'key1', key2 = 'key2';
   let value1 = 'value1', value2 = 'value2';
 
-  it('should create empty storage', (done) =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init('test1').subscribe(() =&gt; {
-      storage.all().isEmpty().subscribe(isAny =&gt; {
+  it('should create empty storage', (done) => {
+    let storage = new IndexedDBStorage&lt;TestKeyValue>();
+    storage.init('test1').subscribe(() => {
+      storage.all().isEmpty().subscribe(isAny => {
         expect(isAny).toBeTruthy();
         done();
       });
     });
   });
 
-  it('should save one item ', (done) =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init('test2').subscribe(() =&gt; {
-      storage.put({ id: key1, value: value1 }).subscribe(() =&gt; {
-        storage.all().isEmpty().subscribe(isAny =&gt; {
+  it('should save one item ', (done) => {
+    let storage = new IndexedDBStorage&lt;TestKeyValue>();
+    storage.init('test2').subscribe(() => {
+      storage.put({ id: key1, value: value1 }).subscribe(() => {
+        storage.all().isEmpty().subscribe(isAny => {
           expect(isAny).toBeFalsy();
           done();
         });
@@ -546,12 +467,12 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
     });
   });
 
-  it('should save/get one item', (done) =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init('test3').subscribe(() =&gt; {
+  it('should save/get one item', (done) => {
+    let storage = new IndexedDBStorage&lt;TestKeyValue>();
+    storage.init('test3').subscribe(() => {
       let item = { id: key1, value: value1 };
-      storage.put(item).subscribe(() =&gt; {
-        storage.get(key1).subscribe(value =&gt; {
+      storage.put(item).subscribe(() => {
+        storage.get(key1).subscribe(value => {
           expect(value).toEqual(item);
           done();
         });
@@ -559,14 +480,14 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
     });
   });
 
-  it('should save/get two items', (done) =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init('test4').subscribe(() =&gt; {
+  it('should save/get two items', (done) => {
+    let storage = new IndexedDBStorage&lt;TestKeyValue>();
+    storage.init('test4').subscribe(() => {
       let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
       let item1 = storage.put(items[0])
         .merge(storage.put(items[1])).last()
-        .subscribe(y =&gt; {
-          storage.getDenseBatch([key1, key2]).toArray().subscribe(x =&gt; {
+        .subscribe(y => {
+          storage.getDenseBatch([key1, key2]).toArray().subscribe(x => {
             expect(x[0]).toEqual(items[0]);
             expect(x[1]).toEqual(items[1]);
             done();
@@ -575,49 +496,18 @@ There are very useful <a href="https://www.codeproject.com/articles/744986/how-t
       });
   });
 
-  it('should clear saved items', (done) =&gt; {
-    let storage = new IndexedDBStorage&lt;TestKeyValue&gt;();
-    storage.init('test5').subscribe(() =&gt; {
+  it('should clear saved items', (done) => {
+    let storage = new IndexedDBStorage&lt;TestKeyValue>();
+    storage.init('test5').subscribe(() => {
       let items = [{ id: key1, value: value1 }, { id: key2, value: value2 }];
       storage.put(items[0])
         .merge(storage.put(items[1])).last()
-        .subscribe(x =&gt; storage.clear()
-          .subscribe(y =&gt; storage.all().isEmpty().subscribe(isAny =&gt; {
+        .subscribe(x => storage.clear()
+          .subscribe(y => storage.all().isEmpty().subscribe(isAny => {
               expect(isAny).toBeTruthy();
               done();
             })));
     });
   });
 });
-</code></pre>
-
-                <div class="sharethis-inline-share-buttons"></div>
-                <div id="disqus_thread"></div>
-                <script>
-                    (function() { // DON'T EDIT BELOW THIS LINE
-                        var d = document,
-                            s = d.createElement('script');
-                        s.src = '//eapyl-github-io.disqus.com/embed.js';
-                        s.setAttribute('data-timestamp', +new Date());
-                        (d.head || d.body).appendChild(s);
-                    })();
-                </script>
-            </div>
-        </div>
-    </div>
-    <script async src="prism.js"></script>
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    
-        ga('create', 'UA-87583712-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
-</body>
-
-</html>
+</code></pre><div class=sharethis-inline-share-buttons></div><div id=disqus_thread></div><script>(function(){var n=document,t=n.createElement("script");t.src="//eapyl-github-io.disqus.com/embed.js";t.setAttribute("data-timestamp",+new Date);(n.head||n.body).appendChild(t)})()</script></div></div></div><script async src=prism.js></script><script>(function(n,t,i,r,u,f,e){n.GoogleAnalyticsObject=u;n[u]=n[u]||function(){(n[u].q=n[u].q||[]).push(arguments)};n[u].l=1*new Date;f=t.createElement(i);e=t.getElementsByTagName(i)[0];f.async=1;f.src=r;e.parentNode.insertBefore(f,e)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create","UA-87583712-1","auto");ga("send","pageview")</script><script src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>

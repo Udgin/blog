@@ -1,96 +1,9 @@
-<html>
-
-<head>
-    <title>API-Facebook</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-    <link rel="stylesheet" href="prism.css"></link>
-    <style>
-        .columns .column {
-            padding: .4rem;
-        }
-        #sidebar-id {
-            padding: .4rem;
-        }
-        code {
-            padding: 0;
-            overflow-x: scroll;
-        }
-        img {
-            max-width: 100%;
-        }
-        .off-canvas .off-canvas-sidebar
-        {
-            background: none;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="off-canvas off-canvas-sidebar-show">
-        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
-            <i class="icon icon-menu"></i>
-        </a>
-        <div id="sidebar-id" class="off-canvas-sidebar">
-            <ul class="menu">
-                <li class="menu-item">
-                    <div class="tile tile-centered">
-                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
-                                alt="Avatar"></div>
-                        <div class="tile-content">Yauhen Pyl</div>
-                    </div>
-                </li>
-                <li class="divider" data-content="LINKS">
-                </li>
-                <li class="menu-item">
-                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://github.com/eapyl">GitHub</a>
-                </li>
-                <li class="menu-item">
-                    <a href="mailto:gromkaktus@gmail.com">Email</a>
-                </li>
-            </ul>
-        </div>
-        <a class="off-canvas-overlay" href="#close"></a>
-        <div class="off-canvas-content">
-            <div class="container grid-lg">
-                <h1 id="api-facebook">API Facebook</h1>
-<p>I know there are a lot of information about working with Facebook API, but... I just think more information is better then less.</p>
-<p>I need to post different types of context to Facebook pages (user create his own page, give us the name of page). OK, let's go!</p>
-<p>I m using ASP.NET MVC, you know...
-Link to the project.</p>
-<p>All events has been shown on the main page.</p>
-<ol>
-<li>Create our application in facebook.</li>
-</ol>
-<p><img src="API-Facebook\facebook1.png" alt="example" /></p>
-<p>You see there is secret key and application key. We need them to working with facebook through our application.</p>
-<ol start="2">
-<li>Authorization (OAuth 2.0).</li>
-</ol>
-<p><img src="API-Facebook\facebook2.png" alt="example" /></p>
-<ul>
-<li>Ask user to permission.</li>
-<li>User will be redirected to facebook access page.</li>
-<li>User give us needed permission.</li>
-<li>User has been redirected back to our web site with special code.</li>
-</ul>
-<p>There is the step 4 (we get the code from redirecting response).</p>
-<pre><code class="language-csharp">public void GetAccessToken()
+<title>API-Facebook</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-exp.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-icons.min.css><link rel=stylesheet href=prism.css><link><style>.columns .column{padding:.4rem}#sidebar-id{padding:.4rem}code{padding:0;overflow-x:scroll}img{max-width:100%}.off-canvas .off-canvas-sidebar{background:none}</style><div class="off-canvas off-canvas-sidebar-show"><a class="off-canvas-toggle btn btn-primary btn-action" href=#sidebar-id><i class="icon icon-menu"></i></a><div id=sidebar-id class=off-canvas-sidebar><ul class=menu><li class=menu-item><div class="tile tile-centered"><div class=tile-icon><img class=avatar src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U" alt=Avatar></div><div class=tile-content>Yauhen Pyl</div></div><li class=divider data-content=LINKS><li class=menu-item><a href=https://plus.google.com/+UdginPyl>Google+</a><li class=menu-item><a href=https://www.facebook.com/yauhen.pyl>Facebook</a><li class=menu-item><a href=https://pl.linkedin.com/in/eugenepyl>LinkedIn</a><li class=menu-item><a href=https://github.com/eapyl>GitHub</a><li class=menu-item><a href=mailto:gromkaktus@gmail.com>Email</a></ul></div><a class=off-canvas-overlay href=#close></a><div class=off-canvas-content><div class="container grid-lg"><h1 id=api-facebook>API Facebook</h1><p>I know there are a lot of information about working with Facebook API, but... I just think more information is better then less.<p>I need to post different types of context to Facebook pages (user create his own page, give us the name of page). OK, let's go!<p>I m using ASP.NET MVC, you know... Link to the project.<p>All events has been shown on the main page.<ol><li>Create our application in facebook.</ol><p><img src=API-Facebook\facebook1.png alt=example><p>You see there is secret key and application key. We need them to working with facebook through our application.<ol start=2><li>Authorization (OAuth 2.0).</ol><p><img src=API-Facebook\facebook2.png alt=example><ul><li>Ask user to permission.<li>User will be redirected to facebook access page.<li>User give us needed permission.<li>User has been redirected back to our web site with special code.</ul><p>There is the step 4 (we get the code from redirecting response).
+<pre><code class=language-csharp>public void GetAccessToken()
 {
-    if (HttpContext.Current.Request.Params.AllKeys.Contains(&quot;code&quot;))
+    if (HttpContext.Current.Request.Params.AllKeys.Contains("code"))
     {
-        code = HttpContext.Current.Request.Params[&quot;code&quot;];
+        code = HttpContext.Current.Request.Params["code"];
         //get the short-lived user access_toke
         string request = string.Format(_tokenEndpoint, _applicationId, _redirectTo, _applicationSecret, code);
         var webClient = new WebClient();
@@ -107,34 +20,32 @@ Link to the project.</p>
         }
         GetUserInformation();
     }
-    else if (HttpContext.Current.Request.Params.AllKeys.Contains(&quot;error&quot;))
+    else if (HttpContext.Current.Request.Params.AllKeys.Contains("error"))
     {
-        error = HttpContext.Current.Request.Params[&quot;error&quot;];
+        error = HttpContext.Current.Request.Params["error"];
         throw new AccessViolationException(error);
     }
     throw new HttpException();
 }
-</code></pre>
-<p>That is my facebook controller</p>
-<pre><code class="language-csharp">public ActionResult Index()
+</code></pre><p>That is my facebook controller
+<pre><code class=language-csharp>public ActionResult Index()
 {
     if (!Client.IsAuthorizated)
     {
         return Redirect(Client.UriToAuth);
     }
-    return View(new FacebookModel {Name = &quot;&quot;});
+    return View(new FacebookModel {Name = ""});
 }
 
 public ActionResult Authorizate()
 {
     Client.GetAccessToken();
-    return RedirectToAction(&quot;Index&quot;);
+    return RedirectToAction("Index");
 }
-</code></pre>
-<p>After getting code we need to get the id of the page:</p>
-<pre><code class="language-csharp">private void GetUserInformation()
+</code></pre><p>After getting code we need to get the id of the page:
+<pre><code class=language-csharp>private void GetUserInformation()
 {
-    string request = &quot;https://graph.facebook.com/me?access_token=&quot; + accessToken;
+    string request = "https://graph.facebook.com/me?access_token=" + accessToken;
     var webClient = new WebClient();
     string response = webClient.DownloadString(request);
     user = JObject.Parse(response);
@@ -143,52 +54,48 @@ public ActionResult Authorizate()
 
 private void GetPagesInformation()
 {
-    string request = &quot;https://graph.facebook.com/&quot; + user.SelectToken(&quot;id&quot;) + &quot;/accounts?access_token=&quot; +
+    string request = "https://graph.facebook.com/" + user.SelectToken("id") + "/accounts?access_token=" +
                         accessToken;
     var webClient = new WebClient();
     string response = webClient.DownloadString(request);
     userPages = JObject.Parse(response);
-    page = userPages.SelectToken(&quot;data&quot;).First(x =&gt; x.SelectToken(&quot;name&quot;).ToString().Equals(_pageName));
+    page = userPages.SelectToken("data").First(x => x.SelectToken("name").ToString().Equals(_pageName));
 }
-</code></pre>
-<ol start="3">
-<li>OK, let's start to posting something. Here is my configuration:</li>
-</ol>
-<pre><code class="language-csharp">private static readonly Dictionary&lt;string, string&gt; Config = new Dictionary&lt;string, string&gt;
+</code></pre><ol start=3><li>OK, let's start to posting something. Here is my configuration:</ol>
+<pre><code class=language-csharp>private static readonly Dictionary&lt;string, string> Config = new Dictionary&lt;string, string>
 {
-    {&quot;AuthorizationEndpoint&quot;, &quot;https://graph.facebook.com/oauth/authorize?client_id={0}&amp;redirect_uri={1}&amp;scope=manage_pages,create_event,publish_stream&quot;},
-    {&quot;TokenEndpoint&quot;, &quot;https://graph.facebook.com/oauth/access_token?client_id={0}&amp;redirect_uri={1}&amp;client_secret={2}&amp;code={3}&quot;},
-    {&quot;ApplicationId&quot;, &quot;387222228001291&quot;},
-    {&quot;ApplicationSecret&quot;, &quot;3a177e2231e2966733771775b42&quot;},
-    {&quot;RedirectTo&quot;, &quot;http://localhost:4769/Facebook/Authorizate&quot;},
-    {&quot;PageName&quot;, &quot;TesterMyRest Community&quot;}
+    {"AuthorizationEndpoint", "https://graph.facebook.com/oauth/authorize?client_id={0}&amp;redirect_uri={1}&amp;scope=manage_pages,create_event,publish_stream"},
+    {"TokenEndpoint", "https://graph.facebook.com/oauth/access_token?client_id={0}&amp;redirect_uri={1}&amp;client_secret={2}&amp;code={3}"},
+    {"ApplicationId", "387222228001291"},
+    {"ApplicationSecret", "3a177e2231e2966733771775b42"},
+    {"RedirectTo", "http://localhost:4769/Facebook/Authorizate"},
+    {"PageName", "TesterMyRest Community"}
 };
-</code></pre>
-<p>Posting video.</p>
-<pre><code class="language-csharp">public string CreateVideo(MemoryStream imageMemoryStream, string title, string fileName)
+</code></pre><p>Posting video.
+<pre><code class=language-csharp>public string CreateVideo(MemoryStream imageMemoryStream, string title, string fileName)
 {
-    string boundary = &quot;---------------------------&quot; + DateTime.Now.Ticks.ToString(&quot;x&quot;);
+    string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
     var uploadRequest =
         (HttpWebRequest)
-        WebRequest.Create(&quot;https://graph.facebook.com/&quot; + page.SelectToken(&quot;id&quot;) + &quot;/videos?access_token=&quot; +
-                            page.SelectToken(&quot;access_token&quot;));
+        WebRequest.Create("https://graph.facebook.com/" + page.SelectToken("id") + "/videos?access_token=" +
+                            page.SelectToken("access_token"));
     uploadRequest.ServicePoint.Expect100Continue = false;
-    uploadRequest.Method = &quot;POST&quot;;
-    uploadRequest.UserAgent = &quot;Mozilla/4.0 (compatible; Windows NT)&quot;;
-    uploadRequest.ContentType = &quot;multipart/form-data; boundary=&quot; + boundary;
+    uploadRequest.Method = "POST";
+    uploadRequest.UserAgent = "Mozilla/4.0 (compatible; Windows NT)";
+    uploadRequest.ContentType = "multipart/form-data; boundary=" + boundary;
     uploadRequest.KeepAlive = false;
 
     var sb = new StringBuilder();
 
-    const string formdataTemplate = &quot;--{0}\r\nContent-Disposition: form-data; name=\&quot;{1}\&quot;\r\n\r\n{2}\r\n&quot;;
-    sb.AppendFormat(formdataTemplate, boundary, &quot;title&quot;, HttpContext.Current.Server.HtmlEncode(title));
+    const string formdataTemplate = "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}\r\n";
+    sb.AppendFormat(formdataTemplate, boundary, "title", HttpContext.Current.Server.HtmlEncode(title));
 
-    const string headerTemplate = &quot;--{0}\r\nContent-Disposition: form-data; name=\&quot;{1}\&quot;; filename=\&quot;{2}\&quot;\r\nContent-Type: {3}\r\n\r\n&quot;;
-    sb.AppendFormat(headerTemplate, boundary, &quot;source&quot;, fileName, @&quot;application/octet-stream&quot;);
+    const string headerTemplate = "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n";
+    sb.AppendFormat(headerTemplate, boundary, "source", fileName, @"application/octet-stream");
 
     string formString = sb.ToString();
     byte[] formBytes = Encoding.UTF8.GetBytes(formString);
-    byte[] trailingBytes = Encoding.UTF8.GetBytes(&quot;\r\n--&quot; + boundary + &quot;--\r\n&quot;);
+    byte[] trailingBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
 
     long imageLength = imageMemoryStream.Length;
     long contentLength = formBytes.Length + imageLength + trailingBytes.Length;
@@ -219,27 +126,23 @@ private void GetPagesInformation()
         if (stream != null)
         {
             var loResponseStream = new StreamReader(stream, enc);
-            return &quot;https://graph.facebook.com/&quot; + loResponseStream.ReadToEnd();
+            return "https://graph.facebook.com/" + loResponseStream.ReadToEnd();
         }
     }
     return string.Empty;
 }
-</code></pre>
-<ol start="4">
-<li>Change the information about the page.</li>
-</ol>
-<p>WebHelper class:</p>
-<pre><code class="language-csharp">public static class WebWorker
+</code></pre><ol start=4><li>Change the information about the page.</ol><p>WebHelper class:
+<pre><code class=language-csharp>public static class WebWorker
 {
-    private static void AddPostParameter(Dictionary&lt;string, string&gt; values, StringBuilder postBody)
+    private static void AddPostParameter(Dictionary&lt;string, string> values, StringBuilder postBody)
     {
         foreach (string key in values.Keys)
         {
-            if (postBody.Length &gt; 0)
+            if (postBody.Length > 0)
             {
-                postBody.Append(&quot;&amp;&quot;);
+                postBody.Append("&amp;");
             }
-            postBody.Append(string.Format(&quot;{0}={1}&quot;, key, values[key]));
+            postBody.Append(string.Format("{0}={1}", key, values[key]));
         }
     }
 
@@ -250,7 +153,7 @@ private void GetPagesInformation()
         return JObject.Parse(response);
     }
 
-    public static string UploadString(string requstUrl, Dictionary&lt;string, string&gt; values)
+    public static string UploadString(string requstUrl, Dictionary&lt;string, string> values)
     {
         var webClient = new WebClient();
         var postBody = new StringBuilder();
@@ -259,41 +162,10 @@ private void GetPagesInformation()
     }
 }
 </code></pre>
-<pre><code class="language-csharp">private string CreateStatus(Dictionary&lt;string, string&gt; values)
+<pre><code class=language-csharp>private string CreateStatus(Dictionary&lt;string, string> values)
 {
-    string request = &quot;https://graph.facebook.com/&quot; + page.SelectToken(&quot;id&quot;) + &quot;/feed?access_token=&quot; +
-                        page.SelectToken(&quot;access_token&quot;);
+    string request = "https://graph.facebook.com/" + page.SelectToken("id") + "/feed?access_token=" +
+                        page.SelectToken("access_token");
     return WebWorker.UploadString(request, values);
 }
-</code></pre>
-
-                <div class="sharethis-inline-share-buttons"></div>
-                <div id="disqus_thread"></div>
-                <script>
-                    (function() { // DON'T EDIT BELOW THIS LINE
-                        var d = document,
-                            s = d.createElement('script');
-                        s.src = '//eapyl-github-io.disqus.com/embed.js';
-                        s.setAttribute('data-timestamp', +new Date());
-                        (d.head || d.body).appendChild(s);
-                    })();
-                </script>
-            </div>
-        </div>
-    </div>
-    <script async src="prism.js"></script>
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    
-        ga('create', 'UA-87583712-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
-</body>
-
-</html>
+</code></pre><div class=sharethis-inline-share-buttons></div><div id=disqus_thread></div><script>(function(){var n=document,t=n.createElement("script");t.src="//eapyl-github-io.disqus.com/embed.js";t.setAttribute("data-timestamp",+new Date);(n.head||n.body).appendChild(t)})()</script></div></div></div><script async src=prism.js></script><script>(function(n,t,i,r,u,f,e){n.GoogleAnalyticsObject=u;n[u]=n[u]||function(){(n[u].q=n[u].q||[]).push(arguments)};n[u].l=1*new Date;f=t.createElement(i);e=t.getElementsByTagName(i)[0];f.async=1;f.src=r;e.parentNode.insertBefore(f,e)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create","UA-87583712-1","auto");ga("send","pageview")</script><script src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>

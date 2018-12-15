@@ -1,80 +1,7 @@
-<html>
-
-<head>
-    <title>Sniffer-of-TCP-packets</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-    <link rel="stylesheet" href="prism.css"></link>
-    <style>
-        .columns .column {
-            padding: .4rem;
-        }
-        #sidebar-id {
-            padding: .4rem;
-        }
-        code {
-            padding: 0;
-            overflow-x: scroll;
-        }
-        img {
-            max-width: 100%;
-        }
-        .off-canvas .off-canvas-sidebar
-        {
-            background: none;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="off-canvas off-canvas-sidebar-show">
-        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
-            <i class="icon icon-menu"></i>
-        </a>
-        <div id="sidebar-id" class="off-canvas-sidebar">
-            <ul class="menu">
-                <li class="menu-item">
-                    <div class="tile tile-centered">
-                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
-                                alt="Avatar"></div>
-                        <div class="tile-content">Yauhen Pyl</div>
-                    </div>
-                </li>
-                <li class="divider" data-content="LINKS">
-                </li>
-                <li class="menu-item">
-                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://github.com/eapyl">GitHub</a>
-                </li>
-                <li class="menu-item">
-                    <a href="mailto:gromkaktus@gmail.com">Email</a>
-                </li>
-            </ul>
-        </div>
-        <a class="off-canvas-overlay" href="#close"></a>
-        <div class="off-canvas-content">
-            <div class="container grid-lg">
-                <h1 id="sniffer-of-tcp-packets">Sniffer of TCP packets</h1>
-<p>Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.</p>
-<p>Проект на VS2008 <a href="https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3">SharkTrace</a>.</p>
-<p>Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.</p>
-<p>Далее в тексте, под соединением я понимаю соответствие адресов и портов на клиенте и сервере.</p>
-<p>Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap (<a href="http://sourceforge.net/projects/sharppcap/">Sharppcap</a>).</p>
-<p>Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.</p>
-<p>Больше о флагах tcp-пакета можно посмотреть <a href="http://www.firewall.cx/">http://www.firewall.cx.</a></p>
-<pre><code class="language-csharp">///&lt;summary&gt;
+<title>Sniffer-of-TCP-packets</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-exp.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-icons.min.css><link rel=stylesheet href=prism.css><link><style>.columns .column{padding:.4rem}#sidebar-id{padding:.4rem}code{padding:0;overflow-x:scroll}img{max-width:100%}.off-canvas .off-canvas-sidebar{background:none}</style><div class="off-canvas off-canvas-sidebar-show"><a class="off-canvas-toggle btn btn-primary btn-action" href=#sidebar-id><i class="icon icon-menu"></i></a><div id=sidebar-id class=off-canvas-sidebar><ul class=menu><li class=menu-item><div class="tile tile-centered"><div class=tile-icon><img class=avatar src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U" alt=Avatar></div><div class=tile-content>Yauhen Pyl</div></div><li class=divider data-content=LINKS><li class=menu-item><a href=https://plus.google.com/+UdginPyl>Google+</a><li class=menu-item><a href=https://www.facebook.com/yauhen.pyl>Facebook</a><li class=menu-item><a href=https://pl.linkedin.com/in/eugenepyl>LinkedIn</a><li class=menu-item><a href=https://github.com/eapyl>GitHub</a><li class=menu-item><a href=mailto:gromkaktus@gmail.com>Email</a></ul></div><a class=off-canvas-overlay href=#close></a><div class=off-canvas-content><div class="container grid-lg"><h1 id=sniffer-of-tcp-packets>Sniffer of TCP packets</h1><p>Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.<p>Проект на VS2008 <a href="https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3">SharkTrace</a>.<p>Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.<p>Далее в тексте, под соединением я понимаю соответствие адресов и портов на клиенте и сервере.<p>Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap (<a href=http://sourceforge.net/projects/sharppcap/ >Sharppcap</a>).<p>Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.<p>Больше о флагах tcp-пакета можно посмотреть <a href=http://www.firewall.cx/ >http://www.firewall.cx.</a>
+<pre><code class=language-csharp>///&lt;summary>
 ///class for connection
-///&lt;/summary&gt;
+///&lt;/summary>
 internal class Connection
 {
     public long ClientAddress; // client initiating the connection
@@ -92,19 +19,19 @@ internal class Connection
  
     // Fragments , used when we get newer packets that expected.
     // so we need to wait for expected before adding them.
-    public SortedDictionary&lt;long, TcpPacket&gt; HostFragments = new SortedDictionary&lt;long, TcpPacket&gt;();
-    public SortedDictionary&lt;long, TcpPacket&gt; ClientFragments = new SortedDictionary&lt;long, TcpPacket&gt;();
+    public SortedDictionary&lt;long, TcpPacket> HostFragments = new SortedDictionary&lt;long, TcpPacket>();
+    public SortedDictionary&lt;long, TcpPacket> ClientFragments = new SortedDictionary&lt;long, TcpPacket>();
  
     // returns client ip:client port as a string
     public string GetClientAddressPort()
     {
-        return string.Format(&quot;{0}:{1}&quot;, new IPAddress(ClientAddress).ToString(), ClientPort);
+        return string.Format("{0}:{1}", new IPAddress(ClientAddress).ToString(), ClientPort);
     }
  
     // returns host ip:host port as a string
     public string GetHostAddressPort()
     {
-        return string.Format(&quot;{0}:{1}&quot;, new IPAddress(HostAddress).ToString(), HostPort);
+        return string.Format("{0}:{1}", new IPAddress(HostAddress).ToString(), HostPort);
     }
  
     // packet is from host
@@ -134,14 +61,11 @@ internal class Connection
         this.ClientSyn = clientSyn;
     }
 }
-</code></pre>
-<p>Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment">wikipedia.org</a>). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют &quot;полезную&quot; информацию в себе (payload data).</p>
-<p>Больше о TCP пакетах <a href="http://ru.wikipedia.org/wiki/TCP">wikipedia.org</a>.</p>
-<p>Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому &quot;принадлежит&quot; этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к &quot;полезным&quot; данным последовательно (AddHostData и AddClientData)</p>
-<pre><code class="language-csharp">/// &lt;summary&gt;
+</code></pre><p>Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать <a href=http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment>wikipedia.org</a>). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют "полезную" информацию в себе (payload data).<p>Больше о TCP пакетах <a href=http://ru.wikipedia.org/wiki/TCP>wikipedia.org</a>.<p>Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому "принадлежит" этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к "полезным" данным последовательно (AddHostData и AddClientData)
+<pre><code class=language-csharp>/// &lt;summary>
 /// Main class for sniffering
-/// &lt;/summary&gt;
-/// &lt;remarks&gt;
+/// &lt;/summary>
+/// &lt;remarks>
 /// 1. I see that there is new version of SharpPcap library with new interface (29/11/2011)
 /// So i just try to update some useful information about this class
 /// 
@@ -154,14 +78,14 @@ internal class Connection
 /// }
 /// 
 /// 3. Coordinator is class with constants.
-/// &lt;/remarks&gt;
+/// &lt;/remarks>
 internal abstract class Sniffer 
 {
     private Timer timer;
     private object synchronizationObjectForConnection = new object();
-    private List&lt;SynchronizatedConnection&gt; Connections = new List&lt;SynchronizatedConnection&gt;();
+    private List&lt;SynchronizatedConnection> Connections = new List&lt;SynchronizatedConnection>();
     private LibPcapLiveDevice _device;
-    private readonly List&lt;System.Net.IPAddress&gt; _hosts;
+    private readonly List&lt;System.Net.IPAddress> _hosts;
  
     // when connected
     public abstract void Connected(Object conn);
@@ -175,26 +99,26 @@ internal abstract class Sniffer
         //sometimes purely the collection, just in case
         lock (synchronizationObjectForConnection)
         {
-            foreach (var key in Connections.Where(k =&gt; (DateTime.Now.ToFileTimeUtc() - k.TimeIdentifier) &gt; 600000000 * Coordinator.Config.HowLongWeSaveTransaction.TotalMinutes).ToList())
+            foreach (var key in Connections.Where(k => (DateTime.Now.ToFileTimeUtc() - k.TimeIdentifier) > 600000000 * Coordinator.Config.HowLongWeSaveTransaction.TotalMinutes).ToList())
             {
                 Connections.Remove(key);
             }
         }
     }
  
-    /// &lt;summary&gt;
+    /// &lt;summary>
     /// Create the exemplare of the class
-    /// &lt;/summary&gt;
-    public Sniffer(List&lt;System.Net.IPAddress&gt; hosts)
+    /// &lt;/summary>
+    public Sniffer(List&lt;System.Net.IPAddress> hosts)
     {
         timer = new Timer(ClearConnections, null, Coordinator.Config.HowLongWeSaveTransaction, Coordinator.Config.HowLongWeSaveTransaction);
         _hosts = hosts;
     }
  
-    /// &lt;summary&gt;
+    /// &lt;summary>
     /// Start the tracing
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;filter&quot;&gt;See http://www.cs.ucr.edu/~marios/ethereal-tcpdump.pdf &lt;/param&gt;
+    /// &lt;/summary>
+    /// &lt;param name="filter">See http://www.cs.ucr.edu/~marios/ethereal-tcpdump.pdf &lt;/param>
     public void RunSniffer(string filter)
     {
         var devices = LibPcapLiveDeviceList.Instance;
@@ -211,20 +135,20 @@ internal abstract class Sniffer
         _device.StartCapture();
     }
  
-    /// &lt;summary&gt;
+    /// &lt;summary>
     /// Stop the tracing
-    /// &lt;/summary&gt;
+    /// &lt;/summary>
     public void StopSniffer()
     {
         _device.StopCapture();
         _device.Close();
     }
  
-    /// &lt;summary&gt;
+    /// &lt;summary>
     /// Catch the packet
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
-    /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+    /// &lt;/summary>
+    /// &lt;param name="sender">&lt;/param>
+    /// &lt;param name="e">&lt;/param>
     private void device_OnPacketArrival(object sender, CaptureEventArgs e)
     {
         try
@@ -252,10 +176,10 @@ internal abstract class Sniffer
         }
     }
  
-    /// &lt;summary&gt;
+    /// &lt;summary>
     /// Parse TCP packet
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;tcp&quot;&gt;TCP packet&lt;/param&gt;
+    /// &lt;/summary>
+    /// &lt;param name="tcp">TCP packet&lt;/param>
     privDescription. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
 
 The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
@@ -263,9 +187,9 @@ Initially, we choose to do all the settings using a simple SQL query.ate void As
     {
         // pass the packets that :
         // 1. tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0 - sent for synchronization
-        // 2. tcp.PayloadData.Length &gt; 0 - no useful data in packet
+        // 2. tcp.PayloadData.Length > 0 - no useful data in packet
         // 3. tcp.Fin || tcp.Rst - connection is finished or reseted
-        if (!(tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0) &amp;&amp; (tcp.PayloadData.Length &gt; 0) &amp;&amp; !(tcp.Fin || tcp.Rst))
+        if (!(tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0) &amp;&amp; (tcp.PayloadData.Length > 0) &amp;&amp; !(tcp.Fin || tcp.Rst))
         {
             SynchronizatedConnection conn;
             // try to find connection in collection
@@ -318,7 +242,7 @@ Initially, we choose to do all the settings using a simple SQL query.        els
                         // just drop these for now
                         return;
                     }
-                    if (tcp.SequenceNumber &gt; conn.NextClientSeq)
+                    if (tcp.SequenceNumber > conn.NextClientSeq)
                     // out of order data
                     {
                         if (!conn.ClientFragments.ContainsKey(tcp.SequenceNumber))
@@ -365,7 +289,7 @@ Initially, we choose to do all the settings using a simple SQL query.        els
                         // just drop these for now
                         return;
                     }
-                    if (tcp.SequenceNumber &gt; conn.NextHostSeq)
+                    if (tcp.SequenceNumber > conn.NextHostSeq)
                     // newer out of order data
                     {
                         if (!conn.HostFragments.ContainsKey(tcp.SequenceNumber))
@@ -432,11 +356,11 @@ Initially, we choose to do all the settings using a simple SQL query.        els
         return null;
     }
  
-    /// &lt;summary&gt;
+    /// &lt;summary>
     /// Get Payload Data from tcp packet
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;tcp&quot;&gt;TCP packet&lt;/param&gt;
-    /// &lt;returns&gt;bytes of useful data&lt;/returns&gt;
+    /// &lt;/summary>
+    /// &lt;param name="tcp">TCP packet&lt;/param>
+    /// &lt;returns>bytes of useful data&lt;/returns>
     protected static byte[] GetUsefulData(TcpPacket tcp)
     {
         var data = new byte[tcp.Bytes.Length - tcp.DataOffset * 4];
@@ -447,44 +371,6 @@ Initially, we choose to do all the settings using a simple SQL query.        els
         return data;
     }
 }
-</code></pre>
-<p>Проблемы данного класса/решения:</p>
-<ol>
-<li>Если &quot;словится&quot; первый пакет, который является неправильным - возникает проблема с получением дальнейшей информации, которая идет по данному соединению;</li>
-<li>Не проверяется контрольная сумма принятого пакета;</li>
-<li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</li>
-</ol>
-<pre><code class="language-csharp">(public void RunSniffer(string filter)) 
-</code></pre>
-<p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
-
-                <div class="sharethis-inline-share-buttons"></div>
-                <div id="disqus_thread"></div>
-                <script>
-                    (function() { // DON'T EDIT BELOW THIS LINE
-                        var d = document,
-                            s = d.createElement('script');
-                        s.src = '//eapyl-github-io.disqus.com/embed.js';
-                        s.setAttribute('data-timestamp', +new Date());
-                        (d.head || d.body).appendChild(s);
-                    })();
-                </script>
-            </div>
-        </div>
-    </div>
-    <script async src="prism.js"></script>
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    
-        ga('create', 'UA-87583712-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
-</body>
-
-</html>
+</code></pre><p>Проблемы данного класса/решения:<ol><li>Если "словится" первый пакет, который является неправильным - возникает проблема с получением дальнейшей информации, которая идет по данному соединению;<li>Не проверяется контрольная сумма принятого пакета;<li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</ol>
+<pre><code class=language-csharp>(public void RunSniffer(string filter)) 
+</code></pre><p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.<div class=sharethis-inline-share-buttons></div><div id=disqus_thread></div><script>(function(){var n=document,t=n.createElement("script");t.src="//eapyl-github-io.disqus.com/embed.js";t.setAttribute("data-timestamp",+new Date);(n.head||n.body).appendChild(t)})()</script></div></div></div><script async src=prism.js></script><script>(function(n,t,i,r,u,f,e){n.GoogleAnalyticsObject=u;n[u]=n[u]||function(){(n[u].q=n[u].q||[]).push(arguments)};n[u].l=1*new Date;f=t.createElement(i);e=t.getElementsByTagName(i)[0];f.async=1;f.src=r;e.parentNode.insertBefore(f,e)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create","UA-87583712-1","auto");ga("send","pageview")</script><script src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>

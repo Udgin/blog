@@ -1,81 +1,5 @@
-<html>
-
-<head>
-    <title>Personal-mobile-radio-application-using-Ionic</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-    <link rel="stylesheet" href="prism.css"></link>
-    <style>
-        .columns .column {
-            padding: .4rem;
-        }
-        #sidebar-id {
-            padding: .4rem;
-        }
-        code {
-            padding: 0;
-            overflow-x: scroll;
-        }
-        img {
-            max-width: 100%;
-        }
-        .off-canvas .off-canvas-sidebar
-        {
-            background: none;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="off-canvas off-canvas-sidebar-show">
-        <a class="off-canvas-toggle btn btn-primary btn-action" href="#sidebar-id">
-            <i class="icon icon-menu"></i>
-        </a>
-        <div id="sidebar-id" class="off-canvas-sidebar">
-            <ul class="menu">
-                <li class="menu-item">
-                    <div class="tile tile-centered">
-                        <div class="tile-icon"><img class="avatar" src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U"
-                                alt="Avatar"></div>
-                        <div class="tile-content">Yauhen Pyl</div>
-                    </div>
-                </li>
-                <li class="divider" data-content="LINKS">
-                </li>
-                <li class="menu-item">
-                    <a href="https://plus.google.com/+UdginPyl">Google+</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://www.facebook.com/yauhen.pyl">Facebook</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://pl.linkedin.com/in/eugenepyl">LinkedIn</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://github.com/eapyl">GitHub</a>
-                </li>
-                <li class="menu-item">
-                    <a href="mailto:gromkaktus@gmail.com">Email</a>
-                </li>
-            </ul>
-        </div>
-        <a class="off-canvas-overlay" href="#close"></a>
-        <div class="off-canvas-content">
-            <div class="container grid-lg">
-                <h1 id="personal-mobile-radio-application-using-ionic">Personal mobile radio application using Ionic</h1>
-<p>Hi, there!</p>
-<p>Finally I am tired because of all advertisements which we have in any simple radio mobile application. I just want to listen radio and that is all! Quite simple, hah?</p>
-<p>So I decided to create a simple radio mobile application by myself. I thought about Xamarin as I have some experience in creating application using it. But I decided to use new framework for me and it is Ionic. I am very impressed how cool it is and how easy to create application using it. It took about 2 hours to install all dependencies (ionic, android studio, java), deploy and run a first version of my application on my android device. Quite fast!</p>
-<p>I am using Ubuntu 16.04.</p>
-<p>Please find the steps below:</p>
-<ol>
-<li>I have installed ionic framework using this <a href="http://ionicframework.com/docs/intro/installation/">link</a> and create blank application: <code>ionic start radioOn blank</code>.</li>
-<li>And that is all, to start our application need to run <code>ionic serve</code>.</li>
-<li>As I want to listen an online radio, I need to create a provider to listen online stream: Html5Audio:</li>
-</ol>
-<pre><code class="language-typescript">import { Injectable, Output, EventEmitter } from '@angular/core';
+<title>Personal-mobile-radio-application-using-Ionic</title><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-exp.min.css><link rel=stylesheet href=https://unpkg.com/spectre.css/dist/spectre-icons.min.css><link rel=stylesheet href=prism.css><link><style>.columns .column{padding:.4rem}#sidebar-id{padding:.4rem}code{padding:0;overflow-x:scroll}img{max-width:100%}.off-canvas .off-canvas-sidebar{background:none}</style><div class="off-canvas off-canvas-sidebar-show"><a class="off-canvas-toggle btn btn-primary btn-action" href=#sidebar-id><i class="icon icon-menu"></i></a><div id=sidebar-id class=off-canvas-sidebar><ul class=menu><li class=menu-item><div class="tile tile-centered"><div class=tile-icon><img class=avatar src="https://media.licdn.com/dms/image/C4E03AQEtgQbQGiCpUQ/profile-displayphoto-shrink_200_200/0?e=1547683200&v=beta&t=YKT1NVMDvlzVocWQtSP2Y6Z4Eoy-fqPLncAIk45nF2U" alt=Avatar></div><div class=tile-content>Yauhen Pyl</div></div><li class=divider data-content=LINKS><li class=menu-item><a href=https://plus.google.com/+UdginPyl>Google+</a><li class=menu-item><a href=https://www.facebook.com/yauhen.pyl>Facebook</a><li class=menu-item><a href=https://pl.linkedin.com/in/eugenepyl>LinkedIn</a><li class=menu-item><a href=https://github.com/eapyl>GitHub</a><li class=menu-item><a href=mailto:gromkaktus@gmail.com>Email</a></ul></div><a class=off-canvas-overlay href=#close></a><div class=off-canvas-content><div class="container grid-lg"><h1 id=personal-mobile-radio-application-using-ionic>Personal mobile radio application using Ionic</h1><p>Hi, there!<p>Finally I am tired because of all advertisements which we have in any simple radio mobile application. I just want to listen radio and that is all! Quite simple, hah?<p>So I decided to create a simple radio mobile application by myself. I thought about Xamarin as I have some experience in creating application using it. But I decided to use new framework for me and it is Ionic. I am very impressed how cool it is and how easy to create application using it. It took about 2 hours to install all dependencies (ionic, android studio, java), deploy and run a first version of my application on my android device. Quite fast!<p>I am using Ubuntu 16.04.<p>Please find the steps below:<ol><li>I have installed ionic framework using this <a href=http://ionicframework.com/docs/intro/installation/ >link</a> and create blank application: <code>ionic start radioOn blank</code>.<li>And that is all, to start our application need to run <code>ionic serve</code>.<li>As I want to listen an online radio, I need to create a provider to listen online stream: Html5Audio:</ol>
+<pre><code class=language-typescript>import { Injectable, Output, EventEmitter } from '@angular/core';
 
 @Injectable()
 export class Html5Audio {
@@ -100,29 +24,29 @@ export class Html5Audio {
         this.isPlaying = true;
         this.audioPlayer.play();
 
-        this.audioPlayer.addEventListener(&quot;timeupdate&quot;, () =&gt; {
+        this.audioPlayer.addEventListener("timeupdate", () => {
             if (this.audioPlayer) {
                 var s = this.audioPlayer.currentTime % 60;
                 var m = (this.audioPlayer.currentTime / 60) % 60;
                 var h = ((this.audioPlayer.currentTime / 60) / 60) % 60;
-                if (this.isPlaying &amp;&amp; this.audioPlayer.currentTime &gt; 0) {
+                if (this.isPlaying &amp;&amp; this.audioPlayer.currentTime > 0) {
                     this.time = this.pad2(h) + ':' + this.pad2(m) + ':' + this.pad2(s);
                 }
             }
         }, false);
-        this.audioPlayer.addEventListener(&quot;error&quot;, (ex) =&gt; {
+        this.audioPlayer.addEventListener("error", (ex) => {
             console.error(ex);
         }, false);
-        this.audioPlayer.addEventListener(&quot;canplay&quot;, () =&gt; {
+        this.audioPlayer.addEventListener("canplay", () => {
             console.log('CAN PLAY');
         }, false);
-        this.audioPlayer.addEventListener(&quot;waiting&quot;, () =&gt; {
+        this.audioPlayer.addEventListener("waiting", () => {
             this.isPlaying = false;
         }, false);
-        this.audioPlayer.addEventListener(&quot;playing&quot;, () =&gt; {
+        this.audioPlayer.addEventListener("playing", () => {
             this.isPlaying = true;
         }, false);
-        this.audioPlayer.addEventListener(&quot;ended&quot;, () =&gt; {
+        this.audioPlayer.addEventListener("ended", () => {
             this.stop();
             this.ended.emit();
         }, false);
@@ -139,47 +63,4 @@ export class Html5Audio {
         this.audioPlayer = null;
     }
 }
-</code></pre>
-<ol start="4">
-<li>It has been imported to /src/app/app.module.</li>
-<li>There is only one page with a list of stations (I have <a href="https://github.com/eapyl/radioon/blob/master/src/pages/home/home.ts">only 3</a> which I listen). Click on a station - starting this station, and there is one button to stop music(<a href="https://github.com/eapyl/radioon/blob/master/src/pages/home/home.html">link</a>). That is all. Simple!</li>
-<li>After that we need to prepare icon and splash image for application. I am using <a href="http://game-icons.net">game-icons</a> to create an icon and <a href="https://unsplash.com/">unspalsh</a> to find full size images.</li>
-<li>Need to put created icon.png and splash.png to /resources/icon.png and /resources/splash.png and run the next command <code>ionic cordova resources</code> (you have to have an account in Ionic portal and it is free).</li>
-<li>To <a href="http://ionicframework.com/docs/intro/deploying/">deploy</a> our application need to run <code>ionic cordova build android --prod --release</code> and it will create *.apk file. We need to sign it using 'Sign Android APK' section from <a href="http://ionicframework.com/docs/intro/deploying/">here</a>.</li>
-<li>That is all. We have signed apk which we can copy on our device and install.</li>
-</ol>
-<p>Please find my project <a href="https://github.com/eapyl/radioon">here</a>. Signed apk file <a href="https://mega.nz/#!edsTXT6L">here</a>.</p>
-<p>How it looks like:<br />
-<img src="Personal-mobile-radio-application-using-Ionic\radio-on-screenshot.png" alt="image" /></p>
-<p>Cheers,</p>
-
-                <div class="sharethis-inline-share-buttons"></div>
-                <div id="disqus_thread"></div>
-                <script>
-                    (function() { // DON'T EDIT BELOW THIS LINE
-                        var d = document,
-                            s = d.createElement('script');
-                        s.src = '//eapyl-github-io.disqus.com/embed.js';
-                        s.setAttribute('data-timestamp', +new Date());
-                        (d.head || d.body).appendChild(s);
-                    })();
-                </script>
-            </div>
-        </div>
-    </div>
-    <script async src="prism.js"></script>
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    
-        ga('create', 'UA-87583712-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
-</body>
-
-</html>
+</code></pre><ol start=4><li>It has been imported to /src/app/app.module.<li>There is only one page with a list of stations (I have <a href=https://github.com/eapyl/radioon/blob/master/src/pages/home/home.ts>only 3</a> which I listen). Click on a station - starting this station, and there is one button to stop music(<a href=https://github.com/eapyl/radioon/blob/master/src/pages/home/home.html>link</a>). That is all. Simple!<li>After that we need to prepare icon and splash image for application. I am using <a href=http://game-icons.net>game-icons</a> to create an icon and <a href=https://unsplash.com/ >unspalsh</a> to find full size images.<li>Need to put created icon.png and splash.png to /resources/icon.png and /resources/splash.png and run the next command <code>ionic cordova resources</code> (you have to have an account in Ionic portal and it is free).<li>To <a href=http://ionicframework.com/docs/intro/deploying/ >deploy</a> our application need to run <code>ionic cordova build android --prod --release</code> and it will create *.apk file. We need to sign it using 'Sign Android APK' section from <a href=http://ionicframework.com/docs/intro/deploying/ >here</a>.<li>That is all. We have signed apk which we can copy on our device and install.</ol><p>Please find my project <a href=https://github.com/eapyl/radioon>here</a>. Signed apk file <a href=https://mega.nz/#!edsTXT6L>here</a>.<p>How it looks like:<br> <img src=Personal-mobile-radio-application-using-Ionic\radio-on-screenshot.png alt=image><p>Cheers,<div class=sharethis-inline-share-buttons></div><div id=disqus_thread></div><script>(function(){var n=document,t=n.createElement("script");t.src="//eapyl-github-io.disqus.com/embed.js";t.setAttribute("data-timestamp",+new Date);(n.head||n.body).appendChild(t)})()</script></div></div></div><script async src=prism.js></script><script>(function(n,t,i,r,u,f,e){n.GoogleAnalyticsObject=u;n[u]=n[u]||function(){(n[u].q=n[u].q||[]).push(arguments)};n[u].l=1*new Date;f=t.createElement(i);e=t.getElementsByTagName(i)[0];f.async=1;f.src=r;e.parentNode.insertBefore(f,e)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create","UA-87583712-1","auto");ga("send","pageview")</script><script src="https://platform-api.sharethis.com/js/sharethis.js#property=5906f3ca75e4e1001109c19a&product=inline-share-buttons"></script>
