@@ -62,8 +62,17 @@ namespace blg.Application
                 ));
             }
 
+            var pathToFolderWithIndexFile = Path.Combine(configuration.TargetFolder, request.FolderPath);
+
             return await _mediator.Send(
-                new CreateIndexPageCommand(request.SourceFolder, cards, Path.Combine(configuration.TargetFolder, request.FolderPath))
+                new CreateIndexPageCommand(
+                    request.SourceFolder,
+                    cards,
+                    pathToFolderWithIndexFile,
+                    string.IsNullOrEmpty(request.FolderPath) ?
+                        configuration.BlogTitle :
+                        Path.GetFileNameWithoutExtension(pathToFolderWithIndexFile)
+                    )
             );
         }
     }

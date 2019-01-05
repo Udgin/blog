@@ -16,5 +16,6 @@ namespace blg.Domain
         public string PrismCSS { get { return Path.Combine(SourceFolder, @"theme\prism.css"); } }
         public string PathToMathJS { get; } = @"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML";
         public string Favicon { get { return Path.Combine(SourceFolder, @"theme\favicon.ico"); } }
+        public string BlogTitle { get { return "Programming notes"; } }
     }
 }

@@ -16,17 +16,21 @@ namespace blg.Application
         public CreateIndexPageCommand(
             string sourceFolder,
             IList<CardEntity> cardEntities,
-            string pathToIndexFolder)
+            string pathToIndexFolder,
+            string title)
         {
             SourceFolder = sourceFolder;
             CardEntities = cardEntities;
             PathToIndexFolder = pathToIndexFolder;
+            Title = title;
         }
 
         public string SourceFolder { get; }
         public IList<CardEntity> CardEntities { get; }
         public string PathToIndexFolder { get; }
-        public string Trace() => $"{nameof(CreateIndexPageCommand)}: {SourceFolder}, {CardEntities.Count}, {PathToIndexFolder}";
+        public string Title { get; }
+
+        public string Trace() => $"{nameof(CreateIndexPageCommand)}: {Title}, {SourceFolder}, {CardEntities.Count}, {PathToIndexFolder}";
     }
     internal class CreateIndexPageCommandHandler : IRequestHandler<CreateIndexPageCommand, CardEntity>
     {
@@ -84,8 +88,7 @@ namespace blg.Application
             }
 
             var contentOfIndex = indexTemplate.Replace("{{BODY}}", string.Join(string.Empty, htmlCards));
-            var folderName = Path.GetFileNameWithoutExtension(fullPathForIndexPage);
-            contentOfIndex = contentOfIndex.Replace("{{TITLE}}", string.IsNullOrEmpty(folderName) ? "Main" : folderName);
+            contentOfIndex = contentOfIndex.Replace("{{TITLE}}", request.Title);
             contentOfIndex = contentOfIndex.Replace("{{TAGS}}", tagsHtml);
             contentOfIndex = contentOfIndex.Replace("{{LINK}}",
                 Utils.RelativePath(request.PathToIndexFolder, Path.Combine(configuration.TargetFolder, "index.html")));
@@ -96,10 +99,10 @@ namespace blg.Application
 
             var card = new CardEntity {
                 ArticleTitle = new ArticleTitle {
-                    Title = folderName,
+                    Title = request.Title,
                     Date = DateTime.MaxValue
                 },
-                RelativePath = folderName + "/index.html"
+                RelativePath = request.Title + "/index.html"
             };
 
             await _cardValidator.ValidateAndThrowAsync(card, "index");

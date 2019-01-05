@@ -18,6 +18,7 @@ namespace blg.Domain
             RuleFor(x => x.PrismCSS).NotEmpty();
             RuleFor(x => x.PrismJS).NotEmpty();
             RuleFor(x => x.TagTemplatePath).NotEmpty();
+            RuleFor(x => x.BlogTitle).NotEmpty();
         }
     }
 }
