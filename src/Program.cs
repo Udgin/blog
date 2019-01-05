@@ -28,10 +28,11 @@ namespace blg
 
             container.RegisterMany(new []{ typeof(Mediator).Assembly }, t => t.IsInterface);
             container.RegisterDelegate<ServiceFactory>(r => r.Resolve);
-            
+
             container.RegisterMany(new []{ typeof(Program).Assembly }, t => t.IsInterface);
 
-            container.Register(typeof(IPipelineBehavior<GetTemplateCommand, string>), typeof(CacheBehaviour), reuse: Reuse.Singleton, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+            container.Register(typeof(IPipelineBehavior<GetTemplateCommand, string>), typeof(CacheBehaviour),
+                reuse: Reuse.Singleton, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
 
             return container.Resolve<IMediator>();
         }

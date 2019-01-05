@@ -104,6 +104,8 @@ namespace blg.Application
 
             await _cardValidator.ValidateAndThrowAsync(card, "index");
 
+            await _mediator.Send(new FuseSearchCommand(request.CardEntities.Select(x => x.ArticleTitle), fullPathForIndexPage));
+
             return card;
         }
     }
