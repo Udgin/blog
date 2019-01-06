@@ -95,7 +95,7 @@ namespace blg.Application
 
             if (title.Publish)
             {
-                var uglified = await _mediator.Send(new UglifyHtmlCommand(contentOfArticle));
+                var uglified = await _mediator.Send(new UglifyCommand(contentOfArticle, TypeOfContent.Html));
                 await _fileSystem.WriteAllTextAsync(fullPathToHtmlArticle, uglified);
             }
 

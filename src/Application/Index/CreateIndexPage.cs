@@ -93,7 +93,7 @@ namespace blg.Application
             contentOfIndex = contentOfIndex.Replace("{{LINK}}",
                 Utils.RelativePath(request.PathToIndexFolder, Path.Combine(configuration.TargetFolder, "index.html")));
 
-            var uglified = await _mediator.Send(new UglifyHtmlCommand(contentOfIndex));
+            var uglified = await _mediator.Send(new UglifyCommand(contentOfIndex, TypeOfContent.Html));
 
             await _fileSystem.WriteAllTextAsync(htmlFilePath, uglified);
 
@@ -107,7 +107,10 @@ namespace blg.Application
 
             await _cardValidator.ValidateAndThrowAsync(card, "index");
 
-            await _mediator.Send(new FuseSearchCommand(request.CardEntities.Select(x => x.ArticleTitle), fullPathForIndexPage));
+            await _mediator.Send(
+                new FuseSearchCommand(request.CardEntities.Select(x => x.ArticleTitle),
+                fullPathForIndexPage,
+                request.SourceFolder));
 
             return card;
         }

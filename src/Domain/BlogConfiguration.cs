@@ -11,6 +11,7 @@ namespace blg.Domain
         public string ArticleTemplatePath { get { return Path.Combine(SourceFolder, @"theme\article.template.html"); } }
         public string IndexTemplatePath { get { return Path.Combine(SourceFolder, @"theme\index.template.html"); } }
         public string TagTemplatePath { get { return Path.Combine(SourceFolder, @"theme\tag.template.html"); } }
+        public string FuseTemplatePath { get { return Path.Combine(SourceFolder, @"theme\fuse.js"); } }
         public string FolderImagePath { get { return Path.Combine(SourceFolder, @"theme\folder.jpg"); } }
         public string PrismJS { get { return Path.Combine(SourceFolder, @"theme\prism.js"); } }
         public string PrismCSS { get { return Path.Combine(SourceFolder, @"theme\prism.css"); } }

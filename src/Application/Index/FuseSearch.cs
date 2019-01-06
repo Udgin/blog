@@ -11,13 +11,15 @@ namespace blg.Application
 {
     internal class FuseSearchCommand : IRequest
     {
-        public FuseSearchCommand(IEnumerable<ArticleTitle> cards, string outputPath)
+        public FuseSearchCommand(IEnumerable<ArticleTitle> cards, string outputPath, string sourceFolder)
         {
             Cards = cards;
             OutputPath = outputPath;
+            SourceFolder = sourceFolder;
         }
         public IEnumerable<ArticleTitle> Cards { get; }
         public string OutputPath { get; }
+        public string SourceFolder { get; }
     }
 
     internal class FuseSearchCommandHandler : IRequestHandler<FuseSearchCommand>
@@ -32,6 +34,9 @@ namespace blg.Application
         }
         public async Task<Unit> Handle(FuseSearchCommand request, CancellationToken cancellationToken)
         {
+            var configuration = await _mediator.Send(new GetConfigurationCommand(request.SourceFolder));
+            var fuseTemplate = await _mediator.Send(new GetTemplateCommand(configuration.FuseTemplatePath));
+
             var fuseFilePath = Path.Combine(request.OutputPath, "fuse.js");
 
             var js = new StringBuilder();
@@ -47,7 +52,9 @@ namespace blg.Application
             }
             js.AppendLine("];");
 
-            var uglified = await _mediator.Send(new UglifyHtmlCommand(js.ToString()));
+            var result = fuseTemplate.Replace("{{ARTICLES}}", js.ToString());
+
+            var uglified = await _mediator.Send(new UglifyCommand(result, TypeOfContent.Js));
 
             await _fileSystem.WriteAllTextAsync(fuseFilePath, uglified);
 
