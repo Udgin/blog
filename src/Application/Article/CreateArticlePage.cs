@@ -48,22 +48,19 @@ namespace blg.Application
             var configuration = await _mediator.Send(new GetConfigurationCommand(request.SourceFolder));
 
             var articleTemplate = await _mediator.Send(new GetTemplateCommand(configuration.ArticleTemplatePath));
-            var articleFolder = configuration.ArticlesFolder;
-            var fullPathToArticle = Path.Combine(articleFolder, request.RelativePath);
+            var fullPathToArticle = Path.Combine(configuration.ArticlesFolder, request.RelativePath);
 
             var linesOfMarkdownArticle = await _fileSystem.ReadAllLinesAsync(fullPathToArticle);
 
             var title = await _mediator.Send(new ParseTitleCommand(linesOfMarkdownArticle));
 
-            var fullPathToHtmlArticle =
-                    Path.Combine(configuration.TargetFolder,
-                        request.RelativePath.TrimStart('\\').TrimStart('/')).Replace(".md", ".html");
-
             var bodyOfArticle = linesOfMarkdownArticle.Skip(title.Size);
 
             var htmlContent = Markdown.ToHtml(string.Join(Environment.NewLine, bodyOfArticle), _pipeline);
 
-            var contentOfArticle = articleTemplate.Replace("{{BODY}}", htmlContent);
+            var contentOfArticle = articleTemplate
+                .Replace("{{BODY}}", htmlContent)
+                .Replace("{{TITLE}}", title.Title);
 
             contentOfArticle = await _mediator.Send(new AddArticleStylesCommand(
                 request.SourceFolder,
@@ -79,30 +76,21 @@ namespace blg.Application
                 title.Script
             ));
 
-            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fullPathToHtmlArticle);
-
-            contentOfArticle = contentOfArticle.Replace("{{TITLE}}", fileNameWithoutExtension);
-
             var linksInArticle = await _mediator.Send(new FindLinksCommand(bodyOfArticle));
-            var folderForAssets = Path.GetDirectoryName(fullPathToHtmlArticle);
+
+            var fullPathToHtmlArticle =
+                    Path.Combine(configuration.TargetFolder,
+                        request.RelativePath.TrimStart('\\').TrimStart('/')).Replace(".md", ".html");
 
             foreach (var link in linksInArticle)
             {
-                var fullPathToAsset = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(fullPathToArticle), link));
-
-                if (!_fileSystem.FileExists(fullPathToAsset)) continue;
-
-                var targetPathForAsset = Path.Combine(folderForAssets, fileNameWithoutExtension, Path.GetFileName(fullPathToAsset));
-
-                if (!_fileSystem.DirectoryExists(Path.GetDirectoryName(targetPathForAsset)))
-                {
-                    _fileSystem.DirectoryCreate(Path.GetDirectoryName(targetPathForAsset));
-                }
-                _fileSystem.CopyFile(fullPathToAsset, targetPathForAsset);
-                contentOfArticle = contentOfArticle.Replace(link, Path.Combine(fileNameWithoutExtension, Path.GetFileName(fullPathToAsset)));
+                contentOfArticle = await _mediator.Send(new AddLinkToArticleCommand(
+                    contentOfArticle,
+                    fullPathToArticle,
+                    link,
+                    fullPathToHtmlArticle
+                ));
             }
-
-            var linkWithImage =  linksInArticle.FirstOrDefault(x => x.EndsWith(".jpg") || x.EndsWith(".png"));
 
             if (title.Publish)
             {

@@ -8,6 +8,7 @@ using blg.Common;
 using blg.Domain;
 using MediatR;
 using FluentValidation;
+using System.Text;
 
 namespace blg.Application
 {
@@ -34,6 +35,7 @@ namespace blg.Application
     }
     internal class CreateIndexPageCommandHandler : IRequestHandler<CreateIndexPageCommand, CardEntity>
     {
+        private const int MaxCountOfTags = 7;
         private readonly IFileSystem _fileSystem;
         private readonly IMediator _mediator;
         private readonly IValidator<CardEntity> _cardValidator;
@@ -61,37 +63,38 @@ namespace blg.Application
                 .Where(x => x.ArticleTitle.Publish)
                 .OrderByDescending(x => x.ArticleTitle.Date))
             {
-                var htmlCard = cardTemplate;
-                htmlCard = htmlCard.Replace("{{TITLE}}", childCards.ArticleTitle.Title);
-                foreach(var cardTag in childCards.ArticleTitle.Tags)
-                {
-                    if (tags.ContainsKey(cardTag))
-                    {
-                        tags[cardTag]++;
-                    }
-                    else
-                    {
-                        tags[cardTag] = 1;
-                    }
-                }
-                htmlCard = htmlCard.Replace("{{DATE}}", childCards.SortDate);
-                htmlCard = htmlCard.Replace("{{SUBTITLE}}", string.Join(", ", childCards.ArticleTitle.Tags));
-                htmlCard = htmlCard.Replace("{{LINK}}", childCards.RelativePath);
-                htmlCards.Add(htmlCard);
+                htmlCards.Add(cardTemplate
+                    .Replace("{{TITLE}}", childCards.ArticleTitle.Title)
+                    .Replace("{{DATE}}", childCards.SortDate)
+                    .Replace("{{SUBTITLE}}", string.Join(", ", childCards.ArticleTitle.Tags))
+                    .Replace("{{LINK}}", childCards.RelativePath));
             }
 
-            var tagsHtml = string.Empty;
+            var tagsHtml = new StringBuilder();
 
-            foreach (var pair in tags.OrderByDescending(x => x.Value).Take(7))
+            var mostPopularTags = request.CardEntities
+                .Where(x => x.ArticleTitle.Publish)
+                .SelectMany(x => x.ArticleTitle.Tags)
+                .GroupBy(x => x)
+                .OrderByDescending(x => x.Count())
+                .Take(MaxCountOfTags)
+                .ToDictionary(x => x.Key, x => x.Count());
+
+            foreach (var pair in mostPopularTags)
             {
-                tagsHtml += tagTemplate.Replace("{{COUNT}}", pair.Value.ToString()).Replace("{{NAME}}", pair.Key);
+                tagsHtml.Append(tagTemplate
+                    .Replace("{{COUNT}}", pair.Value.ToString())
+                    .Replace("{{NAME}}", pair.Key)
+                );
             }
 
-            var contentOfIndex = indexTemplate.Replace("{{BODY}}", string.Join(string.Empty, htmlCards));
-            contentOfIndex = contentOfIndex.Replace("{{TITLE}}", request.Title);
-            contentOfIndex = contentOfIndex.Replace("{{TAGS}}", tagsHtml);
-            contentOfIndex = contentOfIndex.Replace("{{LINK}}",
-                Utils.RelativePath(request.PathToIndexFolder, Path.Combine(configuration.TargetFolder, "index.html")));
+            var contentOfIndex = indexTemplate
+                .Replace("{{BODY}}", string.Join(string.Empty, htmlCards))
+                .Replace("{{TITLE}}", request.Title)
+                .Replace("{{TAGS}}", tagsHtml.ToString())
+                .Replace("{{LINK}}", Utils.RelativePath(
+                    request.PathToIndexFolder,
+                    Path.Combine(configuration.TargetFolder, "index.html")));
 
             var uglified = await _mediator.Send(new UglifyCommand(contentOfIndex, TypeOfContent.Html));
 
@@ -107,10 +110,11 @@ namespace blg.Application
 
             await _cardValidator.ValidateAndThrowAsync(card, "index");
 
-            await _mediator.Send(
-                new FuseSearchCommand(request.CardEntities.Select(x => x.ArticleTitle),
+            await _mediator.Send(new FuseSearchCommand(
+                request.CardEntities.Select(x => x.ArticleTitle),
                 fullPathForIndexPage,
-                request.SourceFolder));
+                request.SourceFolder)
+            );
 
             return card;
         }

@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using blg.Common;
@@ -42,24 +43,25 @@ namespace blg.Application
             var configuration = await _mediator.Send(new GetConfigurationCommand(request.SourceFolder));
             var pathToPrismJs = Path.Combine(configuration.TargetFolder, Path.GetFileName(configuration.PrismJS));
             var template = "<script async src=\"{0}\"></script>";
-            var scripts = string.Empty;
+            var scripts = new StringBuilder();
             if (request.HtmlContent.Contains("<code"))
             {
-                scripts += string.Format(template,
+                scripts.AppendLine(string.Format(template,
                     Utils.GetRelativePathToStaticResource(
                         configuration.TargetFolder,
                         request.RelativePath,
-                        pathToPrismJs));
+                        pathToPrismJs))
+                );
             }
             if (request.HtmlContent.Contains("<span class=\"math\""))
             {
-                scripts += string.Format(template, configuration.PathToMathJS);
+                scripts.AppendLine(string.Format(template, configuration.PathToMathJS));
             }
             if (!string.IsNullOrWhiteSpace(request.CustomScript))
             {
-                scripts += $"<script>{request.CustomScript}</script>";
+                scripts.AppendLine($"<script>{request.CustomScript}</script>");
             }
-            return request.MarkdownContent.Replace("{{SCRIPTS}}", scripts);
+            return request.MarkdownContent.Replace("{{SCRIPTS}}", scripts.ToString());
         }
     }
 }

@@ -32,6 +32,6 @@ namespace blg.Common
                     pathToResource
                 );
 
-        public static string NormalizeString(string value) => Uri.EscapeDataString(value);
+        public static string EscapeUriString(string value) => Uri.EscapeUriString(value);
     }
 }

@@ -44,11 +44,12 @@ namespace blg.Application
             js.AppendLine("var articles = [");
             foreach (var card in request.Cards)
             {
-                js.AppendLine("{");
-                js.AppendLine($"  'Title': \"{card.Title}\",");
-                js.AppendLine($"  'Description': \"{card.Description}\",");
-                js.AppendLine($"  'Tags': [{string.Join(',', card.Tags.Select(x => $"\"{x}\""))}]");
-                js.AppendLine("},");
+                js
+                    .AppendLine("{")
+                    .AppendLine($"  'Title': \"{card.Title}\",")
+                    .AppendLine($"  'Description': \"{card.Description}\",")
+                    .AppendLine($"  'Tags': [{string.Join(',', card.Tags.Select(x => $"\"{x}\""))}]")
+                    .AppendLine("},");
             }
             js.AppendLine("];");
 
