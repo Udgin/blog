@@ -65,8 +65,19 @@ namespace blg.Application
 
             var contentOfArticle = articleTemplate.Replace("{{BODY}}", htmlContent);
 
-            contentOfArticle = AddStyles(contentOfArticle, htmlContent, request.RelativePath);
-            contentOfArticle = AddScripts(contentOfArticle, htmlContent, title.Script, request.RelativePath);
+            contentOfArticle = await _mediator.Send(new AddArticleStylesCommand(
+                request.SourceFolder,
+                contentOfArticle,
+                htmlContent,
+                request.RelativePath
+            ));
+            contentOfArticle = await _mediator.Send(new AddArticleScriptsCommand(
+                request.SourceFolder,
+                contentOfArticle,
+                htmlContent,
+                request.RelativePath,
+                title.Script
+            ));
 
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fullPathToHtmlArticle);
 
@@ -107,46 +118,6 @@ namespace blg.Application
             await _cardValidator.ValidateAndThrowAsync(cardEntity);
 
             return cardEntity;
-
-            string AddScripts(string content, string html, string customScript, string relativePath)
-            {
-                var pathToPrismJs = Path.Combine(configuration.TargetFolder, Path.GetFileName(configuration.PrismJS));
-                var template = "<script async src=\"{0}\"></script>";
-                var scripts = string.Empty;
-                if (html.Contains("<code"))
-                {
-                    scripts += string.Format(template, GetRelativePathToStaticResource(relativePath, pathToPrismJs));
-                }
-                if (html.Contains("<span class=\"math\""))
-                {
-                    scripts += string.Format(template, configuration.PathToMathJS);
-                }
-                if (!string.IsNullOrWhiteSpace(customScript))
-                {
-                    scripts += $"<script>{customScript}</script>";
-                }
-                return content.Replace("{{SCRIPTS}}", scripts);
-            }
-
-            string AddStyles(string content, string html, string relativePath)
-            {
-                var pathToPrismCss = Path.Combine(configuration.TargetFolder, Path.GetFileName(configuration.PrismCSS));
-                var template = "<link rel=\"stylesheet\" href=\"{0}\"></link>";
-                var cssStyles = string.Empty;
-                if (html.Contains("<code"))
-                {
-                    cssStyles += string.Format(template, GetRelativePathToStaticResource(relativePath, pathToPrismCss));
-                }
-                return content.Replace("{{STYLES}}", cssStyles);
-            }
-
-            string GetRelativePathToStaticResource(string relativePath, string pathToResource) =>
-                Utils.RelativePath (
-                    Path.GetDirectoryName(relativePath) == null ?
-                        configuration.TargetFolder :
-                        Path.Combine(configuration.TargetFolder, Path.GetDirectoryName(relativePath)),
-                    pathToResource
-                );
         }
     }
 }

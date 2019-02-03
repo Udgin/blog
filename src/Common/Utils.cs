@@ -21,6 +21,17 @@ namespace blg.Common
             return Uri.UnescapeDataString(folderUri.MakeRelativeUri(pathUri).ToString().Replace('/', Path.DirectorySeparatorChar)); 
         }
 
+        public static string GetRelativePathToStaticResource(
+            string targetFolder,
+            string relativePath,
+            string pathToResource) =>
+                Utils.RelativePath(
+                    Path.GetDirectoryName(relativePath) == null
+                    ? targetFolder
+                    : Path.Combine(targetFolder, Path.GetDirectoryName(relativePath)),
+                    pathToResource
+                );
+
         public static string NormalizeString(string value) => Uri.EscapeDataString(value);
     }
 }

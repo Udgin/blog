@@ -9,6 +9,11 @@ namespace blg.Application
     internal class CacheBehaviour : IPipelineBehavior<GetTemplateCommand, string>
     {
         private Dictionary<string, string> _cache = new Dictionary<string, string>();
+        private readonly Action<string> _console;
+        public CacheBehaviour(Action<string> console)
+        {
+            _console = console;
+        }
         public async Task<string> Handle(GetTemplateCommand request, CancellationToken cancellationToken, RequestHandlerDelegate<string> next)
         {
             if (_cache.ContainsKey(request.Path))
@@ -16,7 +21,7 @@ namespace blg.Application
 
             var response = await next();
 
-            Console.WriteLine("Missed cache");
+            _console("Missed cache");
 
             _cache[request.Path] = response;
             return response;

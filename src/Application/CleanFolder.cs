@@ -21,6 +21,7 @@ namespace blg.Application
         {
             _fileSystem = fileSystem;
         }
+
         public Task<Unit> Handle(CleanFolderCommand request, CancellationToken cancellationToken)
         {
             foreach (var file in _fileSystem.EnumerateFiles(request.Path, "*"))

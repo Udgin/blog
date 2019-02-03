@@ -25,6 +25,7 @@ namespace blg
 
             container.RegisterDelegate(r => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             container.Register<IFileSystem, FileSystem>();
+            container.RegisterDelegate<Action<string>>((r) => Console.WriteLine);
 
             container.RegisterMany(new []{ typeof(Mediator).Assembly }, t => t.IsInterface);
             container.RegisterDelegate<ServiceFactory>(r => r.Resolve);
