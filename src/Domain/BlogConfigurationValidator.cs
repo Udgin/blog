@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace blg.Domain
 {
-    internal class BlogConfigurationValidator : AbstractValidator<BlogConfiguration>
+    internal class BlogConfigurationValidator : AbstractValidator<IBlogConfiguration>
     {
         public BlogConfigurationValidator()
         {

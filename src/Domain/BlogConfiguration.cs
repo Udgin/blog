@@ -2,7 +2,7 @@ using System.IO;
 
 namespace blg.Domain
 {
-    internal class BlogConfiguration
+    internal class BlogConfiguration : IBlogConfiguration
     {
         public string SourceFolder { get; set; }
         public string TargetFolder { get { return Path.Combine(SourceFolder, "blog"); } }

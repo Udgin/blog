@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace blg.Application
 {
-    internal class GetConfigurationCommand : IRequest<BlogConfiguration>, ILoggedRequest
+    internal class GetConfigurationCommand : IRequest<IBlogConfiguration>, ILoggedRequest
     {
         public GetConfigurationCommand(string sourceFolder)
         {
@@ -18,15 +18,15 @@ namespace blg.Application
         public string Trace() => $"{nameof(GetConfigurationCommand)}: {SourceFolder}";
     }
 
-    internal class GetConfigurationCommandHandler : IRequestHandler<GetConfigurationCommand, BlogConfiguration>
+    internal class GetConfigurationCommandHandler : IRequestHandler<GetConfigurationCommand, IBlogConfiguration>
     {
-        private IValidator<BlogConfiguration> _validator;
+        private IValidator<IBlogConfiguration> _validator;
 
-        public GetConfigurationCommandHandler(IValidator<BlogConfiguration> validator)
+        public GetConfigurationCommandHandler(IValidator<IBlogConfiguration> validator)
         {
             _validator = validator;
         }
-        public async Task<BlogConfiguration> Handle(GetConfigurationCommand request, CancellationToken cancellationToken)
+        public async Task<IBlogConfiguration> Handle(GetConfigurationCommand request, CancellationToken cancellationToken)
         {
             var configuration = new BlogConfiguration {
                 SourceFolder = request.SourceFolder

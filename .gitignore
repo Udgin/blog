@@ -3,3 +3,4 @@ obj
 nupkg
 node_modules
 examples
+tests/coverage.json

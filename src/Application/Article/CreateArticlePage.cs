@@ -29,18 +29,16 @@ namespace blg.Application
     {
         private readonly IFileSystem _fileSystem;
         private readonly IMediator _mediator;
-        private readonly MarkdownPipeline _pipeline;
+        private readonly MarkdownPipeline _pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
         private readonly IValidator<CardEntity> _cardValidator;
         public CreateArticlePageCommandHandler(
             IFileSystem fileSystem,
             IMediator mediator,
-            MarkdownPipeline pipeline,
             IValidator<CardEntity> cardValidator
             )
         {
             _fileSystem = fileSystem;
             _mediator = mediator;
-            _pipeline = pipeline;
             _cardValidator = cardValidator;
         }
         public async Task<CardEntity> Handle(CreateArticlePageCommand request, CancellationToken cancellationToken)
