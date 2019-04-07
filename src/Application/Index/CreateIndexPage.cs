@@ -94,7 +94,10 @@ namespace blg.Application
                 .Replace("{{TAGS}}", tagsHtml.ToString())
                 .Replace("{{LINK}}", Utils.RelativePath(
                     request.PathToIndexFolder,
-                    configuration.TargetFolder));
+                    Path.Combine(configuration.TargetFolder, "index.html")))
+                .Replace("{{LINK_FAVICON}}", Utils.RelativePath(
+                    request.PathToIndexFolder,
+                    Path.Combine(configuration.TargetFolder, "favicon.ico")));
 
             var uglified = await _mediator.Send(new UglifyCommand(contentOfIndex, TypeOfContent.Html));
 

@@ -63,7 +63,10 @@ namespace blg.Application
                 .Replace("{{TITLE}}", title.Title)
                 .Replace("{{LINK}}", Utils.RelativePath(
                     request.PathToFolderWithIndexFile,
-                    configuration.TargetFolder));
+                    Path.Combine(configuration.TargetFolder, "index.html")))
+                .Replace("{{LINK_FAVICON}}", Utils.RelativePath(
+                    request.PathToFolderWithIndexFile,
+                    Path.Combine(configuration.TargetFolder, "favicon.ico")));
 
             contentOfArticle = await _mediator.Send(new AddArticleStylesCommand(
                 request.SourceFolder,
