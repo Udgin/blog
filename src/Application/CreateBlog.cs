@@ -30,7 +30,6 @@ namespace blg.Application
 
             await _mediator.Send(new CleanFolderCommand(configuration.TargetFolder));
 
-            await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.FolderImagePath, configuration.TargetFolder));
             await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.PrismCSS, configuration.TargetFolder));
             await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.PrismJS, configuration.TargetFolder));
             await _mediator.Send(new CopyStaticCommonResourcesCommand(configuration.Favicon, configuration.TargetFolder));

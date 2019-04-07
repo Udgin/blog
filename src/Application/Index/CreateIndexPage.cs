@@ -94,7 +94,7 @@ namespace blg.Application
                 .Replace("{{TAGS}}", tagsHtml.ToString())
                 .Replace("{{LINK}}", Utils.RelativePath(
                     request.PathToIndexFolder,
-                    Path.Combine(configuration.TargetFolder, "index.html")));
+                    configuration.TargetFolder));
 
             var uglified = await _mediator.Send(new UglifyCommand(contentOfIndex, TypeOfContent.Html));
 

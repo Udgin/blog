@@ -10,7 +10,6 @@ namespace blg.Domain
         string IndexTemplatePath { get; }
         string TagTemplatePath { get; }
         string FuseTemplatePath { get; }
-        string FolderImagePath { get; }
         string PrismJS { get; }
         string PrismCSS { get; }
         string PathToMathJS { get; }

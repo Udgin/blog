@@ -55,14 +55,17 @@ namespace blg.Application
                         request.SourceFolder)));
             }
 
+            var pathToFolderWithIndexFile = Path.Combine(configuration.TargetFolder, request.FolderPath);
+
             foreach (var path in filePathes)
             {
                 cards.Add(await _mediator.Send(
-                    new CreateArticlePageCommand(Utils.RelativePath(configuration.ArticlesFolder, path), request.SourceFolder)
+                    new CreateArticlePageCommand(
+                        Utils.RelativePath(configuration.ArticlesFolder, path),
+                        request.SourceFolder,
+                        pathToFolderWithIndexFile)
                 ));
             }
-
-            var pathToFolderWithIndexFile = Path.Combine(configuration.TargetFolder, request.FolderPath);
 
             return await _mediator.Send(
                 new CreateIndexPageCommand(

@@ -15,13 +15,15 @@ namespace blg.Application
 {
     internal class CreateArticlePageCommand : IRequest<CardEntity>, ILoggedRequest
     {
-        public CreateArticlePageCommand(string relativePath, string sourceFolder)
+        public CreateArticlePageCommand(string relativePath, string sourceFolder, string pathToFolderWithIndexFile)
         {
             SourceFolder = sourceFolder;
             RelativePath = relativePath;
+            PathToFolderWithIndexFile = pathToFolderWithIndexFile;
         }
         public string SourceFolder { get; }
         public string RelativePath { get; }
+        public string PathToFolderWithIndexFile { get; }
 
         public string Trace() => $"{nameof(CreateArticlePageCommand)}: {SourceFolder}, {RelativePath}";
     }
@@ -58,7 +60,10 @@ namespace blg.Application
 
             var contentOfArticle = articleTemplate
                 .Replace("{{BODY}}", htmlContent)
-                .Replace("{{TITLE}}", title.Title);
+                .Replace("{{TITLE}}", title.Title)
+                .Replace("{{LINK}}", Utils.RelativePath(
+                    request.PathToFolderWithIndexFile,
+                    configuration.TargetFolder));
 
             contentOfArticle = await _mediator.Send(new AddArticleStylesCommand(
                 request.SourceFolder,

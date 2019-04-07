@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DryIoc.dll" Version="3.1.0-preview-06" />
+    <PackageReference Include="DryIoc.dll" Version="4.0.2" />
     <PackageReference Include="FluentValidation" Version="8.1.0" />
     <PackageReference Include="Markdig" Version="0.15.4" />
     <PackageReference Include="MediatR" Version="5.1.0" />
