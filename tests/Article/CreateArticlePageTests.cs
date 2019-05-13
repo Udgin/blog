@@ -19,7 +19,7 @@ namespace tests
             var token = new CancellationToken();
             var fileSystem = A.Fake<IFileSystem>();
             var mediator = A.Fake<IMediator>();
-            var command = new CreateArticlePageCommand(string.Empty, string.Empty);
+            var command = new CreateArticlePageCommand(string.Empty, string.Empty, string.Empty);
 
             var configuration = A.Fake<IBlogConfiguration>();
             var articleTitle = new ArticleTitle

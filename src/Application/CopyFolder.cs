@@ -23,7 +23,7 @@ namespace blg.Application
     }
     internal class CopyFolderCommandHandler : IRequestHandler<CopyFolderCommand, CardEntity>
     {
-        public IMediator _mediator { get; }
+        private readonly IMediator _mediator;
 
         private readonly IFileSystem _fileSystem;
 
