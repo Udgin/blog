@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - exRS tool to deploy SSRS reports and subscriptions</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;exrs-tool-for-ssrs-reports&#x2F;">exRS tool to deploy SSRS reports and subscriptions</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2018-01-24</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>There is a nice tool to deploy reports and/or subscription to SSRS - <a href="https://docs.microsoft.com/en-us/sql/reporting-services/tools/rs-exe-utility-ssrs">RS tool</a>. And I described a way to use this tool <a href="https://eapyl.github.io/Auto-deployment-for-SSRS-reports.html">here</a>. </p>
+<p>But it is not so easy to support VB scripts, so there is a new tool <a href="https://github.com/eapyl/exRS">exRS</a>. This tool helps to deploy reports and create subscriptions for reports.</p>
+<p>Currently there is a small console application with name exRSConsole.</p>
+<blockquote>
+<p>To deploy sample Report1 report and it's subscription from Report1.xml:
+exRSConsole.exe -n Report1 -p SampleReport -r -s</p>
+</blockquote>
+<p>Also this tool allows to delete all folders at SSRS server:</p>
+<blockquote>
+<p>exRSConsole.exe -d</p>
+</blockquote>
+<p>And backup all existing reports to local folder:</p>
+<blockquote>
+<p>exRSConsole.exe -b</p>
+</blockquote>
+<p>To configure exRS you need to change configuration file:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">&lt;applicationSettings&gt;
+    &lt;exRS.Properties.Settings&gt;
+        &lt;!</span><span style="color:#bf616a;">-- URI of SSRS server --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">exRS_SSRSService_ReportingService2010</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;http://desktop-name:</span><span style="color:#d08770;">80</span><span style="color:#c0c5ce;">/ReportServer/ReportService2010.asmx&lt;/value&gt;
+        &lt;/setting&gt;
+    &lt;/exRS.Properties.Settings&gt;
+&lt;/applicationSettings&gt;
+&lt;userSettings&gt;
+    &lt;exRS.Properties.Settings&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a user to connect to SSRS server --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">SSRSUser</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;desktop-name\user&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a password to connect to SSRS server --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">SSRSPassword</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a path to folder where put reports and subscriptions during backup process --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">backupPath</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;C:\Temp&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a name of folder with subscription configuration for reports (near exRSConsole.exe) --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">subscriptionSettingsFolder</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;Subscriptions&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a user name to connect to DB for data sources --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">dbUserForDataSource</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;test&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a password name to connect to DB for data sources --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">dbPasswordForDataSource</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;test&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a path at SSRS server where put reports created by subscription --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">subscriptionFileSharePath</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;\\DESKTOP-NAME\Temp&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a name of folder with reports (*.rdl, *rds and *.rsd files) (near exRSConsole.exe) --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">sourceFolderPath</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;.\Reports&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!</span><span style="color:#bf616a;">-- a name of folder at SSRS server with data sources --&gt;
+        </span><span style="color:#c0c5ce;">&lt;setting name=&quot;</span><span style="color:#a3be8c;">datasourcesServerFolderName</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;Data Sources&lt;/value&gt;
+        &lt;/setting&gt;
+        &lt;!-- a name of folder </span><span style="color:#b48ead;">at</span><span style="color:#c0c5ce;"> SSRS server with datasets--&gt;
+        &lt;setting name=&quot;</span><span style="color:#a3be8c;">datasetsServerFolderName</span><span style="color:#c0c5ce;">&quot; serializeAs=&quot;</span><span style="color:#a3be8c;">String</span><span style="color:#c0c5ce;">&quot;&gt;
+            &lt;value&gt;Datasets&lt;/value&gt;
+        &lt;/setting&gt;
+    &lt;/exRS.Properties.Settings&gt;
+&lt;/userSettings&gt;
+</span></pre>
+<p>After deployment you should see 3 folders in SSRS: &quot;Data Sources&quot;, &quot;Datasets&quot; and &quot;SampleReport&quot;.
+Please find the source code <a href="https://github.com/eapyl/exRS">here</a>.</p>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;ssrs&#x2F;">#ssrs</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;mssql&#x2F;">#mssql</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;install-docker-on-raspberry-pi&#x2F;">‹ Install docker on raspberry PI</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;radio-on-windows-iot-via-telegram&#x2F;">Radio on Windows IOT via Telegram Bot ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

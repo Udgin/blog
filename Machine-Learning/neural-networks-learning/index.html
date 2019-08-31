@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Neural Networks Learning</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/neural-networks-learning/#cost-function" class="toc-link">Cost Function</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/neural-networks-learning/#backpropagation-algorithm" class="toc-link">Backpropagation Algorithm</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/neural-networks-learning/#backpropagation-algorithm-1" class="toc-link">Backpropagation algorithm</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/neural-networks-learning/#gradient-checking" class="toc-link">Gradient Checking</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/neural-networks-learning/#random-initialization" class="toc-link">Random Initialization</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/neural-networks-learning/#summary" class="toc-link">Summary</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;Machine-Learning&#x2F;neural-networks-learning&#x2F;">Neural Networks Learning</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2016-12-11</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <h3 id="cost-function">Cost Function</h3>
+<p>a) L= total number of layers in the network</p>
+<p>b) $$(s_l)$$ = number of units (not counting bias unit) in layer l</p>
+<p>c) K= number of output units/classes</p>
+<p>$$[\begin{gather*}\large J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}<em>k \log ((h</em>\Theta (x^{(i)}))<em>k) + (1 - y^{(i)}<em>k)\log (1 - (h</em>\Theta(x^{(i)}))<em>k)\right] + \frac{\lambda}{2m}\sum</em>{l=1}^{L-1} \sum</em>{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}]$$</p>
+<h3 id="backpropagation-algorithm">Backpropagation Algorithm</h3>
+<p>&quot;Backpropagation&quot; is neural-network terminology for minimizing our cost function, just like what we were doing with gradient descent in logistic and linear regression.</p>
+<p>In back propagation we're going to compute for every node:</p>
+<p>$$(\delta_j^{(l)})$$ - = &quot;error&quot; of node j in layer l</p>
+<p>$$(a_j^{(l)})$$ is activation node j in layer l.</p>
+<p>For the last layer, we can compute the vector of delta values with:</p>
+<p>$$[\delta^{(L)} = a^{(L)} - y]$$</p>
+<p>To get the delta values of the layers before the last layer, we can use an equation that steps us back from right to left:</p>
+<p>$$[\delta^{(l)} = ((\Theta^{(l)})^T \delta^{(l+1)})\ .*\ g'(z^{(l)})]$$</p>
+<p>$$[g'(z^{(l)}) = a^{(l)}\ .*\ (1 - a^{(l)})]$$</p>
+<h3 id="backpropagation-algorithm-1">Backpropagation algorithm</h3>
+<p>Given training set $$(\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace)$$;</p>
+<ul>
+<li>Set $$(\Delta^{(l)}_{i,j})$$= 0 for all (l,i,j)</li>
+</ul>
+<p>For training example t =1 to m:</p>
+<ul>
+<li>Set $$(a^{(1)} := x^{(t)})$$</li>
+<li>Perform forward propagation to compute $$(a^{(l)})$$ for l=2,3,…,L</li>
+<li>Using $$(y^{(t)})$$, compute $$(\delta^{(L)} = a^{(L)} - y^{(t)})$$</li>
+<li>Compute $$(\delta^{(L-1)}, \delta^{(L-2)},\dots,\delta^{(2)})$$ using $$(\delta^{(l)} = ((\Theta^{(l)})^T \delta^{(l+1)})\ .<em>\ a^{(l)}\ .</em>\ (1 - a^{(l)}))$$</li>
+<li>$$(\Delta^{(l)}<em>{i,j} := \Delta^{(l)}</em>{i,j} + a_j^{(l)} \delta_i^{(l+1)})$$ or with vectorization, $$(\Delta^{(l)} := \Delta^{(l)} + \delta^{(l+1)}(a^{(l)})^T)$$</li>
+<li>$$(D^{(l)}<em>{i,j} := \dfrac{1}{m}\left(\Delta^{(l)}</em>{i,j} + \lambda\Theta^{(l)}_{i,j}\right))$$ If j≠0 NOTE: Typo in lecture slide omits outside parentheses. This version * is correct.</li>
+<li>$$(D^{(l)}<em>{i,j} := \dfrac{1}{m}\Delta^{(l)}</em>{i,j})$$ If j=0</li>
+</ul>
+<h3 id="gradient-checking">Gradient Checking</h3>
+<p>Gradient checking will assure that our backpropagation works as intended.</p>
+<p>$$[\dfrac{\partial}{\partial\Theta}J(\Theta) \approx \dfrac{J(\Theta + \epsilon) - J(\Theta - \epsilon)}{2\epsilon}]$$</p>
+<p>Once you've verified once that your backpropagation algorithm is correct, then you don't need to compute gradApprox again. The code to compute gradApprox is very slow.</p>
+<h3 id="random-initialization">Random Initialization</h3>
+<p>Initializing all theta weights to zero does not work with neural networks. When we backpropagate, all nodes will update to the same value repeatedly.</p>
+<h3 id="summary">Summary</h3>
+<p>First, pick a network architecture; choose the layout of your neural network, including how many hidden units in each layer and how many layers total.</p>
+<ul>
+<li>Number of input units = dimension of features $$(x^{(i)})$$</li>
+<li>Number of output units = number of classes</li>
+<li>Number of hidden units per layer = usually more the better (must balance with cost of computation as it increases with more hidden units)</li>
+<li>Defaults: 1 hidden layer. If more than 1 hidden layer, then the same number of units in every hidden * layer.</li>
+</ul>
+<p><strong>Training a Neural Network</strong></p>
+<ol>
+<li>Randomly initialize the weights</li>
+<li>Implement forward propagation to get $$(h_\theta(x^{(i)}))$$</li>
+<li>Implement the cost function</li>
+<li>Implement backpropagation to compute partial derivatives</li>
+<li>Use gradient checking to confirm that your backpropagation works. Then disable gradient checking.</li>
+<li>Use gradient descent or a built-in optimization function to minimize the cost function with the weights in theta.</li>
+</ol>
+<p>When we perform forward and back propagation, we loop on every training example:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">for i = 1:m,
+   Perform forward propagation and backpropagation using example (x(i),y(i))
+   (Get activations a(l) and delta terms d(l) for l = 2,...,L
+</span></pre>
+<p>More info:
+<a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;machine-learning&#x2F;">#machine learning</a>
+                    
+                </div>
+            
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

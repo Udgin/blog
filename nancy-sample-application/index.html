@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Nancy sample application</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;nancy-sample-application&#x2F;">Nancy sample application</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-02-12</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Hi there, </p>
+<p>Just trying to create a simple service running on server. This service should report his status by HTTP and should have a nice log mechanism. So I finished my investigation to use <a href="https://www.microsoft.com/net/core">NetCore</a> + <a href="http://nancyfx.org/">Nancy</a> + <a href="https://serilog.net/">Serilog</a> + <a href="http://www.newtonsoft.com/json">Newtonsoft.Json</a> + <a href="https://github.com/FakeItEasy/FakeItEasy">FakeItEasy</a> + <a href="https://github.com/alhardy/AppMetrics">App Metrics</a>.</p>
+<p>Please find the source code of sample application <a href="https://github.com/eapyl/nancy-netcore-sample">here</a>.</p>
+<p>Want to mention that I had to install the next lib:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">sudo apt-get install libunwind8
+</span></pre>
+<p>to actually run my service on remote server - Ubuntu 16.04 x64. There was the next error: <code>Failed to load libcoreclr.so libunwind.so.8 cannot open shared object file”</code> without this library.</p>
+<p>Also project.json is set up to build self-contained application:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">dotnet publish -c Release -r ubuntu.</span><span style="color:#d08770;">16</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">04</span><span style="color:#c0c5ce;">-x64 -o packages/ubuntu
+</span></pre>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;web&#x2F;">#web</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;understanding-docker&#x2F;">‹ Understanding Docker</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;how-to-create-discord-bot&#x2F;">How to create Discord bot ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

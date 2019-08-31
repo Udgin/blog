@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Sniffer of TCP packets</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;sniffer-of-tcp-packets&#x2F;">Sniffer of TCP packets</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2011-02-10</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.</p>
+<p>Проект на VS2008 <a href="https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3">SharkTrace</a>.</p>
+<p>Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.</p>
+<p>Далее в тексте, под соединением я понимаю соответствие адресов и портов на клиенте и сервере. </p>
+<p>Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap (<a href="http://sourceforge.net/projects/sharppcap/">Sharppcap</a>).</p>
+<p>Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.</p>
+<p>Больше о флагах tcp-пакета можно посмотреть <a href="http://www.firewall.cx/">http://www.firewall.cx.</a> </p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">///&lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+///class for connection
+///&lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+internal class Connection
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">ClientAddress</span><span style="color:#c0c5ce;">; </span><span style="color:#65737e;">// client initiating the connection
+    </span><span style="color:#b48ead;">public int </span><span style="color:#bf616a;">ClientPort</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">HostAddress</span><span style="color:#c0c5ce;">; </span><span style="color:#65737e;">// host receiving the connection
+    </span><span style="color:#b48ead;">public int </span><span style="color:#bf616a;">HostPort</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">ClientSyn</span><span style="color:#c0c5ce;">; </span><span style="color:#65737e;">// starting syn sent from client
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">HostSyn</span><span style="color:#c0c5ce;">; </span><span style="color:#65737e;">// starting syn sent from host;
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">NextClientSeq</span><span style="color:#c0c5ce;">; </span><span style="color:#65737e;">// this must be in SequenceNumber field of TCP packet if it is from client
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">NextHostSeq</span><span style="color:#c0c5ce;">; </span><span style="color:#65737e;">// this must be in SequenceNumber field of TCP packet if it is from host
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#bf616a;">HostClosed</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#bf616a;">ClientClosed</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">TimeIdentifier</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#bf616a;">ThreeWayCompleted </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">; </span><span style="color:#65737e;">// three way connection is completed
+ 
+    // Fragments , used when we get newer packets that expected.
+    // so we need to wait for expected before adding them.
+    </span><span style="color:#b48ead;">public </span><span style="color:#c0c5ce;">SortedDictionary&lt;</span><span style="color:#b48ead;">long</span><span style="color:#c0c5ce;">, TcpPacket&gt; </span><span style="color:#bf616a;">HostFragments </span><span style="color:#c0c5ce;">= new SortedDictionary&lt;</span><span style="color:#b48ead;">long</span><span style="color:#c0c5ce;">, TcpPacket&gt;();
+    </span><span style="color:#b48ead;">public </span><span style="color:#c0c5ce;">SortedDictionary&lt;</span><span style="color:#b48ead;">long</span><span style="color:#c0c5ce;">, TcpPacket&gt; </span><span style="color:#bf616a;">ClientFragments </span><span style="color:#c0c5ce;">= new SortedDictionary&lt;</span><span style="color:#b48ead;">long</span><span style="color:#c0c5ce;">, TcpPacket&gt;();
+ 
+    </span><span style="color:#65737e;">// returns client ip:client port as a string
+    </span><span style="color:#b48ead;">public string </span><span style="color:#8fa1b3;">GetClientAddressPort</span><span style="color:#c0c5ce;">()
+    {
+        </span><span style="color:#b48ead;">return string</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Format</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">:</span><span style="color:#d08770;">{1}</span><span style="color:#c0c5ce;">&quot;, new IPAddress(</span><span style="color:#bf616a;">ClientAddress</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">ToString</span><span style="color:#c0c5ce;">(), </span><span style="color:#bf616a;">ClientPort</span><span style="color:#c0c5ce;">);
+    }
+ 
+    </span><span style="color:#65737e;">// returns host ip:host port as a string
+    </span><span style="color:#b48ead;">public string </span><span style="color:#8fa1b3;">GetHostAddressPort</span><span style="color:#c0c5ce;">()
+    {
+        </span><span style="color:#b48ead;">return string</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Format</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">:</span><span style="color:#d08770;">{1}</span><span style="color:#c0c5ce;">&quot;, new IPAddress(</span><span style="color:#bf616a;">HostAddress</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">ToString</span><span style="color:#c0c5ce;">(), </span><span style="color:#bf616a;">HostPort</span><span style="color:#c0c5ce;">);
+    }
+ 
+    </span><span style="color:#65737e;">// packet is from host
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#8fa1b3;">IsFromHost</span><span style="color:#c0c5ce;">(TcpPacket </span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">ClientAddress </span><span style="color:#c0c5ce;">== ((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">DestinationAddress</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Address </span><span style="color:#c0c5ce;">&amp;&amp;
+        </span><span style="color:#bf616a;">ClientPort </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">DestinationPort </span><span style="color:#c0c5ce;">&amp;&amp;
+        </span><span style="color:#bf616a;">HostAddress </span><span style="color:#c0c5ce;">== ((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">SourceAddress</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Address </span><span style="color:#c0c5ce;">&amp;&amp;
+        </span><span style="color:#bf616a;">HostPort </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SourcePort</span><span style="color:#c0c5ce;">;
+    }
+ 
+    </span><span style="color:#65737e;">// packet is from client
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#8fa1b3;">IsFromClient</span><span style="color:#c0c5ce;">(TcpPacket </span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">ClientAddress </span><span style="color:#c0c5ce;">== ((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">SourceAddress</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Address </span><span style="color:#c0c5ce;">&amp;&amp;
+        </span><span style="color:#bf616a;">ClientPort </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SourcePort </span><span style="color:#c0c5ce;">&amp;&amp;
+        </span><span style="color:#bf616a;">HostAddress </span><span style="color:#c0c5ce;">== ((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">DestinationAddress</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Address </span><span style="color:#c0c5ce;">&amp;&amp;
+        </span><span style="color:#bf616a;">HostPort </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">tcp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">DestinationPort</span><span style="color:#c0c5ce;">;
+    }
+ 
+    </span><span style="color:#b48ead;">public </span><span style="color:#bf616a;">Connection</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">clientAddress</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">clientPort</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">hostAddress</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">hostPort</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">clientSyn</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ClientAddress </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">clientAddress</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ClientPort </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">clientPort</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HostAddress </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">hostAddress</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HostPort </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">hostPort</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ClientSyn </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">clientSyn</span><span style="color:#c0c5ce;">;
+    }
+}
+</span></pre>
+<p>Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment">wikipedia.org</a>). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют &quot;полезную&quot; информацию в себе (payload data).</p>
+<p>Больше о TCP пакетах <a href="http://ru.wikipedia.org/wiki/TCP">wikipedia.org</a>.</p>
+<p>Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому &quot;принадлежит&quot; этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к &quot;полезным&quot; данным последовательно (AddHostData и AddClientData) </p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+/// Main class for sniffering
+/// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+/// &lt;</span><span style="color:#bf616a;">remarks</span><span style="color:#65737e;">&gt;
+/// 1. I see that there is new version of SharpPcap library with new interface (29/11/2011)
+/// So i just try to update some useful information about this class
+/// 
+/// 2. I believe that SynchronizatedConnection class is just 
+/// class SynchronizatedConnection : Connection
+/// {
+///     private object syncObject = new object();
+///     
+///     public Synchro {get {return syncObject;}}
+/// }
+/// 
+/// 3. Coordinator is class with constants.
+/// &lt;/</span><span style="color:#bf616a;">remarks</span><span style="color:#65737e;">&gt;
+internal abstract class Sniffer 
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#b48ead;">private </span><span style="color:#c0c5ce;">Timer </span><span style="color:#bf616a;">timer</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">private object </span><span style="color:#bf616a;">synchronizationObjectForConnection </span><span style="color:#c0c5ce;">= new </span><span style="color:#b48ead;">object</span><span style="color:#c0c5ce;">();
+    </span><span style="color:#b48ead;">private </span><span style="color:#c0c5ce;">List&lt;SynchronizatedConnection&gt; </span><span style="color:#bf616a;">Connections </span><span style="color:#c0c5ce;">= new List&lt;SynchronizatedConnection&gt;();
+    </span><span style="color:#b48ead;">private </span><span style="color:#c0c5ce;">LibPcapLiveDevice </span><span style="color:#bf616a;">_device</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">private </span><span style="color:#c0c5ce;">readonly </span><span style="color:#bf616a;">List</span><span style="color:#c0c5ce;">&lt;</span><span style="color:#bf616a;">System</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Net</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IPAddress</span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">_hosts</span><span style="color:#c0c5ce;">;
+ 
+    </span><span style="color:#65737e;">// when connected
+    </span><span style="color:#b48ead;">public abstract void </span><span style="color:#8fa1b3;">Connected</span><span style="color:#c0c5ce;">(Object </span><span style="color:#bf616a;">conn</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#65737e;">// when disconnected
+    </span><span style="color:#b48ead;">public abstract void </span><span style="color:#8fa1b3;">Disconnected</span><span style="color:#c0c5ce;">(Object </span><span style="color:#bf616a;">conn</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#b48ead;">public abstract void </span><span style="color:#8fa1b3;">AddHostData</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">byte</span><span style="color:#c0c5ce;">[] </span><span style="color:#bf616a;">data</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">host</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#b48ead;">public abstract void </span><span style="color:#8fa1b3;">AddClientData</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">byte</span><span style="color:#c0c5ce;">[] </span><span style="color:#bf616a;">data</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">client</span><span style="color:#c0c5ce;">);
+ 
+    </span><span style="color:#b48ead;">private void </span><span style="color:#8fa1b3;">ClearConnections</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">object </span><span style="color:#bf616a;">source</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#65737e;">//sometimes purely the collection, just in case
+        </span><span style="color:#b48ead;">lock </span><span style="color:#c0c5ce;">(synchronizationObjectForConnection)
+        {
+            </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">key </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">Connections</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Where</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">k </span><span style="color:#c0c5ce;">=&gt; (</span><span style="color:#bf616a;">DateTime</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Now</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ToFileTimeUtc</span><span style="color:#c0c5ce;">() - </span><span style="color:#bf616a;">k</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">TimeIdentifier</span><span style="color:#c0c5ce;">) &gt; </span><span style="color:#d08770;">600000000 </span><span style="color:#c0c5ce;">* </span><span style="color:#bf616a;">Coordinator</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Config</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HowLongWeSaveTransaction</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">TotalMinutes</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">ToList</span><span style="color:#c0c5ce;">())
+            {
+                </span><span style="color:#bf616a;">Connections</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Remove</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">key</span><span style="color:#c0c5ce;">);
+            }
+        }
+    }
+ 
+    </span><span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// Create the exemplare of the class
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    public Sniffer(List&lt;</span><span style="color:#bf616a;">System</span><span style="color:#65737e;">.Net.IPAddress&gt; hosts)
+    {
+        timer = new Timer(ClearConnections, null, Coordinator.Config.HowLongWeSaveTransaction, Coordinator.Config.HowLongWeSaveTransaction);
+        _hosts = hosts;
+    }
+ 
+    /// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// Start the tracing
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;filter&quot;</span><span style="color:#65737e;">&gt;See http://www.cs.ucr.edu/~marios/ethereal-tcpdump.pdf &lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;
+    public void RunSniffer(string filter)
+    {
+        var devices = LibPcapLiveDeviceList.Instance;
+        //
+        _device = devices[Coordinator.Config.ListeningInterface];
+        //Register our handler function to the &#39;packet arrival&#39; event
+        _device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+        //Open the device for capturing
+        int readTimeoutMilliseconds = 1000;
+        _device.Open(DeviceMode.Normal, readTimeoutMilliseconds);
+        // tcpdump filter to capture only TCP/IP packets
+        _device.Filter = filter;
+        // Start capture packets
+        _device.StartCapture();
+    }
+ 
+    /// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// Stop the tracing
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    public void StopSniffer()
+    {
+        _device.StopCapture();
+        _device.Close();
+    }
+ 
+    /// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// Catch the packet
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;sender&quot;</span><span style="color:#65737e;">&gt;&lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;e&quot;</span><span style="color:#65737e;">&gt;&lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;
+    private void device_OnPacketArrival(object sender, CaptureEventArgs e)
+    {
+        try
+        {
+            // try to get TCP packet from Ip packet
+            var packet = PacketDotNet.Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
+            if (packet is PacketDotNet.EthernetPacket)
+            {
+                var eth = ((PacketDotNet.EthernetPacket)packet);
+                var ip = PacketDotNet.IpPacket.GetEncapsulated(packet);
+                if (ip != null)
+                {
+                    var tcp = PacketDotNet.TcpPacket.GetEncapsulated(packet);
+                    if (tcp != null)
+                    {
+                        AssemblePacket(tcp);
+                    }
+                }
+            }
+        }
+ 
+        // sometimes converting doesn&#39;t work - don&#39;t worry about it
+        catch (InvalidOperationException ex)
+        {
+        }
+    }
+ 
+    /// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// Parse TCP packet
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;tcp&quot;</span><span style="color:#65737e;">&gt;TCP packet&lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;
+    privDescription. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
+
+The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.ate void AssemblePacket(TcpPacket tcp)
+    {
+        // pass the packets that :
+        // 1. tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0 - sent for synchronization
+        // 2. tcp.PayloadData.Length &gt; 0 - no useful data in packet
+        // 3. tcp.Fin || tcp.Rst - connection is finished or reseted
+        if (!(tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0) &amp;&amp; (tcp.PayloadData.Length &gt; 0) &amp;&amp; !(tcp.Fin || tcp.Rst))
+        {
+            SynchronizatedConnection conn;
+            // try to find connection in collection
+            bool? res = IsTcpFromClient(tcp, out conn);
+                
+            if (res == null)
+            {
+                // connection is new
+                SynchronizatedConnection con;
+                if (_hosts.Contains(((IpPacket)tcp.ParentPacket).SourceAddress))
+                {
+                    // packet from host to client
+                    conn = new SynchronizatedConnection(((IpPacket)tcp.ParentPacket).DestinationAddress.Address,
+                    tcp.DestinationPort, ((IpPacket)tcp.ParentPacket).SourceAddress.Address, tcp.SourcePort, tcp.SequenceNumber);
+                    conn.ClientSyn = tcp.AcknowledgmentNumber;
+                    conn.HostSyn = tcp.SequenceNumber;
+                    conn.NextClientSeq = tcp.AcknowledgmentNumber;
+                    conn.NextHostSeq = tcp.SequenceNumber;
+                    res = false;
+                }
+        Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
+
+The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.        else
+                {
+                    // packet from host to client
+                    conn = new SynchronizatedConnection(((IpPacket)tcp.ParentPacket).SourceAddress.Address,
+                    tcp.SourcePort, ((IpPacket)tcp.ParentPacket).DestinationAddress.Address, tcp.DestinationPort, tcp.SequenceNumber);
+                    conn.ClientSyn = tcp.SequenceNumber;
+                    conn.HostSyn = tcp.AcknowledgmentNumber;
+                    conn.NextHostSeq = tcp.AcknowledgmentNumber;
+                    conn.NextClientSeq = tcp.SequenceNumber;
+                    res = true;
+                }
+                conn.TimeIdentifier = DateTime.Now.ToFileTimeUtc();
+                conn.ThreeWayCompleted = true;
+                lock (synchronizationObjectForConnection)
+                {
+                    Connections.Add(conn);
+                }
+            }
+            if (res == true)
+            {
+                // from client
+                lock (conn.Synchro)
+                {
+                    if (tcp.SequenceNumber &lt; conn.NextClientSeq)
+                    // old packet
+                    {
+                        // just drop these for now
+                        return;
+                    }
+                    if (tcp.SequenceNumber &gt; conn.NextClientSeq)
+                    // out of order data
+                    {
+                        if (!conn.ClientFragments.ContainsKey(tcp.SequenceNumber))
+                        {
+                            conn.ClientFragments.Add(tcp.SequenceNumber, tcp);
+                        }
+                        else
+                        // expect new data to be better?
+                        {
+                            conn.ClientFragments[tcp.SequenceNumber] = tcp;
+                        }
+                    }
+                    else
+                    {
+                        while (tcp.SequenceNumber == conn.NextClientSeq)
+                        {
+                            conn.ClientFragments.Remove(tcp.SequenceNumber);
+                            // remove fragment
+                            if (tcp.PayloadData.Length == 0)
+                                break;
+                            // new NextClientSeq for client packet 
+                            conn.NextClientSeq = conn.NextClientSeq + tcp.PayloadData.Length;
+                            // data should be valid here.
+                            AddClientData(GetUsefulData(tcp), GetIdOfConnection(conn));
+                            if (conn.ClientFragments.ContainsKey(conn.NextClientSeq))
+                            // check if we have newer fragments which will now fit.
+                            {
+                                tcp = conn.ClientFragments[conn.NextClientSeq];
+                            }
+                            else
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //from host
+                lock (conn.Synchro)
+                {
+                    if (tcp.SequenceNumber &lt; conn.NextHostSeq)
+                    // old packet
+                    {
+                        // just drop these for now
+                        return;
+                    }
+                    if (tcp.SequenceNumber &gt; conn.NextHostSeq)
+                    // newer out of order data
+                    {
+                        if (!conn.HostFragments.ContainsKey(tcp.SequenceNumber))
+                        {
+                            conn.HostFragments.Add(tcp.SequenceNumber, tcp);
+                        }
+                        else
+                        {
+                            conn.HostFragments[tcp.SequenceNumber] = tcp;
+                        }
+                    }
+                    else
+                    //
+                    {
+                        while (tcp.SequenceNumber == conn.NextHostSeq)
+                        // on time
+                        {
+                            conn.HostFragments.Remove(tcp.SequenceNumber);
+                            // remove fragment
+                            if (tcp.PayloadData.Length == 0)
+                                break;
+                            conn.NextHostSeq = conn.NextHostSeq + tcp.PayloadData.Length;
+                            // data should be valid here
+                            AddHostData(GetUsefulData(tcp), GetIdOfConnection(conn));
+                            if (conn.HostFragments.ContainsKey(conn.NextHostSeq))
+                            // check if we have newer fragments which will now fit.
+                            {
+                                tcp = conn.HostFragments[conn.NextHostSeq];
+                            }
+                            else
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+ 
+    private static string GetIdOfConnection(SynchronizatedConnection conn)
+    {
+        return conn.ClientAddress.ToString() + conn.ClientPort.ToString() + conn.HostAddress.ToString()
+        + conn.HostPort.ToString();
+    }
+ 
+    private bool? IsTcpFromClient(TcpPacket tcp, out SynchronizatedConnection conn)
+    {
+        conn = null;
+        lock (synchronizationObjectForConnection)
+        {
+            foreach (var connection in Connections)
+            {
+                if (connection.IsFromClient(tcp))
+                {
+                    conn = connection;
+                    return true;
+                }
+                if (connection.IsFromHost(tcp))
+                {
+                    conn = connection;
+                    return false;
+                }
+            }
+        }
+        return null;
+    }
+ 
+    /// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// Get Payload Data from tcp packet
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;tcp&quot;</span><span style="color:#65737e;">&gt;TCP packet&lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;
+    /// &lt;</span><span style="color:#bf616a;">returns</span><span style="color:#65737e;">&gt;bytes of useful data&lt;/</span><span style="color:#bf616a;">returns</span><span style="color:#65737e;">&gt;
+    protected static byte[] GetUsefulData(TcpPacket tcp)
+    {
+        var data = new byte[tcp.Bytes.Length - tcp.DataOffset * 4];
+        for (int i = tcp.DataOffset * 4; i &lt; tcp.Bytes.Length; i++)
+        {
+            data[i - tcp.DataOffset * 4] = tcp.Bytes[i];
+        }
+        return data;
+    }
+</span><span style="color:#c0c5ce;">}
+</span></pre>
+<p>Проблемы данного класса/решения:</p>
+<ol>
+<li>Если &quot;словится&quot; первый пакет, который является неправильным - возникает проблема с получением дальнейшей информации, которая идет по данному соединению;</li>
+<li>Не проверяется контрольная сумма принятого пакета;</li>
+<li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">public void </span><span style="color:#bf616a;">RunSniffer</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">filter</span><span style="color:#c0c5ce;">)) 
+</span></pre>
+<p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;linq-and-group&#x2F;">‹ Linq and Group</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;use-zadgraph&#x2F;">Use ZadGraph ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

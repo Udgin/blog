@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Introduction to high loaded application</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;High-loaded-applications&#x2F;introduction&#x2F;">Introduction to high loaded application</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2018-09-01</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>В настоящей главе мы рассмотрели некоторые основополагающие подходы к работе
+с высоконагруженными данными приложениями. Мы будем руководствоваться
+этими принципами далее в книге, где перейдем к техническим подробностям.</p>
+<p>Чтобы приносить пользу, приложение должно соответствовать различным требованиям.
+Выделяют функциональные требования (что приложение должно делать,
+например обеспечивать возможность хранения, извлечения, поиска и обработки
+информации различными способами) и некоторые нефункциональные требования
+(такие общие характеристики, как безопасность, надежность, соответствие нормативным
+документам, масштабируемость, совместимость и удобство сопровождения). </p>
+<p>В этой главе мы подробно обсудили надежность, масштабируемость и удобство
+сопровождения.</p>
+<p>Надежность означает обеспечение правильной работы системы даже в случае
+сбоев. Они могут происходить в аппаратном обеспечении (обычно случайные
+и невзаимосвязанные), ПО (ошибки обычно носят системный характер и слабо
+контролируемы) и привноситься операторами (неминуемо допускающими ошибки
+время от времени). Методы обеспечения устойчивости к сбоям позволяют скрывать
+некоторые виды сбоев от конечного пользователя.</p>
+<p>Масштабируемость означает наличие стратегий поддержания хорошей производительности
+даже в случае роста нагрузки. Для обсуждения масштабируемости
+необходимы прежде всего способы количественного описания нагрузки и производительности.
+Мы вкратце рассмотрели домашние ленты социальной сети Twitter
+в качестве примера описания нагрузки и процентили времени отклика как способ
+оценки производительности. В масштабируемой системе есть возможность добавлять
+вычислительные мощности в целях сохранения надежной работы системы
+под высокой нагрузкой.</p>
+<p>Удобство сопровождения многолико, но, по существу, подразумевается облегчение
+жизни командам разработчиков и операторов, работающим с системой. Помочь
+снизить сложность и упростить модификацию системы и ее адаптацию к новым
+сценариям использования могут хорошие абстракции. Удобство эксплуатации
+означает хороший мониторинг состояния системы и эффективные способы управления
+им.</p>
+<p>К сожалению, не существует легкого пути для обеспечения надежности, масштабируемости
+и удобства сопровождения приложений. Однако есть определенные
+паттерны и методики, которые снова и снова встречаются в различных видах приложений.
+В нескольких следующих главах мы рассмотрим отдельные примеры
+информационных систем и проанализируем, что они делают для достижения этих
+целей.</p>
+<p>Далее в нашей книге, в части III, мы рассмотрим паттерны для систем, состоящих
+из нескольких совместно работающих компонентов, наподобие показанной
+на рис. 1.1.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;high-load&#x2F;">#high-load</a>
+                    
+                </div>
+            
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

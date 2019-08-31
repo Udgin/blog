@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Applying machine learning</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/applying-machine-learning/#diagnosing-bias-vs-variance" class="toc-link">Diagnosing Bias vs. Variance</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/applying-machine-learning/#regularization-and-bias-variance" class="toc-link">Regularization and Bias&#x2F;Variance</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="https://eapyl.github.io/Machine-Learning/applying-machine-learning/#learning-curves" class="toc-link">Learning Curves</a>
+                        </li>
+                        
+                        <li>
+                            <a href="https://eapyl.github.io/Machine-Learning/applying-machine-learning/#deciding-what-to-do-next-revisited" class="toc-link">Deciding What to Do Next Revisited</a>
+                        </li>
+                        
+                        <li>
+                            <a href="https://eapyl.github.io/Machine-Learning/applying-machine-learning/#diagnosing-neural-networks" class="toc-link">Diagnosing Neural Networks</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/applying-machine-learning/#error-analysis" class="toc-link">Error Analysis</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="https://eapyl.github.io/Machine-Learning/applying-machine-learning/#error-metrics-for-skewed-classes" class="toc-link">Error Metrics for Skewed Classes</a>
+                        </li>
+                        
+                        <li>
+                            <a href="https://eapyl.github.io/Machine-Learning/applying-machine-learning/#trading-off-precision-and-recall" class="toc-link">Trading Off Precision and Recall</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;Machine-Learning&#x2F;applying-machine-learning&#x2F;">Applying machine learning</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2016-09-27</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Errors in your predictions can be troubleshooted by:</p>
+<ul>
+<li>Getting more training examples</li>
+<li>Trying smaller sets of features</li>
+<li>Trying additional features</li>
+<li>Trying polynomial features</li>
+<li>Increasing or decreasing λ</li>
+</ul>
+<p>It is good to use test error factor to understand the correctness of our algorithm:</p>
+<p>$$[\text{Test Error}= \dfrac{1}{m_{test}} \sum^{m_{test}}<em>{i=1} err(h</em>\Theta(x^{(i)}<em>{test}), y^{(i)}</em>{test})]$$</p>
+<p>and this factor is calculated using completely separate training set (test set).</p>
+<p>Using <strong>Cross Validation Set</strong> our test set will give us an accurate, non-optimistic error.</p>
+<p>One example way to break down our dataset into the three sets is:</p>
+<ul>
+<li>Training set: 60%</li>
+<li>Cross validation set: 20%</li>
+<li>Test set: 20%
+We can now calculate three separate error values for the three different sets.</li>
+</ul>
+<p>With the Validation Set (note: this method presumes we do not also use the CV set for regularization)</p>
+<ol>
+<li>Optimize the parameters in Θ using the training set for each polynomial degree.</li>
+<li>Find the polynomial degree d with the least error using the cross validation set.</li>
+<li>Estimate the generalization error using the test set with $$(J_{test}(\Theta^{(d)}))$$, (d = theta from polynomial with lower error).</li>
+</ol>
+<h3 id="diagnosing-bias-vs-variance">Diagnosing Bias vs. Variance</h3>
+<p>High bias is underfitting and high variance is overfitting. </p>
+<p><img src="./images/features-and-polynom-degree.png" alt="image" /></p>
+<h2 id="regularization-and-bias-variance">Regularization and Bias/Variance</h2>
+<ul>
+<li>Large λ: High bias (underfitting)</li>
+<li>Small λ: High variance (overfitting)</li>
+</ul>
+<p><img src="./images/features-and-polynom-degree-fix2.png" alt="image" /></p>
+<p>In order to choose the model and the regularization λ, we need:</p>
+<ol>
+<li>Create a list of lambda (i.e. λ∈{0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24});</li>
+<li>Select a lambda to compute;</li>
+<li>Create a model set like degree of the polynomial or others;</li>
+<li>Select a model to learn Θ;</li>
+<li>Learn the parameter Θ for the model selected, using $$(J_{train}(\Theta))$$ with λ selected (this will learn Θ for the next step);</li>
+<li>Compute the train error using the learned Θ (computed with λ ) on the $$(J_{train}(\Theta))$$ without regularization or λ = 0;</li>
+<li>Compute the cross validation error using the learned Θ (computed with λ) on the $$(J_{CV}(\Theta))$$ without regularization or λ = 0;</li>
+<li>Do this for the entire model set and lambdas, then select the best combo that produces the lowest error on the cross validation set;</li>
+<li>Now if you need visualize to help you understand your decision, you can plot to the figure like above with: (λ x Cost $$(J_{train}(\Theta))$$ and (λ x Cost $$(J_{CV}(\Theta))$$);</li>
+<li>Now using the best combo Θ and λ, apply it on $$(J_{test}(\Theta))$$ to see if it has a good generalization of the problem.</li>
+<li>To help decide the best polynomial degree and λ to use, we can diagnose with the learning curves.</li>
+</ol>
+<h3 id="learning-curves">Learning Curves</h3>
+<p>If a learning algorithm is suffering from high variance, getting more training data is likely to help.
+If a learning algorithm is suffering from high bias, getting more training data will not (by itself) help much.</p>
+<p><img src="./images/Learning1.png" alt="image" />
+<img src="./images/Learning2.png" alt="image" /></p>
+<h3 id="deciding-what-to-do-next-revisited">Deciding What to Do Next Revisited</h3>
+<p>Decision process can be broken down as follows:</p>
+<ol>
+<li>Getting more training examples - Fixes high variance</li>
+<li>Trying smaller sets of features - Fixes high variance</li>
+<li>Adding features - Fixes high bias</li>
+<li>Adding polynomial features - Fixes high bias</li>
+<li>Decreasing λ - Fixes high bias</li>
+<li>Increasing λ - Fixes high variance</li>
+</ol>
+<h3 id="diagnosing-neural-networks">Diagnosing Neural Networks</h3>
+<ul>
+<li>A neural network with fewer parameters is prone to underfitting. It is also computationally cheaper.</li>
+<li>A large neural network with more parameters is prone to overfitting. It is also computationally expensive. In this case you can use regularization (increase λ) to address the overfitting.</li>
+</ul>
+<p>Using a single hidden layer is a good starting default. You can train your neural network on a number of hidden layers using your cross validation set.</p>
+<h2 id="error-analysis">Error Analysis</h2>
+<p>The recommended approach to solving machine learning problems is:</p>
+<ul>
+<li>Start with a simple algorithm, implement it quickly, and test it early.</li>
+<li>Plot learning curves to decide if more data, more features, etc. will help</li>
+<li>Error analysis: manually examine the errors on examples in the cross validation set and try to spot a trend.</li>
+</ul>
+<p>It's important to get error results as a single, numerical value. Otherwise it is difficult to assess your algorithm's performance.</p>
+<h3 id="error-metrics-for-skewed-classes">Error Metrics for Skewed Classes</h3>
+<p>Precision:</p>
+<p>$$[\dfrac{\text{True Positives}}{\text{Total number of predicted positives}} = \dfrac{\text{True Positives}}{\text{True Positives}+\text{False positives}}]$$</p>
+<p>Recall:</p>
+<p>$$[\dfrac{\text{True Positives}}{\text{Total number of actual positives}}= \dfrac{\text{True Positives}}{\text{True Positives}+\text{False negatives}}]$$</p>
+<h3 id="trading-off-precision-and-recall">Trading Off Precision and Recall</h3>
+<p>A better way is to compute the F Score (or F1 score):</p>
+<p>$$[\text{F Score} = 2\dfrac{PR}{P + R}]$$</p>
+<p>In order for the F Score to be large, both precision and recall must be large. We want to train precision and recall on the cross validation set so as not to bias our test set.</p>
+<p>More info:
+<a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;machine-learning&#x2F;">#machine learning</a>
+                    
+                </div>
+            
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

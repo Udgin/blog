@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Generate EF Core model from database using SQL script</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;ef-core-database-sql&#x2F;">Generate EF Core model from database using SQL script</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-12-22</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>It is possible to generate EF Core model from existing database without some of tables. There is very simple and small SQL query which generated a content of C# file.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">USE &lt;&lt;MyDatabase&gt;&gt;
+
+DECLARE @classNames </span><span style="color:#b48ead;">VARCHAR</span><span style="color:#c0c5ce;">(MAX);
+</span><span style="color:#b48ead;">SET</span><span style="color:#c0c5ce;"> @classNames = &#39;</span><span style="color:#a3be8c;">TableName1,TableName2,TableName3</span><span style="color:#c0c5ce;">&#39;;
+
+DECLARE @schemaName </span><span style="color:#b48ead;">NVARCHAR</span><span style="color:#c0c5ce;">(MAX), @className </span><span style="color:#b48ead;">NVARCHAR</span><span style="color:#c0c5ce;">(MAX), @tableName </span><span style="color:#b48ead;">NVARCHAR</span><span style="color:#c0c5ce;">(MAX);;
+</span><span style="color:#b48ead;">SET</span><span style="color:#c0c5ce;"> @schemaName = &#39;</span><span style="color:#a3be8c;">dbo</span><span style="color:#c0c5ce;">&#39;
+DECLARE @Result </span><span style="color:#b48ead;">VARCHAR</span><span style="color:#c0c5ce;">(MAX);
+
+PRINT &#39;</span><span style="color:#a3be8c;">// generated by script</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">using Microsoft.EntityFrameworkCore;</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">using System;</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">using System.Collections.Generic;</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">using System.ComponentModel.DataAnnotations;</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">using System.ComponentModel.DataAnnotations.Schema;</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">using System.Configuration;</span><span style="color:#c0c5ce;">&#39;
+
+PRINT &#39;</span><span style="color:#a3be8c;">namespace Model.</span><span style="color:#c0c5ce;">&#39;+ DB_NAME() 
+PRINT &#39;</span><span style="color:#a3be8c;">{</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">    public class </span><span style="color:#c0c5ce;">&#39;+ DB_NAME() +&#39;</span><span style="color:#a3be8c;">Context : DbContext {</span><span style="color:#c0c5ce;">&#39;
+
+</span><span style="color:#65737e;">-- adding list of all tables where identity columns
+
+</span><span style="color:#b48ead;">SET</span><span style="color:#c0c5ce;"> @Result = &#39;&#39;
+</span><span style="color:#b48ead;">SELECT</span><span style="color:#c0c5ce;"> @Result = </span><span style="color:#b48ead;">CASE WHEN</span><span style="color:#c0c5ce;"> @Result = &#39;&#39; </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">&quot;</span><span style="color:#c0c5ce;">&#39;+</span><span style="color:#d08770;">tbl</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">name</span><span style="color:#c0c5ce;">+&#39;</span><span style="color:#a3be8c;">&quot;</span><span style="color:#c0c5ce;">&#39; </span><span style="color:#b48ead;">ELSE</span><span style="color:#c0c5ce;"> @Result + &#39;</span><span style="color:#a3be8c;">, &quot;</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#d08770;">tbl</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">name </span><span style="color:#c0c5ce;">+ &#39;</span><span style="color:#a3be8c;">&quot;</span><span style="color:#c0c5ce;">&#39; </span><span style="color:#b48ead;">END
+FROM </span><span style="color:#d08770;">sys</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">columns</span><span style="color:#c0c5ce;"> cols
+</span><span style="color:#b48ead;">JOIN </span><span style="color:#d08770;">sys</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">tables</span><span style="color:#c0c5ce;"> tbl </span><span style="color:#b48ead;">ON </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">tbl</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id
+</span><span style="color:#b48ead;">WHERE </span><span style="color:#d08770;">tbl</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">name </span><span style="color:#b48ead;">in</span><span style="color:#c0c5ce;"> (</span><span style="color:#b48ead;">select DISTINCT</span><span style="color:#c0c5ce;"> [Value] </span><span style="color:#b48ead;">from</span><span style="color:#c0c5ce;"> STRING_SPLIT(@classNames, &#39;</span><span style="color:#a3be8c;">,</span><span style="color:#c0c5ce;">&#39;)) </span><span style="color:#b48ead;">AND </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">is_identity </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">
+
+PRINT &#39;</span><span style="color:#a3be8c;">        public List&lt;string&gt; TablesWithIdentity = new List&lt;string&gt;() {</span><span style="color:#c0c5ce;">&#39; + @Result + &#39;</span><span style="color:#a3be8c;">};</span><span style="color:#c0c5ce;">&#39;
+
+PRINT &#39;</span><span style="color:#a3be8c;">        public </span><span style="color:#c0c5ce;">&#39;+ DB_NAME() +&#39;</span><span style="color:#a3be8c;">Context() { }</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">        public </span><span style="color:#c0c5ce;">&#39;+ DB_NAME() +&#39;</span><span style="color:#a3be8c;">Context(DbContextOptions&lt;</span><span style="color:#c0c5ce;">&#39;+ DB_NAME() +&#39;</span><span style="color:#a3be8c;">Context&gt; options): base(options) { }</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">        {</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">            if (!optionsBuilder.IsConfigured)</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">                optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings[&quot;</span><span style="color:#c0c5ce;">&#39;+ DB_NAME() +&#39;</span><span style="color:#a3be8c;">&quot;].ConnectionString);</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">        }</span><span style="color:#c0c5ce;">&#39;
+
+</span><span style="color:#65737e;">-- adding DbSets for each table
+</span><span style="color:#c0c5ce;">DECLARE CLASS_NAME CURSOR LOCAL FOR
+</span><span style="color:#b48ead;">SELECT DISTINCT</span><span style="color:#c0c5ce;"> [VALUE]
+</span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> STRING_SPLIT(@classNames, &#39;</span><span style="color:#a3be8c;">,</span><span style="color:#c0c5ce;">&#39;)
+OPEN CLASS_NAME
+FETCH NEXT </span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> CLASS_NAME INTO @className
+WHILE @@FETCH_STATUS = </span><span style="color:#d08770;">0
+</span><span style="color:#b48ead;">BEGIN</span><span style="color:#c0c5ce;">
+    PRINT &#39;</span><span style="color:#a3be8c;">        public DbSet&lt;</span><span style="color:#c0c5ce;">&#39;+@className+&#39;</span><span style="color:#a3be8c;">&gt; </span><span style="color:#c0c5ce;">&#39;+@className+&#39;</span><span style="color:#a3be8c;">s { get; set; }</span><span style="color:#c0c5ce;">&#39;
+    
+    FETCH NEXT </span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> CLASS_NAME INTO @className
+</span><span style="color:#b48ead;">END</span><span style="color:#c0c5ce;">
+CLOSE CLASS_NAME
+DEALLOCATE CLASS_NAME
+
+</span><span style="color:#65737e;">-- adding primary key for each table
+</span><span style="color:#c0c5ce;">
+PRINT &#39;</span><span style="color:#a3be8c;">        protected override void OnModelCreating(ModelBuilder modelBuilder) {</span><span style="color:#c0c5ce;">&#39;
+DECLARE CLASS_NAME CURSOR LOCAL FOR
+</span><span style="color:#b48ead;">SELECT DISTINCT</span><span style="color:#c0c5ce;"> [VALUE]
+</span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> STRING_SPLIT(@classNames, &#39;</span><span style="color:#a3be8c;">,</span><span style="color:#c0c5ce;">&#39;)
+OPEN CLASS_NAME
+FETCH NEXT </span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> CLASS_NAME INTO @className
+WHILE @@FETCH_STATUS = </span><span style="color:#d08770;">0
+</span><span style="color:#b48ead;">BEGIN
+    SET</span><span style="color:#c0c5ce;"> @tableName = </span><span style="color:#96b5b4;">UPPER</span><span style="color:#c0c5ce;">(@className)
+    </span><span style="color:#b48ead;">SET</span><span style="color:#c0c5ce;"> @Result = </span><span style="color:#b48ead;">NULL
+    SELECT</span><span style="color:#c0c5ce;"> @Result = </span><span style="color:#b48ead;">CASE WHEN</span><span style="color:#c0c5ce;"> @Result IS </span><span style="color:#b48ead;">NULL THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">x.</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">name </span><span style="color:#b48ead;">ELSE</span><span style="color:#c0c5ce;"> @Result + &#39;</span><span style="color:#a3be8c;">, x.</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">name </span><span style="color:#b48ead;">END
+    FROM </span><span style="color:#d08770;">sys</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">columns</span><span style="color:#c0c5ce;"> cols
+    </span><span style="color:#b48ead;">LEFT JOIN</span><span style="color:#c0c5ce;"> (
+        </span><span style="color:#b48ead;">SELECT </span><span style="color:#d08770;">i</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">is_primary_key</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">ic</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">ic</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">column_id
+        </span><span style="color:#b48ead;">FROM </span><span style="color:#d08770;">sys</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">index_columns</span><span style="color:#c0c5ce;"> ic
+        </span><span style="color:#b48ead;">LEFT JOIN </span><span style="color:#d08770;">sys</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">indexes</span><span style="color:#c0c5ce;"> i </span><span style="color:#b48ead;">on </span><span style="color:#d08770;">ic</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">i</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id </span><span style="color:#b48ead;">and </span><span style="color:#d08770;">ic</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">index_id </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">i</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">index_id
+        </span><span style="color:#b48ead;">WHERE </span><span style="color:#d08770;">i</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">is_primary_key </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">) </span><span style="color:#b48ead;">AS</span><span style="color:#c0c5ce;"> PRIMARYKEY </span><span style="color:#b48ead;">ON </span><span style="color:#d08770;">PRIMARYKEY</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">column_id </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">column_id </span><span style="color:#b48ead;">AND </span><span style="color:#d08770;">PRIMARYKEY</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id
+    </span><span style="color:#b48ead;">JOIN </span><span style="color:#d08770;">sys</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">tables</span><span style="color:#c0c5ce;"> tbl </span><span style="color:#b48ead;">ON </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">tbl</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id
+    </span><span style="color:#b48ead;">WHERE </span><span style="color:#d08770;">tbl</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">name </span><span style="color:#c0c5ce;">= @tableName </span><span style="color:#b48ead;">AND </span><span style="color:#d08770;">PRIMARYKEY</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">is_primary_key </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">
+
+    PRINT &#39;</span><span style="color:#a3be8c;">            modelBuilder.Entity&lt;</span><span style="color:#c0c5ce;">&#39;+@className+&#39;</span><span style="color:#a3be8c;">&gt;().HasKey(x =&gt; new {</span><span style="color:#c0c5ce;">&#39;+@Result+&#39;</span><span style="color:#a3be8c;">});</span><span style="color:#c0c5ce;">&#39;
+    IF @Result = &#39;</span><span style="color:#a3be8c;">x.ID</span><span style="color:#c0c5ce;">&#39; </span><span style="color:#b48ead;">OR</span><span style="color:#c0c5ce;"> @Result = &#39;</span><span style="color:#a3be8c;">x.Id</span><span style="color:#c0c5ce;">&#39; </span><span style="color:#b48ead;">OR</span><span style="color:#c0c5ce;"> @Result = &#39;</span><span style="color:#a3be8c;">x.id</span><span style="color:#c0c5ce;">&#39;
+        PRINT &#39;</span><span style="color:#a3be8c;">            modelBuilder.Entity&lt;</span><span style="color:#c0c5ce;">&#39;+@className+&#39;</span><span style="color:#a3be8c;">&gt;().Property(x =&gt; </span><span style="color:#c0c5ce;">&#39;+@Result+&#39;</span><span style="color:#a3be8c;">).ValueGeneratedNever();</span><span style="color:#c0c5ce;">&#39;
+    
+    FETCH NEXT </span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> CLASS_NAME INTO @className
+</span><span style="color:#b48ead;">END</span><span style="color:#c0c5ce;">
+CLOSE CLASS_NAME
+DEALLOCATE CLASS_NAME
+PRINT &#39;</span><span style="color:#a3be8c;">        }</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;</span><span style="color:#a3be8c;">    }</span><span style="color:#c0c5ce;">&#39;
+PRINT &#39;&#39;
+
+</span><span style="color:#65737e;">-- start adding POCO objects for each table
+</span><span style="color:#c0c5ce;">DECLARE CLASS_NAME CURSOR LOCAL FOR
+</span><span style="color:#b48ead;">SELECT DISTINCT</span><span style="color:#c0c5ce;"> [VALUE]
+</span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> STRING_SPLIT(@classNames, &#39;</span><span style="color:#a3be8c;">,</span><span style="color:#c0c5ce;">&#39;)
+OPEN CLASS_NAME
+FETCH NEXT </span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> CLASS_NAME INTO @className
+WHILE @@FETCH_STATUS = </span><span style="color:#d08770;">0
+</span><span style="color:#b48ead;">BEGIN
+    SET</span><span style="color:#c0c5ce;"> @tableName = </span><span style="color:#96b5b4;">UPPER</span><span style="color:#c0c5ce;">(@className)
+    
+    DECLARE tableColumns CURSOR LOCAL FOR
+    </span><span style="color:#b48ead;">SELECT DISTINCT </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">name</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">system_type_id</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">is_nullable
+    </span><span style="color:#b48ead;">FROM </span><span style="color:#d08770;">sys</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">columns</span><span style="color:#c0c5ce;"> cols
+    </span><span style="color:#b48ead;">JOIN </span><span style="color:#d08770;">sys</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">tables</span><span style="color:#c0c5ce;"> tbl </span><span style="color:#b48ead;">ON </span><span style="color:#d08770;">cols</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">tbl</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">object_id
+    </span><span style="color:#b48ead;">WHERE </span><span style="color:#d08770;">tbl</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">name </span><span style="color:#c0c5ce;">= @tableName
+
+    PRINT &#39;</span><span style="color:#a3be8c;">    [Table(&quot;</span><span style="color:#c0c5ce;">&#39;+@tableName+&#39;</span><span style="color:#a3be8c;">&quot;)]</span><span style="color:#c0c5ce;">&#39; 
+    PRINT &#39;</span><span style="color:#a3be8c;">    public partial class </span><span style="color:#c0c5ce;">&#39; + @className
+    PRINT &#39;</span><span style="color:#a3be8c;">    {</span><span style="color:#c0c5ce;">&#39;
+ 
+    OPEN tableColumns
+    DECLARE @name </span><span style="color:#b48ead;">NVARCHAR</span><span style="color:#c0c5ce;">(MAX), @typeId </span><span style="color:#b48ead;">INT</span><span style="color:#c0c5ce;">, @isNullable </span><span style="color:#b48ead;">BIT</span><span style="color:#c0c5ce;">, @typeName </span><span style="color:#b48ead;">NVARCHAR</span><span style="color:#c0c5ce;">(MAX)
+    FETCH NEXT </span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> tableColumns INTO @name, @typeId, @isNullable
+    WHILE @@FETCH_STATUS = </span><span style="color:#d08770;">0
+    </span><span style="color:#b48ead;">BEGIN
+        SET</span><span style="color:#c0c5ce;"> @typeName =
+        </span><span style="color:#b48ead;">CASE</span><span style="color:#c0c5ce;"> @typeId
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">36 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">Guid</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">52 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">int</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">56 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">int</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">61 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">DateTime</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">104 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">bool</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">108 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">decimal</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">127 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">long</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">167 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">string</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">175 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">string</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">231 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">string</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">239 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">string</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">WHEN </span><span style="color:#d08770;">241 </span><span style="color:#b48ead;">THEN </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">XElement</span><span style="color:#c0c5ce;">&#39;
+            </span><span style="color:#b48ead;">ELSE </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">TODO(</span><span style="color:#c0c5ce;">&#39; + CAST(@typeId </span><span style="color:#b48ead;">AS NVARCHAR</span><span style="color:#c0c5ce;">) + &#39;</span><span style="color:#a3be8c;">)</span><span style="color:#c0c5ce;">&#39;
+        </span><span style="color:#b48ead;">END</span><span style="color:#c0c5ce;">;
+        IF @isNullable = </span><span style="color:#d08770;">1 </span><span style="color:#b48ead;">AND</span><span style="color:#c0c5ce;"> @typeId != </span><span style="color:#d08770;">231 </span><span style="color:#b48ead;">AND</span><span style="color:#c0c5ce;"> @typeId != </span><span style="color:#d08770;">239 </span><span style="color:#b48ead;">AND</span><span style="color:#c0c5ce;"> @typeId != </span><span style="color:#d08770;">241 </span><span style="color:#b48ead;">AND</span><span style="color:#c0c5ce;"> @typeId != </span><span style="color:#d08770;">167 </span><span style="color:#b48ead;">AND</span><span style="color:#c0c5ce;"> @typeId != </span><span style="color:#d08770;">175
+            </span><span style="color:#b48ead;">SET</span><span style="color:#c0c5ce;"> @typeName = @typeName + &#39;</span><span style="color:#a3be8c;">?</span><span style="color:#c0c5ce;">&#39;
+        PRINT &#39;</span><span style="color:#a3be8c;">        public </span><span style="color:#c0c5ce;">&#39; + @typeName + &#39; &#39; + @name + &#39;</span><span style="color:#a3be8c;"> { get; set; }</span><span style="color:#c0c5ce;">&#39;
+        FETCH NEXT </span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> tableColumns INTO @name, @typeId, @isNullable
+    </span><span style="color:#b48ead;">END</span><span style="color:#c0c5ce;">
+
+    PRINT &#39;</span><span style="color:#a3be8c;">    }</span><span style="color:#c0c5ce;">&#39;
+    PRINT &#39;&#39;
+ 
+    CLOSE tableColumns
+    DEALLOCATE tableColumns
+    FETCH NEXT </span><span style="color:#b48ead;">FROM</span><span style="color:#c0c5ce;"> CLASS_NAME INTO @className
+</span><span style="color:#b48ead;">END</span><span style="color:#c0c5ce;">
+CLOSE CLASS_NAME
+DEALLOCATE CLASS_NAME
+
+PRINT &#39;</span><span style="color:#a3be8c;">}</span><span style="color:#c0c5ce;">&#39;
+</span></pre>
+<p>Unfortunately it is not generating any foreign keys for tables. So you have to add them using partial class if needed.
+So current sample will generate a model with 3 entities.</p>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;sql&#x2F;">#sql</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;ef&#x2F;">#ef</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;remote-mssql-to-local-server&#x2F;">‹ Copy remote MSSQL DB to local server</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;install-docker-on-raspberry-pi&#x2F;">Install docker on raspberry PI ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

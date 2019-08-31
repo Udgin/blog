@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Partitioning</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;High-loaded-applications&#x2F;partitioning&#x2F;">Partitioning</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2018-09-07</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Partitioning is needed when there is too much data to save it at one physical machine.</p>
+<p>The goal of partitioning is sharing load between servers and to avoid bottlenecks. It is required to select approproate partitioning scheme and section rebalance during adding or deleting nodes from the cluster.</p>
+<p>There are two main approaches in doing partitioning:</p>
+<ul>
+<li>Partitioning by key value range, where keys are sorted and the partition contains all keys from the certain minimum to the certain maximum. The advantage of the sorting is the ability to perform efficient range queries, but there is to create hot spots if the application accesses to the keys located close frequently. This approach usually follows dynamic rebalancing partitioning using splitting the range in two sub-bands in the case when the section's getting too big.</li>
+<li>Hash partitioning, where the hash function is calculated for each key and each partition has a specific range of hashes. This method breaks the order of the keys, making the queries range inefficient, but allows to distribute the load more evenly.</li>
+<li>Hash partitioning often creates a fixed number of partitions in advance, several for each node. Entire partitions are often moved between nodes when any node is added or removed. In this case dynamic partitioning is also used sometimes.</li>
+</ul>
+<p>Hybrid approaches are also possible, e.g. with a composite key: using one part of the key to identify the partition and the other part to determine the sort order.</p>
+<p>There is also connection between partitioning and secondary indexes. Secondary indexes should be also partitioned and there are two methods to do that:</p>
+<ul>
+<li>Index partitioning by documents (local indexes). Secondary indexes are stored in the same partition with the primary key and value. This means that a write operation only needs to update one partition, but reading a secondary index requires fragmented reading across all partitions.</li>
+<li>Term-based index partitioning (global indexes), in which secondary indexes are partitioned separately, using indexed values. An element of this secondary index can include records from all primary key partitions. It is required to update multiple partitions of the secondary index during recording a document, but it is possible to read the result from a single partition.</li>
+</ul>
+<p>There are also different methods for routing queries to the corresponding section, starting with a simple, tailored to the section of the load balancer to complex parallel mechanisms for querying.</p>
+<p>All partitions intentionally operate almost independently - this allows to scale a partitioned database across multiple machines.</p>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;high-load&#x2F;">#high-load</a>
+                    
+                </div>
+            
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

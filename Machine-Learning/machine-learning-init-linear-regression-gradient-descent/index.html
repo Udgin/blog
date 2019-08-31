@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Machine Learning Init. Linear Regression. Gradient Descent</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/machine-learning-init-linear-regression-gradient-descent/#linear-regression-with-one-variable" class="toc-link">Linear Regression with One Variable</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/machine-learning-init-linear-regression-gradient-descent/#cost-function" class="toc-link">Cost Function</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/machine-learning-init-linear-regression-gradient-descent/#gradient-descent" class="toc-link">Gradient Descent</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/machine-learning-init-linear-regression-gradient-descent/#gradient-descent-for-linear-regression" class="toc-link">Gradient Descent for Linear Regression</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;Machine-Learning&#x2F;machine-learning-init-linear-regression-gradient-descent&#x2F;">Machine Learning Init. Linear Regression. Gradient Descent</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2016-11-14</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>The information is from this <a href="https://www.coursera.org/learn/machine-learning/">course</a>.</p>
+<p><a href="https://en.wikipedia.org/wiki/Machine_learning">Machine learning</a> is the subfield of computer science that &quot;gives computers the ability to learn without being explicitly programmed&quot; (Arthur Samuel, 1959).</p>
+<p>In general, any machine learning problem can be assigned to one of two broad classifications:</p>
+<ul>
+<li>supervised learning (&quot;regression&quot; and &quot;classification&quot;)</li>
+<li>unsupervised learning</li>
+</ul>
+<p>In supervised learning, we are given a data set and already know what our correct output should look like, having the idea that there is a relationship between the input and the output.</p>
+<p>Unsupervised learning, on the other hand, allows us to approach problems with little or no idea what our results should look like. We can derive structure from data where we don't necessarily know the effect of the variables.</p>
+<h3 id="linear-regression-with-one-variable"><a href="https://en.wikipedia.org/wiki/Linear_regression">Linear Regression</a> with One Variable</h3>
+<p>In statistics, linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression. For more than one explanatory variable, the process is called multiple linear regression.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/438px-Linear_regression.svg.png" alt="Linear regression" /></p>
+<p>Hypothesis function has the general form:
+$$[\hat{y} = h_\theta(x) = \theta_0 + \theta_1 x]$$</p>
+<h3 id="cost-function">Cost Function</h3>
+<p>We can measure the accuracy of our hypothesis function by using a cost function. This takes an average (actually a fancier version of an average) of all the results of the hypothesis with inputs from x's compared to the actual output y's.</p>
+<p>$$[J(\theta_0, \theta_1) = \dfrac {1}{2m} \displaystyle \sum <em>{i=1}^m \left ( \hat{y}</em>{i}- y_{i} \right)^2  = \dfrac {1}{2m} \displaystyle \sum <em>{i=1}^m \left (h</em>\theta (x_{i}) - y_{i} \right)^2]$$</p>
+<p>If we try to think of it in visual terms, our training data set is scattered on the x-y plane. We are trying to make straight line (defined by $$(h_\theta(x))$$) which passes through this scattered set of data. Our objective is to get the best possible line. The best possible line will be such so that the average squared vertical distances of the scattered points from the line will be the least. In the best case, the line should pass through all the points of our training data set. In such a case the value of $$(J(\theta_0, (\theta_1)$$) will be 0.</p>
+<h3 id="gradient-descent">Gradient Descent</h3>
+<p>There is hypothesis function and there are a set of {x, y} values, so we need to find $$(\theta_0)$$ and $$(\theta_1)$$.</p>
+<p>The gradient descent algorithm is:</p>
+<p>$$[\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \theta_1)]$$</p>
+<h3 id="gradient-descent-for-linear-regression">Gradient Descent for Linear Regression</h3>
+<p>$$[\begin{align*} \text{repeat until convergence: } \lbrace &amp; \newline \theta_0 := &amp; \theta_0 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}(h_\theta(x_{i}) - y_{i}) \newline \theta_1 := &amp; \theta_1 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}\left((h_\theta(x_{i}) - y_{i}) x_{i}\right) \newline \rbrace&amp; \end{align*}]$$</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;machine-learning&#x2F;">#machine learning</a>
+                    
+                </div>
+            
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

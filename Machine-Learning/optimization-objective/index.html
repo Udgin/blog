@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Optimization Objective</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/optimization-objective/#cost-function" class="toc-link">Cost function</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/optimization-objective/#large-margin-intuition" class="toc-link">Large Margin Intuition</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/optimization-objective/#kernels" class="toc-link">Kernels</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/optimization-objective/#choosing-svm-parameters" class="toc-link">Choosing SVM Parameters</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/optimization-objective/#using-an-svm" class="toc-link">Using An SVM</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/Machine-Learning/optimization-objective/#logistic-regression-vs-svms" class="toc-link">Logistic Regression vs. SVMs</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;Machine-Learning&#x2F;optimization-objective&#x2F;">Optimization Objective</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2016-12-27</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>The Support Vector Machine (SVM) is yet another type of supervised machine learning algorithm. It is sometimes cleaner and more powerful.</p>
+<h3 id="cost-function">Cost function</h3>
+<p>$$(\text{cost}_1(z))$$ and $$(\text{cost}_0(z))$$ (respectively, note that $$(\text{cost}_1(z))$$ is the cost for classifying when y=1, and $$(\text{cost}_0(z))$$ is the cost for classifying when y=0)</p>
+<p><img src="./images/Svm_hing.png" alt="image" />
+<img src="./images/Svm_hinge_negative_class.png" alt="image" /></p>
+<p>$$[J(\theta) = C\sum_{i=1}^m y^{(i)} \ \text{cost}_1(\theta^Tx^{(i)}) + (1 - y^{(i)}) \ \text{cost}<em>0(\theta^Tx^{(i)}) + \dfrac{1}{2}\sum</em>{j=1}^n \Theta^2_j]$$</p>
+<p>Note that the hypothesis of the Support Vector Machine is not interpreted as the probability of y being 1 or 0 (as it is for the hypothesis of logistic regression). Instead, it outputs either 1 or 0. (In technical terms, it is a discriminant function.)</p>
+<p>$$[h_\theta(x) =\begin{cases}    1 &amp; \text{if} \ \Theta^Tx \geq 0 \    0 &amp; \text{otherwise}\end{cases}]$$</p>
+<h3 id="large-margin-intuition">Large Margin Intuition</h3>
+<p>A useful way to think about Support Vector Machines is to think of them as Large Margin Classifiers.</p>
+<ul>
+<li>If y=1, we want $$(\Theta^Tx \geq 1)$$ (not just ≥0)</li>
+<li>If y=0, we want $$(\Theta^Tx \leq -1)$$ (not just &lt;0)</li>
+</ul>
+<p>In SVMs, the decision boundary has the special property that it is as far away as possible from both the positive and the negative examples.</p>
+<p>This large margin is only achieved when C is very large. Data is linearly separable when a straight line can separate the positive and negative examples. If we have outlier examples that we don't want to affect the decision boundary, then we can reduce C. Increasing and decreasing C is similar to respectively decreasing and increasing λ, and can simplify our decision boundary.</p>
+<h3 id="kernels">Kernels</h3>
+<p>Kernels allow us to make complex, non-linear classifiers using Support Vector Machines.</p>
+<p>$$[f_i = similarity(x, l^{(i)}) = \exp(-\dfrac{||x - l^{(i)}||^2}{2\sigma^2})]$$</p>
+<p>This &quot;similarity&quot; function is called a Gaussian Kernel. It is a specific example of a kernel.</p>
+<p>If $$(x \approx l^{(i)})$$, then $$(f_i = \exp(-\dfrac{\approx 0^2}{2\sigma^2}) \approx 1)$$
+If x is far from $$(l^{(i)})$$, then $$(f_i = \exp(-\dfrac{(large\ number)^2}{2\sigma^2}) \approx 0)$$</p>
+<p>One way to get the landmarks is to put them in the exact same locations as all the training examples. This gives us m landmarks, with one landmark per training example.</p>
+<p>Using kernels to generate f(i) is not exclusive to SVMs and may also be applied to logistic regression. However, because of computational optimizations on SVMs, kernels combined with SVMs is much faster than with other algorithms, so kernels are almost always found combined only with SVMs.</p>
+<h3 id="choosing-svm-parameters">Choosing SVM Parameters</h3>
+<ul>
+<li>
+<p>If C is large, then we get higher variance/lower bias</p>
+</li>
+<li>
+<p>If C is small, then we get lower variance/higher bias</p>
+</li>
+<li>
+<p>With a large $$(σ^2)$$, the features fi vary more smoothly, causing higher bias and lower variance.</p>
+</li>
+<li>
+<p>With a small $$(σ^2)$$, the features fi vary less smoothly, causing lower bias and higher variance.</p>
+</li>
+</ul>
+<h3 id="using-an-svm">Using An SVM</h3>
+<ul>
+<li>Choice of parameter C</li>
+<li>Choice of kernel (similarity function)</li>
+<li>No kernel (&quot;linear&quot; kernel) -- gives standard linear classifier</li>
+<li>Choose when n is large and when m is small</li>
+<li>Gaussian Kernel (above) -- need to choose σ2</li>
+<li>Choose when n is small and m is large</li>
+</ul>
+<h3 id="logistic-regression-vs-svms">Logistic Regression vs. SVMs</h3>
+<ul>
+<li>If n is large (relative to m), then use logistic regression, or SVM without a kernel (the &quot;linear kernel&quot;)</li>
+<li>If n is small and m is intermediate, then use SVM with a Gaussian Kernel</li>
+<li>If n is small and m is large, then manually create/add more features, then use logistic regression or SVM without a kernel.
+In the first case, we don't have enough examples to need a complicated polynomial hypothesis. In the second example, we have enough examples that we may need a complex non-linear hypothesis. In the last case, we want to increase our features so that logistic regression becomes applicable.</li>
+</ul>
+<p><strong>Note</strong>: a neural network is likely to work well for any of these situations, but may be slower to train.</p>
+<p>More info:
+<a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;machine-learning&#x2F;">#machine learning</a>
+                    
+                </div>
+            
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

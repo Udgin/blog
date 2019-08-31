@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Restore InfluxDB in Docker</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;restore-influxdb-in-docker&#x2F;">Restore InfluxDB in Docker</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-08-07</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>It is not easy to restore influxdb in an official container. Unfortunately it is not possible directly. You need to restore db out of a container and mount restored db to the container.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;"># Restoring a </span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;"> requires that influxd is stopped (note that stopping the process kills the container).
+docker stop &quot;</span><span style="color:#a3be8c;">$CONTAINER_ID</span><span style="color:#c0c5ce;">&quot;
+
+# Run the </span><span style="color:#b48ead;">restore</span><span style="color:#c0c5ce;"> command in an ephemeral container.
+# This affects the previously mounted volume mapped to /var/lib/influxdb.
+docker run --rm \
+--entrypoint /bin/bash \
+-v &quot;</span><span style="color:#a3be8c;">$INFLUXDIR</span><span style="color:#c0c5ce;">&quot;:/var/lib/influxdb \
+-v &quot;</span><span style="color:#a3be8c;">$BACKUPDIR</span><span style="color:#c0c5ce;">&quot;:/backups \
+influxdb:</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">3</span><span style="color:#c0c5ce;"> \
+-c &quot;</span><span style="color:#a3be8c;">influxd restore -metadir /var/lib/influxdb/meta -datadir /var/lib/influxdb/data -database foo /backups/foo.backup</span><span style="color:#c0c5ce;">&quot;
+
+# </span><span style="color:#b48ead;">Start</span><span style="color:#c0c5ce;"> the container just like before, and get the new container ID.
+CONTAINER_ID=$(docker run --rm \
+--detach \
+-v &quot;</span><span style="color:#a3be8c;">$INFLUXDIR</span><span style="color:#c0c5ce;">&quot;:/var/lib/influxdb \
+-v &quot;</span><span style="color:#a3be8c;">$BACKUPDIR</span><span style="color:#c0c5ce;">&quot;:/backups \
+-p </span><span style="color:#d08770;">8086</span><span style="color:#c0c5ce;"> \
+influxdb:</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">.</span><span style="color:#d08770;">3
+</span><span style="color:#c0c5ce;">)
+</span></pre>
+<p>More info <a href="https://gist.github.com/mark-rushakoff/36b4491f97b8781198da36752ecd949b">here</a>.</p>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;docker&#x2F;">#docker</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;influxdb&#x2F;">#influxdb</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;personal-mobile-radio-application-using-ionic&#x2F;">‹ Personal mobile radio application using Ionic</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;simplest-syslog-server&#x2F;">Simplest syslog server for rfc5424 (TCP) ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

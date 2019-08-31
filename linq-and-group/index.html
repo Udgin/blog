@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Linq and Group</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;linq-and-group&#x2F;">Linq and Group</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2010-10-16</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.</p>
+<p>The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
+Initially, we choose to do all the settings using a simple SQL query.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">private static </span><span style="color:#c0c5ce;">SqlCeDataReader </span><span style="color:#8fa1b3;">SelectAllParamterAndModuleName</span><span style="color:#c0c5ce;">()
+{
+    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">ExecuteDataReader</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">String</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Format</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">QSelectAllParamterANdModuleName</span><span style="color:#c0c5ce;">));
+}
+</span></pre>
+<p>where QSelectAllParamterANdModuleName is text of the query.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">private static </span><span style="color:#c0c5ce;">IEnumerable&lt;ParameterType&gt; </span><span style="color:#8fa1b3;">SelectAllParameterToArray</span><span style="color:#c0c5ce;">()
+{
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">query </span><span style="color:#c0c5ce;">=
+        </span><span style="color:#b48ead;">from </span><span style="color:#bf616a;">row </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">SelectAllParamterAndModuleName</span><span style="color:#c0c5ce;">().</span><span style="color:#bf616a;">Cast</span><span style="color:#c0c5ce;">()
+        </span><span style="color:#b48ead;">select </span><span style="color:#c0c5ce;">new ParameterType
+        {
+            </span><span style="color:#bf616a;">Id </span><span style="color:#c0c5ce;">= (</span><span style="color:#b48ead;">int</span><span style="color:#c0c5ce;">)</span><span style="color:#bf616a;">row</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">FID</span><span style="color:#c0c5ce;">&quot;],
+            </span><span style="color:#bf616a;">Name </span><span style="color:#c0c5ce;">= (</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">)</span><span style="color:#bf616a;">row</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">FNAME</span><span style="color:#c0c5ce;">&quot;],
+            </span><span style="color:#bf616a;">TypeName </span><span style="color:#c0c5ce;">= (</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">)</span><span style="color:#bf616a;">row</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">FTYPE</span><span style="color:#c0c5ce;">&quot;],
+            </span><span style="color:#bf616a;">ModuleId </span><span style="color:#c0c5ce;">= (</span><span style="color:#b48ead;">int</span><span style="color:#c0c5ce;">)</span><span style="color:#bf616a;">row</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">FMODULEID</span><span style="color:#c0c5ce;">&quot;],
+                        </span><span style="color:#bf616a;">ModuleName </span><span style="color:#c0c5ce;">= (</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">)</span><span style="color:#bf616a;">row</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">FMODULE</span><span style="color:#c0c5ce;">&quot;], </span><span style="color:#bf616a;">Number </span><span style="color:#c0c5ce;">= (</span><span style="color:#b48ead;">int</span><span style="color:#c0c5ce;">)</span><span style="color:#bf616a;">row</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">FNUMBER</span><span style="color:#c0c5ce;">&quot;], </span><span style="color:#bf616a;">TypeOfPar </span><span style="color:#c0c5ce;">= (</span><span style="color:#b48ead;">bool</span><span style="color:#c0c5ce;">)</span><span style="color:#bf616a;">row</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">FTYPEOFPARAMETER</span><span style="color:#c0c5ce;">&quot;]};
+    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">query</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ToArray</span><span style="color:#c0c5ce;">();
+}
+</span></pre>
+<p>create from selected SqlReader array of elements of ParameterType. The result can be cached.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">public static </span><span style="color:#c0c5ce;">List&lt;ModuleType&gt; </span><span style="color:#8fa1b3;">SelectModuleByInputParameter</span><span style="color:#c0c5ce;">(List&lt;ParameterType&gt; </span><span style="color:#bf616a;">inputParameter</span><span style="color:#c0c5ce;">)
+{
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">inputParameter </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new ArgumentNullException();
+    }
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">res </span><span style="color:#c0c5ce;">= new List();
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">para </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">SelectAllParameterToArray</span><span style="color:#c0c5ce;">();
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">inputParameter</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">par </span><span style="color:#c0c5ce;">= </span><span style="color:#b48ead;">from </span><span style="color:#bf616a;">parameter </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">para
+                    </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">!(</span><span style="color:#b48ead;">from </span><span style="color:#bf616a;">parameter2 </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">para
+                            </span><span style="color:#b48ead;">where </span><span style="color:#bf616a;">parameter2</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">TypeOfPar
+                            </span><span style="color:#b48ead;">select </span><span style="color:#bf616a;">parameter2</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ModuleId</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">parameter</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ModuleId</span><span style="color:#c0c5ce;">)
+                    </span><span style="color:#b48ead;">select </span><span style="color:#bf616a;">parameter</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">par</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Select</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">x </span><span style="color:#c0c5ce;">=&amp;</span><span style="color:#bf616a;">gt</span><span style="color:#c0c5ce;">; new ModuleType {</span><span style="color:#bf616a;">Id </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ModuleId</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">Name </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ModuleName</span><span style="color:#c0c5ce;">}).</span><span style="color:#bf616a;">ToList</span><span style="color:#c0c5ce;">();
+    }
+
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">parGr </span><span style="color:#c0c5ce;">= </span><span style="color:#b48ead;">from </span><span style="color:#bf616a;">parameter </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">para
+                </span><span style="color:#b48ead;">where </span><span style="color:#bf616a;">parameter</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">TypeOfPar
+                </span><span style="color:#b48ead;">group </span><span style="color:#bf616a;">parameter </span><span style="color:#b48ead;">by </span><span style="color:#bf616a;">parameter</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ModuleId
+                </span><span style="color:#b48ead;">into </span><span style="color:#bf616a;">modPara
+                </span><span style="color:#b48ead;">where </span><span style="color:#bf616a;">modPara</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count</span><span style="color:#c0c5ce;">() == </span><span style="color:#bf616a;">inputParameter</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count
+                </span><span style="color:#b48ead;">select </span><span style="color:#bf616a;">modPara</span><span style="color:#c0c5ce;">;
+
+    </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">paramGr </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">parGr</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#b48ead;">bool </span><span style="color:#bf616a;">AddInRes </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">listParaGr </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">paramGr</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ToList</span><span style="color:#c0c5ce;">();
+        </span><span style="color:#b48ead;">for </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">i </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">; </span><span style="color:#bf616a;">i </span><span style="color:#c0c5ce;">&amp;</span><span style="color:#bf616a;">lt</span><span style="color:#c0c5ce;">; </span><span style="color:#bf616a;">listParaGr</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count</span><span style="color:#c0c5ce;">; i++)
+        {
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">listParaGr</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">i</span><span style="color:#c0c5ce;">].</span><span style="color:#bf616a;">Number </span><span style="color:#c0c5ce;">!= </span><span style="color:#bf616a;">inputParameter</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">i</span><span style="color:#c0c5ce;">].</span><span style="color:#bf616a;">Number </span><span style="color:#c0c5ce;">||
+            </span><span style="color:#bf616a;">listParaGr</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">i</span><span style="color:#c0c5ce;">].</span><span style="color:#bf616a;">TypeName </span><span style="color:#c0c5ce;">!= </span><span style="color:#bf616a;">inputParameter</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">i</span><span style="color:#c0c5ce;">].</span><span style="color:#bf616a;">TypeName</span><span style="color:#c0c5ce;">)
+                </span><span style="color:#bf616a;">AddInRes </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">;
+        }
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">AddInRes</span><span style="color:#c0c5ce;">)
+        {
+            </span><span style="color:#bf616a;">res</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Add</span><span style="color:#c0c5ce;">(new ModuleType(){</span><span style="color:#bf616a;">Id </span><span style="color:#c0c5ce;">=  </span><span style="color:#bf616a;">listParaGr</span><span style="color:#c0c5ce;">[</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">].</span><span style="color:#bf616a;">ModuleId</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">Name </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">listParaGr</span><span style="color:#c0c5ce;">[</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">].</span><span style="color:#bf616a;">ModuleName</span><span style="color:#c0c5ce;">});
+        }
+    }
+    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">res</span><span style="color:#c0c5ce;">;
+}
+</span></pre>
+<p>This method returns a collection of our modules, which contains defined input parameters. Thus, this method should be called justbefore the loop until the result will contain at least one value. It should be noted that calls to this method will generally be bifurcate (the first layer selected modules, and for everyone in this layer, called again, this method and so on). But this is not Linq.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;sniffer-of-tcp-packets&#x2F;">Sniffer of TCP packets ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

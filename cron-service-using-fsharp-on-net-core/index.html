@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Cron service using F# on .NET Core</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;cron-service-using-fsharp-on-net-core&#x2F;">Cron service using F# on .NET Core</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-05-28</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>As continuation for <a href="https://eapyl.github.io/article/Daemon-cron-using-F-19-May-2017.html">my previous post</a> I want to create a nancy service to run my cron jobs.</p>
+<p>The source is <a href="https://github.com/eapyl/fsharp-nancy-service">here</a>.</p>
+<p>A service to run jobs:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">module </span><span style="color:#8fa1b3;">Service </span><span style="color:#b48ead;">=
+    let </span><span style="color:#bf616a;">start </span><span style="color:#b48ead;">(</span><span style="color:#bf616a;">logger</span><span style="color:#b48ead;">:</span><span style="color:#c0c5ce;">ILogger</span><span style="color:#b48ead;">) (</span><span style="color:#bf616a;">items</span><span style="color:#b48ead;">:</span><span style="color:#c0c5ce;">Item</span><span style="color:#b48ead;">[]) =
+        let </span><span style="color:#bf616a;">version </span><span style="color:#b48ead;">=</span><span style="color:#c0c5ce;"> Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion
+        logger.LogInformation</span><span style="color:#b48ead;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">Staring service {version}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#b48ead;">,</span><span style="color:#c0c5ce;"> version</span><span style="color:#b48ead;">)
+        let </span><span style="color:#bf616a;">itemCount </span><span style="color:#b48ead;">=</span><span style="color:#c0c5ce;"> Array.length items
+        logger.LogInformation</span><span style="color:#b48ead;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">Item count is {Length}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#b48ead;">,</span><span style="color:#c0c5ce;"> itemCount</span><span style="color:#b48ead;">)
+        let </span><span style="color:#bf616a;">proceedItem item </span><span style="color:#b48ead;">=
+            async {</span><span style="color:#c0c5ce;">
+                logger.LogTrace</span><span style="color:#b48ead;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">ExecuteForItem {ip}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#b48ead;">,</span><span style="color:#c0c5ce;"> item.id</span><span style="color:#b48ead;">)
+            }
+        let </span><span style="color:#bf616a;">jobs </span><span style="color:#b48ead;">=</span><span style="color:#c0c5ce;"> items </span><span style="color:#b48ead;">|&gt;</span><span style="color:#c0c5ce;"> Array.map </span><span style="color:#b48ead;">(fun</span><span style="color:#bf616a;"> item </span><span style="color:#b48ead;">-&gt;
+            {</span><span style="color:#c0c5ce;">
+                action </span><span style="color:#b48ead;">=</span><span style="color:#c0c5ce;"> proceedItem item</span><span style="color:#b48ead;">;</span><span style="color:#c0c5ce;">
+                cron </span><span style="color:#b48ead;">=</span><span style="color:#c0c5ce;"> item.cron
+            </span><span style="color:#b48ead;">})
+        let </span><span style="color:#bf616a;">daemon </span><span style="color:#b48ead;">=</span><span style="color:#c0c5ce;"> run jobs
+        logger.LogInformation</span><span style="color:#b48ead;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">Started service</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#b48ead;">)</span><span style="color:#c0c5ce;">
+        daemon
+</span></pre>
+<p>It contains only method <code>start</code> to create cron daemon.</p>
+<p>All other classes is related to Nancy platform and it is easy to write using <a href="https://github.com/NancyFx/Nancy/wiki/Documentation">nancy documentation</a>.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;fsharp&#x2F;">#fsharp</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;daemon-cron-using-fsharp&#x2F;">‹ Daemon cron using F#</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;cron-schedule-using-fsharp&#x2F;">Cron schedule using F# ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

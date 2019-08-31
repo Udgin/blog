@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Show information about types in tooltip</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;show-information-about-types-in-tooltip&#x2F;">Show information about types in tooltip</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2014-10-01</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>The value of a point is the sum of values of types ('one', 'two').
+<a href="http://jsfiddle.net/yo4L215v/">Link</a> - 26 December, 2014</p>
+<p><a href="http://api.highcharts.com/highcharts#tooltip.formatter">Additional info</a></p>
+<p><img src="/images/highchart_add_info.png" alt="image" /></p>
+<p>The code:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#bf616a;">$</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">() {
+    </span><span style="color:#bf616a;">$</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">#container</span><span style="color:#c0c5ce;">&#39;).</span><span style="color:#bf616a;">highcharts</span><span style="color:#c0c5ce;">({
+        chart: {
+            type: &#39;</span><span style="color:#a3be8c;">column</span><span style="color:#c0c5ce;">&#39;
+        },
+ 
+        tooltip: {
+            </span><span style="color:#8fa1b3;">formatter</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">() {
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">typeInf </span><span style="color:#c0c5ce;">= &#39;&#39;;
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">types </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.point.Types;
+                </span><span style="color:#bf616a;">$</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">each</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">types</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">(index) {
+                    </span><span style="color:#bf616a;">typeInf </span><span style="color:#c0c5ce;">+= &#39;</span><span style="color:#a3be8c;">&lt;b&gt;</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#bf616a;">types</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">index</span><span style="color:#c0c5ce;">][</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">] + &#39;</span><span style="color:#a3be8c;">&lt;/b&gt; </span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#bf616a;">types</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">index</span><span style="color:#c0c5ce;">][</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">] + &#39;</span><span style="color:#a3be8c;">&lt;br/&gt;</span><span style="color:#c0c5ce;">&#39;;
+                });
+ 
+                </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">The value for &lt;b&gt;</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.x +
+                    &#39;</span><span style="color:#a3be8c;">&lt;/b&gt; is &lt;b&gt;</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.y + &#39;</span><span style="color:#a3be8c;">&lt;/b&gt;&lt;br/&gt;</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#bf616a;">typeInf</span><span style="color:#c0c5ce;">;
+            }
+        },
+ 
+        xAxis: {
+            categories: [&#39;</span><span style="color:#a3be8c;">Green</span><span style="color:#c0c5ce;">&#39;, &#39;</span><span style="color:#a3be8c;">Pink</span><span style="color:#c0c5ce;">&#39;]
+        },
+ 
+        series: [{
+            data: [{
+                name: &#39;</span><span style="color:#a3be8c;">Point 1</span><span style="color:#c0c5ce;">&#39;,
+                Types: [[&quot;</span><span style="color:#a3be8c;">one</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], [&quot;</span><span style="color:#a3be8c;">two</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">]],
+                color: &#39;</span><span style="color:#a3be8c;">#00FF00</span><span style="color:#c0c5ce;">&#39;,
+                y: </span><span style="color:#d08770;">2
+            </span><span style="color:#c0c5ce;">}, {
+                name: &#39;</span><span style="color:#a3be8c;">Point 2</span><span style="color:#c0c5ce;">&#39;,
+                Types: [[&quot;</span><span style="color:#a3be8c;">one</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">2</span><span style="color:#c0c5ce;">], [&quot;</span><span style="color:#a3be8c;">two</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">3</span><span style="color:#c0c5ce;">]],
+                color: &#39;</span><span style="color:#a3be8c;">#FF00FF</span><span style="color:#c0c5ce;">&#39;,
+                y: </span><span style="color:#d08770;">5
+            </span><span style="color:#c0c5ce;">}]
+        }]
+    });
+});
+</span></pre>
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;javascript&#x2F;">#javascript</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;winrt-checksum-for-large-files&#x2F;">‹ WinRT Checksum for large files</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;notes-from-introduction-to-linux&#x2F;">Notes from &#x27;Introduction to Linux&#x27; ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

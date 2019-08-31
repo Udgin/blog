@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Replace physical path of web sites in IIS7</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;replace-physical-path-of-web-sites-in-iis7&#x2F;">Replace physical path of web sites in IIS7</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2012-07-17</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">param</span><span style="color:#c0c5ce;">([</span><span style="color:#b48ead;">String</span><span style="color:#c0c5ce;">]$</span><span style="color:#bf616a;">numb</span><span style="color:#c0c5ce;">)
+
+[</span><span style="color:#b48ead;">Void</span><span style="color:#c0c5ce;">][</span><span style="color:#b48ead;">Reflection.Assembly</span><span style="color:#c0c5ce;">]::LoadWithPartialName(&quot;</span><span style="color:#a3be8c;">Microsoft.Web.Administration</span><span style="color:#c0c5ce;">&quot;)
+
+$</span><span style="color:#bf616a;">siteName </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">graph.vrpinc.com</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#65737e;">##$serverIP = &quot;your ip address&quot;
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">newPath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">D:\Projects\gmp</span><span style="color:#c0c5ce;">&quot;+$</span><span style="color:#bf616a;">numb</span><span style="color:#c0c5ce;">+&quot;</span><span style="color:#a3be8c;">\GMP.WebSite</span><span style="color:#c0c5ce;">&quot;
+
+$</span><span style="color:#bf616a;">serverManager </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">New-Object</span><span style="color:#c0c5ce;"> Microsoft.Web.Administration.ServerManager
+</span><span style="color:#65737e;">## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">site </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">serverManager.Sites </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Name </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#bf616a;">siteName </span><span style="color:#c0c5ce;">}
+$</span><span style="color:#bf616a;">rootApp </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">site.Applications </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Path </span><span style="color:#c0c5ce;">-eq &quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot; }
+$</span><span style="color:#bf616a;">rootVdir </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">rootApp.VirtualDirectories </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Path </span><span style="color:#c0c5ce;">-eq &quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot; }
+$</span><span style="color:#bf616a;">rootVdir.PhysicalPath </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">newPath
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">serverManager.CommitChanges</span><span style="color:#c0c5ce;">()
+
+$</span><span style="color:#bf616a;">siteName </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">gmp3.vrpinc.com</span><span style="color:#c0c5ce;">&quot;
+$</span><span style="color:#bf616a;">newPath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">D:\Projects\gmp</span><span style="color:#c0c5ce;">&quot;+$</span><span style="color:#bf616a;">numb</span><span style="color:#c0c5ce;">+&quot;</span><span style="color:#a3be8c;">\GMP.MvcWebSite</span><span style="color:#c0c5ce;">&quot;
+
+$</span><span style="color:#bf616a;">serverManager </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">New-Object</span><span style="color:#c0c5ce;"> Microsoft.Web.Administration.ServerManager
+</span><span style="color:#65737e;">## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">site </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">serverManager.Sites </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Name </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#bf616a;">siteName </span><span style="color:#c0c5ce;">}
+$</span><span style="color:#bf616a;">rootApp </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">site.Applications </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Path </span><span style="color:#c0c5ce;">-eq &quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot; }
+$</span><span style="color:#bf616a;">rootVdir </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">rootApp.VirtualDirectories </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Path </span><span style="color:#c0c5ce;">-eq &quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot; }
+$</span><span style="color:#bf616a;">rootVdir.PhysicalPath </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">newPath
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">serverManager.CommitChanges</span><span style="color:#c0c5ce;">()
+
+$</span><span style="color:#bf616a;">siteName </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">GMPServices</span><span style="color:#c0c5ce;">&quot;
+$</span><span style="color:#bf616a;">newPath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">D:\Projects\gmp</span><span style="color:#c0c5ce;">&quot;+$</span><span style="color:#bf616a;">numb</span><span style="color:#c0c5ce;">+&quot;</span><span style="color:#a3be8c;">\GMP.Services</span><span style="color:#c0c5ce;">&quot;
+
+$</span><span style="color:#bf616a;">serverManager </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">New-Object</span><span style="color:#c0c5ce;"> Microsoft.Web.Administration.ServerManager
+</span><span style="color:#65737e;">## $serverManager = [Microsoft.Web.Administration.ServerManager]::OpenRemote($serverIP)
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">site </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">serverManager.Sites </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Name </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#bf616a;">siteName </span><span style="color:#c0c5ce;">}
+$</span><span style="color:#bf616a;">rootApp </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">site.Applications </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Path </span><span style="color:#c0c5ce;">-eq &quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot; }
+$</span><span style="color:#bf616a;">rootVdir </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">rootApp.VirtualDirectories </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.Path </span><span style="color:#c0c5ce;">-eq &quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot; }
+$</span><span style="color:#bf616a;">rootVdir.PhysicalPath </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">newPath
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">serverManager.CommitChanges</span><span style="color:#c0c5ce;">()
+</span></pre>
+<p>Bat file to call PowerShell file</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">@</span><span style="color:#b48ead;">echo</span><span style="color:#c0c5ce;"> off
+
+</span><span style="color:#b48ead;">set</span><span style="color:#c0c5ce;"> /p </span><span style="color:#bf616a;">delBuild</span><span style="color:#c0c5ce;">=</span><span style="color:#a3be8c;">Enter the number of gmp project?</span><span style="color:#c0c5ce;">
+powershell -noprofile </span><span style="color:#b48ead;">Set</span><span style="color:#bf616a;">-ExecutionPolicy Unrestricted</span><span style="color:#c0c5ce;">
+powershell .\setUpSite.ps1 -numb %</span><span style="color:#bf616a;">delBuild</span><span style="color:#c0c5ce;">%
+</span></pre>
+<p>One variable to set current version of projects!
+Thanks!</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;iis&#x2F;">#iis</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;mvc-indefinitely-loads-the-page-and-call-the-controller-cyclical&#x2F;">‹ MVC indefinitely loads the page and call the controller cyclical</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;vs-2010-attach-to-process-w3wp-exe&#x2F;">VS 2010 Attach to process w3wp.exe ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

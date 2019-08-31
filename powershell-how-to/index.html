@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - PowerShell How to</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;powershell-how-to&#x2F;">PowerShell How to</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2011-12-09</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <ol start="0">
+<li>How to delete all bin, obj folders?</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#96b5b4;">Get-ChildItem</span><span style="color:#c0c5ce;"> .\ -include bin,obj -Recurse | </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">($_) { </span><span style="color:#96b5b4;">remove-item </span><span style="color:#c0c5ce;">$_</span><span style="color:#bf616a;">.fullname </span><span style="color:#c0c5ce;">-Force -Recurse }
+</span></pre>
+<ol>
+<li>How to set folder's permission?</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;"> </span><span style="color:#65737e;">#set owner and principals for %SystemRoot%\TEMP
+ #http://channel9.msdn.com/Forums/Coffeehouse/Powershell-subinacl-ownership-of-directories
+ </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#a3be8c;">Set owner and principals for %SystemRoot%\TEMP</span><span style="color:#c0c5ce;">&quot;
+ $</span><span style="color:#bf616a;">pathToSystemRoot </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">get-content</span><span style="color:#c0c5ce;"> env:systemroot
+ $</span><span style="color:#bf616a;">currentUser </span><span style="color:#c0c5ce;">= [</span><span style="color:#b48ead;">System.Security.Principal.WindowsIdentity</span><span style="color:#c0c5ce;">]::GetCurrent().Name
+ $</span><span style="color:#bf616a;">Principal </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">new-object</span><span style="color:#c0c5ce;"> security.principal.ntaccount $</span><span style="color:#bf616a;">currentUser
+ </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">path </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">Join-Path </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">pathToSystemRoot</span><span style="color:#c0c5ce;"> \temp
+ 
+ $</span><span style="color:#bf616a;">code </span><span style="color:#c0c5ce;">= </span><span style="color:#a3be8c;">@&quot;
+using System;
+using System.Runtime.InteropServices;
+
+namespace WSG.Utils
+{
+public class PermissionsSetter
+{
+
+  [DllImport(&quot;advapi32.dll&quot;, ExactSpelling = true, SetLastError = true)]
+  internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall,
+  ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
+
+
+  [DllImport(&quot;kernel32.dll&quot;, ExactSpelling = true)]
+  internal static extern IntPtr GetCurrentProcess();
+
+
+  [DllImport(&quot;advapi32.dll&quot;, ExactSpelling = true, SetLastError = true)]
+  internal static extern bool OpenProcessToken(IntPtr h, int acc, ref IntPtr
+  phtok);
+
+
+  [DllImport(&quot;advapi32.dll&quot;, SetLastError = true)]
+  internal static extern bool LookupPrivilegeValue(string host, string name,
+  ref long pluid);
+
+
+  [StructLayout(LayoutKind.Sequential, Pack = 1)]
+  internal struct TokPriv1Luid
+  {
+   public int Count;
+   public long Luid;
+   public int Attr;
+  }
+
+
+  internal const int SE_PRIVILEGE_DISABLED = 0x00000000;
+  internal const int SE_PRIVILEGE_ENABLED = 0x00000002;
+  internal const int TOKEN_QUERY = 0x00000008;
+  internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;
+
+
+  public const string SE_ASSIGNPRIMARYTOKEN_NAME = &quot;SeAssignPrimaryTokenPrivilege&quot;;
+  public const string SE_AUDIT_NAME = &quot;SeAuditPrivilege&quot;;
+  public const string SE_BACKUP_NAME = &quot;SeBackupPrivilege&quot;;
+  public const string SE_CHANGE_NOTIFY_NAME = &quot;SeChangeNotifyPrivilege&quot;;
+  public const string SE_CREATE_GLOBAL_NAME = &quot;SeCreateGlobalPrivilege&quot;;
+  public const string SE_CREATE_PAGEFILE_NAME = &quot;SeCreatePagefilePrivilege&quot;;
+  public const string SE_CREATE_PERMANENT_NAME = &quot;SeCreatePermanentPrivilege&quot;;
+  public const string SE_CREATE_SYMBOLIC_LINK_NAME = &quot;SeCreateSymbolicLinkPrivilege&quot;;
+  public const string SE_CREATE_TOKEN_NAME = &quot;SeCreateTokenPrivilege&quot;;
+  public const string SE_DEBUG_NAME = &quot;SeDebugPrivilege&quot;;
+  public const string SE_ENABLE_DELEGATION_NAME = &quot;SeEnableDelegationPrivilege&quot;;
+  public const string SE_IMPERSONATE_NAME = &quot;SeImpersonatePrivilege&quot;;
+  public const string SE_INC_BASE_PRIORITY_NAME = &quot;SeIncreaseBasePriorityPrivilege&quot;;
+  public const string SE_INCREASE_QUOTA_NAME = &quot;SeIncreaseQuotaPrivilege&quot;;
+  public const string SE_INC_WORKING_SET_NAME = &quot;SeIncreaseWorkingSetPrivilege&quot;;
+  public const string SE_LOAD_DRIVER_NAME = &quot;SeLoadDriverPrivilege&quot;;
+  public const string SE_LOCK_MEMORY_NAME = &quot;SeLockMemoryPrivilege&quot;;
+  public const string SE_MACHINE_ACCOUNT_NAME = &quot;SeMachineAccountPrivilege&quot;;
+  public const string SE_MANAGE_VOLUME_NAME = &quot;SeManageVolumePrivilege&quot;;
+  public const string SE_PROF_SINGLE_PROCESS_NAME = &quot;SeProfileSingleProcessPrivilege&quot;;
+  public const string SE_RELABEL_NAME = &quot;SeRelabelPrivilege&quot;;
+  public const string SE_REMOTE_SHUTDOWN_NAME = &quot;SeRemoteShutdownPrivilege&quot;;
+  public const string SE_RESTORE_NAME = &quot;SeRestorePrivilege&quot;;
+  public const string SE_SECURITY_NAME = &quot;SeSecurityPrivilege&quot;;
+  public const string SE_SHUTDOWN_NAME = &quot;SeShutdownPrivilege&quot;;
+  public const string SE_SYNC_AGENT_NAME = &quot;SeSyncAgentPrivilege&quot;;
+  public const string SE_SYSTEM_ENVIRONMENT_NAME = &quot;SeSystemEnvironmentPrivilege&quot;;
+  public const string SE_SYSTEM_PROFILE_NAME = &quot;SeSystemProfilePrivilege&quot;;
+  public const string SE_SYSTEMTIME_NAME = &quot;SeSystemtimePrivilege&quot;;
+  public const string SE_TAKE_OWNERSHIP_NAME = &quot;SeTakeOwnershipPrivilege&quot;;
+  public const string SE_TCB_NAME = &quot;SeTcbPrivilege&quot;;
+  public const string SE_TIME_ZONE_NAME = &quot;SeTimeZonePrivilege&quot;;
+  public const string SE_TRUSTED_CREDMAN_ACCESS_NAME = &quot;SeTrustedCredManAccessPrivilege&quot;;
+  public const string SE_UNDOCK_NAME = &quot;SeUndockPrivilege&quot;;
+  public const string SE_UNSOLICITED_INPUT_NAME = &quot;SeUnsolicitedInputPrivilege&quot;;       
+
+
+  public static bool AddPrivilege(string privilege)
+  {
+   try
+   {
+    bool retVal;
+    TokPriv1Luid tp;
+    IntPtr hproc = GetCurrentProcess();
+    IntPtr htok = IntPtr.Zero;
+    retVal = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
+    tp.Count = 1;
+    tp.Luid = 0;
+    tp.Attr = SE_PRIVILEGE_ENABLED;
+    retVal = LookupPrivilegeValue(null, privilege, ref tp.Luid);
+    retVal = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+    return retVal;
+   }
+   catch (Exception ex)
+   {
+    throw ex;
+   }
+
+
+  }
+  public static bool RemovePrivilege(string privilege)
+  {
+   try
+   {
+    bool retVal;
+    TokPriv1Luid tp;
+    IntPtr hproc = GetCurrentProcess();
+    IntPtr htok = IntPtr.Zero;
+    retVal = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
+    tp.Count = 1;
+    tp.Luid = 0;
+    tp.Attr = SE_PRIVILEGE_DISABLED;
+    retVal = LookupPrivilegeValue(null, privilege, ref tp.Luid);
+    retVal = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+    return retVal;
+   }
+   catch (Exception ex)
+   {
+    throw ex;
+   }
+
+
+  }
+}
+}
+&quot;@
+ 
+ </span><span style="color:#96b5b4;">add-type </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">code
+ 
+ </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">acl </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">Get-Acl </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">Path
+ </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">acl.psbase.SetOwner</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">principal</span><span style="color:#c0c5ce;">)
+ $</span><span style="color:#bf616a;">Ar </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">New-Object</span><span style="color:#c0c5ce;">  system.security.accesscontrol.filesystemaccessrule(&quot;</span><span style="color:#a3be8c;">IIS_IUSRS</span><span style="color:#c0c5ce;">&quot;,&quot;</span><span style="color:#a3be8c;">FullControl</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">Allow</span><span style="color:#c0c5ce;">&quot;)
+
+ </span><span style="color:#65737e;">## Check if Access already exists.
+ #see http://cyrusbuilt.net/wordpress/?p=158
+ </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">acl.Access </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">Where </span><span style="color:#c0c5ce;">{ $_</span><span style="color:#bf616a;">.IdentityReference </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#bf616a;">Principal</span><span style="color:#c0c5ce;">}) {
+  $</span><span style="color:#bf616a;">accessModification </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">New-Object</span><span style="color:#c0c5ce;"> System.Security.AccessControl.AccessControlModification
+  $</span><span style="color:#bf616a;">accessModification.value__ </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">2
+  </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">modification </span><span style="color:#c0c5ce;">= $</span><span style="color:#d08770;">false
+  </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">acl.ModifyAccessRule</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">accessModification</span><span style="color:#c0c5ce;">, $</span><span style="color:#bf616a;">Ar</span><span style="color:#c0c5ce;">, [</span><span style="color:#b48ead;">ref</span><span style="color:#c0c5ce;">]$</span><span style="color:#bf616a;">modification</span><span style="color:#c0c5ce;">) | </span><span style="color:#96b5b4;">Out-Null
+ </span><span style="color:#c0c5ce;">} </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{
+  $</span><span style="color:#bf616a;">acl.AddAccessRule</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">Ar</span><span style="color:#c0c5ce;">)
+ }
+
+ [</span><span style="color:#b48ead;">void</span><span style="color:#c0c5ce;">][</span><span style="color:#b48ead;">WSG.Utils.PermissionsSetter</span><span style="color:#c0c5ce;">]::AddPrivilege([</span><span style="color:#b48ead;">WSG.Utils.PermissionsSetter</span><span style="color:#c0c5ce;">]::SE_RESTORE_NAME)
+ </span><span style="color:#96b5b4;">set-acl </span><span style="color:#c0c5ce;">-Path $</span><span style="color:#bf616a;">Path </span><span style="color:#c0c5ce;">-AclObject $</span><span style="color:#bf616a;">acl
+ </span><span style="color:#c0c5ce;">[</span><span style="color:#b48ead;">void</span><span style="color:#c0c5ce;">][</span><span style="color:#b48ead;">WSG.Utils.PermissionsSetter</span><span style="color:#c0c5ce;">]::RemovePrivilege([</span><span style="color:#b48ead;">WSG.Utils.PermissionsSetter</span><span style="color:#c0c5ce;">]::SE_RESTORE_NAME)
+</span></pre>
+<ol start="2">
+<li>How to register Asp.Net &amp; WCF in IIS?</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;"> $</span><span style="color:#bf616a;">pathToFramework </span><span style="color:#c0c5ce;">= &quot;$</span><span style="color:#bf616a;">env:windir</span><span style="color:#a3be8c;">\Microsoft.NET\Framework</span><span style="color:#c0c5ce;">&quot;
+ </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#96b5b4;">test-path </span><span style="color:#c0c5ce;">&quot;$</span><span style="color:#bf616a;">env:windir</span><span style="color:#a3be8c;">\Microsoft.NET\Framework64</span><span style="color:#c0c5ce;">&quot;)
+ {
+  $</span><span style="color:#bf616a;">pathToFramework </span><span style="color:#c0c5ce;">= &quot;$</span><span style="color:#bf616a;">env:windir</span><span style="color:#a3be8c;">\Microsoft.NET\Framework64</span><span style="color:#c0c5ce;">&quot;
+ }
+ 
+ </span><span style="color:#65737e;">#start aspnet_regiis and ServiceModelReg
+ </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">aspNet2 </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">Test-Path </span><span style="color:#c0c5ce;">&quot;$</span><span style="color:#bf616a;">pathToFramework</span><span style="color:#a3be8c;">\v2.0.50727\aspnet_regiis.exe</span><span style="color:#c0c5ce;">&quot; -pathType leaf
+ </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(($</span><span style="color:#bf616a;">aspNet2 </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">) -and ($</span><span style="color:#bf616a;">aspNet2Reg </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">))
+ {
+  </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#96b5b4;">`r`n</span><span style="color:#a3be8c;">Install aspnet_regiis.exe v2.0.50727</span><span style="color:#c0c5ce;">&quot;
+  &amp; &quot;$</span><span style="color:#bf616a;">pathToFramework</span><span style="color:#a3be8c;">\v2.0.50727\aspnet_regiis.exe</span><span style="color:#c0c5ce;">&quot; -i -enable
+ }
+
+ $</span><span style="color:#bf616a;">ServModReg3 </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">Test-Path </span><span style="color:#c0c5ce;">&quot;$</span><span style="color:#bf616a;">pathToFramework</span><span style="color:#a3be8c;">\v3.0\Windows Communication Foundation\ServiceModelReg.exe</span><span style="color:#c0c5ce;">&quot; -pathType leaf
+ </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">ServModReg3 </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">)
+ {
+  </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#96b5b4;">`r`n</span><span style="color:#a3be8c;">Install ServiceModelReg.exe v3.0</span><span style="color:#c0c5ce;">&quot;
+  &amp; &quot;$</span><span style="color:#bf616a;">pathToFramework</span><span style="color:#a3be8c;">\v3.0\Windows Communication Foundation\ServiceModelReg.exe</span><span style="color:#c0c5ce;">&quot; -iru
+ }
+  
+ $</span><span style="color:#bf616a;">ServModReg4 </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">Test-Path </span><span style="color:#c0c5ce;">&quot;$</span><span style="color:#bf616a;">pathToFramework</span><span style="color:#a3be8c;">\v4.0.30319\ServiceModelReg.exe</span><span style="color:#c0c5ce;">&quot; -pathType leaf
+ </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">ServModReg4 </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">)
+ {
+  </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#96b5b4;">`r`n</span><span style="color:#a3be8c;">Install ServiceModelReg.exe v4.0.30319</span><span style="color:#c0c5ce;">&quot;
+  &amp; &quot;$</span><span style="color:#bf616a;">pathToFramework</span><span style="color:#a3be8c;">\v4.0.30319\ServiceModelReg.exe</span><span style="color:#c0c5ce;">&quot; -ia -q -nologo
+ }
+
+ $</span><span style="color:#bf616a;">AspNetRegIis4 </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">Test-Path </span><span style="color:#c0c5ce;">&quot;$</span><span style="color:#bf616a;">pathToFramework</span><span style="color:#a3be8c;">\v4.0.30319\aspnet_regiis.exe</span><span style="color:#c0c5ce;">&quot; -pathType leaf
+ </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(($</span><span style="color:#bf616a;">AspNetRegIis4 </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">) -and ($</span><span style="color:#bf616a;">aspNet4Reg </span><span style="color:#c0c5ce;">-eq $</span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">))
+ {
+  </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#96b5b4;">`r`n</span><span style="color:#a3be8c;">Install aspnet_regiis.exe v4.0.30319</span><span style="color:#c0c5ce;">&quot;
+  &amp; &quot;$</span><span style="color:#bf616a;">pathToFramework</span><span style="color:#a3be8c;">\v4.0.30319\aspnet_regiis.exe</span><span style="color:#c0c5ce;">&quot; -ir -enable
+ }
+</span></pre>
+<ol start="3">
+<li>How to enable windows features?</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;"> </span><span style="color:#65737e;">#check the windows features
+ </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">features </span><span style="color:#c0c5ce;">= </span><span style="color:#b48ead;">@</span><span style="color:#c0c5ce;">((&quot;</span><span style="color:#a3be8c;">IIS-ASPNET</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">unknown</span><span style="color:#c0c5ce;">&quot;), (&quot;</span><span style="color:#a3be8c;">IIS-HttpCompressionDynamic</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">unknown</span><span style="color:#c0c5ce;">&quot;), (&quot;</span><span style="color:#a3be8c;">IIS-ManagementScriptingTools</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">unknown</span><span style="color:#c0c5ce;">&quot;), (&quot;</span><span style="color:#a3be8c;">IIS-IIS6ManagementCompatibility</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">unknown</span><span style="color:#c0c5ce;">&quot;), (&quot;</span><span style="color:#a3be8c;">IIS-Metabase</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">unknown</span><span style="color:#c0c5ce;">&quot;), (&quot;</span><span style="color:#a3be8c;">IIS-WMICompatibility</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">unknown</span><span style="color:#c0c5ce;">&quot;), (&quot;</span><span style="color:#a3be8c;">IIS-LegacyScripts</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">unknown</span><span style="color:#c0c5ce;">&quot;), (&quot;</span><span style="color:#a3be8c;">IIS-LegacySnapIn</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">unknown</span><span style="color:#c0c5ce;">&quot;))
+ 
+ $</span><span style="color:#bf616a;">dismPath </span><span style="color:#c0c5ce;">= &quot;$</span><span style="color:#bf616a;">env:windir</span><span style="color:#a3be8c;">\System32\Dism.exe</span><span style="color:#c0c5ce;">&quot;
+ </span><span style="color:#b48ead;">if</span><span style="color:#c0c5ce;">(</span><span style="color:#96b5b4;">test-path </span><span style="color:#c0c5ce;">&quot;$</span><span style="color:#bf616a;">env:windir</span><span style="color:#a3be8c;">\Sysnative\Dism.exe</span><span style="color:#c0c5ce;">&quot;)
+ {
+  $</span><span style="color:#bf616a;">dismPath </span><span style="color:#c0c5ce;">= &quot;$</span><span style="color:#bf616a;">env:windir</span><span style="color:#a3be8c;">\Sysnative\Dism.exe</span><span style="color:#c0c5ce;">&quot;
+ }
+ 
+ </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#96b5b4;">`r`n</span><span style="color:#a3be8c;">Get windows features</span><span style="color:#c0c5ce;">&quot;
+ $</span><span style="color:#bf616a;">res </span><span style="color:#c0c5ce;">= &amp; &quot;$</span><span style="color:#bf616a;">dismPath</span><span style="color:#c0c5ce;">&quot; /online /</span><span style="color:#96b5b4;">Get-Features
+ </span><span style="color:#65737e;">#take feature&#39;s states
+ </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">writeNextStr </span><span style="color:#c0c5ce;">= $</span><span style="color:#d08770;">false
+ </span><span style="color:#b48ead;">for </span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">i </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">; $</span><span style="color:#bf616a;">i </span><span style="color:#c0c5ce;">-lt $</span><span style="color:#bf616a;">res.Count</span><span style="color:#c0c5ce;">; $</span><span style="color:#bf616a;">i</span><span style="color:#c0c5ce;">++)
+ {
+  $</span><span style="color:#bf616a;">str </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">res</span><span style="color:#c0c5ce;">[$</span><span style="color:#bf616a;">i</span><span style="color:#c0c5ce;">]
+  </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">feature </span><span style="color:#b48ead;">in </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">features</span><span style="color:#c0c5ce;">)
+  {
+   </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">str.Contains</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">feature</span><span style="color:#c0c5ce;">[</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">]))
+   {
+    $</span><span style="color:#bf616a;">feature</span><span style="color:#c0c5ce;">[</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">] = $</span><span style="color:#bf616a;">res</span><span style="color:#c0c5ce;">[$</span><span style="color:#bf616a;">i</span><span style="color:#c0c5ce;">+</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">]
+    </span><span style="color:#b48ead;">break
+   </span><span style="color:#c0c5ce;">}
+  }
+ }
+ 
+ </span><span style="color:#65737e;">#show results
+ </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#96b5b4;">`r`n</span><span style="color:#a3be8c;">Please see the states of features</span><span style="color:#96b5b4;">`r`n</span><span style="color:#c0c5ce;">&quot;
+ </span><span style="color:#b48ead;">foreach</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">feature </span><span style="color:#b48ead;">in </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">features</span><span style="color:#c0c5ce;">)
+ {
+  </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor yellow &quot;$</span><span style="color:#bf616a;">feature</span><span style="color:#c0c5ce;">&quot;
+ }
+ </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#96b5b4;">`r`n</span><span style="color:#c0c5ce;">&quot;
+ 
+ </span><span style="color:#65737e;">#enable features
+ </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">needToRestart </span><span style="color:#c0c5ce;">= $</span><span style="color:#d08770;">false
+ </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#a3be8c;">Started to enable all features</span><span style="color:#96b5b4;">`r`n</span><span style="color:#c0c5ce;">&quot;
+ </span><span style="color:#b48ead;">foreach</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">feature </span><span style="color:#b48ead;">in </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">features</span><span style="color:#c0c5ce;">)
+ {
+  </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">feature</span><span style="color:#c0c5ce;">[</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">] -ne &quot;</span><span style="color:#a3be8c;">State : Enabled</span><span style="color:#c0c5ce;">&quot;)
+  {
+   $</span><span style="color:#bf616a;">needToRestart  </span><span style="color:#c0c5ce;">= $</span><span style="color:#d08770;">true
+   </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">temp </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">feature</span><span style="color:#c0c5ce;">[</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">]
+   </span><span style="color:#96b5b4;">Write-Host </span><span style="color:#c0c5ce;">-ForegroundColor green &quot;</span><span style="color:#a3be8c;">Try to enable </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">temp</span><span style="color:#c0c5ce;">&quot;
+   &amp; &quot;$</span><span style="color:#bf616a;">dismPath</span><span style="color:#c0c5ce;">&quot; /online /</span><span style="color:#96b5b4;">Enable-Feature </span><span style="color:#c0c5ce;">/FeatureName:$</span><span style="color:#bf616a;">temp </span><span style="color:#c0c5ce;">/NoRestart
+  }
+ }
+</span></pre>
+<ol start="4">
+<li>How to avoid exception &quot;The OS handle’s position is not what FileStream expected&quot;?</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">#this code is for exception such as The OS handle’s position is not what FileStream expected
+#see http://www.leeholmes.com/blog/2008/07/30/workaround-the-os-handles-position-is-not-what-filestream-expected/
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">bindingFlags </span><span style="color:#c0c5ce;">= [</span><span style="color:#b48ead;">Reflection.BindingFlags</span><span style="color:#c0c5ce;">] “Instance,NonPublic,GetField”
+$</span><span style="color:#bf616a;">objectRef </span><span style="color:#c0c5ce;">= $host</span><span style="color:#bf616a;">.GetType</span><span style="color:#c0c5ce;">().GetField(“externalHostRef”, $</span><span style="color:#bf616a;">bindingFlags</span><span style="color:#c0c5ce;">).GetValue($host)
+$</span><span style="color:#bf616a;">bindingFlags </span><span style="color:#c0c5ce;">= [</span><span style="color:#b48ead;">Reflection.BindingFlags</span><span style="color:#c0c5ce;">] “Instance,NonPublic,GetProperty”
+$</span><span style="color:#bf616a;">consoleHost </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">objectRef.GetType</span><span style="color:#c0c5ce;">().GetProperty(“Value”, $</span><span style="color:#bf616a;">bindingFlags</span><span style="color:#c0c5ce;">).GetValue($</span><span style="color:#bf616a;">objectRef</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">@</span><span style="color:#c0c5ce;">())
+[</span><span style="color:#b48ead;">void</span><span style="color:#c0c5ce;">] $</span><span style="color:#bf616a;">consoleHost.GetType</span><span style="color:#c0c5ce;">().GetProperty(“IsStandardOutputRedirected”, $</span><span style="color:#bf616a;">bindingFlags</span><span style="color:#c0c5ce;">).GetValue($</span><span style="color:#bf616a;">consoleHost</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">@</span><span style="color:#c0c5ce;">())
+$</span><span style="color:#bf616a;">bindingFlags </span><span style="color:#c0c5ce;">= [</span><span style="color:#b48ead;">Reflection.BindingFlags</span><span style="color:#c0c5ce;">] “Instance,NonPublic,GetField”
+$</span><span style="color:#bf616a;">field </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">consoleHost.GetType</span><span style="color:#c0c5ce;">().GetField(“standardOutputWriter”, $</span><span style="color:#bf616a;">bindingFlags</span><span style="color:#c0c5ce;">)
+$</span><span style="color:#bf616a;">field.SetValue</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">consoleHost</span><span style="color:#c0c5ce;">, [</span><span style="color:#b48ead;">Console</span><span style="color:#c0c5ce;">]::Out)
+$</span><span style="color:#bf616a;">field2 </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">consoleHost.GetType</span><span style="color:#c0c5ce;">().GetField(“standardErrorWriter”, $</span><span style="color:#bf616a;">bindingFlags</span><span style="color:#c0c5ce;">)
+$</span><span style="color:#bf616a;">field2.SetValue</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">consoleHost</span><span style="color:#c0c5ce;">, [</span><span style="color:#b48ead;">Console</span><span style="color:#c0c5ce;">]::Out)
+</span></pre>
+<ol start="5">
+<li>How to load module?</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#96b5b4;">Import-Module</span><span style="color:#c0c5ce;"> WebAdministration
+</span></pre>
+<ol start="6">
+<li>How to load another script file?</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">#load external functions
+</span><span style="color:#c0c5ce;">. (</span><span style="color:#96b5b4;">Join-Path </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">curFolder</span><span style="color:#c0c5ce;"> \Functions\DevSetupFunctions.ps1)
+</span></pre>
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;powershell&#x2F;">#powershell</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;fiddler-zip-extension&#x2F;">‹ Fiddler Zip extension</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;mvc-indefinitely-loads-the-page-and-call-the-controller-cyclical&#x2F;">MVC indefinitely loads the page and call the controller cyclical ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

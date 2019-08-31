@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Copy remote MSSQL DB to local server</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Even</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Even</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;remote-mssql-to-local-server&#x2F;">Copy remote MSSQL DB to local server</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-12-20</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>I faced with one issue how to automatically download and restore databases from remote server to my local MSSQL server. It sounds like very generic task so I tried to find a solution in Internet without success. So there is a small console application which does the next things:</p>
+<ol>
+<li>Backup selected databases on remote server;</li>
+<li>Copy backups to local folder;</li>
+<li>Restore copied databases to local MSSQL;</li>
+<li>Change the owner of databases to current user;</li>
+</ol>
+<p>A small snippet with implementation is below.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">/*
+You need to add next NuGet packages:
+&quot;Microsoft.Extensions.Configuration&quot;: &quot;2.0.0&quot;,
+&quot;Microsoft.Extensions.Configuration.FileExtensions&quot;: &quot;2.0.0&quot;,
+&quot;Microsoft.Extensions.Configuration.Json&quot;: &quot;2.0.0&quot;,
+&quot;System.Data.Common&quot;: &quot;4.3.0&quot;,
+&quot;System.Data.SqlClient&quot;: &quot;4.4.2&quot;,
+&quot;System.Runtime&quot;: &quot;4.3.0&quot;
+*/
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Program
+</span><span style="color:#eff1f5;">{
+    </span><span style="color:#b48ead;">private static </span><span style="color:#eff1f5;">IConfigurationRoot </span><span style="color:#bf616a;">Configuration </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">ConfigurationBuilder()
+            .</span><span style="color:#bf616a;">SetBasePath</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">Directory</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">GetCurrentDirectory</span><span style="color:#eff1f5;">())
+            .</span><span style="color:#bf616a;">AddJsonFile</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">appsettings.json</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">Build</span><span style="color:#eff1f5;">();
+
+    </span><span style="color:#b48ead;">private static string</span><span style="color:#eff1f5;">[] </span><span style="color:#bf616a;">dbs </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">GetSection</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">dbs</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">)
+        .</span><span style="color:#bf616a;">GetChildren</span><span style="color:#eff1f5;">().</span><span style="color:#bf616a;">Select</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">=&gt;</span><span style="color:#bf616a;">x</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Value</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">ToArray</span><span style="color:#eff1f5;">();
+
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">remoteServer </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">connectionStrings:remoteServer</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">localServer </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">connectionStrings:localServer</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">currentUser </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">currentUser</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">remoteServerPathWithBackups </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">remoteServerPathWithBackups</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">serverPathWithBackups </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">serverPathWithBackups</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">userNameToLogInToServer </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">userNameToLogInToServer</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">passwordToLogInToServer </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">passwordToLogInToServer</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">localPathToCopyBackups </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; } </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">localPathToCopyBackups</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">backupFileName </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Configuration</span><span style="color:#eff1f5;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">backupFileName</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">];
+
+    </span><span style="color:#b48ead;">private const string </span><span style="color:#bf616a;">changeOwnerOfDb </span><span style="color:#c0c5ce;">= @&quot;</span><span style="color:#a3be8c;">
+USE </span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">
+EXEC sp_changedbowner &#39;</span><span style="color:#d08770;">{1}</span><span style="color:#a3be8c;">&#39;</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;
+
+    </span><span style="color:#b48ead;">private const string </span><span style="color:#bf616a;">changeToSingleUser </span><span style="color:#c0c5ce;">= @&quot;</span><span style="color:#a3be8c;">
+ALTER DATABASE[</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">] SET Single_User WITH Rollback Immediate</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;
+
+    </span><span style="color:#b48ead;">private const string </span><span style="color:#bf616a;">changeToMultiUser </span><span style="color:#c0c5ce;">= @&quot;</span><span style="color:#a3be8c;">
+ALTER DATABASE [</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">] SET Multi_User</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;
+
+    </span><span style="color:#b48ead;">private const string </span><span style="color:#bf616a;">AddNetPath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">NET USE </span><span style="color:#d08770;">{0} {1}</span><span style="color:#a3be8c;"> /USER:</span><span style="color:#d08770;">{2}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;
+    </span><span style="color:#b48ead;">private const string </span><span style="color:#bf616a;">DeleteNetPath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">NET USE </span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;"> /DELETE</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;
+    </span><span style="color:#b48ead;">private const string </span><span style="color:#bf616a;">CopyReport </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">robocopy </span><span style="color:#d08770;">{0} {1} {2}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;
+
+    </span><span style="color:#b48ead;">private const string </span><span style="color:#bf616a;">restoreDb </span><span style="color:#c0c5ce;">= @&quot;</span><span style="color:#a3be8c;">
+RESTORE DATABASE </span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;"> FROM DISK = &#39;</span><span style="color:#d08770;">{1}</span><span style="color:#a3be8c;">&#39; WITH REPLACE, RECOVERY;</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;
+    </span><span style="color:#b48ead;">private const string </span><span style="color:#bf616a;">backupDb </span><span style="color:#c0c5ce;">= @&quot;</span><span style="color:#a3be8c;">
+BACKUP DATABASE </span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;"> TO DISK=&#39;</span><span style="color:#d08770;">{1}</span><span style="color:#a3be8c;">&#39; WITH INIT, COPY_ONLY, FORMAT, COMPRESSION;</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;
+
+    </span><span style="color:#b48ead;">static void </span><span style="color:#8fa1b3;">Main</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">[] </span><span style="color:#bf616a;">args</span><span style="color:#eff1f5;">)
+    {
+        </span><span style="color:#b48ead;">foreach </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">db </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">dbs</span><span style="color:#eff1f5;">)
+        {
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#a3be8c;">Backup </span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+            </span><span style="color:#bf616a;">BackupTargetDatabase</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">remoteServer</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">);
+
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#a3be8c;">Copy created backup to local - </span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+            </span><span style="color:#bf616a;">CopyBackupToLocal</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">);
+
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#a3be8c;">Change to single user mode - </span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+            </span><span style="color:#bf616a;">ChangeToSingleUser</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">);
+
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#a3be8c;">Restore db locally - </span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+            </span><span style="color:#bf616a;">RestoreTargetDatabase</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">);
+
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#a3be8c;">Change the owner - </span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+            </span><span style="color:#bf616a;">ChangeOwnerOfDb</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">);
+
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#a3be8c;">Reset to multi user mode - </span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+            </span><span style="color:#bf616a;">ChangeToMultiUser</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">);
+        }
+    }
+
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">ChangeToMultiUser</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">=&gt;
+        </span><span style="color:#bf616a;">ExecuteSqlCommand</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">changeToMultiUser</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">));
+
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">ChangeToSingleUser</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">=&gt;
+        </span><span style="color:#bf616a;">ExecuteSqlCommand</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">changeToSingleUser</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">));
+
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">ChangeOwnerOfDb</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">=&gt;
+        </span><span style="color:#bf616a;">ExecuteSqlCommand</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">localServer</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">changeOwnerOfDb</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">db</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">currentUser</span><span style="color:#eff1f5;">));
+
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">CopyBackupToLocal</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">database</span><span style="color:#eff1f5;">)
+    {
+        </span><span style="color:#bf616a;">ExecuteCommand</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">AddNetPath</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">remoteServerPathWithBackups</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">passwordToLogInToServer</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">userNameToLogInToServer</span><span style="color:#eff1f5;">));
+        </span><span style="color:#bf616a;">ExecuteCommand</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">CopyReport</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">remoteServerPathWithBackups</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">localPathToCopyBackups</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">backupFileName</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">database</span><span style="color:#eff1f5;">)));
+        </span><span style="color:#bf616a;">ExecuteCommand</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">DeleteNetPath</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">remoteServerPathWithBackups</span><span style="color:#eff1f5;">));
+    }
+
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">ExecuteCommand</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">command</span><span style="color:#eff1f5;">)
+    {
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">processInfo </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">ProcessStartInfo(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">cmd.exe</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">/c </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">command</span><span style="color:#eff1f5;">);
+        </span><span style="color:#bf616a;">processInfo</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">CreateNoWindow </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+        </span><span style="color:#bf616a;">processInfo</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">UseShellExecute </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;
+        </span><span style="color:#bf616a;">processInfo</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">RedirectStandardError </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+        </span><span style="color:#bf616a;">processInfo</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">RedirectStandardOutput </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+
+        </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">command</span><span style="color:#eff1f5;">);
+
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">process </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Start</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">processInfo</span><span style="color:#eff1f5;">);
+
+        </span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">OutputDataReceived </span><span style="color:#c0c5ce;">+= </span><span style="color:#eff1f5;">(object </span><span style="color:#bf616a;">sender</span><span style="color:#eff1f5;">, DataReceivedEventArgs </span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">=&gt;
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Data</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+        </span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">BeginOutputReadLine</span><span style="color:#eff1f5;">();
+
+        </span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ErrorDataReceived </span><span style="color:#c0c5ce;">+= </span><span style="color:#eff1f5;">(object </span><span style="color:#bf616a;">sender</span><span style="color:#eff1f5;">, DataReceivedEventArgs </span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">=&gt;
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Data</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+        </span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">BeginErrorReadLine</span><span style="color:#eff1f5;">();
+
+        </span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WaitForExit</span><span style="color:#eff1f5;">();
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ExitCode </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">)
+            </span><span style="color:#bf616a;">Console</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">$&quot;</span><span style="color:#a3be8c;">Error </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">nameof</span><span style="color:#eff1f5;">(process.ExitCode)}</span><span style="color:#a3be8c;">: </span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ExitCode</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+        </span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Close</span><span style="color:#eff1f5;">();
+    }
+
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">RestoreTargetDatabase</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">connectionString</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">database</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">=&gt;
+        </span><span style="color:#bf616a;">ExecuteSqlCommand</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">connectionString</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">restoreDb</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">database</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">Path</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Combine</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">localPathToCopyBackups</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">backupFileName</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">database</span><span style="color:#eff1f5;">))));
+
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">BackupTargetDatabase</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">connectionString</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">database</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">=&gt;
+        </span><span style="color:#bf616a;">ExecuteSqlCommand</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">connectionString</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">backupDb</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">database</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">Path</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Combine</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">serverPathWithBackups</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">backupFileName</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">database</span><span style="color:#eff1f5;">))));
+
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">ExecuteSqlCommand</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">connectionString</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">query</span><span style="color:#eff1f5;">)
+    {
+        </span><span style="color:#b48ead;">using </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">connection </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">SqlConnection(</span><span style="color:#bf616a;">connectionString</span><span style="color:#eff1f5;">))
+        {
+            </span><span style="color:#b48ead;">using </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">command </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">SqlCommand(</span><span style="color:#bf616a;">query</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">connection</span><span style="color:#eff1f5;">))
+            {
+                </span><span style="color:#bf616a;">connection</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Open</span><span style="color:#eff1f5;">();
+                </span><span style="color:#bf616a;">command</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">CommandTimeout </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">300</span><span style="color:#eff1f5;">;
+                </span><span style="color:#bf616a;">command</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ExecuteNonQuery</span><span style="color:#eff1f5;">();
+            }
+        }
+    }
+}
+</span></pre>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;mssql&#x2F;">#mssql</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;get-information-about-sp-functions&#x2F;">‹ Get information about all stored procedures, views and functions</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;ef-core-database-sql&#x2F;">Generate EF Core model from database using SQL script ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>
