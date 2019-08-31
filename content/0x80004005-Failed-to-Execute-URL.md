@@ -5,6 +5,7 @@ date = 2011-09-12
 tags = ["linux", "dotnet"]
 categories = ["programming"]
 +++
+
 The error was connected with GET requests. ApplicationPool was set in Classic mode.
 There is HttpModule, which throws this type of exceptions:
 
