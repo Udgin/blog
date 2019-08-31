@@ -1,0 +1,33 @@
++++
+title = "Wymowa"
+date = 2018-09-01
+[taxonomies]
+tags = ["polish","gramatyka"]
+categories = ["learning"]
++++
+|Samogłoski| | |
+|-|-|-|
+|a|e|i|
+|y|ę|ą|
+|o|u//ó||
+
+|Spółgłoski| | |
+|-|-|-|
+|k|g||
+|t|d||
+|p|b||
+|f|w||
+|j|||
+|h//ch|||
+|m|n|ń//ni|
+|l|r|ł|
+
+| | | |
+|-|-|-|
+|s|ś//si|sz|
+|z|ż//zi|ż//rz|
+|c|ć//ci|cz|
+|dz|dź//dzi|dż|
+
+> Inna ortografia, taka sama wymowa!  
+ó = u, ch = h, rz = ż, ci = ć, dzi = dź, ni = ń, si = ś, zi = ż
