@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - InfluxDB can&#x27;t be started as a service</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;influxdb-can-t-be-started-as-a-service&#x2F;">InfluxDB can&#x27;t be started as a service</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2016-12-21</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>I was not able to run influxdb as a service after <a href="https://docs.influxdata.com/influxdb/v1.1/introduction/installation/">installing</a> influxdb on my local ubuntu:</p>
+<p>Command <code>sudo service influxd status</code> showed:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">● influxdb.service - InfluxDB is an open-source, distributed, time series database</span><span style="color:#c0c5ce;">
+   Loaded: loaded (/lib/systemd/system/influxdb.service; enabled; vendor preset: enabled)</span><span style="color:#c0c5ce;">
+   Active: inactive (dead) (Result: exit-code) since Fri 2016-12-23 15:05:34 CET; 3min 47s ago</span><span style="color:#c0c5ce;">
+     Docs: https://docs.influxdata.com/influxdb/</span><span style="color:#c0c5ce;">
+  Process: 13938 ExecStart=/usr/bin/influxd -config /etc/influxdb/influxdb.conf ${INFLUXD_OPTS} (code=exited, status=1/FAILURE)</span><span style="color:#c0c5ce;">
+ Main PID: 13938 (code=exited, status=1/FAILURE)</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+Dec 23 15:05:34 fes-U36SG systemd[1]: influxdb.service: Main process exited, code=exited, status=1/FAILURE</span><span style="color:#c0c5ce;">
+Dec 23 15:05:34 fes-U36SG systemd[1]: influxdb.service: Unit entered failed state.</span><span style="color:#c0c5ce;">
+Dec 23 15:05:34 fes-U36SG systemd[1]: influxdb.service: Failed with result &#39;exit-code&#39;.</span><span style="color:#c0c5ce;">
+Dec 23 15:05:34 fes-U36SG systemd[1]: influxdb.service: Service hold-off time over, scheduling restart.</span><span style="color:#c0c5ce;">
+Dec 23 15:05:34 fes-U36SG systemd[1]: Stopped InfluxDB is an open-source, distributed, time series database.</span><span style="color:#c0c5ce;">
+Dec 23 15:05:34 fes-U36SG systemd[1]: influxdb.service: Start request repeated too quickly.</span><span style="color:#c0c5ce;">
+Dec 23 15:05:34 fes-U36SG systemd[1]: Failed to start InfluxDB is an open-source, distributed, time series database.</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>But the simple command <code>influxd</code> worked well.</p>
+<p>I found that there is the next code in <code>/lib/systemd/system/influxdb.service</code>:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;"># If you modify this, please also make sure to edit init.sh</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+[Unit]</span><span style="color:#c0c5ce;">
+Description=InfluxDB is an open-source, distributed, time series database</span><span style="color:#c0c5ce;">
+Documentation=https://docs.influxdata.com/influxdb/</span><span style="color:#c0c5ce;">
+After=network-online.target</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+[Service]</span><span style="color:#c0c5ce;">
+User=influxdb</span><span style="color:#c0c5ce;">
+Group=influxdb</span><span style="color:#c0c5ce;">
+LimitNOFILE=65536</span><span style="color:#c0c5ce;">
+EnvironmentFile=-/etc/default/influxdb</span><span style="color:#c0c5ce;">
+ExecStart=/usr/bin/influxd -config /etc/influxdb/influxdb.conf ${INFLUXD_OPTS}</span><span style="color:#c0c5ce;">
+KillMode=control-group</span><span style="color:#c0c5ce;">
+Restart=on-failure</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+[Install]</span><span style="color:#c0c5ce;">
+WantedBy=multi-user.target</span><span style="color:#c0c5ce;">
+Alias=influxd.service</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>All is working well after I commended the next two lines:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">[Service]</span><span style="color:#c0c5ce;">
+# User=influxdb</span><span style="color:#c0c5ce;">
+# Group=influxdb</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>Thanks!</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;indluxdb&#x2F;">#indluxdb</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;simple-question-to-check-understanding-of-recursion-in-net&#x2F;">‹ Simple question to check understanding of recursion in .NET</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;discord-belarus-chat-by&#x2F;">Discord Belarus chat By ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

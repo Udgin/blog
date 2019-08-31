@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - IIS 7 HttpModule Logger</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;iis-7-httpmodule-logger&#x2F;">IIS 7 HttpModule Logger</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2011-12-06</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Простой модуль-лог для IIS 7 (Classic mode)</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Collections.Generic;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Linq;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Text;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Web;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Threading.Tasks;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.IO;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Threading;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Net;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">ReutersKnowledge.Web.Services.Util;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Collections.Specialized;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Reflection;</span><span style="color:#c0c5ce;">
+ </span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">namespace </span><span style="color:#c0c5ce;">IISWsgLogger</span><span style="color:#c0c5ce;">
+{</span><span style="color:#c0c5ce;">
+    </span><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">IISLoggerModule </span><span style="color:#eff1f5;">: </span><span style="color:#a3be8c;">IHttpModule</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">private static string </span><span style="color:#bf616a;">fileName </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">D:</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">Log.txt</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">private static </span><span style="color:#eff1f5;">ConcurrentQueue&lt;</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">logRecords </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">ConcurrentQueue&lt;</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">&gt;();</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">private static object </span><span style="color:#bf616a;">syncTask </span><span style="color:#c0c5ce;">= new </span><span style="color:#b48ead;">object</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">private static </span><span style="color:#eff1f5;">Task </span><span style="color:#bf616a;">taskLog</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">Init</span><span style="color:#eff1f5;">(HttpApplication </span><span style="color:#bf616a;">context</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">taskLog </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">lock </span><span style="color:#eff1f5;">(syncTask)</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">taskLog </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#bf616a;">taskLog </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Task</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Factory</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">StartNew</span><span style="color:#eff1f5;">(() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">StartLog</span><span style="color:#eff1f5;">(), </span><span style="color:#bf616a;">TaskCreationOptions</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">LongRunning</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">BeginRequest </span><span style="color:#c0c5ce;">+= new </span><span style="color:#eff1f5;">EventHandler(</span><span style="color:#bf616a;">OnPreRequestHandlerExecute</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">EndRequest </span><span style="color:#c0c5ce;">+= new </span><span style="color:#eff1f5;">EventHandler(</span><span style="color:#bf616a;">OnPostReleaseRequestState</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">private void </span><span style="color:#8fa1b3;">StartLog</span><span style="color:#eff1f5;">()</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">t </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">File</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">AppendText</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">fileName</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">t</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">date time wsg-guid s-port cs-method reuters-uuid cs(Host) cs-uri-stem cs-uri-query sc-status sc-substatus cs(User-Agent) cs(Cookie) TimeTakenMS sc-bytes</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">waitMil </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">1000</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">res </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">try</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">while </span><span style="color:#eff1f5;">(</span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">while </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">logRecords</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">TryDequeue</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">out </span><span style="color:#bf616a;">res</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#bf616a;">t</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">res</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">Thread</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Sleep</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">waitMil</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">finally</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#bf616a;">t</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Close</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">Dispose</span><span style="color:#eff1f5;">()</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">OnPreRequestHandlerExecute</span><span style="color:#eff1f5;">(Object </span><span style="color:#bf616a;">source</span><span style="color:#eff1f5;">, EventArgs </span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            HttpApplication </span><span style="color:#bf616a;">app </span><span style="color:#c0c5ce;">= </span><span style="color:#eff1f5;">(HttpApplication)</span><span style="color:#bf616a;">source</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">guid </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Guid</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NewGuid</span><span style="color:#eff1f5;">().</span><span style="color:#bf616a;">ToString</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">RewritePath</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">FilePath</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">PathInfo</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">guid=</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">guid</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">OnPostReleaseRequestState</span><span style="color:#eff1f5;">(Object </span><span style="color:#bf616a;">source</span><span style="color:#eff1f5;">, EventArgs </span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            HttpApplication </span><span style="color:#bf616a;">app </span><span style="color:#c0c5ce;">= </span><span style="color:#eff1f5;">(HttpApplication)</span><span style="color:#bf616a;">source</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">time </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">DateTime</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Now</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">timeStamp </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Timestamp</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">port </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Url</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Port</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">typeOfRequest </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">RequestType</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">Guid </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">QueryString</span><span style="color:#eff1f5;">[</span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">];</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">host </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Url</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Host</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">rawUrl </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">RawUrl</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">contentRequestLength </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ContentLength</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">status </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Response</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">StatusCode</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">agent </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">UserAgent</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">cookies </span><span style="color:#c0c5ce;">= </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Empty</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">foreach </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">cookie </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">app</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Context</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Request</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Cookies</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#bf616a;">cookies </span><span style="color:#c0c5ce;">+= </span><span style="color:#bf616a;">cookies</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">logRecords</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Enqueue</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#d08770;">{0} {1} {3} {4} {5} {6} {7} {8} {9} {10}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">time</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">guid</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">port</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">typeOfRequest</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">host</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">rawUrl</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">status</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">agent</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">timeStamp</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">contentRequestLength</span><span style="color:#eff1f5;">));</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    }</span><span style="color:#c0c5ce;">
+}</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>web.config :</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">&lt;?</span><span style="color:#bf616a;">xml </span><span style="color:#d08770;">version</span><span style="color:#c0c5ce;">=&quot;</span><span style="color:#a3be8c;">1.0</span><span style="color:#c0c5ce;">&quot;?&gt;</span><span style="color:#c0c5ce;">
+&lt;</span><span style="color:#bf616a;">configuration</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+ &lt;</span><span style="color:#bf616a;">configSections</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+  ...</span><span style="color:#c0c5ce;">
+ &lt;/</span><span style="color:#bf616a;">configSections</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+ &lt;</span><span style="color:#bf616a;">system.web</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+  ...</span><span style="color:#c0c5ce;">
+   &lt;</span><span style="color:#bf616a;">httpModules</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+   ...</span><span style="color:#c0c5ce;">
+  &lt;/</span><span style="color:#bf616a;">httpModules</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+ &lt;/</span><span style="color:#bf616a;">system.web</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+ &lt;</span><span style="color:#bf616a;">system.webServer</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+  &lt;</span><span style="color:#bf616a;">modules</span><span style="color:#c0c5ce;">&gt;</span><span style="color:#c0c5ce;">
+   &lt;</span><span style="color:#bf616a;">add </span><span style="color:#d08770;">name</span><span style="color:#c0c5ce;">=&quot;</span><span style="color:#a3be8c;">IISLoggerModule</span><span style="color:#c0c5ce;">&quot; </span><span style="color:#d08770;">type</span><span style="color:#c0c5ce;">=&quot;</span><span style="color:#a3be8c;">IISLogger.IISLoggerModule, IISLogger.IISLoggerNamespace.IISLogger</span><span style="color:#c0c5ce;">&quot;/&gt;</span><span style="color:#c0c5ce;">
+</span></pre>
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;iis&#x2F;">#iis</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;0x80004005-failed-to-execute-url&#x2F;">‹ 0x80004005 Failed to Execute URL</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;style-cop-i-don-t-like-sa-1201&#x2F;">Style Cop I don&#x27;t like SA 1201 ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Sniffer of TCP packets</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;sniffer-of-tcp-packets&#x2F;">Sniffer of TCP packets</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2011-02-10</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Поставновка задачи: Необходимо создать сниффер, который позволяет получить инфрмацию, которая хранится внутри tcp-пакета (например, мы снифферим загрузку html-страниц). Следует отметить, что tcp-пакеты могут приходить на машину назначение беспорядочно. Таким образом класс Sniffer, используя библиотеку WinPcap упорядочивает все пакеты.</p>
+<p>Проект на VS2008 <a href="https://docs.google.com/open?id=0BwVmorgjT-W1OWVmY2M1MzktNGRhNS00MjEwLWIyOTktMWMzODI3YmM3Mzc3">SharkTrace</a>.</p>
+<p>Важно! Библиотека SharpPcap уже давно имеет новый интерфейс.</p>
+<p>Далее в тексте, под соединением я понимаю соответствие адресов и портов на клиенте и сервере. </p>
+<p>Для работы необходима открытая библиотека SharpPcap, она предоставляет удобный интерфейс для работы с приложением WinPcap (<a href="http://sourceforge.net/projects/sharppcap/">Sharppcap</a>).</p>
+<p>Класс соединения используется для хранения информации об адресе клиента и сервера, о портах, а так же об текущем ожидаемом tcp-пакете.</p>
+<p>Больше о флагах tcp-пакета можно посмотреть <a href="http://www.firewall.cx/">http://www.firewall.cx.</a> </p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">///&lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+///class for connection</span><span style="color:#65737e;">
+///&lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">internal class </span><span style="color:#ebcb8b;">Connection</span><span style="color:#eff1f5;">
+{</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">ClientAddress</span><span style="color:#eff1f5;">; </span><span style="color:#65737e;">// client initiating the connection</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public int </span><span style="color:#bf616a;">ClientPort</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">HostAddress</span><span style="color:#eff1f5;">; </span><span style="color:#65737e;">// host receiving the connection</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public int </span><span style="color:#bf616a;">HostPort</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">ClientSyn</span><span style="color:#eff1f5;">; </span><span style="color:#65737e;">// starting syn sent from client</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">HostSyn</span><span style="color:#eff1f5;">; </span><span style="color:#65737e;">// starting syn sent from host;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">NextClientSeq</span><span style="color:#eff1f5;">; </span><span style="color:#65737e;">// this must be in SequenceNumber field of TCP packet if it is from client</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">NextHostSeq</span><span style="color:#eff1f5;">; </span><span style="color:#65737e;">// this must be in SequenceNumber field of TCP packet if it is from host</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#bf616a;">HostClosed</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#bf616a;">ClientClosed</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public long </span><span style="color:#bf616a;">TimeIdentifier</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#bf616a;">ThreeWayCompleted </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">; </span><span style="color:#65737e;">// three way connection is completed</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">// Fragments , used when we get newer packets that expected.</span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">// so we need to wait for expected before adding them.</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">SortedDictionary&lt;</span><span style="color:#b48ead;">long</span><span style="color:#eff1f5;">, TcpPacket&gt; </span><span style="color:#bf616a;">HostFragments </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">SortedDictionary&lt;</span><span style="color:#b48ead;">long</span><span style="color:#eff1f5;">, TcpPacket&gt;();</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">SortedDictionary&lt;</span><span style="color:#b48ead;">long</span><span style="color:#eff1f5;">, TcpPacket&gt; </span><span style="color:#bf616a;">ClientFragments </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">SortedDictionary&lt;</span><span style="color:#b48ead;">long</span><span style="color:#eff1f5;">, TcpPacket&gt;();</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">// returns client ip:client port as a string</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public string </span><span style="color:#8fa1b3;">GetClientAddressPort</span><span style="color:#eff1f5;">()</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">:</span><span style="color:#d08770;">{1}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">new </span><span style="color:#eff1f5;">IPAddress(</span><span style="color:#bf616a;">ClientAddress</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">ToString</span><span style="color:#eff1f5;">(), </span><span style="color:#bf616a;">ClientPort</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">// returns host ip:host port as a string</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public string </span><span style="color:#8fa1b3;">GetHostAddressPort</span><span style="color:#eff1f5;">()</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">:</span><span style="color:#d08770;">{1}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">new </span><span style="color:#eff1f5;">IPAddress(</span><span style="color:#bf616a;">HostAddress</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">ToString</span><span style="color:#eff1f5;">(), </span><span style="color:#bf616a;">HostPort</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">// packet is from host</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#8fa1b3;">IsFromHost</span><span style="color:#eff1f5;">(TcpPacket </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">ClientAddress </span><span style="color:#c0c5ce;">== </span><span style="color:#eff1f5;">((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">DestinationAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Address </span><span style="color:#c0c5ce;">&amp;&amp;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">ClientPort </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">DestinationPort </span><span style="color:#c0c5ce;">&amp;&amp;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">HostAddress </span><span style="color:#c0c5ce;">== </span><span style="color:#eff1f5;">((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">SourceAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Address </span><span style="color:#c0c5ce;">&amp;&amp;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">HostPort </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SourcePort</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">// packet is from client</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#8fa1b3;">IsFromClient</span><span style="color:#eff1f5;">(TcpPacket </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">ClientAddress </span><span style="color:#c0c5ce;">== </span><span style="color:#eff1f5;">((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">SourceAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Address </span><span style="color:#c0c5ce;">&amp;&amp;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">ClientPort </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SourcePort </span><span style="color:#c0c5ce;">&amp;&amp;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">HostAddress </span><span style="color:#c0c5ce;">== </span><span style="color:#eff1f5;">((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">DestinationAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Address </span><span style="color:#c0c5ce;">&amp;&amp;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">HostPort </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">DestinationPort</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Connection</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">clientAddress</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">clientPort</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">hostAddress</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">hostPort</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">clientSyn</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientAddress </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">clientAddress</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientPort </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">clientPort</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostAddress </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">hostAddress</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostPort </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">hostPort</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientSyn </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">clientSyn</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+}</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>Итак данный класс хранит информацию о соединении. В сниффере я пропускаю процесс установления соединения (так называемое тройное рукопожатие) так как возможно мы запустим сниффер когда уже соединения было установлено (о нем можно почитать <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment">wikipedia.org</a>). Поэтому происходит попытка создания соединения, если оно еще не было создано. Ловятся пакеты, которые имеют &quot;полезную&quot; информацию в себе (payload data).</p>
+<p>Больше о TCP пакетах <a href="http://ru.wikipedia.org/wiki/TCP">wikipedia.org</a>.</p>
+<p>Методы RunSniffer и StopSniffer - запускают и останавливают сниффер соответственно. Метод AssemblePacket на вход получает tcp-пакет, и проверяет существует ли соединение, которому &quot;принадлежит&quot; этот пакет. Если нет - создается, если да - то работает логика по упорядочиванию пакетов. Два абстрактных метода позволяют получить доступ к &quot;полезным&quot; данным последовательно (AddHostData и AddClientData) </p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+/// Main class for sniffering</span><span style="color:#65737e;">
+/// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+/// &lt;</span><span style="color:#bf616a;">remarks</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+/// 1. I see that there is new version of SharpPcap library with new interface (29/11/2011)</span><span style="color:#65737e;">
+/// So i just try to update some useful information about this class</span><span style="color:#65737e;">
+/// </span><span style="color:#65737e;">
+/// 2. I believe that SynchronizatedConnection class is just </span><span style="color:#65737e;">
+/// class SynchronizatedConnection : Connection</span><span style="color:#65737e;">
+/// {</span><span style="color:#65737e;">
+///     private object syncObject = new object();</span><span style="color:#65737e;">
+///     </span><span style="color:#65737e;">
+///     public Synchro {get {return syncObject;}}</span><span style="color:#65737e;">
+/// }</span><span style="color:#65737e;">
+/// </span><span style="color:#65737e;">
+/// 3. Coordinator is class with constants.</span><span style="color:#65737e;">
+/// &lt;/</span><span style="color:#bf616a;">remarks</span><span style="color:#65737e;">&gt;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">internal abstract class </span><span style="color:#ebcb8b;">Sniffer </span><span style="color:#eff1f5;">
+{</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private </span><span style="color:#eff1f5;">Timer </span><span style="color:#bf616a;">timer</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private object </span><span style="color:#bf616a;">synchronizationObjectForConnection </span><span style="color:#c0c5ce;">= new </span><span style="color:#b48ead;">object</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private </span><span style="color:#eff1f5;">List&lt;SynchronizatedConnection&gt; </span><span style="color:#bf616a;">Connections </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">List&lt;SynchronizatedConnection&gt;();</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private </span><span style="color:#eff1f5;">LibPcapLiveDevice </span><span style="color:#bf616a;">_device</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private readonly </span><span style="color:#eff1f5;">List&lt;System.Net.IPAddress&gt; </span><span style="color:#bf616a;">_hosts</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">// when connected</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public abstract void </span><span style="color:#8fa1b3;">Connected</span><span style="color:#eff1f5;">(Object </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">// when disconnected</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public abstract void </span><span style="color:#8fa1b3;">Disconnected</span><span style="color:#eff1f5;">(Object </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public abstract void </span><span style="color:#8fa1b3;">AddHostData</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">byte</span><span style="color:#eff1f5;">[] </span><span style="color:#bf616a;">data</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">host</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public abstract void </span><span style="color:#8fa1b3;">AddClientData</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">byte</span><span style="color:#eff1f5;">[] </span><span style="color:#bf616a;">data</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">client</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private void </span><span style="color:#8fa1b3;">ClearConnections</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">object </span><span style="color:#bf616a;">source</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">//sometimes purely the collection, just in case</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">lock </span><span style="color:#eff1f5;">(synchronizationObjectForConnection)</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">foreach </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">key </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">Connections</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Where</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">k </span><span style="color:#c0c5ce;">=&gt; </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">DateTime</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Now</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ToFileTimeUtc</span><span style="color:#eff1f5;">() </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">k</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">TimeIdentifier</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#d08770;">600000000 </span><span style="color:#c0c5ce;">* </span><span style="color:#bf616a;">Coordinator</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Config</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HowLongWeSaveTransaction</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">TotalMinutes</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">ToList</span><span style="color:#eff1f5;">())</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#bf616a;">Connections</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Remove</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">key</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// Create the exemplare of the class</span><span style="color:#65737e;">
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Sniffer</span><span style="color:#eff1f5;">(List&lt;System.Net.IPAddress&gt; </span><span style="color:#bf616a;">hosts</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">timer </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">Timer(</span><span style="color:#bf616a;">ClearConnections</span><span style="color:#eff1f5;">, </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">Coordinator</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Config</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HowLongWeSaveTransaction</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">Coordinator</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Config</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HowLongWeSaveTransaction</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_hosts </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">hosts</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// Start the tracing</span><span style="color:#65737e;">
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;filter&quot;</span><span style="color:#65737e;">&gt;See http://www.cs.ucr.edu/~marios/ethereal-tcpdump.pdf &lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">RunSniffer</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">filter</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">devices </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">LibPcapLiveDeviceList</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Instance</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">//</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_device </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">devices</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">Coordinator</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Config</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ListeningInterface</span><span style="color:#eff1f5;">];</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">//Register our handler function to the &#39;packet arrival&#39; event</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_device</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">OnPacketArrival </span><span style="color:#c0c5ce;">+= new </span><span style="color:#eff1f5;">PacketArrivalEventHandler(</span><span style="color:#bf616a;">device_OnPacketArrival</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">//Open the device for capturing</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">readTimeoutMilliseconds </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">1000</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_device</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Open</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">DeviceMode</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Normal</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">readTimeoutMilliseconds</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">// tcpdump filter to capture only TCP/IP packets</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_device</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Filter </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">filter</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">// Start capture packets</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_device</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">StartCapture</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// Stop the tracing</span><span style="color:#65737e;">
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">StopSniffer</span><span style="color:#eff1f5;">()</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_device</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">StopCapture</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_device</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Close</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// Catch the packet</span><span style="color:#65737e;">
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;sender&quot;</span><span style="color:#65737e;">&gt;&lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;e&quot;</span><span style="color:#65737e;">&gt;&lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private void </span><span style="color:#8fa1b3;">device_OnPacketArrival</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">object </span><span style="color:#bf616a;">sender</span><span style="color:#eff1f5;">, CaptureEventArgs </span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">try</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            </span><span style="color:#65737e;">// try to get TCP packet from Ip packet</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">packet </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">PacketDotNet</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Packet</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParsePacket</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Packet</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">LinkLayerType</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">e</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Packet</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Data</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">packet </span><span style="color:#c0c5ce;">is </span><span style="color:#eff1f5;">PacketDotNet.EthernetPacket)</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">eth </span><span style="color:#c0c5ce;">= </span><span style="color:#eff1f5;">((PacketDotNet.EthernetPacket)</span><span style="color:#bf616a;">packet</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">ip </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">PacketDotNet</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">IpPacket</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">GetEncapsulated</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">packet</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">ip </span><span style="color:#c0c5ce;">!= </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">tcp </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">PacketDotNet</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">TcpPacket</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">GetEncapsulated</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">packet</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp </span><span style="color:#c0c5ce;">!= </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#bf616a;">AssemblePacket</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">// sometimes converting doesn&#39;t work - don&#39;t worry about it</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">catch </span><span style="color:#eff1f5;">(InvalidOperationException </span><span style="color:#bf616a;">ex</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// Parse TCP packet</span><span style="color:#65737e;">
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;tcp&quot;</span><span style="color:#65737e;">&gt;TCP packet&lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;</span><span style="color:#eff1f5;">
+    </span><span style="color:#a3be8c;">privDescription</span><span style="color:#eff1f5;">. There </span><span style="color:#bf616a;">are modules that have the input and output </span><span style="color:#8fa1b3;">parameters </span><span style="color:#eff1f5;">(type </span><span style="color:#bf616a;">and number of parameters may be different</span><span style="color:#eff1f5;">)</span><span style="background-color:#bf616a;color:#2b303b;">.</span><span style="color:#eff1f5;"> The </span><span style="color:#bf616a;">goal is to select some first modules that have no input parameters</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">then the modules whose inputs are the output parameters of the previously selected modules and so </span><span style="color:#a3be8c;">on</span><span style="color:#eff1f5;">. </span><span style="color:#bf616a;">Until the last module will not output </span><span style="color:#a3be8c;">parameters</span><span style="color:#eff1f5;">.</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+</span><span style="color:#bf616a;">The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many</span><span style="color:#eff1f5;">-</span><span style="color:#bf616a;">to</span><span style="color:#eff1f5;">-</span><span style="color:#a3be8c;">one</span><span style="color:#eff1f5;">.</span><span style="color:#eff1f5;">
+</span><span style="color:#bf616a;">Initially</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">we choose to do all the settings using a simple SQL </span><span style="color:#a3be8c;">query</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ate void </span><span style="color:#8fa1b3;">AssemblePacket</span><span style="color:#eff1f5;">(TcpPacket </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">// pass the packets that :</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">// 1. tcp.Syn &amp;&amp; tcp.PayloadData.Length == 0 - sent for synchronization</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">// 2. tcp.PayloadData.Length &gt; 0 - no useful data in packet</span><span style="color:#eff1f5;">
+        </span><span style="color:#65737e;">// 3. tcp.Fin || tcp.Rst - connection is finished or reseted</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">!</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Syn </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">PayloadData</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">PayloadData</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">&amp;&amp; !</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Fin </span><span style="color:#c0c5ce;">|| </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Rst</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            SynchronizatedConnection </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+            </span><span style="color:#65737e;">// try to find connection in collection</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">bool? </span><span style="color:#bf616a;">res </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">IsTcpFromClient</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">out </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                </span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">res </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#65737e;">// connection is new</span><span style="color:#eff1f5;">
+                SynchronizatedConnection </span><span style="color:#bf616a;">con</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">_hosts</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#eff1f5;">(((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">SourceAddress</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#65737e;">// packet from host to client</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">SynchronizatedConnection(((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">DestinationAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Address</span><span style="color:#eff1f5;">,</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">DestinationPort</span><span style="color:#eff1f5;">, ((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">SourceAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Address</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SourcePort</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientSyn </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">AcknowledgmentNumber</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostSyn </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">AcknowledgmentNumber</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">res </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">Description</span><span style="color:#eff1f5;">. </span><span style="color:#bf616a;">There are modules that have the input and output parameters </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">type and number of parameters may be different</span><span style="color:#eff1f5;">). </span><span style="color:#bf616a;">The goal </span><span style="color:#c0c5ce;">is </span><span style="color:#eff1f5;">to </span><span style="color:#b48ead;">select </span><span style="color:#bf616a;">some first modules that have no input parameters</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">then the modules whose inputs are the output parameters of the previously selected modules and so on</span><span style="color:#eff1f5;">. </span><span style="color:#bf616a;">Until the last module will not output parameters</span><span style="color:#eff1f5;">.</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+</span><span style="color:#bf616a;">The database stores all displayed modules and displays of all parameters </span><span style="color:#b48ead;">where </span><span style="color:#bf616a;">the parameter mapping to the mapping of modules </span><span style="color:#c0c5ce;">is </span><span style="color:#eff1f5;">many-to-one.</span><span style="color:#eff1f5;">
+</span><span style="color:#bf616a;">Initially</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">we choose to </span><span style="color:#b48ead;">do </span><span style="color:#bf616a;">all the settings </span><span style="color:#b48ead;">using </span><span style="color:#bf616a;">a simple SQL query</span><span style="color:#eff1f5;">.        </span><span style="color:#b48ead;">else</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#65737e;">// packet from host to client</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">SynchronizatedConnection(((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">SourceAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Address</span><span style="color:#eff1f5;">,</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SourcePort</span><span style="color:#eff1f5;">, ((IpPacket)</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ParentPacket</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">DestinationAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Address</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">DestinationPort</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientSyn </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostSyn </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">AcknowledgmentNumber</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">AcknowledgmentNumber</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">res </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+                </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">TimeIdentifier </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">DateTime</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Now</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ToFileTimeUtc</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+                </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ThreeWayCompleted </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">lock </span><span style="color:#eff1f5;">(synchronizationObjectForConnection)</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">Connections</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Add</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">res </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#65737e;">// from client</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">lock </span><span style="color:#eff1f5;">(conn.Synchro)</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber </span><span style="color:#c0c5ce;">&lt; </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                    </span><span style="color:#65737e;">// old packet</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#65737e;">// just drop these for now</span><span style="color:#eff1f5;">
+                        </span><span style="color:#b48ead;">return</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                    </span><span style="color:#65737e;">// out of order data</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">!</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientFragments</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ContainsKey</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+                        {</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientFragments</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Add</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                        }</span><span style="color:#eff1f5;">
+                        </span><span style="color:#b48ead;">else</span><span style="color:#eff1f5;">
+                        </span><span style="color:#65737e;">// expect new data to be better?</span><span style="color:#eff1f5;">
+                        {</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientFragments</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">] </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                        }</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">else</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#b48ead;">while </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                        {</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientFragments</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Remove</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                            </span><span style="color:#65737e;">// remove fragment</span><span style="color:#eff1f5;">
+                            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">PayloadData</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                                </span><span style="color:#b48ead;">break</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                            </span><span style="color:#65737e;">// new NextClientSeq for client packet </span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq </span><span style="color:#c0c5ce;">+ </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">PayloadData</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                            </span><span style="color:#65737e;">// data should be valid here.</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">AddClientData</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">GetUsefulData</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">), </span><span style="color:#bf616a;">GetIdOfConnection</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">));</span><span style="color:#eff1f5;">
+                            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientFragments</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ContainsKey</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+                            </span><span style="color:#65737e;">// check if we have newer fragments which will now fit.</span><span style="color:#eff1f5;">
+                            {</span><span style="color:#eff1f5;">
+                                </span><span style="color:#bf616a;">tcp </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientFragments</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextClientSeq</span><span style="color:#eff1f5;">];</span><span style="color:#eff1f5;">
+                            }</span><span style="color:#eff1f5;">
+                            </span><span style="color:#b48ead;">else</span><span style="color:#eff1f5;">
+                                </span><span style="color:#b48ead;">break</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                        }</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">else</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#65737e;">//from host</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">lock </span><span style="color:#eff1f5;">(conn.Synchro)</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber </span><span style="color:#c0c5ce;">&lt; </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                    </span><span style="color:#65737e;">// old packet</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#65737e;">// just drop these for now</span><span style="color:#eff1f5;">
+                        </span><span style="color:#b48ead;">return</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                    </span><span style="color:#65737e;">// newer out of order data</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">!</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostFragments</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ContainsKey</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+                        {</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostFragments</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Add</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                        }</span><span style="color:#eff1f5;">
+                        </span><span style="color:#b48ead;">else</span><span style="color:#eff1f5;">
+                        {</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostFragments</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">] </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                        }</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">else</span><span style="color:#eff1f5;">
+                    </span><span style="color:#65737e;">//</span><span style="color:#eff1f5;">
+                    {</span><span style="color:#eff1f5;">
+                        </span><span style="color:#b48ead;">while </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber </span><span style="color:#c0c5ce;">== </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                        </span><span style="color:#65737e;">// on time</span><span style="color:#eff1f5;">
+                        {</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostFragments</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Remove</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">SequenceNumber</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                            </span><span style="color:#65737e;">// remove fragment</span><span style="color:#eff1f5;">
+                            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">PayloadData</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+                                </span><span style="color:#b48ead;">break</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq </span><span style="color:#c0c5ce;">+ </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">PayloadData</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                            </span><span style="color:#65737e;">// data should be valid here</span><span style="color:#eff1f5;">
+                            </span><span style="color:#bf616a;">AddHostData</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">GetUsefulData</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">), </span><span style="color:#bf616a;">GetIdOfConnection</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">));</span><span style="color:#eff1f5;">
+                            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostFragments</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ContainsKey</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+                            </span><span style="color:#65737e;">// check if we have newer fragments which will now fit.</span><span style="color:#eff1f5;">
+                            {</span><span style="color:#eff1f5;">
+                                </span><span style="color:#bf616a;">tcp </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostFragments</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">NextHostSeq</span><span style="color:#eff1f5;">];</span><span style="color:#eff1f5;">
+                            }</span><span style="color:#eff1f5;">
+                            </span><span style="color:#b48ead;">else</span><span style="color:#eff1f5;">
+                                </span><span style="color:#b48ead;">break</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                        }</span><span style="color:#eff1f5;">
+                    }</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private static string </span><span style="color:#8fa1b3;">GetIdOfConnection</span><span style="color:#eff1f5;">(SynchronizatedConnection </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ToString</span><span style="color:#eff1f5;">() </span><span style="color:#c0c5ce;">+ </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ClientPort</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ToString</span><span style="color:#eff1f5;">() </span><span style="color:#c0c5ce;">+ </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostAddress</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ToString</span><span style="color:#eff1f5;">()</span><span style="color:#eff1f5;">
+        </span><span style="color:#c0c5ce;">+ </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">HostPort</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ToString</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private bool? </span><span style="color:#8fa1b3;">IsTcpFromClient</span><span style="color:#eff1f5;">(TcpPacket </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">out </span><span style="color:#eff1f5;">SynchronizatedConnection </span><span style="color:#bf616a;">conn</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">conn </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">lock </span><span style="color:#eff1f5;">(synchronizationObjectForConnection)</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">foreach </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">connection </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">Connections</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+            {</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">connection</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">IsFromClient</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">connection</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">connection</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">IsFromHost</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">))</span><span style="color:#eff1f5;">
+                {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">conn </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">connection</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+ </span><span style="color:#eff1f5;">
+    </span><span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// Get Payload Data from tcp packet</span><span style="color:#65737e;">
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// &lt;</span><span style="color:#bf616a;">param </span><span style="color:#d08770;">name</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;tcp&quot;</span><span style="color:#65737e;">&gt;TCP packet&lt;/</span><span style="color:#bf616a;">param</span><span style="color:#65737e;">&gt;</span><span style="color:#65737e;">
+    /// &lt;</span><span style="color:#bf616a;">returns</span><span style="color:#65737e;">&gt;bytes of useful data&lt;/</span><span style="color:#bf616a;">returns</span><span style="color:#65737e;">&gt;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">protected static byte</span><span style="color:#eff1f5;">[] </span><span style="color:#8fa1b3;">GetUsefulData</span><span style="color:#eff1f5;">(TcpPacket </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">data </span><span style="color:#c0c5ce;">= new </span><span style="color:#b48ead;">byte</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Bytes</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">DataOffset </span><span style="color:#c0c5ce;">* </span><span style="color:#d08770;">4</span><span style="color:#eff1f5;">];</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">for </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">i </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">DataOffset </span><span style="color:#c0c5ce;">* </span><span style="color:#d08770;">4</span><span style="color:#eff1f5;">; </span><span style="color:#bf616a;">i </span><span style="color:#c0c5ce;">&lt; </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Bytes</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length</span><span style="color:#eff1f5;">; </span><span style="color:#bf616a;">i</span><span style="color:#c0c5ce;">++</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">data</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">i </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">DataOffset </span><span style="color:#c0c5ce;">* </span><span style="color:#d08770;">4</span><span style="color:#eff1f5;">] </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">tcp</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Bytes</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">i</span><span style="color:#eff1f5;">];</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">data</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+}</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>Проблемы данного класса/решения:</p>
+<ol>
+<li>Если &quot;словится&quot; первый пакет, который является неправильным - возникает проблема с получением дальнейшей информации, которая идет по данному соединению;</li>
+<li>Не проверяется контрольная сумма принятого пакета;</li>
+<li>Все манипуляции (приведение, извлечение TCP пакета из IP пакета, работа с этим пакетом) довольно времяемкие операции. Необходимо задавать хороший фильтр</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">public void </span><span style="color:#bf616a;">RunSniffer</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">filter</span><span style="color:#c0c5ce;">)) </span><span style="color:#c0c5ce;">
+</span></pre>
+<p>или советую отказаться от этого решения для наблюдения за высоконагруженным сетевым траффиком.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;linq-and-group&#x2F;">‹ Linq and Group</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;use-zadgraph&#x2F;">Use ZadGraph ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

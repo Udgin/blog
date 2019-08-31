@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Serializing and versioning</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;High-loaded-applications&#x2F;serializing-and-versioning&#x2F;">Serializing and versioning</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2018-09-05</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Encoding format affects not only efficiency of the application, but also, what is more important, the architecture of the application which are using them.</p>
+<p>In particular, many services require support for incremental deployment of a new version. So new version will be deployed only to a few nodes at one time, not to all nodes. Incremental deployment allows to release new versions of services without forced system inactivity (thereby encouraging frequent small releases rather than rarely performed large ones) and reduce deployment risk (through detection and rollback failed releases before they affect a large number of users). It is extremely beneficial for development — simplicity changes of the application.</p>
+<p>In the case of incremental deployment, it is good to allow the possibility to have different versions of the application at the different nodes. Therefore, it is important to encode all DTO with backward compatibility support (new version of appication could read 'old' data objects) and direct compatibility (old could read new).</p>
+<p>There are several encoding formats:</p>
+<ul>
+<li>Language-specific coding formats are limited to this language and often cannot provide the reverse and direct compatibility.</li>
+<li>Text formats like JSON, XML and CSV are common, and their compatibility depends on how they are used. They also have optional additional schemas. In these formats, data types are sometimes quite vague, so it's required to work carefully with entities like numbers and binary lines.</li>
+<li>Binary schema-based formats such as Thrift, Protocol Buffers and Avro, allow you to perform compressed and efficient coding with clearly certain semantics of backward and forward compatibility. Their schemes can be useful for documenting and generating code in programming languages with static typing. However, they have a drawback: the data needs to be decoded so that people can read it.</li>
+</ul>
+<p>There are several modes of data flow movement, where a data encoding format plays an important role:</p>
+<ul>
+<li>databases where the writing process encodes the data and the reading process from it — decodes;</li>
+<li>RPC and REST APIs in which the client encodes a request, the server decodes the request and encodes a response, and finally, the client decodes the response;</li>
+<li>asynchronous messaging (using message brokers or actors), where nodes communicate by sending each other messages: encoded by sender and decoded by receiver.</li>
+</ul>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;high-load&#x2F;">#high-load</a>
+                    
+                </div>
+            
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

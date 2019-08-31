@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Backup InfluxDB in Docker</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;backup-influxdb-in-docker&#x2F;">Backup InfluxDB in Docker</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-04-15</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>If you want to backup your InfluxDB in Docker you can probably can start with this wonderful <a href="https://devblog.digimondo.io/how-to-backup-influxdb-running-in-a-docker-container-615938dbab90?gi=78ccabcf77cf">article</a>.</p>
+<p>Later I will just describe how I am doing backup to local folder instead of S3 storage.</p>
+<p>It is my docker-compose:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">    db:</span><span style="color:#c0c5ce;">
+        image: &quot;influxdb:1.2&quot;</span><span style="color:#c0c5ce;">
+        restart: always</span><span style="color:#c0c5ce;">
+        ports: </span><span style="color:#c0c5ce;">
+            - &quot;8086:8086&quot;</span><span style="color:#c0c5ce;">
+        volumes:</span><span style="color:#c0c5ce;">
+            - /etc/influxdb:/var/lib/ #folder with db data</span><span style="color:#c0c5ce;">
+            - ./influxdb.conf:/etc/influxdb/influxdb.conf:ro #configuration for InfluxDB</span><span style="color:#c0c5ce;">
+    influxdb-backup:</span><span style="color:#c0c5ce;">
+        image: influxdb-backup:1.2</span><span style="color:#c0c5ce;">
+        container_name: influxdb-backup</span><span style="color:#c0c5ce;">
+        restart: always</span><span style="color:#c0c5ce;">
+        volumes:</span><span style="color:#c0c5ce;">
+            - /backup:/backup #folder with backups</span><span style="color:#c0c5ce;">
+        links:</span><span style="color:#c0c5ce;">
+            - db</span><span style="color:#c0c5ce;">
+        environment:</span><span style="color:#c0c5ce;">
+            INFLUX_HOST: db</span><span style="color:#c0c5ce;">
+            DATABASES: entity_db</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>So there are two containers: influxdb is the standard <a href="https://docs.influxdata.com/influxdb/v1.2/introduction/getting_started/">InfluxDB</a> and influxdb-backup:1.2 (see dockerfile for this image below).</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">FROM influxdb:1.2-alpine</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+# Backup the following databases, separator &quot;:&quot;</span><span style="color:#c0c5ce;">
+ENV DATABASES=entity_db</span><span style="color:#c0c5ce;">
+ENV INFLUX_HOST=influxdb</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+# Some tiny helpers </span><span style="color:#c0c5ce;">
+RUN apk update &amp;&amp; apk add ca-certificates &amp;&amp; update-ca-certificates &amp;&amp; apk add openssl</span><span style="color:#c0c5ce;">
+RUN apk add --no-cache bash py2-pip py-setuptools ca-certificates</span><span style="color:#c0c5ce;">
+RUN pip install python-magic</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+# Backup script</span><span style="color:#c0c5ce;">
+COPY backup.sh /bin/backup.sh</span><span style="color:#c0c5ce;">
+RUN chmod +x /bin/backup.sh</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+# Setup crontab</span><span style="color:#c0c5ce;">
+COPY cron.conf /var/spool/cron/crontabs/root</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+# Run Cron in foreground</span><span style="color:#c0c5ce;">
+CMD crond -l 0 -f</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>So we are running cron job to run our <code>backup.sh</code>. The configuration (cron.conf):</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;"># do daily/weekly/monthly maintenance</span><span style="color:#c0c5ce;">
+# min	hour	day	month	weekday	command</span><span style="color:#c0c5ce;">
+</span><span style="color:#d08770;">0 0</span><span style="color:#c0c5ce;"> * * * /bin/</span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;">.sh</span><span style="color:#c0c5ce;">
+# run every day </span><span style="color:#b48ead;">at </span><span style="color:#d08770;">00</span><span style="color:#c0c5ce;">:</span><span style="color:#d08770;">00</span><span style="color:#c0c5ce;">:</span><span style="color:#d08770;">00</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>There is backup.sh with the next content:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">#!/bin/bash</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">set</span><span style="color:#c0c5ce;"> -</span><span style="color:#bf616a;">e</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#65737e;">: ${INFLUX_HOST:?&quot;INFLUX_HOST env variable is required&quot;}</span><span style="color:#65737e;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">dir</span><span style="color:#c0c5ce;">=/</span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;">
+min_dirs=</span><span style="color:#d08770;">16</span><span style="color:#c0c5ce;">
+#we are saving only last </span><span style="color:#d08770;">14</span><span style="color:#c0c5ce;"> backups (</span><span style="color:#d08770;">2</span><span style="color:#c0c5ce;"> weeks)</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">if</span><span style="color:#c0c5ce;"> [ $(</span><span style="color:#b48ead;">find </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">$dir</span><span style="color:#c0c5ce;">&quot; -maxdepth </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;"> -</span><span style="color:#b48ead;">type</span><span style="color:#c0c5ce;"> d | wc -l) -ge $min_dirs ]</span><span style="color:#c0c5ce;">
+  then </span><span style="color:#b48ead;">find </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">$dir</span><span style="color:#c0c5ce;">&quot; -maxdepth </span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">sort </span><span style="color:#c0c5ce;">| head -n </span><span style="color:#d08770;">2 </span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">sort</span><span style="color:#c0c5ce;"> -r | head -n </span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">| xargs rm -rf</span><span style="color:#c0c5ce;">
+fi</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+#all backups are in /</span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;"> folder</span><span style="color:#c0c5ce;">
+#every </span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;"> is in a folder with name which is </span><span style="color:#b48ead;">date</span><span style="color:#c0c5ce;"> when a </span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;"> has been created</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">DATE</span><span style="color:#c0c5ce;">=`</span><span style="color:#b48ead;">date</span><span style="color:#c0c5ce;"> +%</span><span style="color:#bf616a;">Y-</span><span style="color:#c0c5ce;">%m-%</span><span style="color:#bf616a;">d-</span><span style="color:#c0c5ce;">%H-%</span><span style="color:#bf616a;">M-</span><span style="color:#c0c5ce;">%S`</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">echo</span><span style="color:#c0c5ce;"> &#39;Backup Influx metadata&#39;</span><span style="color:#c0c5ce;">
+influxd </span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;"> -host $INFLUX_HOST:</span><span style="color:#d08770;">8088</span><span style="color:#c0c5ce;"> /</span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;">/$</span><span style="color:#b48ead;">DATE</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+# </span><span style="color:#b48ead;">Replace</span><span style="color:#c0c5ce;"> colons with spaces to create list.</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">for</span><span style="color:#c0c5ce;"> db in ${DATABASES//:/ }; do</span><span style="color:#c0c5ce;">
+  </span><span style="color:#b48ead;">echo </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">Creating backup for $db</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#c0c5ce;">
+  influxd </span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;"> -database $db -host $INFLUX_HOST:</span><span style="color:#d08770;">8088</span><span style="color:#c0c5ce;"> /</span><span style="color:#b48ead;">backup</span><span style="color:#c0c5ce;">/$</span><span style="color:#b48ead;">DATE</span><span style="color:#c0c5ce;">
+done</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>Please find an image <a href="/assets/inluxDbBackupDocker.zip">here</a>.</p>
+<p>Thank you!</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;docker&#x2F;">#docker</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;giving-full-read-write-permissions-to-a-folder-by-all-users-and-apps&#x2F;">‹ Giving full read+write permissions to a folder by all users and apps</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;daemon-cron-using-fsharp&#x2F;">Daemon cron using F# ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

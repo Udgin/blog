@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Auto deployment for SSRS reports</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;auto-deployment-for-ssrs-reports&#x2F;">Auto deployment for SSRS reports</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-09-19</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>If you work with SSRS it is not so easy to create CI build for SSRS project. It looks like the best approach is to use shared datasources, shared datasets and embedded datasets in reports which use shared datasets. Shared datasets should use stored procedures to receive data so you will be able to cover your SQL logic by unit tests.</p>
+<p>So you will have the next types of files in your project:</p>
+<ol>
+<li>*.rdl - reports</li>
+<li>*.rsd - shared datasets</li>
+<li>*.rds - shared datasources</li>
+</ol>
+<p>To deploy them to clean SSRS server we can use <a href="https://docs.microsoft.com/en-us/sql/reporting-services/tools/rs-exe-utility-ssrs">RS tool</a>. And that is a bat file to call it:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">REM</span><span style="color:#65737e;"> SSRS server, you can provide also user and password to RS tool if you can&#39;t use Windows credentials </span><span style="background-color:#bf616a;color:#2b303b;">(</span><span style="color:#65737e;">default behaviour</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#65737e;">
+</span><span style="color:#b48ead;">set </span><span style="color:#bf616a;">varServerPath</span><span style="color:#c0c5ce;">=</span><span style="color:#a3be8c;">http://desktop-h33a7aa/reportserver</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">REM</span><span style="color:#65737e;"> name of folder at SSRS server for reports</span><span style="color:#65737e;">
+</span><span style="color:#b48ead;">set </span><span style="color:#bf616a;">varReportFolder</span><span style="color:#c0c5ce;">=</span><span style="color:#a3be8c;">My_Reports</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">REM</span><span style="color:#65737e;"> name of folder at SSRS server for datasets</span><span style="color:#65737e;">
+</span><span style="color:#b48ead;">Set </span><span style="color:#bf616a;">varDatasetFolder</span><span style="color:#c0c5ce;">=</span><span style="color:#a3be8c;">Datasets</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">REM</span><span style="color:#65737e;"> name of folder at SSRS server for data sources</span><span style="color:#65737e;">
+</span><span style="color:#b48ead;">set </span><span style="color:#bf616a;">varDataSourceFolder</span><span style="color:#c0c5ce;">=</span><span style="color:#a3be8c;">Data Sources</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">REM</span><span style="color:#65737e;"> path to a folder with reports, datasets and datasources</span><span style="color:#65737e;">
+</span><span style="color:#b48ead;">set </span><span style="color:#bf616a;">varReportFilePath</span><span style="color:#c0c5ce;">=</span><span style="color:#a3be8c;">.\Project\Reports\My_Reports</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+&quot;</span><span style="color:#a3be8c;">C:\Program Files\Microsoft SQL Server Reporting Services\Shared Tools\rs.exe</span><span style="color:#c0c5ce;">&quot; -i Commonscript.</span><span style="color:#b48ead;">rss</span><span style="color:#c0c5ce;"> -s %</span><span style="color:#bf616a;">varServerPath</span><span style="color:#c0c5ce;">% -v ReportFolder=&quot;%</span><span style="color:#bf616a;">varReportFolder</span><span style="color:#c0c5ce;">%&quot; -v DataSetFolder=&quot;%</span><span style="color:#bf616a;">varDatasetFolder</span><span style="color:#c0c5ce;">%&quot; -v DataSourceFolder=&quot;%</span><span style="color:#bf616a;">varDataSourceFolder</span><span style="color:#c0c5ce;">%&quot; -v filePath=&quot;%</span><span style="color:#bf616a;">varReportFilePath</span><span style="color:#c0c5ce;">%&quot; -e Mgmt2010</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>All logic is described in Commonscript.rss. It creates folders in SSRS server for reports, datasets and datasources (using CreateFolders method), later it reads all *.rds files in varReportFilePath and create datasources for each file if it doesn't exist. After it reads all *.rsd files in varReportFilePath, create datasets and connects a dataset with a datasource. In the end it read all *.rdl files in varReportFilePath, create reports and connects a report with a dataset.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">Dim definition As [Byte]() = Nothing</span><span style="color:#c0c5ce;">
+Dim bytedefinition as [Byte]() = nothing</span><span style="color:#c0c5ce;">
+Dim warnings As Warning() = Nothing</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+&#39;Main Entry point of utility</span><span style="color:#c0c5ce;">
+Public Sub Main()</span><span style="color:#c0c5ce;">
+    Console.WriteLine()</span><span style="color:#c0c5ce;">
+    Console.WriteLine(&quot;Initiating Deployment&quot;)</span><span style="color:#c0c5ce;">
+    rs.Credentials = System.Net.CredentialCache.DefaultCredentials</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        &#39;Create the shared data source</span><span style="color:#c0c5ce;">
+        CreateFolders(DataSourceFolder,&quot;/&quot;,&quot;Data Sources&quot;,&quot;Visible&quot;)</span><span style="color:#c0c5ce;">
+        &#39;Create the folder that will contain the shared data sets</span><span style="color:#c0c5ce;">
+        CreateFolders(DataSetFolder, &quot;/&quot;, &quot;Data Set Folder&quot;, &quot;Visible&quot;)</span><span style="color:#c0c5ce;">
+        &#39;Create the folder that will contain the deployed reports</span><span style="color:#c0c5ce;">
+        CreateFolders(ReportFolder, &quot;/&quot;, &quot;Report Folder&quot;,&quot;Visible&quot;)</span><span style="color:#c0c5ce;">
+    Catch goof As Exception</span><span style="color:#c0c5ce;">
+        Console.WriteLine(goof.Message)</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+    ReadFiles(filepath, &quot;*.rds&quot;)</span><span style="color:#c0c5ce;">
+    ReadFiles(filepath, &quot;*.rsd&quot;)</span><span style="color:#c0c5ce;">
+    ReadFiles(filepath, &quot;*.rdl&quot;)</span><span style="color:#c0c5ce;">
+End Sub</span><span style="color:#c0c5ce;">
+ </span><span style="color:#c0c5ce;">
+&#39;Utility for creation of folders</span><span style="color:#c0c5ce;">
+Public Sub CreateFolders(ByVal folderName as string, ByVal parentPath as string, ByVal description as String, ByVal visible as string)</span><span style="color:#c0c5ce;">
+    Console.WriteLine()</span><span style="color:#c0c5ce;">
+    Console.WriteLine(&quot;Checking for Target Folders&quot;)</span><span style="color:#c0c5ce;">
+    &#39;CatalogItem properties</span><span style="color:#c0c5ce;">
+    Dim descriptionProp as new [Property]</span><span style="color:#c0c5ce;">
+    descriptionProp.Name = &quot;Description&quot;</span><span style="color:#c0c5ce;">
+    descriptionProp.Value= description</span><span style="color:#c0c5ce;">
+    Dim visibleProp as new [Property]</span><span style="color:#c0c5ce;">
+    visibleProp.Name = &quot;Visible&quot;</span><span style="color:#c0c5ce;">
+    visibleProp.value= visible</span><span style="color:#c0c5ce;">
+    Dim props(1) as [Property]</span><span style="color:#c0c5ce;">
+    props(0) = descriptionProp</span><span style="color:#c0c5ce;">
+    props(1) = visibleProp</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        rs.CreateFolder(folderName,parentPath,props)</span><span style="color:#c0c5ce;">
+        Console.WriteLine(&quot;Folder {0} successfully created&quot;, foldername)</span><span style="color:#c0c5ce;">
+    Catch goof as SoapException</span><span style="color:#c0c5ce;">
+        If goof.Message.Indexof(&quot;AlreadyExists&quot;)&gt;0 Then</span><span style="color:#c0c5ce;">
+            Console.WriteLine(&quot;Folder {0} already exists&quot;,foldername)</span><span style="color:#c0c5ce;">
+        End If</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+End Sub</span><span style="color:#c0c5ce;">
+ </span><span style="color:#c0c5ce;">
+&#39;Utility for reading files from the Report Sevices Project</span><span style="color:#c0c5ce;">
+Public sub ReadFiles(filepath as string, fileextension as string)</span><span style="color:#c0c5ce;">
+    Console.WriteLine()</span><span style="color:#c0c5ce;">
+    Console.WriteLine(&quot;Reading Files from Report Services Project&quot;)</span><span style="color:#c0c5ce;">
+    Dim rptdirinfo As System.IO.DirectoryInfo</span><span style="color:#c0c5ce;">
+    rptdirinfo = New System.IO.DirectoryInfo(filepath)</span><span style="color:#c0c5ce;">
+    Dim filedoc As FileInfo()</span><span style="color:#c0c5ce;">
+    filedoc = rptdirinfo.GetFiles(fileextension)</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        For rptcount As Integer = 0 To filedoc.Length-1</span><span style="color:#c0c5ce;">
+            If Not filedoc(rptcount).Name.ToString.Trim.ToUpper.Contains(&quot;BACKUP&quot;) Then</span><span style="color:#c0c5ce;">
+                SELECT Case fileextension</span><span style="color:#c0c5ce;">
+                Case &quot;*.rds&quot;</span><span style="color:#c0c5ce;">
+                    CreateDataSource(filedoc(rptcount).tostring.trim)</span><span style="color:#c0c5ce;">
+                Case &quot;*.rsd&quot;</span><span style="color:#c0c5ce;">
+                    CreateDataSet(filedoc(rptcount).tostring.trim)</span><span style="color:#c0c5ce;">
+                Case &quot;*.rdl&quot;</span><span style="color:#c0c5ce;">
+                    PublishReport(filedoc(rptcount).tostring.trim)</span><span style="color:#c0c5ce;">
+                End Select</span><span style="color:#c0c5ce;">
+            End If</span><span style="color:#c0c5ce;">
+        Next</span><span style="color:#c0c5ce;">
+    Catch goof as Exception</span><span style="color:#c0c5ce;">
+        Console.WriteLine(&quot;In ReadFiles &quot; + goof.message)</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+End Sub</span><span style="color:#c0c5ce;">
+ </span><span style="color:#c0c5ce;">
+&#39;Utility for Creating Shared Data Sets contained in the project</span><span style="color:#c0c5ce;">
+Public Sub CreateDataSet(ByVal filename as string)</span><span style="color:#c0c5ce;">
+    Dim valstart as integer</span><span style="color:#c0c5ce;">
+    Dim valend as integer</span><span style="color:#c0c5ce;">
+    Dim DSDefinitionStr as string</span><span style="color:#c0c5ce;">
+    Dim DataSourceName as string</span><span style="color:#c0c5ce;">
+    Dim QueryString as string</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        Dim stream As FileStream = File.OpenRead(filePath + &quot;\&quot; + filename )</span><span style="color:#c0c5ce;">
+        definition = New [Byte](stream.Length-1) {}</span><span style="color:#c0c5ce;">
+        stream.Read(definition, 0, CInt(stream.Length))</span><span style="color:#c0c5ce;">
+        stream.Close()</span><span style="color:#c0c5ce;">
+        For i As Integer = 0 To definition.Length - 1</span><span style="color:#c0c5ce;">
+            DSDefinitionStr = DSDefinitionStr + Convert.ToString(Convert.ToChar(Convert.ToInt16(definition(i).ToString)))</span><span style="color:#c0c5ce;">
+        Next</span><span style="color:#c0c5ce;">
+        valstart=DSDefinitionStr.ToString.Indexof(&quot;&lt;DataSourceReference&gt;&quot;)</span><span style="color:#c0c5ce;">
+        If valstart &gt; 0 Then</span><span style="color:#c0c5ce;">
+            valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;DataSourceReference&gt;&quot;) + 21</span><span style="color:#c0c5ce;">
+            valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/DataSourceReference&gt;&quot;)</span><span style="color:#c0c5ce;">
+            DataSourceName=DSDefinitionStr.ToString.Substring(valstart, valend - valstart)</span><span style="color:#c0c5ce;">
+            Console.WriteLine(DataSourceName)</span><span style="color:#c0c5ce;">
+        End If</span><span style="color:#c0c5ce;">
+    Catch e As IOException</span><span style="color:#c0c5ce;">
+        Console.WriteLine(e.Message)</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+    filename=filename.tostring.replace(&quot;.rsd&quot;,&quot;&quot;)</span><span style="color:#c0c5ce;">
+    Console.WriteLine(&quot;Attempting to Deploy DataSet {0}&quot;, filename)</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        Dim item as CatalogItem</span><span style="color:#c0c5ce;">
+        item=rs.CreateCatalogItem(&quot;DataSet&quot;,filename, &quot;/&quot; + DataSetFolder, false, definition, nothing, warnings)</span><span style="color:#c0c5ce;">
+        If Not (warnings Is Nothing) Then</span><span style="color:#c0c5ce;">
+            Dim warning As Warning</span><span style="color:#c0c5ce;">
+            For Each warning In warnings</span><span style="color:#c0c5ce;">
+                if warning.message.tostring.tolower.contains(&quot;refers to the shared data source&quot;) then</span><span style="color:#c0c5ce;">
+                    Console.WriteLine(&quot;Connecting DataSet {0} to Data Source {1}&quot;,filename, DataSourceName)</span><span style="color:#c0c5ce;">
+                    Dim referenceData() as ItemReferenceData = rs.GetItemReferences(&quot;/&quot; + DataSetFolder + &quot;/&quot; + filename,&quot;DataSet&quot;)</span><span style="color:#c0c5ce;">
+                    Dim references(0) as ItemReference</span><span style="color:#c0c5ce;">
+                    Dim reference as New ItemReference()</span><span style="color:#c0c5ce;">
+                    Dim datasourceURL = &quot;/&quot; + DataSourceFolder + &quot;/&quot; + DataSourceName</span><span style="color:#c0c5ce;">
+                    reference.name=referenceData(0).Name</span><span style="color:#c0c5ce;">
+                    Console.WriteLine(&quot;Reference name = &quot; + reference.name)</span><span style="color:#c0c5ce;">
+                    reference.Reference=datasourceURL</span><span style="color:#c0c5ce;">
+                    references(0)=reference</span><span style="color:#c0c5ce;">
+                    rs.SetItemReferences(&quot;/&quot; + DataSetFolder + &quot;/&quot; + filename, references)</span><span style="color:#c0c5ce;">
+                else</span><span style="color:#c0c5ce;">
+                    Console.WriteLine(warning.Message)</span><span style="color:#c0c5ce;">
+                end if</span><span style="color:#c0c5ce;">
+            Next warning</span><span style="color:#c0c5ce;">
+        Else</span><span style="color:#c0c5ce;">
+            Console.WriteLine(&quot;DataSet: {0} published successfully with no warnings&quot;, filename)</span><span style="color:#c0c5ce;">
+        End If</span><span style="color:#c0c5ce;">
+    Catch goof as SoapException</span><span style="color:#c0c5ce;">
+        If goof.Message.Indexof(&quot;AlreadyExists&quot;)&gt;0 Then</span><span style="color:#c0c5ce;">
+            Console.WriteLine(&quot;The DataSet {0} already exists&quot;,fileName.ToString)</span><span style="color:#c0c5ce;">
+        Else</span><span style="color:#c0c5ce;">
+            If goof.Message.IndexOf(&quot;published&quot;)=-1 Then</span><span style="color:#c0c5ce;">
+                Console.Writeline(goof.Message)</span><span style="color:#c0c5ce;">
+            End If</span><span style="color:#c0c5ce;">
+        End If</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+End Sub</span><span style="color:#c0c5ce;">
+ </span><span style="color:#c0c5ce;">
+&#39;Utility for creating Data Sources on the Server</span><span style="color:#c0c5ce;">
+Public Sub CreateDataSource(filename as string)</span><span style="color:#c0c5ce;">
+    &#39;Define the data source definition.</span><span style="color:#c0c5ce;">
+    Dim dsDefinition As New DataSourceDefinition()</span><span style="color:#c0c5ce;">
+    Dim DataSourceName as string</span><span style="color:#c0c5ce;">
+    Dim valstart As Integer</span><span style="color:#c0c5ce;">
+    Dim valend As Integer</span><span style="color:#c0c5ce;">
+    Dim ConnectionString As String</span><span style="color:#c0c5ce;">
+    Dim Extension As String</span><span style="color:#c0c5ce;">
+    Dim IntegratedSec As String</span><span style="color:#c0c5ce;">
+    Dim DataSourceID As String</span><span style="color:#c0c5ce;">
+    Dim PromptStr As String</span><span style="color:#c0c5ce;">
+    PromptStr=&quot;&quot;</span><span style="color:#c0c5ce;">
+    Dim DSDefinitionStr As String</span><span style="color:#c0c5ce;">
+    DSDefinitionStr = &quot;&quot;</span><span style="color:#c0c5ce;">
+    DataSourceName=filename.tostring.trim.substring(0,filename.tostring.trim.length-4)</span><span style="color:#c0c5ce;">
+    Console.WriteLine(&quot;Attempting to Deploy Data Source {0}&quot;, DataSourceName)</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        Dim stream As FileStream = File.OpenRead(filepath + &quot;\&quot; + filename)</span><span style="color:#c0c5ce;">
+        bytedefinition = New [Byte](stream.Length-1) {}</span><span style="color:#c0c5ce;">
+        stream.Read(bytedefinition, 0, CInt(stream.Length))</span><span style="color:#c0c5ce;">
+        stream.Close()</span><span style="color:#c0c5ce;">
+        For i As Integer = 0 To bytedefinition.Length - 1</span><span style="color:#c0c5ce;">
+            DSDefinitionStr = DSDefinitionStr + Convert.ToString(Convert.ToChar(Convert.ToInt16(bytedefinition(i).ToString)))</span><span style="color:#c0c5ce;">
+        Next</span><span style="color:#c0c5ce;">
+    Catch goof As IOException</span><span style="color:#c0c5ce;">
+        Console.WriteLine(goof.Message)</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;ConnectString&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/ConnectString&gt;&quot;) Then</span><span style="color:#c0c5ce;">
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;ConnectString&gt;&quot;) + 15</span><span style="color:#c0c5ce;">
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/ConnectString&gt;&quot;)</span><span style="color:#c0c5ce;">
+        ConnectionString = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)</span><span style="color:#c0c5ce;">
+    End If</span><span style="color:#c0c5ce;">
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;Extension&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/Extension&gt;&quot;) Then</span><span style="color:#c0c5ce;">
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;Extension&gt;&quot;) + 11</span><span style="color:#c0c5ce;">
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/Extension&gt;&quot;)</span><span style="color:#c0c5ce;">
+        Extension = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)</span><span style="color:#c0c5ce;">
+    End If</span><span style="color:#c0c5ce;">
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;IntegratedSecurity&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/IntegratedSecurity&gt;&quot;) Then</span><span style="color:#c0c5ce;">
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;IntegratedSecurity&gt;&quot;) + 20</span><span style="color:#c0c5ce;">
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/IntegratedSecurity&gt;&quot;)</span><span style="color:#c0c5ce;">
+        IntegratedSec = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)</span><span style="color:#c0c5ce;">
+    End If</span><span style="color:#c0c5ce;">
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;DataSourceID&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/DataSourceID&gt;&quot;) Then</span><span style="color:#c0c5ce;">
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;DataSourceID&gt;&quot;) + 14</span><span style="color:#c0c5ce;">
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/DataSourceID&gt;&quot;)</span><span style="color:#c0c5ce;">
+        DataSourceID = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)</span><span style="color:#c0c5ce;">
+    End If</span><span style="color:#c0c5ce;">
+    If DSDefinitionStr.ToString.Contains(&quot;&lt;Prompt&gt;&quot;) And DSDefinitionStr.ToString.Contains(&quot;&lt;/Prompt&gt;&quot;) Then</span><span style="color:#c0c5ce;">
+        valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;Prompt&gt;&quot;) + 8</span><span style="color:#c0c5ce;">
+        valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/Prompt&gt;&quot;)</span><span style="color:#c0c5ce;">
+        PromptStr = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)</span><span style="color:#c0c5ce;">
+    End If</span><span style="color:#c0c5ce;">
+    dsdefinition.CredentialRetrieval = CredentialRetrievalEnum.Integrated</span><span style="color:#c0c5ce;">
+    dsdefinition.ConnectString = ConnectionString</span><span style="color:#c0c5ce;">
+    dsdefinition.Enabled = True</span><span style="color:#c0c5ce;">
+    dsdefinition.EnabledSpecified = True</span><span style="color:#c0c5ce;">
+    dsdefinition.Extension = extension</span><span style="color:#c0c5ce;">
+    dsdefinition.ImpersonateUser = False</span><span style="color:#c0c5ce;">
+    dsdefinition.ImpersonateUserSpecified = True</span><span style="color:#c0c5ce;">
+    &#39;Use the default prompt string.</span><span style="color:#c0c5ce;">
+    If PromptStr.ToString.Length=0 Then</span><span style="color:#c0c5ce;">
+        dsdefinition.Prompt = Nothing</span><span style="color:#c0c5ce;">
+    Else</span><span style="color:#c0c5ce;">
+        dsdefinition.Prompt = PromptStr</span><span style="color:#c0c5ce;">
+    End if</span><span style="color:#c0c5ce;">
+    dsdefinition.WindowsCredentials = False</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        rs.CreateDataSource(DataSourceName, &quot;/&quot; + DataSourceFolder, False, dsdefinition, Nothing)</span><span style="color:#c0c5ce;">
+        Console.WriteLine(&quot;Data source {0} created successfully&quot;, DataSourceName.ToString)</span><span style="color:#c0c5ce;">
+    Catch goof as SoapException</span><span style="color:#c0c5ce;">
+        If goof.Message.Indexof(&quot;AlreadyExists&quot;)&gt;0 Then</span><span style="color:#c0c5ce;">
+            Console.WriteLine(&quot;The Data Source name {0} already exists&quot;,DataSourceName.ToString)</span><span style="color:#c0c5ce;">
+        End If</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+End Sub</span><span style="color:#c0c5ce;">
+ </span><span style="color:#c0c5ce;">
+&#39;Utility to Publish the Reports</span><span style="color:#c0c5ce;">
+Public Sub PublishReport(ByVal reportName As String)</span><span style="color:#c0c5ce;">
+    Console.WriteLine(&quot;Publishing &quot; + reportName)</span><span style="color:#c0c5ce;">
+    Dim DSDefinitionStr As String</span><span style="color:#c0c5ce;">
+    DSDefinitionStr = &quot;&quot;</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        Dim stream As FileStream = File.OpenRead(filePath + &quot;\&quot; + reportName )</span><span style="color:#c0c5ce;">
+        definition = New [Byte](stream.Length-1) {}</span><span style="color:#c0c5ce;">
+        stream.Read(definition, 0, CInt(stream.Length))</span><span style="color:#c0c5ce;">
+        stream.Close()</span><span style="color:#c0c5ce;">
+        For i As Integer = 0 To definition.Length - 1</span><span style="color:#c0c5ce;">
+            DSDefinitionStr = DSDefinitionStr + Convert.ToString(Convert.ToChar(Convert.ToInt16(definition(i).ToString)))</span><span style="color:#c0c5ce;">
+        Next</span><span style="color:#c0c5ce;">
+    Catch e As IOException</span><span style="color:#c0c5ce;">
+        Console.WriteLine(e.Message)</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+    reportname=reportname.tostring.replace(&quot;.rdl&quot;,&quot;&quot;)</span><span style="color:#c0c5ce;">
+    Console.WriteLine(&quot;Attempting to Deploy Report Name {0}&quot;, reportname.tostring)</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        Dim item as CatalogItem</span><span style="color:#c0c5ce;">
+        item=rs.CreateCatalogItem(&quot;Report&quot;,reportname, &quot;/&quot; + ReportFolder, false, definition,nothing, warnings)</span><span style="color:#c0c5ce;">
+        &#39;warnings = rs.CreateCatalogItem(reportName, &quot;/&quot; + ReportFolder, False, definition, Nothing)</span><span style="color:#c0c5ce;">
+        If Not (warnings Is Nothing) Then</span><span style="color:#c0c5ce;">
+            If item.Name &lt;&gt; &quot;&quot; then </span><span style="color:#c0c5ce;">
+                Console.WriteLine(&quot;Report: {0} published successfully with warnings&quot;, reportName)</span><span style="color:#c0c5ce;">
+                UpdateDataSources_report(reportName)</span><span style="color:#c0c5ce;">
+                UpdateDataSet_report(reportName, DSDefinitionStr)</span><span style="color:#c0c5ce;">
+            else</span><span style="color:#c0c5ce;">
+                Dim warning As Warning</span><span style="color:#c0c5ce;">
+                For Each warning In warnings</span><span style="color:#c0c5ce;">
+                    Console.WriteLine(warning.Message)</span><span style="color:#c0c5ce;">
+                Next warning</span><span style="color:#c0c5ce;">
+            End If</span><span style="color:#c0c5ce;">
+        Else</span><span style="color:#c0c5ce;">
+            Console.WriteLine(&quot;Report: {0} published successfully with no warnings&quot;, reportName)</span><span style="color:#c0c5ce;">
+            UpdateDataSources_report(reportName)</span><span style="color:#c0c5ce;">
+            UpdateDataSet_report(reportName, DSDefinitionStr)</span><span style="color:#c0c5ce;">
+        End If</span><span style="color:#c0c5ce;">
+    Catch goof as SoapException</span><span style="color:#c0c5ce;">
+        If goof.Message.Indexof(&quot;AlreadyExists&quot;)&gt;0 Then</span><span style="color:#c0c5ce;">
+            Console.WriteLine(&quot;The Report Name {0} already exists&quot;,reportName.ToString)</span><span style="color:#c0c5ce;">
+        Else</span><span style="color:#c0c5ce;">
+            If goof.Message.IndexOf(&quot;published&quot;)=-1 Then</span><span style="color:#c0c5ce;">
+            Console.WriteLine(goof.Message)</span><span style="color:#c0c5ce;">
+            End If</span><span style="color:#c0c5ce;">
+        End If</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+End Sub</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+&#39;Utility to Update The Data Sources on the Server</span><span style="color:#c0c5ce;">
+Public Sub UpdateDataSources_report(ReportName as string)</span><span style="color:#c0c5ce;">
+    rs.Credentials = System.Net.CredentialCache.DefaultCredentials</span><span style="color:#c0c5ce;">
+    Dim item as CatalogItem</span><span style="color:#c0c5ce;">
+    Dim items as CatalogItem()</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        Dim dataSources() as DataSource = rs.GetItemDataSources( &quot;/&quot; +  ReportFolder + &quot;/&quot; + ReportName)</span><span style="color:#c0c5ce;">
+        For Each ds as DataSource in dataSources</span><span style="color:#c0c5ce;">
+            Dim sharedDs(0) as DataSource</span><span style="color:#c0c5ce;">
+            sharedDs(0)=GetDataSource(DataSourceFolder, ds.Name)</span><span style="color:#c0c5ce;">
+            rs.SetItemDataSources(&quot;/&quot; +  ReportFolder + &quot;/&quot; + ReportName, sharedDs)</span><span style="color:#c0c5ce;">
+            Console.WriteLine(&quot;Set &quot; &amp; ds.Name &amp; &quot; datasource for &quot; &amp; &quot;/&quot; +  ReportFolder + &quot;/&quot; + ReportName &amp; &quot; report&quot;)</span><span style="color:#c0c5ce;">
+        Next</span><span style="color:#c0c5ce;">
+        Console.WriteLine(&quot;All the shared data source reference set for report {0} &quot;, &quot;/&quot; + ReportFolder + &quot;/&quot; + ReportName)</span><span style="color:#c0c5ce;">
+    Catch goof As SoapException</span><span style="color:#c0c5ce;">
+    Console.WriteLine(goof.Detail.InnerXml.ToString())</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+End Sub</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+&#39;Utility to link The Dataset with the Report</span><span style="color:#c0c5ce;">
+Public Sub UpdateDataSet_report(ReportName as string, DSDefinitionStr as string)</span><span style="color:#c0c5ce;">
+    Dim valstart As Integer</span><span style="color:#c0c5ce;">
+    Dim valend As Integer</span><span style="color:#c0c5ce;">
+    Dim sharedDataSetReference As string</span><span style="color:#c0c5ce;">
+    rs.Credentials = System.Net.CredentialCache.DefaultCredentials</span><span style="color:#c0c5ce;">
+    Try</span><span style="color:#c0c5ce;">
+        Dim dataSets As ItemReferenceData() = rs.GetItemReferences(&quot;/&quot; +  ReportFolder + &quot;/&quot; + ReportName, &quot;DataSet&quot;)</span><span style="color:#c0c5ce;">
+        If dataSets IsNot Nothing AndAlso dataSets.Length &gt; 0 AndAlso Not String.IsNullOrEmpty(dataSets(0).Name) Then</span><span style="color:#c0c5ce;">
+            For i as integer = 0 to dataSets.Length -1</span><span style="color:#c0c5ce;">
+                If DSDefinitionStr.ToString.Contains(&quot;&lt;DataSet Name=&quot;&quot;&quot;&amp; dataSets(i).Name &amp;&quot;&quot;&quot;&gt;&quot;) Then</span><span style="color:#c0c5ce;">
+                    valstart = DSDefinitionStr.ToString.IndexOf(&quot;&lt;SharedDataSetReference&gt;&quot;, DSDefinitionStr.ToString.IndexOf(&quot;&lt;DataSet Name=&quot;&quot;&quot;&amp; dataSets(i).Name &amp;&quot;&quot;&quot;&gt;&quot;)) + 24</span><span style="color:#c0c5ce;">
+                    valend = DSDefinitionStr.ToString.IndexOf(&quot;&lt;/SharedDataSetReference&gt;&quot;, DSDefinitionStr.ToString.IndexOf(&quot;&lt;DataSet Name=&quot;&quot;&quot;&amp; dataSets(i).Name &amp;&quot;&quot;&quot;&gt;&quot;))</span><span style="color:#c0c5ce;">
+                    sharedDataSetReference = DSDefinitionStr.ToString.Substring(valstart, valend - valstart)</span><span style="color:#c0c5ce;">
+                End If</span><span style="color:#c0c5ce;">
+                Dim sharedDataSetName as String = dataSets(i).Name</span><span style="color:#c0c5ce;">
+                Dim references(0) as ItemReference</span><span style="color:#c0c5ce;">
+                Dim sharedDataSet = New ItemReference() </span><span style="color:#c0c5ce;">
+                sharedDataSet.Name = sharedDataSetName</span><span style="color:#c0c5ce;">
+                Console.WriteLine(&quot;Attempting to Link Dataset {0}&quot;, sharedDataSetName)</span><span style="color:#c0c5ce;">
+                sharedDataSet.Reference = &quot;/&quot; + DataSetFolder + &quot;/&quot; + sharedDataSetReference </span><span style="color:#c0c5ce;">
+                references(0)=sharedDataSet</span><span style="color:#c0c5ce;">
+                rs.SetItemReferences(&quot;/&quot; + ReportFolder + &quot;/&quot; + ReportName, references)</span><span style="color:#c0c5ce;">
+                Console.WriteLine(&quot;Report &quot; + ReportName + &quot; Linked to data set &quot; + &quot;/&quot; + DataSetFolder + &quot;/&quot; + Convert.ToString(sharedDataSet.Name))</span><span style="color:#c0c5ce;">
+            Next</span><span style="color:#c0c5ce;">
+        End If</span><span style="color:#c0c5ce;">
+    Catch goof As SoapException</span><span style="color:#c0c5ce;">
+        Console.WriteLine(goof.Detail.InnerXml.ToString())</span><span style="color:#c0c5ce;">
+    End Try</span><span style="color:#c0c5ce;">
+End Sub</span><span style="color:#c0c5ce;">
+ </span><span style="color:#c0c5ce;">
+&#39;Function to Reference Data Sources</span><span style="color:#c0c5ce;">
+Private Function GetDataSource(sharedDataSourcePath as string, dataSourceName as String) as DataSource</span><span style="color:#c0c5ce;">
+    Dim reference As New DataSourceReference()</span><span style="color:#c0c5ce;">
+    Dim ds As New DataSource</span><span style="color:#c0c5ce;">
+    reference.Reference = &quot;/&quot; &amp; sharedDataSourcePath &amp; &quot;/&quot; &amp; dataSourceName</span><span style="color:#c0c5ce;">
+    ds.Item = CType(reference, DataSourceDefinitionOrReference)</span><span style="color:#c0c5ce;">
+    ds.Name = dataSourceName</span><span style="color:#c0c5ce;">
+    Console.WriteLine(&quot;Attempting to Publish Data Source {0}&quot;, ds.Name)</span><span style="color:#c0c5ce;">
+    GetDataSource=ds</span><span style="color:#c0c5ce;">
+End Function</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>This script is based on <a href="https://blogs.msdn.microsoft.com/johndesch/2012/12/17/using-the-rs-exe-utility-to-deploy-a-report-server-project-and-shared-dataset/">this article</a>.</p>
+<p>Thanks!</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;ssrs&#x2F;">#ssrs</a>
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;reports&#x2F;">#reports</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;simplest-syslog-server&#x2F;">‹ Simplest syslog server for rfc5424 (TCP)</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;how-to-sql-code-coverage&#x2F;">How to set up SQL code coverage ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

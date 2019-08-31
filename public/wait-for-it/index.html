@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - How to use wait-for-it with docker compose</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;wait-for-it&#x2F;">How to use wait-for-it with docker compose</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2018-09-15</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>There is a possibility to control startup order in Compose using great script - <a href="https://github.com/vishnubob/wait-for-it">wait-for-it</a>.
+It allows you to wait some docker containers which have long-running initialization process like databases.</p>
+<p>And there is step-by-step explanation how to use it:</p>
+<ol>
+<li>Copy <a href="https://github.com/vishnubob/wait-for-it/blob/master/wait-for-it.sh">wait-for-it.sh</a> to your project</li>
+</ol>
+<p><img src="/images/service-project.png" alt="image" /></p>
+<ol start="2">
+<li>Copy it to your docker image</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#bf616a;">FROM</span><span style="background-color:#bf616a;color:#2b303b;"> ...</span><span style="color:#c0c5ce;">
+...</span><span style="color:#c0c5ce;">
+</span><span style="color:#bf616a;">COPY</span><span style="background-color:#bf616a;color:#2b303b;"> </span><span style="color:#bf616a;">wait-for-it</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">sh</span><span style="background-color:#bf616a;color:#2b303b;"> .</span><span style="color:#c0c5ce;">
+...</span><span style="color:#c0c5ce;">
+</span><span style="color:#bf616a;">CMD</span><span style="background-color:#bf616a;color:#2b303b;"> ...</span><span style="color:#c0c5ce;">
+</span></pre>
+<ol start="3">
+<li>Modify docker-compose.yml to call wait-for-it script:</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#bf616a;">service</span><span style="background-color:#bf616a;color:#2b303b;">:</span><span style="color:#c0c5ce;">
+    </span><span style="color:#bf616a;">image</span><span style="background-color:#bf616a;color:#2b303b;">: service:latest</span><span style="color:#c0c5ce;">
+    </span><span style="color:#bf616a;">expose</span><span style="background-color:#bf616a;color:#2b303b;">:</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">-</span><span style="background-color:#bf616a;color:#2b303b;"> </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">80</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#c0c5ce;">
+    </span><span style="color:#bf616a;">depends_on</span><span style="background-color:#bf616a;color:#2b303b;">:</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">-</span><span style="background-color:#bf616a;color:#2b303b;"> </span><span style="color:#bf616a;">database</span><span style="color:#c0c5ce;">
+    </span><span style="color:#bf616a;">command</span><span style="background-color:#bf616a;color:#2b303b;">: [&quot;./wait-for-it.sh&quot;, &quot;database:3306&quot;, &quot;--timeout=360&quot;, &quot;--&quot;, &quot;command&quot;]</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>where
+- <code>command</code> is a command which will be called by wait-for-it script after timeout or successful ping result to database:3306</p>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;docker&#x2F;">#docker</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;help-to-your-eyes&#x2F;">‹ Help to your eyes</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;radio&#x2F;">Dotnet global tool, radio player ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

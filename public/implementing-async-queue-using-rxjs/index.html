@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Implementing async.queue using rxjs</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;implementing-async-queue-using-rxjs&#x2F;">Implementing async.queue using rxjs</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2016-12-18</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>There is an example of queue using rxjs:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#ebcb8b;">Rx</span><span style="color:#c0c5ce;">.Observable.</span><span style="color:#bf616a;">from</span><span style="color:#c0c5ce;">([&#39;</span><span style="color:#a3be8c;">foo</span><span style="color:#c0c5ce;">&#39;, &#39;</span><span style="color:#a3be8c;">bar</span><span style="color:#c0c5ce;">&#39;, &#39;</span><span style="color:#a3be8c;">baz</span><span style="color:#c0c5ce;">&#39;, &#39;</span><span style="color:#a3be8c;">bay</span><span style="color:#c0c5ce;">&#39;, &#39;</span><span style="color:#a3be8c;">bax</span><span style="color:#c0c5ce;">&#39;, &#39;</span><span style="color:#a3be8c;">bar</span><span style="color:#c0c5ce;">&#39;, &#39;</span><span style="color:#a3be8c;">cat</span><span style="color:#c0c5ce;">&#39;])</span><span style="color:#c0c5ce;">
+    .</span><span style="color:#bf616a;">do</span><span style="color:#c0c5ce;">(x </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">console.</span><span style="color:#96b5b4;">log</span><span style="color:#c0c5ce;">((new </span><span style="color:#ebcb8b;">Date</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">toLocaleTimeString</span><span style="color:#c0c5ce;">() + &quot; &quot; + </span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">))</span><span style="color:#c0c5ce;">
+    </span><span style="color:#65737e;">// grouping by 2 </span><span style="color:#65737e;">
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">bufferCount</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">2</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+    </span><span style="color:#65737e;">// concat received results</span><span style="color:#65737e;">
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">concatMap</span><span style="color:#c0c5ce;">((data) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">{</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#ebcb8b;">Rx</span><span style="color:#c0c5ce;">.Observable.</span><span style="color:#bf616a;">defer</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">{</span><span style="color:#c0c5ce;">
+            </span><span style="color:#65737e;">// assuming long operation here, e.g. downloading,</span><span style="color:#65737e;">
+            // we can use merge here if we want to do operation per item</span><span style="color:#65737e;">
+            </span><span style="color:#b48ead;">return </span><span style="color:#ebcb8b;">Rx</span><span style="color:#c0c5ce;">.Observable.</span><span style="color:#bf616a;">create</span><span style="color:#c0c5ce;">((observer)</span><span style="color:#b48ead;">=&gt;</span><span style="color:#c0c5ce;">{</span><span style="color:#c0c5ce;">
+                </span><span style="color:#96b5b4;">setTimeout</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">() {</span><span style="color:#c0c5ce;">
+                    </span><span style="color:#bf616a;">observer</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">next</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">data</span><span style="color:#c0c5ce;">);</span><span style="color:#c0c5ce;">
+                    </span><span style="color:#bf616a;">observer</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">complete</span><span style="color:#c0c5ce;">();</span><span style="color:#c0c5ce;">
+                }, </span><span style="color:#d08770;">2000</span><span style="color:#c0c5ce;">);</span><span style="color:#c0c5ce;">
+            })</span><span style="color:#c0c5ce;">
+        });</span><span style="color:#c0c5ce;">
+    }) </span><span style="color:#c0c5ce;">
+    .</span><span style="color:#bf616a;">subscribe</span><span style="color:#c0c5ce;">(</span><span style="color:#c0c5ce;">
+        result </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">console.</span><span style="color:#96b5b4;">log</span><span style="color:#c0c5ce;">((new </span><span style="color:#ebcb8b;">Date</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">toLocaleTimeString</span><span style="color:#c0c5ce;">() + &quot;</span><span style="color:#a3be8c;"> finished </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">result</span><span style="color:#c0c5ce;">),</span><span style="color:#c0c5ce;">
+        error </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">console.</span><span style="color:#96b5b4;">error</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">error</span><span style="color:#c0c5ce;">),</span><span style="color:#c0c5ce;">
+        () </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">console.</span><span style="color:#96b5b4;">log</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">done</span><span style="color:#c0c5ce;">&#39;)</span><span style="color:#c0c5ce;">
+    );</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#65737e;">// Console ouput</span><span style="color:#65737e;">
+// rxjs.html:9 Console was cleared</span><span style="color:#65737e;">
+// rxjs.html:11 9:56:36 PM foo</span><span style="color:#65737e;">
+// rxjs.html:11 9:56:36 PM bar</span><span style="color:#65737e;">
+// rxjs.html:11 9:56:36 PM baz</span><span style="color:#65737e;">
+// rxjs.html:11 9:56:36 PM bay</span><span style="color:#65737e;">
+// rxjs.html:11 9:56:36 PM bax</span><span style="color:#65737e;">
+// rxjs.html:11 9:56:36 PM bar</span><span style="color:#65737e;">
+// rxjs.html:11 9:56:36 PM cat</span><span style="color:#65737e;">
+// rxjs.html:28 9:56:38 PM finished foo,bar</span><span style="color:#65737e;">
+// rxjs.html:28 9:56:40 PM finished baz,bay</span><span style="color:#65737e;">
+// rxjs.html:28 9:56:42 PM finished bax,bar</span><span style="color:#65737e;">
+// rxjs.html:28 9:56:44 PM finished cat</span><span style="color:#65737e;">
+// rxjs.html:30 done</span><span style="color:#65737e;">
+</span></pre>
+<p>Used links:</p>
+<ul>
+<li><a href="https://github.com/Reactive-Extensions/RxJS/issues/613">Question about promise chains/queues in Rx</a></li>
+<li><a href="http://reactivex.io/documentation/operators/defer.html">Defer</a></li>
+<li><a href="https://github.com/ReactiveX/rxjs">RxJS</a></li>
+</ul>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;javascript&#x2F;">#javascript</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;octave-tutorial&#x2F;">‹ Octave Tutorial</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;simple-question-to-check-understanding-of-recursion-in-net&#x2F;">Simple question to check understanding of recursion in .NET ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

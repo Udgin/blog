@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Personal mobile radio application using Ionic</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;personal-mobile-radio-application-using-ionic&#x2F;">Personal mobile radio application using Ionic</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-07-24</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Hi, there!</p>
+<p>Finally I am tired because of all advertisements which we have in any simple radio mobile application. I just want to listen radio and that is all! Quite simple, hah?</p>
+<p>So I decided to create a simple radio mobile application by myself. I thought about Xamarin as I have some experience in creating application using it. But I decided to use new framework for me and it is Ionic. I am very impressed how cool it is and how easy to create application using it. It took about 2 hours to install all dependencies (ionic, android studio, java), deploy and run a first version of my application on my android device. Quite fast!</p>
+<p>I am using Ubuntu 16.04.</p>
+<p>Please find the steps below:</p>
+<ol>
+<li>I have installed ionic framework using this <a href="http://ionicframework.com/docs/intro/installation/">link</a> and create blank application: <code>ionic start radioOn blank</code>.</li>
+<li>And that is all, to start our application need to run <code>ionic serve</code>.</li>
+<li>As I want to listen an online radio, I need to create a provider to listen online stream: Html5Audio:</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">import </span><span style="color:#c0c5ce;">{ </span><span style="color:#bf616a;">Injectable</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">Output</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">EventEmitter </span><span style="color:#c0c5ce;">} </span><span style="color:#b48ead;">from </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">@angular/core</span><span style="color:#c0c5ce;">&#39;;</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+@</span><span style="color:#8fa1b3;">Injectable</span><span style="color:#c0c5ce;">()</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">export class </span><span style="color:#ebcb8b;">Html5Audio </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+    @</span><span style="color:#8fa1b3;">Output</span><span style="color:#eff1f5;">()</span><span style="color:#eff1f5;">
+    </span><span style="color:#bf616a;">ended </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">EventEmitter();</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private </span><span style="color:#8fa1b3;">pad2</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">number</span><span style="color:#c0c5ce;">) </span><span style="color:#eff1f5;">{ (</span><span style="color:#bf616a;">number </span><span style="color:#c0c5ce;">&lt; </span><span style="color:#d08770;">10 </span><span style="color:#c0c5ce;">? &#39;</span><span style="color:#a3be8c;">0</span><span style="color:#c0c5ce;">&#39; : &#39;&#39;</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">+ </span><span style="color:#bf616a;">number</span><span style="color:#eff1f5;">; }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#bf616a;">audioPlayer</span><span style="color:#c0c5ce;">: </span><span style="color:#eff1f5;">any;</span><span style="color:#eff1f5;">
+    </span><span style="color:#bf616a;">time</span><span style="color:#c0c5ce;">: </span><span style="color:#eff1f5;">string;</span><span style="color:#eff1f5;">
+    @</span><span style="color:#8fa1b3;">Output</span><span style="color:#eff1f5;">()</span><span style="color:#eff1f5;">
+    </span><span style="color:#bf616a;">isPlaying </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#bf616a;">readyStateInterval </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#bf616a;">url</span><span style="color:#c0c5ce;">: </span><span style="color:#eff1f5;">string;</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">play</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">url</span><span style="color:#c0c5ce;">: </span><span style="color:#eff1f5;">string</span><span style="color:#c0c5ce;">) </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">) {</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">stop</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">url </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">url</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">Audio(</span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">url</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">isPlaying </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">play</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">addEventListener</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">timeupdate</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">) {</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">s </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">currentTime </span><span style="color:#c0c5ce;">% </span><span style="color:#d08770;">60</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">m </span><span style="color:#c0c5ce;">= </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">currentTime </span><span style="color:#c0c5ce;">/ </span><span style="color:#d08770;">60</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">% </span><span style="color:#d08770;">60</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">h </span><span style="color:#c0c5ce;">= </span><span style="color:#eff1f5;">((</span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">currentTime </span><span style="color:#c0c5ce;">/ </span><span style="color:#d08770;">60</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">/ </span><span style="color:#d08770;">60</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">% </span><span style="color:#d08770;">60</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+                </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">isPlaying </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">currentTime </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">) {</span><span style="color:#eff1f5;">
+                    </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">time </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#8fa1b3;">pad2</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">h</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">+ &#39;</span><span style="color:#a3be8c;">:</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#8fa1b3;">pad2</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">m</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">+ &#39;</span><span style="color:#a3be8c;">:</span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#8fa1b3;">pad2</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">s</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+                }</span><span style="color:#eff1f5;">
+            }</span><span style="color:#eff1f5;">
+        }, </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">addEventListener</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">error</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">ex</span><span style="color:#c0c5ce;">) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+            </span><span style="color:#ebcb8b;">console</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">error</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">ex</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        }, </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">addEventListener</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">canplay</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+            </span><span style="color:#ebcb8b;">console</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">log</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">CAN PLAY</span><span style="color:#c0c5ce;">&#39;</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        }, </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">addEventListener</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">waiting</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">isPlaying </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        }, </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">addEventListener</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">playing</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">isPlaying </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        }, </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">addEventListener</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">ended</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">stop</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ended</span><span style="color:#eff1f5;">.</span><span style="color:#8fa1b3;">emit</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+        }, </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#8fa1b3;">pause</span><span style="color:#c0c5ce;">() </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">isPlaying </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">pause</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#8fa1b3;">stop</span><span style="color:#c0c5ce;">() </span><span style="color:#eff1f5;">{</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">isPlaying </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer</span><span style="color:#eff1f5;">.</span><span style="color:#96b5b4;">pause</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">audioPlayer </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+}</span><span style="color:#c0c5ce;">
+</span></pre>
+<ol start="4">
+<li>It has been imported to /src/app/app.module.</li>
+<li>There is only one page with a list of stations (I have <a href="https://github.com/eapyl/radioon/blob/master/src/pages/home/home.ts">only 3</a> which I listen). Click on a station - starting this station, and there is one button to stop music(<a href="https://github.com/eapyl/radioon/blob/master/src/pages/home/home.html">link</a>). That is all. Simple!</li>
+<li>After that we need to prepare icon and splash image for application. I am using <a href="http://game-icons.net">game-icons</a> to create an icon and <a href="https://unsplash.com/">unspalsh</a> to find full size images.</li>
+<li>Need to put created icon.png and splash.png to /resources/icon.png and /resources/splash.png and run the next command <code>ionic cordova resources</code> (you have to have an account in Ionic portal and it is free).</li>
+<li>To <a href="http://ionicframework.com/docs/intro/deploying/">deploy</a> our application need to run <code>ionic cordova build android --prod --release</code> and it will create *.apk file. We need to sign it using 'Sign Android APK' section from <a href="http://ionicframework.com/docs/intro/deploying/">here</a>.</li>
+<li>That is all. We have signed apk which we can copy on our device and install.</li>
+</ol>
+<p>Please find my project <a href="https://github.com/eapyl/radioon">here</a>. Signed apk file <a href="https://mega.nz/#!edsTXT6L">here</a>.</p>
+<p>How it looks like:<br />
+<img src="/images/radio-on-screenshot.png" alt="image" /></p>
+<p>Cheers,</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;javascript&#x2F;">#javascript</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;cake-net-useful-scripts-for-angularjs-dotnet-core-docker-application&#x2F;">‹ Cake.Net. Useful scripts for AngularJS, dotnet core, docker application</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;restore-influxdb-in-docker&#x2F;">Restore InfluxDB in Docker ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

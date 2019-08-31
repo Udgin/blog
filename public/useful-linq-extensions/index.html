@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Useful LINQ extensions</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="http://127.0.0.1:1111/useful-linq-extensions/#useful-linq-extensions" class="toc-link">Useful LINQ extensions</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;useful-linq-extensions&#x2F;">Useful LINQ extensions</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2013-04-26</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <h1 id="useful-linq-extensions">Useful LINQ extensions</h1>
+<p>After reading a lot of articles about this theme, I start to use the next <a href="http://pastebin.com/As5as2pE">extensions</a></p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">public static class </span><span style="color:#ebcb8b;">Linq</span><span style="color:#eff1f5;">
+{</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public static </span><span style="color:#eff1f5;">IEnumerable&lt;T&gt; </span><span style="color:#8fa1b3;">Except</span><span style="color:#eff1f5;">&lt;T&gt;(</span><span style="color:#b48ead;">this </span><span style="color:#eff1f5;">IEnumerable&lt;T&gt; </span><span style="color:#bf616a;">source</span><span style="color:#eff1f5;">, IEnumerable&lt;T&gt; </span><span style="color:#bf616a;">target</span><span style="color:#eff1f5;">, Func&lt;T, T, </span><span style="color:#b48ead;">bool</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">func</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">source</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Except</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">target</span><span style="color:#eff1f5;">, </span><span style="color:#c0c5ce;">new </span><span style="color:#eff1f5;">LambdaComparer&lt;T&gt;(</span><span style="color:#bf616a;">func</span><span style="color:#eff1f5;">));</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public static </span><span style="color:#eff1f5;">TResult </span><span style="color:#8fa1b3;">With</span><span style="color:#eff1f5;">&lt;TInput, TResult&gt;(</span><span style="color:#b48ead;">this </span><span style="color:#eff1f5;">TInput </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">, Func&lt;TInput, TResult&gt; </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">where </span><span style="color:#eff1f5;">TInput : </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">default</span><span style="color:#eff1f5;">(TResult);</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public static </span><span style="color:#eff1f5;">TResult </span><span style="color:#8fa1b3;">Return</span><span style="color:#eff1f5;">&lt;TInput, TResult&gt;(</span><span style="color:#b48ead;">this </span><span style="color:#eff1f5;">TInput </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">, Func&lt;TInput, TResult&gt; </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">, TResult </span><span style="color:#bf616a;">failure_value</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">where </span><span style="color:#eff1f5;">TInput : </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">failure_value</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public static bool </span><span style="color:#8fa1b3;">Check</span><span style="color:#eff1f5;">&lt;TInput&gt;(</span><span style="color:#b48ead;">this </span><span style="color:#eff1f5;">TInput </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">, Func&lt;TInput, </span><span style="color:#b48ead;">bool</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">where </span><span style="color:#eff1f5;">TInput : </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public static </span><span style="color:#eff1f5;">TInput </span><span style="color:#8fa1b3;">If</span><span style="color:#eff1f5;">&lt;TInput&gt;(</span><span style="color:#b48ead;">this </span><span style="color:#eff1f5;">TInput </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">, Func&lt;TInput, </span><span style="color:#b48ead;">bool</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">where </span><span style="color:#eff1f5;">TInput : </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">? </span><span style="color:#bf616a;">o </span><span style="color:#c0c5ce;">: </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public static </span><span style="color:#eff1f5;">TInput </span><span style="color:#8fa1b3;">Unless</span><span style="color:#eff1f5;">&lt;TInput&gt;(</span><span style="color:#b48ead;">this </span><span style="color:#eff1f5;">TInput </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">, Func&lt;TInput, </span><span style="color:#b48ead;">bool</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">where </span><span style="color:#eff1f5;">TInput : </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">) </span><span style="color:#c0c5ce;">? </span><span style="color:#d08770;">null </span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public static </span><span style="color:#eff1f5;">TInput </span><span style="color:#8fa1b3;">Do</span><span style="color:#eff1f5;">&lt;TInput&gt;(</span><span style="color:#b48ead;">this </span><span style="color:#eff1f5;">TInput </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">, Action&lt;TInput&gt; </span><span style="color:#bf616a;">action</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">where </span><span style="color:#eff1f5;">TInput : </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">action</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public static </span><span style="color:#eff1f5;">List&lt;TInput&gt; </span><span style="color:#8fa1b3;">Delete</span><span style="color:#eff1f5;">&lt;TInput&gt;(</span><span style="color:#b48ead;">this </span><span style="color:#eff1f5;">List&lt;TInput&gt; </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">, Func&lt;TInput, </span><span style="color:#b48ead;">bool</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">) </span><span style="color:#b48ead;">where </span><span style="color:#eff1f5;">TInput : </span><span style="color:#b48ead;">class</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">listToDelete </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Where</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">evaluator</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">ToList</span><span style="color:#eff1f5;">();</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">foreach </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">input </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">listToDelete</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+        {</span><span style="color:#eff1f5;">
+            </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Remove</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">input</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        }</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">o</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+}</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">LambdaComparer</span><span style="color:#eff1f5;">&lt;T&gt; : </span><span style="color:#a3be8c;">IEqualityComparer</span><span style="color:#eff1f5;">&lt;T&gt;</span><span style="color:#eff1f5;">
+{</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private readonly </span><span style="color:#eff1f5;">Func&lt;T, T, </span><span style="color:#b48ead;">bool</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">_lambdaComparer</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">private readonly </span><span style="color:#eff1f5;">Func&lt;T, </span><span style="color:#b48ead;">int</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">_lambdaHash</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">LambdaComparer</span><span style="color:#eff1f5;">(Func&lt;T, T, </span><span style="color:#b48ead;">bool</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">lambdaComparer</span><span style="color:#eff1f5;">) :</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">lambdaComparer</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">o </span><span style="color:#c0c5ce;">=&gt; </span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">LambdaComparer</span><span style="color:#eff1f5;">(Func&lt;T, T, </span><span style="color:#b48ead;">bool</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">lambdaComparer</span><span style="color:#eff1f5;">, Func&lt;T, </span><span style="color:#b48ead;">int</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">lambdaHash</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">lambdaComparer </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new </span><span style="color:#eff1f5;">ArgumentNullException(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">lambdaComparer</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">lambdaHash </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">null</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+            </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new </span><span style="color:#eff1f5;">ArgumentNullException(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">lambdaHash</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_lambdaComparer </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">lambdaComparer</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+        </span><span style="color:#bf616a;">_lambdaHash </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">lambdaHash</span><span style="color:#eff1f5;">;</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public bool </span><span style="color:#8fa1b3;">Equals</span><span style="color:#eff1f5;">(T </span><span style="color:#bf616a;">x</span><span style="color:#eff1f5;">, T </span><span style="color:#bf616a;">y</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">_lambdaComparer</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">x</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">y</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">
+    </span><span style="color:#b48ead;">public int </span><span style="color:#8fa1b3;">GetHashCode</span><span style="color:#eff1f5;">(T </span><span style="color:#bf616a;">obj</span><span style="color:#eff1f5;">)</span><span style="color:#eff1f5;">
+    {</span><span style="color:#eff1f5;">
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">_lambdaHash</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">obj</span><span style="color:#eff1f5;">);</span><span style="color:#eff1f5;">
+    }</span><span style="color:#eff1f5;">
+}</span><span style="color:#c0c5ce;">
+</span></pre>
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;linq&#x2F;">#linq</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;log2console-with-iisexpress-and-log4net&#x2F;">‹ Log2Console with IISExpress and log4net</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;bootstrap-recaptcha-css-problem&#x2F;">Bootstrap + Recaptcha. Css problem ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

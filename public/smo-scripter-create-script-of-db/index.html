@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - SMO Scripter. Create script of DB</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;smo-scripter-create-script-of-db&#x2F;">SMO Scripter. Create script of DB</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2013-06-25</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>It is possible to create script of MSSQL using SMO: (<a href="http://pastebin.com/AQkprTS7#">link</a>)</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">Main</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">[] </span><span style="color:#bf616a;">args</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+{</span><span style="color:#c0c5ce;">
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">arguments </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">args</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Select</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">x </span><span style="color:#c0c5ce;">=&gt; </span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ToLower</span><span style="color:#c0c5ce;">()).</span><span style="color:#bf616a;">ToList</span><span style="color:#c0c5ce;">();</span><span style="color:#c0c5ce;">
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">|| </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-help</span><span style="color:#c0c5ce;">&quot;))</span><span style="color:#c0c5ce;">
+    {</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">Console</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-d - Database Name</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">Console</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-i - Output Sql File Name</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">Console</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-s - Server Instance</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">Console</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-u - User Name</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">Console</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-p - Password</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">Console</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">It should be &#39;tables.txt&#39; file in folder with names of tables to script; if it does not exist the application scripts all tables with prefix &#39;GMP_&#39;</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+        </span><span style="color:#bf616a;">Console</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ReadKey</span><span style="color:#c0c5ce;">();</span><span style="color:#c0c5ce;">
+    }</span><span style="color:#c0c5ce;">
+    </span><span style="color:#b48ead;">else if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-d</span><span style="color:#c0c5ce;">&quot;) &amp;&amp; </span><span style="color:#bf616a;">args</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-i</span><span style="color:#c0c5ce;">&quot;))</span><span style="color:#c0c5ce;">
+    {</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">&lt;= </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-d</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+        {</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new ArgumentException(&quot;</span><span style="color:#a3be8c;">Database Name</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+        }</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">&lt;= </span><span style="color:#bf616a;">argumSMO Scripter</span><span style="color:#c0c5ce;">. </span><span style="color:#bf616a;">Create script of DBents</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-i</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+        {</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new ArgumentException(&quot;</span><span style="color:#a3be8c;">Output Sql File Name</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+        }</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">dbName </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-d</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">];</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">outputFileName </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-i</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">];</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">srv </span><span style="color:#c0c5ce;">= new Server();</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-s</span><span style="color:#c0c5ce;">&quot;) &amp;&amp; </span><span style="color:#bf616a;">args</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-u</span><span style="color:#c0c5ce;">&quot;) &amp;&amp; </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-p</span><span style="color:#c0c5ce;">&quot;))</span><span style="color:#c0c5ce;">
+        {</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">&lt;= </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-s</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+            {</span><span style="color:#c0c5ce;">
+                </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new ArgumentException(&quot;</span><span style="color:#a3be8c;">Server Instance</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+            }</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">&lt;= </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-u</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+            {</span><span style="color:#c0c5ce;">
+                </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new ArgumentException(&quot;</span><span style="color:#a3be8c;">User Name</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+            }</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">&lt;= </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-p</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+            {</span><span style="color:#c0c5ce;">
+                </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new ArgumentException(&quot;</span><span style="color:#a3be8c;">Password</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+            }</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">connection </span><span style="color:#c0c5ce;">= new ServerConnection(</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-s</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-u</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">arguments</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IndexOf</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">-p</span><span style="color:#c0c5ce;">&quot;) + </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">]);</span><span style="color:#c0c5ce;">
+            </span><span style="color:#bf616a;">srv </span><span style="color:#c0c5ce;">= new Server(</span><span style="color:#bf616a;">connection</span><span style="color:#c0c5ce;">);</span><span style="color:#c0c5ce;">
+        }</span><span style="color:#c0c5ce;">
+        </span><span style="color:#65737e;">// read names of tables</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">tablesFromFile </span><span style="color:#c0c5ce;">= new List&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt;();</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">File</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Exists</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">tables.txt</span><span style="color:#c0c5ce;">&quot;))</span><span style="color:#c0c5ce;">
+        {</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">file </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">File</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">OpenText</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">tables.txt</span><span style="color:#c0c5ce;">&quot;))</span><span style="color:#c0c5ce;">
+            {</span><span style="color:#c0c5ce;">
+                </span><span style="color:#b48ead;">while </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Peek</span><span style="color:#c0c5ce;">() &gt; </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+                {</span><span style="color:#c0c5ce;">
+                    </span><span style="color:#bf616a;">tablesFromFile</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Add</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ReadLine</span><span style="color:#c0c5ce;">());</span><span style="color:#c0c5ce;">
+                }</span><span style="color:#c0c5ce;">
+            }</span><span style="color:#c0c5ce;">
+        }</span><span style="color:#c0c5ce;">
+        Database </span><span style="color:#bf616a;">db </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">srv</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Databases</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">dbName</span><span style="color:#c0c5ce;">];</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">dropKeys </span><span style="color:#c0c5ce;">= new Scripter(</span><span style="color:#bf616a;">srv</span><span style="color:#c0c5ce;">) {</span><span style="color:#bf616a;">Options </span><span style="color:#c0c5ce;">= {</span><span style="color:#bf616a;">ScriptDrops </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">IncludeIfNotExists </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriForeignKeys </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">}};</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">listOfScripts </span><span style="color:#c0c5ce;">= new List&lt;Scripter&gt;</span><span style="color:#c0c5ce;">
+                            {</span><span style="color:#c0c5ce;">
+                                new Scripter(</span><span style="color:#bf616a;">srv</span><span style="color:#c0c5ce;">) {</span><span style="color:#bf616a;">Options </span><span style="color:#c0c5ce;">= {</span><span style="color:#bf616a;">ScriptDrops </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">IncludeIfNotExists </span><span style="color:#c0c5ce;">=</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriAllKeys </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">}},</span><span style="color:#c0c5ce;">
+                                new Scripter(</span><span style="color:#bf616a;">srv</span><span style="color:#c0c5ce;">) {</span><span style="color:#bf616a;">Options </span><span style="color:#c0c5ce;">= {</span><span style="color:#bf616a;">ScriptDrops </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">ScriptSchema </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">WithDependencies </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriIndexes </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriClustered </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">IncludeIfNotExists </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriAllKeys </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">}},</span><span style="color:#c0c5ce;">
+                                new Scripter(</span><span style="color:#bf616a;">srv</span><span style="color:#c0c5ce;">) {</span><span style="color:#bf616a;">Options </span><span style="color:#c0c5ce;">= {</span><span style="color:#bf616a;">ScriptDrops </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">ScriptSchema </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriDefaults </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriIndexes </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriPrimaryKey </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriClustered </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">Default </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriAll </span><span style="color:#c0c5ce;">=</span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriForeignKeys </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">IncludeIfNotExists </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriAllKeys </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">}},</span><span style="color:#c0c5ce;">
+                                new Scripter(</span><span style="color:#bf616a;">srv</span><span style="color:#c0c5ce;">) {</span><span style="color:#bf616a;">Options </span><span style="color:#c0c5ce;">= {</span><span style="color:#bf616a;">DriIndexes </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">Default </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriDefaults </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriClustered </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">IncludeIfNotExists </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriAll </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriAllConstraints </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">DriAllKeys </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">SchemaQualify </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">SchemaQualifyForeignKeysReferences </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">NoCollation </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">}}</span><span style="color:#c0c5ce;">
+                            };</span><span style="color:#c0c5ce;">
+        </span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">file </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">File</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">CreateText</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">outputFileName</span><span style="color:#c0c5ce;">))</span><span style="color:#c0c5ce;">
+        {</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(Table </span><span style="color:#bf616a;">tb </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">db</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Tables</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+            {</span><span style="color:#c0c5ce;">
+                </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">((</span><span style="color:#bf616a;">tablesFromFile</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#bf616a;">tablesFromFile</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">tb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Name</span><span style="color:#c0c5ce;">) || (</span><span style="color:#bf616a;">tablesFromFile</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count</span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#bf616a;">tb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Name</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">StartsWith</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">GMP_</span><span style="color:#c0c5ce;">&quot;))))</span><span style="color:#c0c5ce;">
+                {</span><span style="color:#c0c5ce;">
+                    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">tb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsSystemObject </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+                    {</span><span style="color:#c0c5ce;">
+                        </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(ForeignKey </span><span style="color:#bf616a;">foreignKey </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">tb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ForeignKeys</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+                        {</span><span style="color:#c0c5ce;">
+                            </span><span style="color:#bf616a;">System</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Collections</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Specialized</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">StringCollection scd </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">dropKeys</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Script</span><span style="color:#c0c5ce;">(new[] {</span><span style="color:#bf616a;">foreignKey</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Urn </span><span style="color:#c0c5ce;">});</span><span style="color:#c0c5ce;">
+                            </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">st </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">scd</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+                            {</span><span style="color:#c0c5ce;">
+                                </span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">st</span><span style="color:#c0c5ce;">);</span><span style="color:#c0c5ce;">
+                                </span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">GO</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+                            }</span><span style="color:#c0c5ce;">
+                        }</span><span style="color:#c0c5ce;">
+                        </span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">();</span><span style="color:#c0c5ce;">
+                    }</span><span style="color:#c0c5ce;">
+                }</span><span style="color:#c0c5ce;">
+            }</span><span style="color:#c0c5ce;">
+            </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">script </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">listOfScripts</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+            {</span><span style="color:#c0c5ce;">
+                </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(Table </span><span style="color:#bf616a;">tb </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">db</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Tables</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+                {</span><span style="color:#c0c5ce;">
+                    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">((</span><span style="color:#bf616a;">tablesFromFile</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#bf616a;">tablesFromFile</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">tb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Name</span><span style="color:#c0c5ce;">) ||(</span><span style="color:#bf616a;">tablesFromFile</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Count </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#bf616a;">tb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Name</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">StartsWith</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">GMP_</span><span style="color:#c0c5ce;">&quot;))))</span><span style="color:#c0c5ce;">
+                    {</span><span style="color:#c0c5ce;">
+                        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">tb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsSystemObject </span><span style="color:#c0c5ce;">== </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+                        {</span><span style="color:#c0c5ce;">
+                            </span><span style="color:#bf616a;">System</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Collections</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Specialized</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">StringCollection scd </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">script</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Script</span><span style="color:#c0c5ce;">(new[] {</span><span style="color:#bf616a;">tb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Urn </span><span style="color:#c0c5ce;">});</span><span style="color:#c0c5ce;">
+                            </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">st </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">scd</span><span style="color:#c0c5ce;">)</span><span style="color:#c0c5ce;">
+                            {</span><span style="color:#c0c5ce;">
+                                </span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">st</span><span style="color:#c0c5ce;">);</span><span style="color:#c0c5ce;">
+                                </span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">GO</span><span style="color:#c0c5ce;">&quot;);</span><span style="color:#c0c5ce;">
+                            }</span><span style="color:#c0c5ce;">
+                            </span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">WriteLine</span><span style="color:#c0c5ce;">();</span><span style="color:#c0c5ce;">
+                        }</span><span style="color:#c0c5ce;">
+                    }</span><span style="color:#c0c5ce;">
+                }</span><span style="color:#c0c5ce;">
+            }</span><span style="color:#c0c5ce;">
+        }</span><span style="color:#c0c5ce;">
+    }</span><span style="color:#c0c5ce;">
+}</span><span style="color:#c0c5ce;">
+</span></pre>
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;bootstrap-recaptcha-css-problem&#x2F;">‹ Bootstrap + Recaptcha. Css problem</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;bootstrap-datepicker-week-mode-view&#x2F;">Bootstrap datepicker Week mode view ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>

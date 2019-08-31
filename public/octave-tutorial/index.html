@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - Octave Tutorial</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="http://127.0.0.1:1111/octave-tutorial/#basic-operations" class="toc-link">Basic operations</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="http://127.0.0.1:1111/octave-tutorial/#moving-data-around" class="toc-link">Moving Data Around</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="http://127.0.0.1:1111/octave-tutorial/#computing-on-data" class="toc-link">Computing on Data</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="http://127.0.0.1:1111/octave-tutorial/#plotting-data" class="toc-link">Plotting Data</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="http://127.0.0.1:1111/octave-tutorial/#control-statements-for-while-if-statements" class="toc-link">Control statements: for, while, if statements</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="http://127.0.0.1:1111/octave-tutorial/#functions" class="toc-link">Functions</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;octave-tutorial&#x2F;">Octave Tutorial</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2016-10-26</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Information is from this wonderful <a href="https://www.coursera.org/learn/machine-learning/">course</a>.</p>
+<h3 id="basic-operations">Basic operations</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">%% Change Octave prompt  </span><span style="color:#c0c5ce;">
+PS1(&#39;&gt;&gt; &#39;);</span><span style="color:#c0c5ce;">
+%% Change working directory in windows example:</span><span style="color:#c0c5ce;">
+cd &#39;c:/path/to/desired/directory name&#39;</span><span style="color:#c0c5ce;">
+%% Note that it uses normal slashes and does not use escape characters for the empty spaces.</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+%% elementary operations</span><span style="color:#c0c5ce;">
+5+6</span><span style="color:#c0c5ce;">
+3-2</span><span style="color:#c0c5ce;">
+5*8</span><span style="color:#c0c5ce;">
+1/2</span><span style="color:#c0c5ce;">
+2^6</span><span style="color:#c0c5ce;">
+1 == 2 % false</span><span style="color:#c0c5ce;">
+1 ~= 2 % true.  note, not &quot;!=&quot;</span><span style="color:#c0c5ce;">
+1 &amp;&amp; 0</span><span style="color:#c0c5ce;">
+1 || 0</span><span style="color:#c0c5ce;">
+xor(1,0)</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+%% variable assignment</span><span style="color:#c0c5ce;">
+a = 3; % semicolon suppresses output</span><span style="color:#c0c5ce;">
+b = &#39;hi&#39;;</span><span style="color:#c0c5ce;">
+c = 3&gt;=1;</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+% Displaying them:</span><span style="color:#c0c5ce;">
+a = pi</span><span style="color:#c0c5ce;">
+disp(a)</span><span style="color:#c0c5ce;">
+disp(sprintf(&#39;2 decimals: %0.2f&#39;, a))</span><span style="color:#c0c5ce;">
+disp(sprintf(&#39;6 decimals: %0.6f&#39;, a))</span><span style="color:#c0c5ce;">
+format long</span><span style="color:#c0c5ce;">
+a</span><span style="color:#c0c5ce;">
+format short</span><span style="color:#c0c5ce;">
+a</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+%%  vectors and matrices</span><span style="color:#c0c5ce;">
+A = [1 2; 3 4; 5 6]</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+v = [1 2 3]</span><span style="color:#c0c5ce;">
+v = [1; 2; 3]</span><span style="color:#c0c5ce;">
+v = 1:0.1:2   % from 1 to 2, with stepsize of 0.1. Useful for plot axes</span><span style="color:#c0c5ce;">
+v = 1:6       % from 1 to 6, assumes stepsize of 1 (row vector)</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+C = 2*ones(2,3) % same as C = [2 2 2; 2 2 2]</span><span style="color:#c0c5ce;">
+w = ones(1,3)   % 1x3 vector of ones</span><span style="color:#c0c5ce;">
+w = zeros(1,3)</span><span style="color:#c0c5ce;">
+w = rand(1,3) % drawn from a uniform distribution </span><span style="color:#c0c5ce;">
+w = randn(1,3)% drawn from a normal distribution (mean=0, var=1)</span><span style="color:#c0c5ce;">
+w = -6 + sqrt(10)*(randn(1,10000));  % (mean = -6, var = 10) - note: add the semicolon</span><span style="color:#c0c5ce;">
+hist(w)    % plot histogram using 10 bins (default)</span><span style="color:#c0c5ce;">
+hist(w,50) % plot histogram using 50 bins</span><span style="color:#c0c5ce;">
+% note: if hist() crashes, try &quot;graphics_toolkit(&#39;gnu_plot&#39;)&quot; </span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+I = eye(4)   % 4x4 identity matrix</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+% help function</span><span style="color:#c0c5ce;">
+help eye</span><span style="color:#c0c5ce;">
+help rand</span><span style="color:#c0c5ce;">
+help help</span><span style="color:#c0c5ce;">
+</span></pre><h3 id="moving-data-around">Moving Data Around</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">%% dimensions</span><span style="color:#c0c5ce;">
+sz = size(A) % 1x2 matrix: [(number of rows) (number of columns)]</span><span style="color:#c0c5ce;">
+size(A,1) % number of rows</span><span style="color:#c0c5ce;">
+size(A,2) % number of cols</span><span style="color:#c0c5ce;">
+length(v) % size of longest dimension</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+%% loading data</span><span style="color:#c0c5ce;">
+pwd   % show current directory (current path)</span><span style="color:#c0c5ce;">
+cd &#39;C:\Users\ang\Octave files&#39;  % change directory </span><span style="color:#c0c5ce;">
+ls    % list files in current directory </span><span style="color:#c0c5ce;">
+load q1y.dat   % alternatively, load(&#39;q1y.dat&#39;)</span><span style="color:#c0c5ce;">
+load q1x.dat</span><span style="color:#c0c5ce;">
+who   % list variables in workspace</span><span style="color:#c0c5ce;">
+whos  % list variables in workspace (detailed view) </span><span style="color:#c0c5ce;">
+clear q1y      % clear command without any args clears all vars</span><span style="color:#c0c5ce;">
+v = q1x(1:10); % first 10 elements of q1x (counts down the columns)</span><span style="color:#c0c5ce;">
+save hello.mat v;  % save variable v into file hello.mat</span><span style="color:#c0c5ce;">
+save hello.txt v -ascii; % save as ascii</span><span style="color:#c0c5ce;">
+% fopen, fread, fprintf, fscanf also work  [[not needed in class]]</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+%% indexing</span><span style="color:#c0c5ce;">
+A(3,2)  % indexing is (row,col)</span><span style="color:#c0c5ce;">
+A(2,:)  % get the 2nd row. </span><span style="color:#c0c5ce;">
+        % &quot;:&quot; means every element along that dimension</span><span style="color:#c0c5ce;">
+A(:,2)  % get the 2nd col</span><span style="color:#c0c5ce;">
+A([1 3],:) % print all  the elements of rows 1 and 3</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+A(:,2) = [10; 11; 12]     % change second column</span><span style="color:#c0c5ce;">
+A = [A, [100; 101; 102]]; % append column vec</span><span style="color:#c0c5ce;">
+A(:) % Select all elements as a column vector.</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+% Putting data together </span><span style="color:#c0c5ce;">
+A = [1 2; 3 4; 5 6]</span><span style="color:#c0c5ce;">
+B = [11 12; 13 14; 15 16] % same dims as A</span><span style="color:#c0c5ce;">
+C = [A B]  % concatenating A and B matrices side by side</span><span style="color:#c0c5ce;">
+C = [A, B] % concatenating A and B matrices side by side</span><span style="color:#c0c5ce;">
+C = [A; B] % Concatenating A and B top and bottom</span><span style="color:#c0c5ce;">
+</span></pre><h3 id="computing-on-data">Computing on Data</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">%% initialize variables</span><span style="color:#c0c5ce;">
+A = [1 2;3 4;5 6]</span><span style="color:#c0c5ce;">
+B = [11 12;13 14;15 16]</span><span style="color:#c0c5ce;">
+C = [1 1;2 2]</span><span style="color:#c0c5ce;">
+v = [1;2;3]</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+%% matrix operations</span><span style="color:#c0c5ce;">
+A * C  % matrix multiplication</span><span style="color:#c0c5ce;">
+A .* B % element-wise multiplication</span><span style="color:#c0c5ce;">
+% A .* C  or A * B gives error - wrong dimensions</span><span style="color:#c0c5ce;">
+A .^ 2 % element-wise square of each element in A</span><span style="color:#c0c5ce;">
+1./v   % element-wise reciprocal</span><span style="color:#c0c5ce;">
+log(v)  % functions like this operate element-wise on vecs or matrices </span><span style="color:#c0c5ce;">
+exp(v)</span><span style="color:#c0c5ce;">
+abs(v)</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+-v  % -1*v</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+v + ones(length(v), 1)  </span><span style="color:#c0c5ce;">
+% v + 1  % same</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+A&#39;  % matrix transpose</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+%% misc useful functions</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+% max  (or min)</span><span style="color:#c0c5ce;">
+a = [1 15 2 0.5]</span><span style="color:#c0c5ce;">
+val = max(a)</span><span style="color:#c0c5ce;">
+[val,ind] = max(a) % val -  maximum element of the vector a and index - index value where maximum occur</span><span style="color:#c0c5ce;">
+val = max(A) % if A is matrix, returns max from each column</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+% compare values in a matrix &amp; find</span><span style="color:#c0c5ce;">
+a &lt; 3 % checks which values in a are less than 3</span><span style="color:#c0c5ce;">
+find(a &lt; 3) % gives location of elements less than 3</span><span style="color:#c0c5ce;">
+A = magic(3) % generates a magic matrix - not much used in ML algorithms</span><span style="color:#c0c5ce;">
+[r,c] = find(A&gt;=7)  % row, column indices for values matching comparison</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+% sum, prod</span><span style="color:#c0c5ce;">
+sum(a)</span><span style="color:#c0c5ce;">
+prod(a)</span><span style="color:#c0c5ce;">
+floor(a) % or ceil(a)</span><span style="color:#c0c5ce;">
+max(rand(3),rand(3))</span><span style="color:#c0c5ce;">
+max(A,[],1) -  maximum along columns(defaults to columns - max(A,[]))</span><span style="color:#c0c5ce;">
+max(A,[],2) - maximum along rows</span><span style="color:#c0c5ce;">
+A = magic(9)</span><span style="color:#c0c5ce;">
+sum(A,1)</span><span style="color:#c0c5ce;">
+sum(A,2)</span><span style="color:#c0c5ce;">
+sum(sum( A .* eye(9) ))</span><span style="color:#c0c5ce;">
+sum(sum( A .* flipud(eye(9)) ))</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+% Matrix inverse (pseudo-inverse)</span><span style="color:#c0c5ce;">
+pinv(A)        % inv(A&#39;*A)*A&#39;</span><span style="color:#c0c5ce;">
+</span></pre><h3 id="plotting-data">Plotting Data</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">%% plotting</span><span style="color:#c0c5ce;">
+t = [0:0.01:0.98];</span><span style="color:#c0c5ce;">
+y1 = sin(2*pi*4*t); </span><span style="color:#c0c5ce;">
+plot(t,y1);</span><span style="color:#c0c5ce;">
+y2 = cos(2*pi*4*t);</span><span style="color:#c0c5ce;">
+hold on;  % &quot;hold off&quot; to turn off</span><span style="color:#c0c5ce;">
+plot(t,y2,&#39;r&#39;);</span><span style="color:#c0c5ce;">
+xlabel(&#39;time&#39;);</span><span style="color:#c0c5ce;">
+ylabel(&#39;value&#39;);</span><span style="color:#c0c5ce;">
+legend(&#39;sin&#39;,&#39;cos&#39;);</span><span style="color:#c0c5ce;">
+title(&#39;my plot&#39;);</span><span style="color:#c0c5ce;">
+print -dpng &#39;myPlot.png&#39;</span><span style="color:#c0c5ce;">
+close;           % or,  &quot;close all&quot; to close all figs</span><span style="color:#c0c5ce;">
+figure(1); plot(t, y1);</span><span style="color:#c0c5ce;">
+figure(2); plot(t, y2);</span><span style="color:#c0c5ce;">
+figure(2), clf;  % can specify the figure number</span><span style="color:#c0c5ce;">
+subplot(1,2,1);  % Divide plot into 1x2 grid, access 1st element</span><span style="color:#c0c5ce;">
+plot(t,y1);</span><span style="color:#c0c5ce;">
+subplot(1,2,2);  % Divide plot into 1x2 grid, access 2nd element</span><span style="color:#c0c5ce;">
+plot(t,y2);</span><span style="color:#c0c5ce;">
+axis([0.5 1 -1 1]);  % change axis scale</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+%% display a matrix (or image) </span><span style="color:#c0c5ce;">
+figure;</span><span style="color:#c0c5ce;">
+imagesc(magic(15)), colorbar, colormap gray;</span><span style="color:#c0c5ce;">
+% comma-chaining function calls.  </span><span style="color:#c0c5ce;">
+a=1,b=2,c=3</span><span style="color:#c0c5ce;">
+a=1;b=2;c=3;</span><span style="color:#c0c5ce;">
+</span></pre><h3 id="control-statements-for-while-if-statements">Control statements: for, while, if statements</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">v = zeros(10,1);</span><span style="color:#c0c5ce;">
+for i=1:10, </span><span style="color:#c0c5ce;">
+    v(i) = 2^i;</span><span style="color:#c0c5ce;">
+end;</span><span style="color:#c0c5ce;">
+% Can also use &quot;break&quot; and &quot;continue&quot; inside for and while loops to control execution.</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+i = 1;</span><span style="color:#c0c5ce;">
+while i &lt;= 5,</span><span style="color:#c0c5ce;">
+  v(i) = 100; </span><span style="color:#c0c5ce;">
+  i = i+1;</span><span style="color:#c0c5ce;">
+end</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+i = 1;</span><span style="color:#c0c5ce;">
+while true, </span><span style="color:#c0c5ce;">
+  v(i) = 999; </span><span style="color:#c0c5ce;">
+  i = i+1;</span><span style="color:#c0c5ce;">
+  if i == 6,</span><span style="color:#c0c5ce;">
+    break;</span><span style="color:#c0c5ce;">
+  end;</span><span style="color:#c0c5ce;">
+end</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+if v(1)==1,</span><span style="color:#c0c5ce;">
+  disp(&#39;The value is one!&#39;);</span><span style="color:#c0c5ce;">
+elseif v(1)==2,</span><span style="color:#c0c5ce;">
+  disp(&#39;The value is two!&#39;);</span><span style="color:#c0c5ce;">
+else</span><span style="color:#c0c5ce;">
+  disp(&#39;The value is not one or two!&#39;);</span><span style="color:#c0c5ce;">
+end</span><span style="color:#c0c5ce;">
+</span></pre><h3 id="functions">Functions</h3>
+<p>To create a function, type the function code in a text editor (e.g. gedit or notepad), and save the file as &quot;functionName.m&quot;</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">function y = squareThisNumber(x)</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">
+y = x^2;</span><span style="color:#c0c5ce;">
+</span></pre><pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">function [y1, y2] = squareandCubeThisNo(x)</span><span style="color:#c0c5ce;">
+y1 = x^2</span><span style="color:#c0c5ce;">
+y2 = x^3</span><span style="color:#c0c5ce;">
+</span></pre>
+<p>More info:
+<a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;tags&#x2F;octava&#x2F;">#octava</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;use-websql-and-indexeddb-in-typescript&#x2F;">‹ Use WebSQL and IndexedDB in Typescript</a>
+                    
+                    
+                        <a class="next" href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;implementing-async-queue-using-rxjs&#x2F;">Implementing async.queue using rxjs ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;even.js" ></script>
+      
+    <script src="/livereload.js?port=1000&mindelay=10"></script></body>
+
+</html>
