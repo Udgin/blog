@@ -8,7 +8,7 @@ categories = ["documentation"]
 Joining a new project is always stressful and not easy. As a new joiner, it is needed to learn a lot of information about the project: how it works, it's main functionality, how to build it, monitor, how to make changes and run tests, how to run the product locally and so on. Unfortunately, there isn't always good documentation which covers all these details, so you have to be prepared to learn and get all the details by yourself.
 
 This article is to help a newcomer to understand the project and learn it. It describes the main steps and points, which can be used to getting knowledge about a project. Additionally, it can help to improve existing documentation of the project to fill gaps in the knowledge base.
-
+<!-- more -->
 ## Introduction
 
 ### New team and who is responsible for what

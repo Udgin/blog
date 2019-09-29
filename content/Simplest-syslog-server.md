@@ -6,7 +6,7 @@ tags = ["dotnet","docker"]
 categories = ["deployment"]
 +++
 I am working on onside project where we have more than 5 docker containers. Previously we used just serilog to do our logging in all our containers. So each project had his own logging mechanism. Finally we decided to centralize our logging system ans start using docker logs. There are a lot of solutions using clouds (e.g. [loggly](https://www.loggly.com/)) or quite complex systems to grab, analyze and show your logs (like [kafka](https://kafka.apache.org), [kibana](https://www.elastic.co/products/kibana)). But we wanted to save our logs to simple txt files without any additional complex stuff.
-
+<!-- more -->
 There are nice project which allows automatically read docker container logs and push them to one syslog server - [logspout](https://github.com/gliderlabs/logspout).
 
 We tried to find simple syslog server without success. So there is a [small syslog server](https://github.com/eapyl/syslog-collector) written in dotnet core. I used serilog to write logs to files ([Rolling File](https://github.com/serilog/serilog-sinks-rollingfile)).

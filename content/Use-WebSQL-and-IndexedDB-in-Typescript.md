@@ -6,7 +6,7 @@ tags = ["javascript"]
 categories = ["programming"]
 +++
 More information about [IndexedDb](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) or [WebSQL](https://www.w3.org/TR/webdatabase/).
-
+<!-- more -->
 Let's define base interfaces for our task:
 
 ```ts

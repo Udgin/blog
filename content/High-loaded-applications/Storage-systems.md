@@ -6,7 +6,7 @@ tags = ["high-load"]
 categories = ["learning"]
 +++
 Storage systems are divided into two broad categories:
-
+<!-- more -->
 * optimized for transaction processing (OLTP)
 * optimized for analytics (OLAP)
 

@@ -8,7 +8,7 @@ categories = ["programming"]
 [StyleCop]() is a good application to take your source code in good state. There are a lot of rules and most of all are very useful, but...
 
 Unfortunately, the rule SA1201 is not so good for me. So i just want to create the similar rule, but a little else.
-
+<!-- more -->
 You can see the rule that changes the order of document's element to the next:
 
 ```xml

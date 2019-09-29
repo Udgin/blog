@@ -8,7 +8,7 @@ categories = ["programming"]
 Hi All, it is my overview of Xamarin Dev Days - short summary. Hope it will be useful to create an  impression what you can expect from this event.
 
 My stream technology is server-side .NET or ASP.NET MVC. My current project is on .NET platform, the main technology is Windows Workflow Foundation and I am not using Xamarin platform. But I had a small experience in Xamarin that I got during working on my previous project.
-
+<!-- more -->
 Some time ago I had a chance to visit Xamarin Dev Days event in Warsaw. It was one day event in Warsaw Microsoft office. There were two part: the first one is generic information about Xamarin ecosystem and Azure Mobile Apps. The second one is hands on lab. So [this presentation](https://docs.google.com/presentation/d/1pbsv4otZvU88ABx4QSgyznxpqolMQ279QsjWh3WvPjQ/edit?usp=sharing) has been created to summarize and do a short recap mentioned event.
 
 ### Agenda:

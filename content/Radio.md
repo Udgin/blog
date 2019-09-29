@@ -6,7 +6,7 @@ tags = ["dotnet"]
 categories = ["programming"]
 +++
 Do you like listen radio? Have you installed dotnet core locally? So there is a nice dotnet tool "plr" to listen radio!
-
+<!-- more -->
 To install:
 
 ```bat

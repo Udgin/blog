@@ -8,7 +8,7 @@ categories = ["programming"]
 +++
 
 I know there are a lot of information about working with Facebook API, but... I just think more information is better then less.
-
+<!-- more -->
 I need to post different types of context to Facebook pages (user create his own page, give us the name of page). OK, let's go!
 
 I m using ASP.NET MVC, you know...

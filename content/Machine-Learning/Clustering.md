@@ -6,7 +6,7 @@ tags = ["machine learning"]
 categories = ["learning"]
 +++
 Unsupervised learning is contrasted from supervised learning because it uses an unlabeled training set rather than a labeled one.
-
+<!-- more -->
 ### K-Means Algorithm
 
 1. Randomly initialize two points in the dataset called the cluster centroids.

@@ -8,7 +8,7 @@ categories = ["programming"]
 Hi there, 
 
 Just trying to create a simple service running on server. This service should report his status by HTTP and should have a nice log mechanism. So I finished my investigation to use [NetCore](https://www.microsoft.com/net/core) + [Nancy](http://nancyfx.org/) + [Serilog](https://serilog.net/) + [Newtonsoft.Json](http://www.newtonsoft.com/json) + [FakeItEasy](https://github.com/FakeItEasy/FakeItEasy) + [App Metrics](https://github.com/alhardy/AppMetrics).
-
+<!-- more -->
 Please find the source code of sample application [here](https://github.com/eapyl/nancy-netcore-sample).
 
 Want to mention that I had to install the next lib:

@@ -6,7 +6,7 @@ tags = ["dotnet","sql"]
 categories = ["administration"]
 +++
 When your primary work is adding functionality to MSSQL database (like implementing business logic in stored procedures, functions and view) it is very useful to have the list of all SP, functions and views with their description, name of authors, created dates and input/output parameters.
-
+<!-- more -->
 In this small article I will describer how to create a small console application which will get information from DB and create a list with this information in memory. Later I am creating HTML report using this information. But creating HTML report is not described in this article.
 
 One note: each SP, function and view should have the next comment in their code:

@@ -6,7 +6,7 @@ tags = ["docker","influxdb"]
 categories = ["administration"]
 +++
 It is not easy to restore influxdb in an official container. Unfortunately it is not possible directly. You need to restore db out of a container and mount restored db to the container.
-
+<!-- more -->
 ```bat
 # Restoring a backup requires that influxd is stopped (note that stopping the process kills the container).
 docker stop "$CONTAINER_ID"

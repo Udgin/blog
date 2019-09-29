@@ -6,7 +6,7 @@ tags = ["dotnet"]
 categories = ["programming"]
 +++
 Description. There are modules that have the input and output parameters (type and number of parameters may be different). The goal is to select some first modules that have no input parameters, then the modules whose inputs are the output parameters of the previously selected modules and so on. Until the last module will not output parameters.
-
+<!-- more -->
 The database stores all displayed modules and displays of all parameters where the parameter mapping to the mapping of modules is many-to-one.
 Initially, we choose to do all the settings using a simple SQL query.
 

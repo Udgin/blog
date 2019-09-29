@@ -10,7 +10,7 @@ I faced with one issue how to automatically download and restore databases from 
 2. Copy backups to local folder;
 3. Restore copied databases to local MSSQL;
 4. Change the owner of databases to current user;
-
+<!-- more -->
 A small snippet with implementation is below.
 ```cs
 /*

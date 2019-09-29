@@ -6,7 +6,7 @@ tags = ["javascript"]
 categories = ["programming"]
 +++
 I have created one more plugin for HTML table. It fixes the head of a table on the page. [Please see it](https://bitbucket.org/upyl/fixedheader). The main feature is supporting of overflow parent element.
-
+<!-- more -->
 Some images of plugin:
 
 ![example1](/images/fixed_header1.png)

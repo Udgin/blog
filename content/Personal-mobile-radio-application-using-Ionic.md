@@ -8,7 +8,7 @@ categories = ["programming"]
 Hi, there!
 
 Finally I am tired because of all advertisements which we have in any simple radio mobile application. I just want to listen radio and that is all! Quite simple, hah?
-
+<!-- more -->
 So I decided to create a simple radio mobile application by myself. I thought about Xamarin as I have some experience in creating application using it. But I decided to use new framework for me and it is Ionic. I am very impressed how cool it is and how easy to create application using it. It took about 2 hours to install all dependencies (ionic, android studio, java), deploy and run a first version of my application on my android device. Quite fast!
 
 I am using Ubuntu 16.04.

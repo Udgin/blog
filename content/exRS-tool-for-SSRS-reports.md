@@ -8,7 +8,7 @@ categories = ["programming"]
 There is a nice tool to deploy reports and/or subscription to SSRS - [RS tool](https://docs.microsoft.com/en-us/sql/reporting-services/tools/rs-exe-utility-ssrs). And I described a way to use this tool [here](https://eapyl.github.io/Auto-deployment-for-SSRS-reports.html). 
 
 But it is not so easy to support VB scripts, so there is a new tool [exRS](https://github.com/eapyl/exRS). This tool helps to deploy reports and create subscriptions for reports.
-
+<!-- more -->
 Currently there is a small console application with name exRSConsole.
 > To deploy sample Report1 report and it's subscription from Report1.xml:
 > exRSConsole.exe -n Report1 -p SampleReport -r -s

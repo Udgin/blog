@@ -6,7 +6,7 @@ tags = ["dotnet","web"]
 categories = ["programming"]
 +++
 I have found that the page load indefinitely. And the reason was I add @Html.RenderAction to my default layout.
-
+<!-- more -->
 So the solution of the problem to add the next code to rendered view:
 
 ```css

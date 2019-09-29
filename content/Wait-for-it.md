@@ -7,7 +7,7 @@ categories = ["deployment"]
 +++
 There is a possibility to control startup order in Compose using great script - [wait-for-it](https://github.com/vishnubob/wait-for-it).
 It allows you to wait some docker containers which have long-running initialization process like databases.
-
+<!-- more -->
 And there is step-by-step explanation how to use it:
 1. Copy [wait-for-it.sh](https://github.com/vishnubob/wait-for-it/blob/master/wait-for-it.sh) to your project
 

@@ -6,7 +6,7 @@ tags = ["dotnet"]
 categories = ["programming"]
 +++
 It is possible to create script of MSSQL using SMO: ([link](http://pastebin.com/AQkprTS7#))
-
+<!-- more -->
 ```cs
 private static void Main(string[] args)
 {

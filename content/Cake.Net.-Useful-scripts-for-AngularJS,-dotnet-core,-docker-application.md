@@ -8,7 +8,7 @@ categories = ["programming"]
 There is a great [cross-platform build automation tool](http://cakebuild.net/) - Cake.Net.
 
 I started using it and created some useful scripts to Release and Publish new version of application.
-
+<!-- more -->
 I am using AngularJS as frontend framework, asp net core (dotnet core) as backend framework, git as source system and docker to deploy and run application on remote server.
 
 So it is a small cake script to release a new version of application:

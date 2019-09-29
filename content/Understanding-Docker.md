@@ -10,7 +10,7 @@ categories = ["deployment"]
 Docker is the world's leading software containerization platform
 
 > Note: Docker is licensed under the open source [Apache 2.0](https://inteist.com/how-to-use-apache-2-0-in-commercial-products-explained-in-simple-terms/) license.
-
+<!-- more -->
 Docker containers wrap a piece of software in a complete filesystem that contains everything needed to run: code, runtime, system tools, system libraries – anything that can be installed on a server. This guarantees that the software will always run the same, regardless of its environment.
 
 ![image1](/images/WhatIsDocker_1_kernal-2_1.png)

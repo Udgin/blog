@@ -6,7 +6,7 @@ tags = ["dotnet","winrt"]
 categories = ["programming"]
 +++
 There is a good [question](http://stackoverflow.com/questions/13534334/how-to-compute-hash-md5-or-sha-of-a-large-file-with-c-sharp-in-windows-store-a) about this.
-
+<!-- more -->
 Also there is a code. I have used MD5 algorithm for my purposes.
 ```cs
 public async Task<string> GetFileChecksumAsync(string fileName)

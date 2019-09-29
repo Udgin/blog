@@ -6,7 +6,7 @@ tags = ["high-load"]
 categories = ["learning"]
 +++
 Encoding format affects not only efficiency of the application, but also, what is more important, the architecture of the application which are using them.
-
+<!-- more -->
 In particular, many services require support for incremental deployment of a new version. So new version will be deployed only to a few nodes at one time, not to all nodes. Incremental deployment allows to release new versions of services without forced system inactivity (thereby encouraging frequent small releases rather than rarely performed large ones) and reduce deployment risk (through detection and rollback failed releases before they affect a large number of users). It is extremely beneficial for development — simplicity changes of the application.
 
 In the case of incremental deployment, it is good to allow the possibility to have different versions of the application at the different nodes. Therefore, it is important to encode all DTO with backward compatibility support (new version of appication could read 'old' data objects) and direct compatibility (old could read new).

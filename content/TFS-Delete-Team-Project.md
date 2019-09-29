@@ -6,7 +6,7 @@ tags = ["tfs"]
 categories = ["programming"]
 +++
 It is not so easy to find the steps to delete project from TFS.
-
+<!-- more -->
 So, according to [http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service](http://stackoverflow.com/questions/13635889/delete-team-project-from-free-team-foundation-service).
 
 You can use the following command from the "Developer Command Prompt":

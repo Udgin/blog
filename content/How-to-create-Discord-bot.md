@@ -6,7 +6,7 @@ tags = ["javascript","discord"]
 categories = ["programming"]
 +++
 That is a manual how to create simple ping-pong discord bot using javascript (nodejs).
-
+<!-- more -->
 * Install nodejs and npm
 * Create a folder for your discord bot
 * Run `npm init` in the folder

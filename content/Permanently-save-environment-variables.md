@@ -6,7 +6,7 @@ tags = ["linux"]
 categories = ["administration"]
 +++
 Environment variables are only stored temporally if you are setting them using terminal:
-
+<!-- more -->
 ```bash
 export TEST=/home/test/
 ```

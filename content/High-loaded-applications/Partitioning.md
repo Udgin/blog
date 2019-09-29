@@ -8,7 +8,7 @@ categories = ["learning"]
 Partitioning is needed when there is too much data to save it at one physical machine.
 
 The goal of partitioning is sharing load between servers and to avoid bottlenecks. It is required to select approproate partitioning scheme and section rebalance during adding or deleting nodes from the cluster.
-
+<!-- more -->
 There are two main approaches in doing partitioning:
 
 * Partitioning by key value range, where keys are sorted and the partition contains all keys from the certain minimum to the certain maximum. The advantage of the sorting is the ability to perform efficient range queries, but there is to create hot spots if the application accesses to the keys located close frequently. This approach usually follows dynamic rebalancing partitioning using splitting the range in two sub-bands in the case when the section's getting too big.

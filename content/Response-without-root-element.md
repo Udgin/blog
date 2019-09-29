@@ -6,7 +6,7 @@ tags = ["wcf"]
 categories = ["programming"]
 +++
 Write WCF web-service that accepts SOAP 1.2 and SOAP 1.1 requests. Service should expose 1 operation (let it be "GetResponse_1") with the following structure (just an example, please combine schema for the service):
-
+<!-- more -->
 ```xml
 <GetResponse_Request_1>
     <element1>text1</element1><!-- at least 1 "element1" -->

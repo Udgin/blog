@@ -6,7 +6,7 @@ tags = ["dotnet","fsharp"]
 categories = ["programming"]
 +++
 I decided to start learning fsharp and hope I will be able to use F# in my future small projects.
-
+<!-- more -->
 Currently I have a small service worked in Docker container. It is written using C# on dotnet core.
 This service is for grabbing data from external services via HTTP and putting aggregated data to InfluxDB database. Internally the service is using cron to plan and run this process as we want to grab data periodically.
 

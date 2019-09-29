@@ -8,7 +8,7 @@ categories = ["programming"]
 
 The error was connected with GET requests. ApplicationPool was set in Classic mode.
 There is HttpModule, which throws this type of exceptions:
-
+<!-- more -->
 ```cs
 System.Web.HttpException (0x80004005): Failed to Execute URL.
 at System.Web.Hosting.ISAPIWorkerRequestInProcForIIS6.BeginExecuteUrl(String url, String method, String childHeaders, Boolean sendHeaders, Boolean addUserIndo, IntPtr token, String name, String authType, Byte[] entity, AsyncCallback cb, Object state)

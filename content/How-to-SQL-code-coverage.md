@@ -6,7 +6,7 @@ tags = ["dotnet","sql"]
 categories = ["programming"]
 +++
 If you are creating a lot of SQL code, it is a good idea to do unit testing for it and see [code coverage](https://en.wikipedia.org/wiki/Code_coverage). Luckly there is two nice tools/libs to do it: [tSQLt](http://tsqlt.org/) and [SQLCover](https://github.com/GoEddie/SQLCover).
-
+<!-- more -->
 In this article I will show how to create/set up SQLCover and run it for each CI build.
 The basic idea is we are creating command line application which runs our tSQLt unit tests via SQLCover and generates HTML report with code coverage information.
 

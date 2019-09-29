@@ -6,7 +6,7 @@ tags = ["tfs"]
 categories = ["programming"]
 +++
 It is not easy command to unbind solution/project of TFS.
-
+<!-- more -->
 But there is manual actions to do that:
 1. Remove all *.vssscc and etc(Source Control files near your solution and projects file);
 2. Remove all nodes in solution and project file with tag <scc />
