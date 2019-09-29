@@ -71,7 +71,18 @@ It is important to understand how a customer or user sees the application or pro
 
 #### Architecture Diagrams
 
-Product Architecture diagrams
+The are couple of ways to understand application architecture. Using any of it or combination will be valuable.
+
+The following list shows the most common approaches:
+
+* UML diagrams
+* 4+1 Architectural view model
+* The C4 Model
+* Architecture Decision Records
+* Dependency diagrams
+* Application Map
+
+Please read more information [here](https://herbertograca.com/2019/08/12/documenting-software-architecture/).
 
 #### Component Details
 
