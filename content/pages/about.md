@@ -4,7 +4,7 @@ path = "about"
 template = "about.html"
 +++
 
-Yauhen Pyl (.NET/web developer)
+Yauhen Pyl (Elm/.Net/Rust developer)
 
 * [Facebook](https://www.facebook.com/yauhen.pyl)
 * [LinkedIn](https://pl.linkedin.com/in/yauhenpyl)
