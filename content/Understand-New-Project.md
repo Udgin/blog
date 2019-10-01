@@ -69,9 +69,11 @@ So the next question should be answered:
 
 It is important to understand how a customer or user sees the application or product. So the description of all different solutions and/or applications which are available in the product can be covered in this chapter. All descriptions should be done from a customer's perspective without any technical details.
 
-#### Architecture Diagrams
+#### Architecture Architecture Diagrams
 
-The are couple of ways to understand application architecture. Using any of it or combination will be valuable.
+This part is quite complex and comprehensive. But it will be great to have any type of diagrams or descriptions of how the whole application is working, how it is connected with other external systems or internally. Additionally, the list of application/system components can be covered in this section and how they depend on each other. All technical details about the application/system should be described here.
+
+There are a couple of ways to understand application architecture. Using any of it or combination will be valuable.
 
 The following list shows the most common approaches:
 
@@ -86,11 +88,13 @@ Please read more information [here](https://herbertograca.com/2019/08/12/documen
 
 #### Component Details
 
-Describe in a little bit more detail, each of the components that make up the product.
+When you are joining a project, you are starting to take tasks that are related to a specific component(s) of the system. So this paragraph covers a description of components, one by one, as it is a completely independent product. It is almost impossible to finish this part as it will grow as you are learning a new project and application/system.
+
+So each of the components that make up the product should be described here.
 
 #### Data Model and Storage
 
-Describe what kinds of data exist, and where they are stored
+This chapter should include a description of any data which is used inside the application/system. What types of data is used and how it is used by different part of the application. Also this paragraph should cover what kinds of data exist, and where they are stored.
 
 ### Product Implementation
 
