@@ -94,11 +94,11 @@ So each of the components that make up the product should be described here.
 
 #### Data Model and Storage
 
-This chapter should include a description of any data which is used inside the application/system. What types of data is used and how it is used by different part of the application. Also this paragraph should cover what kinds of data exist, and where they are stored.
+This chapter should include a description of any data which is used inside the application/system. What types of data is used and how it is used by a different part of the application. Also, this paragraph should cover what kinds of data exist, and where they are stored.
 
 ### Product Implementation
 
-This section does not need to go in a deep level of detail since SaaS is less concerned about implementation details than it is about how the components of a product are put together and deployed on the infrastructure.
+It is important to have an information in general about how the product/application depends on the infrastructure. This section should inclide all special requirements to infrastructure so the application will work on it well.
 
 #### Software Overview
 
@@ -125,7 +125,7 @@ Describe how all the components, 3rd-party and cloud services that were previous
 Describe the infrastructure of the playground environment.
 
 ### Use Cases
-    
+
 Describe all the customer and operations scenarios that define the product and its usage, especially those that have or could have an impact on operations.  Think of this as the list of all the test scenarios to validate that the product is functioning as it should and all the places where synthetic monitoring is required.  No need to go into a deep level of detail;  the goal is to provide enough info so that SaaSOps understands the scenario.  The set of scenarios should cover all customer end-points.
 
 #### Use Case: Description
