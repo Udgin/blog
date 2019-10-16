@@ -102,11 +102,11 @@ It is important to have an information in general about how the product/applicat
 
 #### Software Overview
 
-Summary of the languages used for each of the applications in the product suite.
+Summary of the languages and technologies used for each of the components in the application/product suite.
 
 #### Key Technologies
 
-Which frameworks and components are used in the product?  List all Open-source, COTS (commercial off-the-shelf) or 3rd-party services or components which the product embeds, uses or that are instantiated.  Email service?  Indexing service?  Messaging?  CDN?  Storage solution?  Also capture any insights about why these particular frameworks, components and services were used.   Eg.  CloudFlare is used as a CDN and also provides security and protection against DDoS attacks.
+Description of frameworks and libraries which are used in the product should be covered in this chapter. List all Open-source, COTS (commercial off-the-shelf) or 3rd-party services or components which the product embeds, uses or that are instantiated.  Email service?  Indexing service?  Messaging?  CDN?  Storage solution?  Also capture any insights about why these particular frameworks, components and services were used.   Eg.  CloudFlare is used as a CDN and also provides security and protection against DDoS attacks.
 
 ### Services Architecture
 

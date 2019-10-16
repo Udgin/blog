@@ -5,7 +5,7 @@ date = 2017-05-19
 tags = ["dotnet","fsharp"]
 categories = ["programming"]
 +++
-As continuation for [my previous post](https://eapyl.github.io/article/Cron-schedule-using-F-1-May-2017.html) I want to create a daemon which runs jobs using created cron code.
+As continuation for [my previous post](@/Cron-schedule-using-FSharp.md) I want to create a daemon which runs jobs using created cron code.
 
 ```fsharp
 module Daemon =

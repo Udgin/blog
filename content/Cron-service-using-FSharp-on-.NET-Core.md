@@ -5,7 +5,7 @@ date = 2017-05-28
 tags = ["dotnet","fsharp"]
 categories = ["programming"]
 +++
-As continuation for [my previous post](https://eapyl.github.io/article/Daemon-cron-using-F-19-May-2017.html) I want to create a nancy service to run my cron jobs.
+As continuation for [my previous post](@/Daemon-cron-using-FSharp.md) I want to create a nancy service to run my cron jobs.
 
 The source is [here](https://github.com/eapyl/fsharp-nancy-service).
 
