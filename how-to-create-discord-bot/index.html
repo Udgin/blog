@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Notes - How to create Discord bot</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;how-to-create-discord-bot&#x2F;">How to create Discord bot</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-02-18</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>That is a manual how to create simple ping-pong discord bot using javascript (nodejs).</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<ul>
+<li>Install nodejs and npm</li>
+<li>Create a folder for your discord bot</li>
+<li>Run <code>npm init</code> in the folder</li>
+<li>Install <a href="https://discord.js.org/#/">Discrod.js</a>: <code>npm install --save discordjs</code></li>
+<li>Create index.js in this folder:</li>
+</ul>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">/*
+  A ping pong bot, whenever you send &quot;ping&quot;, it replies &quot;pong&quot;.
+*/
+
+// import the discord.js module
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">Discord </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">require</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">discord.js</span><span style="color:#c0c5ce;">&#39;);
+
+</span><span style="color:#65737e;">// create an instance of a Discord Client, and call it bot
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">bot </span><span style="color:#c0c5ce;">= new </span><span style="color:#ebcb8b;">Discord</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Client</span><span style="color:#c0c5ce;">();
+
+</span><span style="color:#65737e;">// the token of your bot - https://discordapp.com/developers/applications/me
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">token </span><span style="color:#c0c5ce;">= &#39;</span><span style="color:#a3be8c;">your bot token here</span><span style="color:#c0c5ce;">&#39;;
+
+</span><span style="color:#65737e;">// the ready event is vital, it means that your bot will only start reacting to information
+// from Discord _after_ ready is emitted.
+</span><span style="color:#bf616a;">bot</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">on</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">ready</span><span style="color:#c0c5ce;">&#39;, () </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">{
+  console.</span><span style="color:#96b5b4;">log</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">I am ready!</span><span style="color:#c0c5ce;">&#39;);
+});
+
+</span><span style="color:#65737e;">// create an event listener for messages
+</span><span style="color:#bf616a;">bot</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">on</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">message</span><span style="color:#c0c5ce;">&#39;, message </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">{
+  </span><span style="color:#65737e;">// if the message is &quot;ping&quot;,
+  </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">message</span><span style="color:#c0c5ce;">.content === &#39;</span><span style="color:#a3be8c;">ping</span><span style="color:#c0c5ce;">&#39;) {
+    </span><span style="color:#65737e;">// send &quot;pong&quot; to the same channel.
+    </span><span style="color:#bf616a;">message</span><span style="color:#c0c5ce;">.channel.</span><span style="color:#bf616a;">sendMessage</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">pong</span><span style="color:#c0c5ce;">&#39;);
+  }
+});
+
+</span><span style="color:#65737e;">// log our bot in
+</span><span style="color:#bf616a;">bot</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">login</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">token</span><span style="color:#c0c5ce;">);
+</span></pre>
+<ul>
+<li>Got to https://discordapp.com/developers/applications/me and create your bot</li>
+<li>Put all needed values, click &quot;Create Application&quot;. On the next page scroll down until you see &quot;Create a bot user&quot;, click that.</li>
+<li>After that you will be able to copy a token of your bot. Copy it and post it in created index.js</li>
+<li>Go to https://discordapp.com/oauth2/authorize?&amp;client_id=YOUR_CLIENT_ID_HERE&amp;scope=bot&amp;permissions=0. You should replace YOUR_CLIENT_ID_HERE with Client ID (it should be in App Details on the web page where you got your token).</li>
+<li>Add your bot to the server.</li>
+<li>Run created bot by command <code>node index.js</code></li>
+<li>You should be able to see a bot in Discord at your server. Write 'ping' to the bot. The answer should be 'pong'.</li>
+</ul>
+<p>Well done! You created your Discord bot! Thank you.</p>
+<p>Here is a simple rss bot for discord:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">const </span><span style="color:#bf616a;">Discord </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">require</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">discord.js</span><span style="color:#c0c5ce;">&#39;);
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">Store </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">require</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">jfs</span><span style="color:#c0c5ce;">&quot;); </span><span style="color:#65737e;">// using jfs to save already posted rss news
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">db </span><span style="color:#c0c5ce;">= new </span><span style="color:#bf616a;">Store</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">rssfeeds</span><span style="color:#c0c5ce;">&quot;);
+</span><span style="color:#b48ead;">const </span><span style="color:#bf616a;">client </span><span style="color:#c0c5ce;">= new </span><span style="color:#ebcb8b;">Discord</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Client</span><span style="color:#c0c5ce;">();
+
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">currentNews </span><span style="color:#c0c5ce;">= [];
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">postedNews </span><span style="color:#c0c5ce;">= [];
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">interval</span><span style="color:#c0c5ce;">;
+
+</span><span style="color:#b48ead;">function </span><span style="color:#8fa1b3;">log</span><span style="color:#c0c5ce;">(message) {
+    console.</span><span style="color:#96b5b4;">log</span><span style="color:#c0c5ce;">(new </span><span style="color:#ebcb8b;">Date</span><span style="color:#c0c5ce;">() + &quot;</span><span style="color:#a3be8c;">: </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">message</span><span style="color:#c0c5ce;">);
+}
+
+</span><span style="color:#65737e;">/// load all posted rss news
+</span><span style="color:#bf616a;">db</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">all</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">(err, objs) {
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">err</span><span style="color:#c0c5ce;">) </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">err</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#b48ead;">for </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">id </span><span style="color:#c0c5ce;">in </span><span style="color:#bf616a;">objs</span><span style="color:#c0c5ce;">) {
+        </span><span style="color:#bf616a;">postedNews</span><span style="color:#c0c5ce;">.</span><span style="color:#96b5b4;">push</span><span style="color:#c0c5ce;">({ id: </span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">, value: </span><span style="color:#bf616a;">objs</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">] });
+        </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Restored posted news </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">);
+    }
+    </span><span style="color:#bf616a;">loadFeeds</span><span style="color:#c0c5ce;">();
+});
+
+</span><span style="color:#bf616a;">client</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">on</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">ready</span><span style="color:#c0c5ce;">&#39;, () </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">I am ready!</span><span style="color:#c0c5ce;">&#39;);
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">generalChannel </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">client</span><span style="color:#c0c5ce;">.channels.</span><span style="color:#bf616a;">get</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">25466045464298784169786</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(!</span><span style="color:#bf616a;">interval</span><span style="color:#c0c5ce;">) {
+        </span><span style="color:#bf616a;">interval </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">setInterval</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">{
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">currentNews</span><span style="color:#c0c5ce;">.length &gt; </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">) {
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">newsToPost </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">currentNews</span><span style="color:#c0c5ce;">.</span><span style="color:#96b5b4;">shift</span><span style="color:#c0c5ce;">();
+                </span><span style="color:#bf616a;">generalChannel</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">sendMessage</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">newsToPost</span><span style="color:#c0c5ce;">.title + &quot;</span><span style="color:#a3be8c;"> - </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">newsToPost</span><span style="color:#c0c5ce;">.link);
+                </span><span style="color:#bf616a;">db</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">save</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">newsToPost</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">(err, id) {
+                    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">err</span><span style="color:#c0c5ce;">) </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">err</span><span style="color:#c0c5ce;">);
+                    </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Saved posted news </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">);
+                    </span><span style="color:#bf616a;">postedNews</span><span style="color:#c0c5ce;">.</span><span style="color:#96b5b4;">push</span><span style="color:#c0c5ce;">({ id: </span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">, value: </span><span style="color:#bf616a;">newsToPost </span><span style="color:#c0c5ce;">});
+                });
+
+                </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Post </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">newsToPost</span><span style="color:#c0c5ce;">.link);
+                </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Left in array - </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">currentNews</span><span style="color:#c0c5ce;">.length);
+            }
+        }, </span><span style="color:#d08770;">60000 </span><span style="color:#c0c5ce;">* </span><span style="color:#d08770;">30</span><span style="color:#c0c5ce;">);
+    }
+});
+
+</span><span style="color:#bf616a;">setInterval</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Updating news</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">loadFeeds</span><span style="color:#c0c5ce;">();
+}, </span><span style="color:#d08770;">60000 </span><span style="color:#c0c5ce;">* </span><span style="color:#d08770;">60 </span><span style="color:#c0c5ce;">* </span><span style="color:#d08770;">24</span><span style="color:#c0c5ce;">);
+
+</span><span style="color:#bf616a;">setInterval</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt; </span><span style="color:#c0c5ce;">{
+    </span><span style="color:#b48ead;">while </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">postedNews</span><span style="color:#c0c5ce;">.length &gt; </span><span style="color:#d08770;">1000</span><span style="color:#c0c5ce;">) {
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">oldNewsToDelete </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">postedNews</span><span style="color:#c0c5ce;">.</span><span style="color:#96b5b4;">shift</span><span style="color:#c0c5ce;">();
+        </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">deleting </span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">oldNewsToDelete</span><span style="color:#c0c5ce;">.id)
+        </span><span style="color:#bf616a;">db</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">delete</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">oldNewsToDelete</span><span style="color:#c0c5ce;">.id, </span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">(err) {
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">err</span><span style="color:#c0c5ce;">) </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">err</span><span style="color:#c0c5ce;">);
+        });
+    }
+}, </span><span style="color:#d08770;">60000 </span><span style="color:#c0c5ce;">* </span><span style="color:#d08770;">60 </span><span style="color:#c0c5ce;">* </span><span style="color:#d08770;">24</span><span style="color:#c0c5ce;">);
+
+</span><span style="color:#bf616a;">client</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">login</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">MjgyNDg5MjQ0MDEyNzczMzc2.C4nUkw.Na6H7ZVrXbMZbXv4Wt9p8cZaj2Q</span><span style="color:#c0c5ce;">&#39;);
+
+</span><span style="color:#65737e;">// rss.json should contain information about rss, like:
+//{
+//    &quot;bbc&quot;: {
+//        &quot;description&quot; : &quot;bbc news&quot;,
+//        &quot;url&quot; : &quot;https://bbs.com/rss&quot;
+//    }
+//}
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">rssFeeds </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">require</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./rss.json</span><span style="color:#c0c5ce;">&quot;);
+
+</span><span style="color:#65737e;">/// load feeds from Resources
+</span><span style="color:#b48ead;">function </span><span style="color:#8fa1b3;">loadFeeds</span><span style="color:#c0c5ce;">() {
+    </span><span style="color:#b48ead;">for </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">feedName </span><span style="color:#c0c5ce;">in </span><span style="color:#bf616a;">rssFeeds</span><span style="color:#c0c5ce;">) {
+        </span><span style="color:#bf616a;">rssfeed</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">rssFeeds</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">feedName</span><span style="color:#c0c5ce;">].url);
+    }
+}
+
+</span><span style="color:#b48ead;">function </span><span style="color:#8fa1b3;">rssfeed</span><span style="color:#c0c5ce;">(url) {
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">FeedParser </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">require</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">feedparser</span><span style="color:#c0c5ce;">&#39;);
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">feedparser </span><span style="color:#c0c5ce;">= new </span><span style="color:#bf616a;">FeedParser</span><span style="color:#c0c5ce;">();
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">request </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">require</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">request</span><span style="color:#c0c5ce;">&#39;);
+    </span><span style="color:#bf616a;">request</span><span style="color:#c0c5ce;">(url).</span><span style="color:#bf616a;">pipe</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">feedparser</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#bf616a;">feedparser</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">on</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">error</span><span style="color:#c0c5ce;">&#39;, </span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">(error) {
+        </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">error</span><span style="color:#c0c5ce;">);
+    });
+    </span><span style="color:#bf616a;">feedparser</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">on</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">readable</span><span style="color:#c0c5ce;">&#39;, </span><span style="color:#b48ead;">function </span><span style="color:#c0c5ce;">() {
+        </span><span style="color:#b48ead;">var </span><span style="color:#c0c5ce;">stream = </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">meta </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">.meta; </span><span style="color:#65737e;">// **NOTE** the &quot;meta&quot; is always available in the context of the feedparser instance
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">item</span><span style="color:#c0c5ce;">;
+
+        </span><span style="color:#b48ead;">while </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">item </span><span style="color:#c0c5ce;">= stream.</span><span style="color:#bf616a;">read</span><span style="color:#c0c5ce;">()) {
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">postedNews </span><span style="color:#c0c5ce;">&amp;&amp; </span><span style="color:#bf616a;">postedNews</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">some</span><span style="color:#c0c5ce;">(x </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">.value.title == </span><span style="color:#bf616a;">item</span><span style="color:#c0c5ce;">.title)) </span><span style="color:#b48ead;">continue</span><span style="color:#c0c5ce;">;
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">currentNews</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">some</span><span style="color:#c0c5ce;">(x </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">.title == </span><span style="color:#bf616a;">item</span><span style="color:#c0c5ce;">.title)) </span><span style="color:#b48ead;">continue</span><span style="color:#c0c5ce;">;
+            </span><span style="color:#bf616a;">log</span><span style="color:#c0c5ce;">(&#39;</span><span style="color:#a3be8c;">Add news to current news array </span><span style="color:#c0c5ce;">&#39; + </span><span style="color:#bf616a;">item</span><span style="color:#c0c5ce;">.link);
+            </span><span style="color:#bf616a;">currentNews</span><span style="color:#c0c5ce;">.</span><span style="color:#96b5b4;">push</span><span style="color:#c0c5ce;">({
+                title = &quot;</span><span style="color:#a3be8c;">item.title,</span><span style="background-color:#bf616a;color:#2b303b;">
+</span><span style="color:#c0c5ce;">                link: </span><span style="color:#bf616a;">item</span><span style="color:#c0c5ce;">.link,
+                date = &quot;</span><span style="color:#a3be8c;">item.date</span><span style="background-color:#bf616a;color:#2b303b;">
+</span><span style="color:#c0c5ce;">            });
+            </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">currentNews</span><span style="color:#c0c5ce;">.length &gt; </span><span style="color:#d08770;">100</span><span style="color:#c0c5ce;">) </span><span style="color:#bf616a;">currentNews</span><span style="color:#c0c5ce;">.</span><span style="color:#96b5b4;">shift</span><span style="color:#c0c5ce;">();
+        }
+    });
+}
+</span></pre>
+<p>Links:</p>
+<ul>
+<li><a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">Creating a discord bot &amp; getting a token</a></li>
+<li><a href="https://discord.js.org/#/">Discord.js</a></li>
+<li><a href="https://discord.js.org/#/docs/main/stable/examples/ping">Ping-Pong example</a></li>
+<li><a href="https://discordapp.com/developers/applications/me">Discord Developers</a></li>
+<li><a href="https://discordapp.com/">Discord</a></li>
+</ul>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;javascript&#x2F;">#javascript</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;discord&#x2F;">#discord</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;nancy-sample-application&#x2F;">‹ Nancy sample application</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;simple-question-to-check-understanding-of-multithreading&#x2F;">Simple question to check understanding of multithreading ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

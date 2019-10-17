@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Notes - API Facebook</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;api-facebook&#x2F;">API Facebook</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2012-09-28</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>I know there are a lot of information about working with Facebook API, but... I just think more information is better then less.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>I need to post different types of context to Facebook pages (user create his own page, give us the name of page). OK, let's go!</p>
+<p>I m using ASP.NET MVC, you know...
+Link to the project.</p>
+<p>All events has been shown on the main page.</p>
+<ol>
+<li>Create our application in facebook.</li>
+</ol>
+<p><img src="/images/facebook1.png" alt="example" /></p>
+<p>You see there is secret key and application key. We need them to working with facebook through our application.</p>
+<ol start="2">
+<li>Authorization (OAuth 2.0).</li>
+</ol>
+<p><img src="/images/facebook2.png" alt="example" /></p>
+<ul>
+<li>Ask user to permission.</li>
+<li>User will be redirected to facebook access page.</li>
+<li>User give us needed permission.</li>
+<li>User has been redirected back to our web site with special code.</li>
+</ul>
+<p>There is the step 4 (we get the code from redirecting response).</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">GetAccessToken</span><span style="color:#c0c5ce;">()
+{
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">HttpContext</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Current</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Request</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Params</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">AllKeys</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">code</span><span style="color:#c0c5ce;">&quot;))
+    {
+        </span><span style="color:#bf616a;">code </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">HttpContext</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Current</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Request</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Params</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">code</span><span style="color:#c0c5ce;">&quot;];
+        </span><span style="color:#65737e;">//get the short-lived user access_toke
+        </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">request </span><span style="color:#c0c5ce;">= </span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Format</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">_tokenEndpoint</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">_applicationId</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">_redirectTo</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">_applicationSecret</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">code</span><span style="color:#c0c5ce;">);
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">webClient </span><span style="color:#c0c5ce;">= new WebClient();
+        </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">response </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">webClient</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">DownloadString</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">request</span><span style="color:#c0c5ce;">);
+        </span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">[] </span><span style="color:#bf616a;">pairResponse </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">response</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Split</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">&#39;&amp;&#39;</span><span style="color:#c0c5ce;">);
+        </span><span style="color:#bf616a;">accessToken </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">pairResponse</span><span style="color:#c0c5ce;">[</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">].</span><span style="color:#bf616a;">Split</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">&#39;=&#39;</span><span style="color:#c0c5ce;">)[</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">];
+        </span><span style="color:#65737e;">//get the long-lived user access_toke
+        </span><span style="color:#bf616a;">request </span><span style="color:#c0c5ce;">= </span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Format</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">_exchangeAccessToken</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">_applicationId</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">_applicationSecret</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">accessToken</span><span style="color:#c0c5ce;">);
+        </span><span style="color:#bf616a;">webClient </span><span style="color:#c0c5ce;">= new WebClient();
+        </span><span style="color:#bf616a;">response </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">webClient</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">DownloadString</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">request</span><span style="color:#c0c5ce;">);
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(!</span><span style="color:#bf616a;">accessToken</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Equals</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">response</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Split</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">&#39;=&#39;</span><span style="color:#c0c5ce;">)[</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">]))
+        {
+            </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new AccessViolationException();
+        }
+        </span><span style="color:#bf616a;">GetUserInformation</span><span style="color:#c0c5ce;">();
+    }
+    </span><span style="color:#b48ead;">else if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">HttpContext</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Current</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Request</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Params</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">AllKeys</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">error</span><span style="color:#c0c5ce;">&quot;))
+    {
+        </span><span style="color:#bf616a;">error </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">HttpContext</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Current</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Request</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Params</span><span style="color:#c0c5ce;">[&quot;</span><span style="color:#a3be8c;">error</span><span style="color:#c0c5ce;">&quot;];
+        </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new AccessViolationException(</span><span style="color:#bf616a;">error</span><span style="color:#c0c5ce;">);
+    }
+    </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new HttpException();
+}
+</span></pre>
+<p>That is my facebook controller</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">public </span><span style="color:#c0c5ce;">ActionResult </span><span style="color:#8fa1b3;">Index</span><span style="color:#c0c5ce;">()
+{
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(!</span><span style="color:#bf616a;">Client</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsAuthorizated</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">Redirect</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">Client</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">UriToAuth</span><span style="color:#c0c5ce;">);
+    }
+    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">View</span><span style="color:#c0c5ce;">(new FacebookModel {</span><span style="color:#bf616a;">Name </span><span style="color:#c0c5ce;">= &quot;&quot;});
+}
+
+</span><span style="color:#b48ead;">public </span><span style="color:#c0c5ce;">ActionResult </span><span style="color:#8fa1b3;">Authorizate</span><span style="color:#c0c5ce;">()
+{
+    </span><span style="color:#bf616a;">Client</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetAccessToken</span><span style="color:#c0c5ce;">();
+    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">RedirectToAction</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Index</span><span style="color:#c0c5ce;">&quot;);
+}
+</span></pre>
+<p>After getting code we need to get the id of the page:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">private void </span><span style="color:#8fa1b3;">GetUserInformation</span><span style="color:#c0c5ce;">()
+{
+    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">request </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">https://graph.facebook.com/me?access_token=</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">accessToken</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">webClient </span><span style="color:#c0c5ce;">= new WebClient();
+    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">response </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">webClient</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">DownloadString</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">request</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#bf616a;">user </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">JObject</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Parse</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">response</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#bf616a;">GetPagesInformation</span><span style="color:#c0c5ce;">();
+}
+
+</span><span style="color:#b48ead;">private void </span><span style="color:#8fa1b3;">GetPagesInformation</span><span style="color:#c0c5ce;">()
+{
+    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">request </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">https://graph.facebook.com/</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">user</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SelectToken</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">id</span><span style="color:#c0c5ce;">&quot;) + &quot;</span><span style="color:#a3be8c;">/accounts?access_token=</span><span style="color:#c0c5ce;">&quot; +
+                        </span><span style="color:#bf616a;">accessToken</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">webClient </span><span style="color:#c0c5ce;">= new WebClient();
+    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">response </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">webClient</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">DownloadString</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">request</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#bf616a;">userPages </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">JObject</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Parse</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">response</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#bf616a;">page </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">userPages</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SelectToken</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">data</span><span style="color:#c0c5ce;">&quot;).</span><span style="color:#bf616a;">First</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">x </span><span style="color:#c0c5ce;">=&gt; </span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SelectToken</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">name</span><span style="color:#c0c5ce;">&quot;).</span><span style="color:#bf616a;">ToString</span><span style="color:#c0c5ce;">().</span><span style="color:#bf616a;">Equals</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">_pageName</span><span style="color:#c0c5ce;">));
+}
+</span></pre>
+<ol start="3">
+<li>OK, let's start to posting something. Here is my configuration:</li>
+</ol>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">private static </span><span style="color:#c0c5ce;">readonly </span><span style="color:#bf616a;">Dictionary</span><span style="color:#c0c5ce;">&lt;</span><span style="color:#bf616a;">string</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">string</span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">Config </span><span style="color:#c0c5ce;">= new Dictionary&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt;
+{
+    {&quot;</span><span style="color:#a3be8c;">AuthorizationEndpoint</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">https://graph.facebook.com/oauth/authorize?client_id=</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">&amp;redirect_uri=</span><span style="color:#d08770;">{1}</span><span style="color:#a3be8c;">&amp;scope=manage_pages,create_event,publish_stream</span><span style="color:#c0c5ce;">&quot;},
+    {&quot;</span><span style="color:#a3be8c;">TokenEndpoint</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">https://graph.facebook.com/oauth/access_token?client_id=</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">&amp;redirect_uri=</span><span style="color:#d08770;">{1}</span><span style="color:#a3be8c;">&amp;client_secret=</span><span style="color:#d08770;">{2}</span><span style="color:#a3be8c;">&amp;code=</span><span style="color:#d08770;">{3}</span><span style="color:#c0c5ce;">&quot;},
+    {&quot;</span><span style="color:#a3be8c;">ApplicationId</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">387222228001291</span><span style="color:#c0c5ce;">&quot;},
+    {&quot;</span><span style="color:#a3be8c;">ApplicationSecret</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">3a177e2231e2966733771775b42</span><span style="color:#c0c5ce;">&quot;},
+    {&quot;</span><span style="color:#a3be8c;">RedirectTo</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">http://localhost:4769/Facebook/Authorizate</span><span style="color:#c0c5ce;">&quot;},
+    {&quot;</span><span style="color:#a3be8c;">PageName</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">TesterMyRest Community</span><span style="color:#c0c5ce;">&quot;}
+};
+</span></pre>
+<p>Posting video.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">public string </span><span style="color:#8fa1b3;">CreateVideo</span><span style="color:#c0c5ce;">(MemoryStream </span><span style="color:#bf616a;">imageMemoryStream</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">title</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">fileName</span><span style="color:#c0c5ce;">)
+{
+    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">boundary </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">---------------------------</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">DateTime</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Now</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Ticks</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ToString</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">x</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">uploadRequest </span><span style="color:#c0c5ce;">=
+        (HttpWebRequest)
+        </span><span style="color:#bf616a;">WebRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Create</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">https://graph.facebook.com/</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">page</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SelectToken</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">id</span><span style="color:#c0c5ce;">&quot;) + &quot;</span><span style="color:#a3be8c;">/videos?access_token=</span><span style="color:#c0c5ce;">&quot; +
+                            </span><span style="color:#bf616a;">page</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SelectToken</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">access_token</span><span style="color:#c0c5ce;">&quot;));
+    </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ServicePoint</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Expect100Continue </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Method </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">POST</span><span style="color:#c0c5ce;">&quot;;
+    </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">UserAgent </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">Mozilla/4.0 (compatible; Windows NT)</span><span style="color:#c0c5ce;">&quot;;
+    </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ContentType </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">multipart/form-data; boundary=</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">boundary</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">KeepAlive </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">;
+
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">sb </span><span style="color:#c0c5ce;">= new StringBuilder();
+
+    </span><span style="color:#b48ead;">const string </span><span style="color:#bf616a;">formdataTemplate </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">--</span><span style="color:#d08770;">{0}</span><span style="color:#96b5b4;">\r\n</span><span style="color:#a3be8c;">Content-Disposition: form-data; name=</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#d08770;">{1}</span><span style="color:#96b5b4;">\&quot;\r\n\r\n</span><span style="color:#d08770;">{2}</span><span style="color:#96b5b4;">\r\n</span><span style="color:#c0c5ce;">&quot;;
+    </span><span style="color:#bf616a;">sb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">AppendFormat</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">formdataTemplate</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">boundary</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">title</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#bf616a;">HttpContext</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Current</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Server</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HtmlEncode</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">title</span><span style="color:#c0c5ce;">));
+
+    </span><span style="color:#b48ead;">const string </span><span style="color:#bf616a;">headerTemplate </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">--</span><span style="color:#d08770;">{0}</span><span style="color:#96b5b4;">\r\n</span><span style="color:#a3be8c;">Content-Disposition: form-data; name=</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#d08770;">{1}</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">; filename=</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#d08770;">{2}</span><span style="color:#96b5b4;">\&quot;\r\n</span><span style="color:#a3be8c;">Content-Type: </span><span style="color:#d08770;">{3}</span><span style="color:#96b5b4;">\r\n\r\n</span><span style="color:#c0c5ce;">&quot;;
+    </span><span style="color:#bf616a;">sb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">AppendFormat</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">headerTemplate</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">boundary</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">source</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#bf616a;">fileName</span><span style="color:#c0c5ce;">, @&quot;</span><span style="color:#a3be8c;">application/octet-stream</span><span style="color:#c0c5ce;">&quot;);
+
+    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">formString </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">sb</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ToString</span><span style="color:#c0c5ce;">();
+    </span><span style="color:#b48ead;">byte</span><span style="color:#c0c5ce;">[] </span><span style="color:#bf616a;">formBytes </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Encoding</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">UTF8</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetBytes</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">formString</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#b48ead;">byte</span><span style="color:#c0c5ce;">[] </span><span style="color:#bf616a;">trailingBytes </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Encoding</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">UTF8</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetBytes</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#96b5b4;">\r\n</span><span style="color:#a3be8c;">--</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">boundary </span><span style="color:#c0c5ce;">+ &quot;</span><span style="color:#a3be8c;">--</span><span style="color:#96b5b4;">\r\n</span><span style="color:#c0c5ce;">&quot;);
+
+    </span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">imageLength </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">imageMemoryStream</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Length</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">contentLength </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">formBytes</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Length </span><span style="color:#c0c5ce;">+ </span><span style="color:#bf616a;">imageLength </span><span style="color:#c0c5ce;">+ </span><span style="color:#bf616a;">trailingBytes</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Length</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ContentLength </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">contentLength</span><span style="color:#c0c5ce;">;
+
+    </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">AllowWriteStreamBuffering </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">false</span><span style="color:#c0c5ce;">;
+    Stream </span><span style="color:#bf616a;">strmOut </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetRequestStream</span><span style="color:#c0c5ce;">();
+
+    </span><span style="color:#bf616a;">strmOut</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Write</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">formBytes</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">formBytes</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Length</span><span style="color:#c0c5ce;">);
+
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">buffer </span><span style="color:#c0c5ce;">= new Byte[</span><span style="color:#b48ead;">checked</span><span style="color:#c0c5ce;">((</span><span style="color:#b48ead;">uint</span><span style="color:#c0c5ce;">) </span><span style="color:#bf616a;">Math</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Min</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">4096</span><span style="color:#c0c5ce;">, (</span><span style="color:#b48ead;">int</span><span style="color:#c0c5ce;">) </span><span style="color:#bf616a;">imageLength</span><span style="color:#c0c5ce;">))];
+    </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">bytesRead</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#bf616a;">imageMemoryStream</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Seek</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">SeekOrigin</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Begin</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#b48ead;">while </span><span style="color:#c0c5ce;">((</span><span style="color:#bf616a;">bytesRead </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">imageMemoryStream</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Read</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">buffer</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">buffer</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Length</span><span style="color:#c0c5ce;">)) != </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#bf616a;">strmOut</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Write</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">buffer</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">bytesRead</span><span style="color:#c0c5ce;">);
+    }
+
+    </span><span style="color:#bf616a;">strmOut</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Write</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">trailingBytes</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">trailingBytes</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Length</span><span style="color:#c0c5ce;">);
+
+    </span><span style="color:#bf616a;">strmOut</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Close</span><span style="color:#c0c5ce;">();
+
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">wresp </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">uploadRequest</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetResponse</span><span style="color:#c0c5ce;">() as HttpWebResponse;
+    Encoding </span><span style="color:#bf616a;">enc </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Encoding</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">UTF8</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">wresp </span><span style="color:#c0c5ce;">!= </span><span style="color:#d08770;">null</span><span style="color:#c0c5ce;">)
+    {
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">stream </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">wresp</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetResponseStream</span><span style="color:#c0c5ce;">();
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">stream </span><span style="color:#c0c5ce;">!= </span><span style="color:#d08770;">null</span><span style="color:#c0c5ce;">)
+        {
+            </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">loResponseStream </span><span style="color:#c0c5ce;">= new StreamReader(</span><span style="color:#bf616a;">stream</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">enc</span><span style="color:#c0c5ce;">);
+            </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">https://graph.facebook.com/</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">loResponseStream</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ReadToEnd</span><span style="color:#c0c5ce;">();
+        }
+    }
+    </span><span style="color:#b48ead;">return string</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Empty</span><span style="color:#c0c5ce;">;
+}
+</span></pre>
+<ol start="4">
+<li>Change the information about the page.</li>
+</ol>
+<p>WebHelper class:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">public static class </span><span style="color:#ebcb8b;">WebWorker
+</span><span style="color:#eff1f5;">{
+    </span><span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">AddPostParameter</span><span style="color:#eff1f5;">(Dictionary&lt;</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">values</span><span style="color:#eff1f5;">, StringBuilder </span><span style="color:#bf616a;">postBody</span><span style="color:#eff1f5;">)
+    {
+        </span><span style="color:#b48ead;">foreach </span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">key </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">values</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Keys</span><span style="color:#eff1f5;">)
+        {
+            </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">postBody</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Length </span><span style="color:#c0c5ce;">&gt; </span><span style="color:#d08770;">0</span><span style="color:#eff1f5;">)
+            {
+                </span><span style="color:#bf616a;">postBody</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Append</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">&amp;</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">);
+            }
+            </span><span style="color:#bf616a;">postBody</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Append</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Format</span><span style="color:#eff1f5;">(</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#d08770;">{0}</span><span style="color:#a3be8c;">=</span><span style="color:#d08770;">{1}</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">key</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">values</span><span style="color:#eff1f5;">[</span><span style="color:#bf616a;">key</span><span style="color:#eff1f5;">]));
+        }
+    }
+
+    </span><span style="color:#b48ead;">public static </span><span style="color:#eff1f5;">JObject </span><span style="color:#8fa1b3;">DownloadJson</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">requestUrl</span><span style="color:#eff1f5;">)
+    {
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">webClient </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">WebClient();
+        </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">response </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">webClient</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">DownloadString</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">requestUrl</span><span style="color:#eff1f5;">);
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">JObject</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Parse</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">response</span><span style="color:#eff1f5;">);
+    }
+
+    </span><span style="color:#b48ead;">public static string </span><span style="color:#8fa1b3;">UploadString</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">requstUrl</span><span style="color:#eff1f5;">, Dictionary&lt;</span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">string</span><span style="color:#eff1f5;">&gt; </span><span style="color:#bf616a;">values</span><span style="color:#eff1f5;">)
+    {
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">webClient </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">WebClient();
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">postBody </span><span style="color:#c0c5ce;">= new </span><span style="color:#eff1f5;">StringBuilder();
+        </span><span style="color:#bf616a;">AddPostParameter</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">values</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">postBody</span><span style="color:#eff1f5;">);
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">webClient</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">UploadString</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">requstUrl</span><span style="color:#eff1f5;">, </span><span style="color:#bf616a;">postBody</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">ToString</span><span style="color:#eff1f5;">());
+    }
+}
+</span></pre><pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">private string </span><span style="color:#8fa1b3;">CreateStatus</span><span style="color:#c0c5ce;">(Dictionary&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">values</span><span style="color:#c0c5ce;">)
+{
+    </span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">request </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">https://graph.facebook.com/</span><span style="color:#c0c5ce;">&quot; + </span><span style="color:#bf616a;">page</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SelectToken</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">id</span><span style="color:#c0c5ce;">&quot;) + &quot;</span><span style="color:#a3be8c;">/feed?access_token=</span><span style="color:#c0c5ce;">&quot; +
+                        </span><span style="color:#bf616a;">page</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SelectToken</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">access_token</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">WebWorker</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">UploadString</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">request</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">values</span><span style="color:#c0c5ce;">);
+}
+</span></pre>
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;avoid-ambiguous-invocation-for-extension-methods&#x2F;">‹ Avoid Ambiguous invocation for extension methods</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tfs-delete-team-project&#x2F;">TFS Delete Team Project ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

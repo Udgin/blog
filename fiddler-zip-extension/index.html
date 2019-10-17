@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Notes - Fiddler Zip extension</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;fiddler-zip-extension&#x2F;">Fiddler Zip extension</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2011-12-08</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Extension for <a href="http://www.fiddler2.com/Fiddler/dev/">Fiddler</a>.</p>
+<p><img src="/images/zip_fiddler.jpg" alt="example" /></p>
+<p>The source code: <a href="https://drive.google.com/file/d/0BwVmorgjT-W1NDFlZDZkMDItMWMxMS00NzU2LTg3NDUtYTYzOWVhOGMyMzRj/view">FiddlerZip</a>.</p>
+<p>The main code:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System;
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Collections.Generic;
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Linq;
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Text;
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">Fiddler;
+</span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">System.Windows.Forms;
+ 
+</span><span style="color:#65737e;">// It is important !!! see the current version of fiddler
+</span><span style="color:#c0c5ce;">[</span><span style="color:#b48ead;">assembly</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">Fiddler</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">RequiredVersion</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">2.3.4.4</span><span style="color:#c0c5ce;">&quot;)]
+ 
+</span><span style="color:#b48ead;">namespace </span><span style="color:#c0c5ce;">FiddlerZip
+{
+    </span><span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    /// Zip extension
+    /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+    public class Zip : IFiddlerExtension 
+    {
+        /// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+        /// page for extesnion
+        /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+        private TabPage oPage;
+        /// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+        /// Control that presented extension
+        /// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+        private ZipControl oAppConsole;
+        #region IFiddlerExtension Members
+ 
+        public void OnBeforeUnload()
+        {
+            
+        }
+ 
+        public void OnLoad()
+        {
+            // create tab with name &quot;Zip&quot;
+            oPage = new TabPage(&quot;Zip&quot;);
+            // it is possible to add icon to your tab
+            oPage.ImageIndex = (int)Fiddler.SessionIcons.FilterBrowsers;
+            oAppConsole = new ZipControl();
+            // add control to tab
+            oPage.Controls.Add(oAppConsole);
+            oAppConsole.Dock = DockStyle.Fill;
+            FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);
+        }
+ 
+        #endregion
+    }
+</span><span style="color:#c0c5ce;">}
+</span></pre>
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;style-cop-i-don-t-like-sa-1201&#x2F;">‹ Style Cop I don&#x27;t like SA 1201</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;powershell-how-to&#x2F;">PowerShell How to ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

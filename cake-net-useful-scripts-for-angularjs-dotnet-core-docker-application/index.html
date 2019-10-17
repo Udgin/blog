@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Notes - Cake.Net. Useful scripts for AngularJS, dotnet core, docker application</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;cake-net-useful-scripts-for-angularjs-dotnet-core-docker-application&#x2F;">Cake.Net. Useful scripts for AngularJS, dotnet core, docker application</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-06-22</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>There is a great <a href="http://cakebuild.net/">cross-platform build automation tool</a> - Cake.Net.</p>
+<p>I started using it and created some useful scripts to Release and Publish new version of application.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>I am using AngularJS as frontend framework, asp net core (dotnet core) as backend framework, git as source system and docker to deploy and run application on remote server.</p>
+<p>So it is a small cake script to release a new version of application:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">#</span><span style="background-color:#bf616a;color:#2b303b;">addin &quot;Cake.Docker&quot;</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">#</span><span style="background-color:#bf616a;color:#2b303b;">addin &quot;Cake.FileHelpers&quot;</span><span style="color:#c0c5ce;">
+
+</span><span style="color:#65737e;">// Release: ./build.sh -t Release &quot;-packageVersion=x.x.x.x&quot;
+// Publish: ./build.sh -t Publish &quot;-packageVersion=x.x.x.x&quot; &quot;-env=one&quot;
+// Delete release: ./build.sh -t Delete &quot;-packageVersion=x.x.x.x&quot;
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">target </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Argument</span><span style="color:#c0c5ce;">&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt;(&quot;</span><span style="color:#a3be8c;">target</span><span style="color:#c0c5ce;">&quot;);
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">version </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Argument</span><span style="color:#c0c5ce;">&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt;(&quot;</span><span style="color:#a3be8c;">packageVersion</span><span style="color:#c0c5ce;">&quot;);
+
+</span><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Settings
+</span><span style="color:#eff1f5;">{
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">SshAddress</span><span style="color:#eff1f5;">;
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">SshPort</span><span style="color:#eff1f5;">;
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">HomePath</span><span style="color:#eff1f5;">;
+}
+
+</span><span style="color:#c0c5ce;">Settings </span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">;
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">SelectEnvironment</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;{
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">env </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Argument</span><span style="color:#c0c5ce;">&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt;(&quot;</span><span style="color:#a3be8c;">env</span><span style="color:#c0c5ce;">&quot;);
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">environments </span><span style="color:#c0c5ce;">= new Dictionary&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">, Settings&gt; {
+            [&quot;</span><span style="color:#a3be8c;">one</span><span style="color:#c0c5ce;">&quot;] = new Settings {
+                </span><span style="color:#bf616a;">SshAddress </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">root@66.66.66.66</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">SshPort </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">22</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">HomePath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">/root/Templates</span><span style="color:#c0c5ce;">&quot;
+            },
+            [&quot;</span><span style="color:#a3be8c;">two</span><span style="color:#c0c5ce;">&quot;] = new Settings{
+                </span><span style="color:#bf616a;">SshAddress </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">root@99.99.99.99</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">SshPort </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">26</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">HomePath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">/home/Templates</span><span style="color:#c0c5ce;">&quot;
+            }
+        };
+        </span><span style="color:#bf616a;">sets </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">environments</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">env</span><span style="color:#c0c5ce;">];
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Publish</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">SelectEnvironment</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckAllCommitted</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutTag</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">BuildAngular</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">BuildDocker</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutBranch</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PushToGitLab</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PublishService</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;
+    {
+        </span><span style="color:#bf616a;">Information</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Finished!</span><span style="color:#c0c5ce;">&quot;);
+    });
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Release</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">SetVersion</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ReleaseNotes</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Commit</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PushTagToGit</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;
+    {
+        </span><span style="color:#bf616a;">Information</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Finished!</span><span style="color:#c0c5ce;">&quot;);
+    });
+
+</span><span style="color:#65737e;">//build angular
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build Angular</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+    </span><span style="color:#c0c5ce;">{
+        </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ng</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">build</span><span style="color:#c0c5ce;">&quot;);
+    });
+
+</span><span style="color:#65737e;">// delete release (tag)
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Delete</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;
+    {
+        </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">tag --delete v</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}&quot;);
+        </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">push --delete origin v</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}&quot;);
+    });
+
+</span><span style="color:#65737e;">// add release notes to historys
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ReleaseNotes</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt; {
+        IEnumerable&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">redirectedOutput</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, 
+            new ProcessSettings {
+                </span><span style="color:#bf616a;">Arguments </span><span style="color:#c0c5ce;">= $&quot;</span><span style="color:#a3be8c;">describe --abbrev=0 --tags</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">RedirectStandardOutput </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true
+            </span><span style="color:#c0c5ce;">},
+            </span><span style="color:#b48ead;">out </span><span style="color:#bf616a;">redirectedOutput
+        </span><span style="color:#c0c5ce;">);
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">previousVersion </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">redirectedOutput</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">First</span><span style="color:#c0c5ce;">();
+        </span><span style="color:#bf616a;">Information</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">previousVersion</span><span style="color:#c0c5ce;">);
+        IEnumerable&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">redirectedOutput2</span><span style="color:#c0c5ce;">;
+        </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, 
+            new ProcessSettings {
+                </span><span style="color:#bf616a;">Arguments </span><span style="color:#c0c5ce;">= $&quot;</span><span style="color:#a3be8c;">log --pretty=</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">%s</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;"> HEAD...</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">previousVersion</span><span style="color:#c0c5ce;">}&quot;,
+                </span><span style="color:#bf616a;">RedirectStandardOutput </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true
+            </span><span style="color:#c0c5ce;">},
+            </span><span style="color:#b48ead;">out </span><span style="color:#bf616a;">redirectedOutput2
+        </span><span style="color:#c0c5ce;">);
+        </span><span style="color:#bf616a;">FileAppendLines</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./src/HISTORY.txt</span><span style="color:#c0c5ce;">&quot;, new </span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">[]{$&quot;</span><span style="color:#a3be8c;">------release v</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">-----</span><span style="color:#c0c5ce;">&quot;});
+        </span><span style="color:#bf616a;">FileAppendLines</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./src/HISTORY.txt</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#bf616a;">redirectedOutput2</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ToArray</span><span style="color:#c0c5ce;">());
+    });
+
+</span><span style="color:#65737e;">// push docker image to gitlab
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PushToGitLab</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;{
+        </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">docker</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">push registry.gitlab.com/counterra/service:</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}&quot;);
+    });
+
+</span><span style="color:#65737e;">// build project locally 
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">DotNetCoreRestore</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./src/counterra.csproj</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">CleanDirectory</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./artifacts</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">settings </span><span style="color:#c0c5ce;">= new DotNetCorePublishSettings
+    {
+        </span><span style="color:#bf616a;">Framework </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">netcoreapp1.1</span><span style="color:#c0c5ce;">&quot;,
+        </span><span style="color:#bf616a;">Configuration </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">Release</span><span style="color:#c0c5ce;">&quot;,
+        </span><span style="color:#bf616a;">OutputDirectory </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">./artifacts/</span><span style="color:#c0c5ce;">&quot;
+    };
+    </span><span style="color:#bf616a;">DotNetCorePublish</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./src/counterra.csproj</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#bf616a;">settings</span><span style="color:#c0c5ce;">);
+});
+
+</span><span style="color:#65737e;">// set new version in project file
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">SetVersion</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;
+    {
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">file </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">File</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./src/counterra.csproj</span><span style="color:#c0c5ce;">&quot;);
+        </span><span style="color:#bf616a;">XmlPoke</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">file</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">/Project/PropertyGroup/Version</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">);
+    });
+
+</span><span style="color:#65737e;">// build docker
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">BuildDocker</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">settings </span><span style="color:#c0c5ce;">= new DockerBuildSettings {
+        </span><span style="color:#bf616a;">Tag </span><span style="color:#c0c5ce;">= new []{ $&quot;</span><span style="color:#a3be8c;">registry.gitlab.com/counterra/service:</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}&quot; }
+    };
+    </span><span style="color:#bf616a;">DockerBuild</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">settings</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">.</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#65737e;">// go to remote server and replace docker there
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PublishService</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">scp</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">-P </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshPort</span><span style="color:#c0c5ce;">} {</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshAddress</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">:</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HomePath</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">/server/docker-compose.yml ./artifacts/</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">ReplaceRegexInFiles</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./artifacts/docker-compose.yml</span><span style="color:#c0c5ce;">&quot;, @&quot;</span><span style="color:#a3be8c;">registry.gitlab.com/counterra/service:\d+\.\d+\.\d+\.\d+</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">registry.gitlab.com/counterra/service:</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}&quot;);
+
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">-p </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshPort</span><span style="color:#c0c5ce;">} {</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshAddress</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;"> cd </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HomePath</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">/server/; docker-compose stop service</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">-p </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshPort</span><span style="color:#c0c5ce;">} {</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshAddress</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;"> cd </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HomePath</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">/server/; docker-compose rm -f service</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">scp</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">-P </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshPort</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;"> ./artifacts/docker-compose.yml </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshAddress</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">:</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HomePath</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">/server/</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">-p </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshPort</span><span style="color:#c0c5ce;">} {</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshAddress</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;"> cd </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HomePath</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">/server/; docker-compose create service</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">-p </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshPort</span><span style="color:#c0c5ce;">} {</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SshAddress</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;"> cd </span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">HomePath</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">/server/; docker-compose start service</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#65737e;">// push new tag
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PushTagToGit</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">tag v</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}&quot;);
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">push --tags</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#65737e;">// checkout tag
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutTag</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">checkout tags/v</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}&quot;);
+});
+
+</span><span style="color:#65737e;">// checkout master
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutBranch</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">checkout master</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#65737e;">// commit all to branch and push it
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Commit</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">add .</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">commit -m </span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">Release v</span><span style="color:#c0c5ce;">{</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">}</span><span style="color:#96b5b4;">\&quot; </span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $&quot;</span><span style="color:#a3be8c;">push</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#65737e;">// check that we haven&#39;t uncommitted files
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckAllCommitted</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    IEnumerable&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">redirectedOutput</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, 
+        new ProcessSettings {
+            </span><span style="color:#bf616a;">Arguments </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">status</span><span style="color:#c0c5ce;">&quot;,
+            </span><span style="color:#bf616a;">RedirectStandardOutput </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true
+        </span><span style="color:#c0c5ce;">},
+        </span><span style="color:#b48ead;">out </span><span style="color:#bf616a;">redirectedOutput
+    </span><span style="color:#c0c5ce;">);
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(!</span><span style="color:#bf616a;">redirectedOutput</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">LastOrDefault</span><span style="color:#c0c5ce;">().</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">nothing to commit</span><span style="color:#c0c5ce;">&quot;))
+    {
+        </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new Exception(&quot;</span><span style="color:#a3be8c;">Exists uncommitted changes</span><span style="color:#c0c5ce;">&quot;);
+    }
+});
+
+</span><span style="color:#bf616a;">RunTarget</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">target</span><span style="color:#c0c5ce;">);
+
+</span></pre>
+<p>It is a script to build released version and publish a docker container to a server:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">// Release: ./build.sh -t Release &quot;-packageVersion=x.x.x.x&quot;
+// Publish: ./build.sh -t Publish &quot;-packageVersion=x.x.x.x&quot; &quot;-env=counterra&quot;
+// Delete release: ./build.sh -t Delete &quot;-packageVersion=x.x.x.x&quot;
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">target </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Argument</span><span style="color:#c0c5ce;">&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt;(&quot;</span><span style="color:#a3be8c;">target</span><span style="color:#c0c5ce;">&quot;);
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">version </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Argument</span><span style="color:#c0c5ce;">&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt;(&quot;</span><span style="color:#a3be8c;">packageVersion</span><span style="color:#c0c5ce;">&quot;);
+
+</span><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Settings
+</span><span style="color:#eff1f5;">{
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">SshAddress</span><span style="color:#eff1f5;">;
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">SshPort</span><span style="color:#eff1f5;">;
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">HomePath</span><span style="color:#eff1f5;">;
+}
+
+</span><span style="color:#c0c5ce;">Settings </span><span style="color:#bf616a;">sets</span><span style="color:#c0c5ce;">;
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">SelectEnvironment</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;{
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">env </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">Argument</span><span style="color:#c0c5ce;">&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt;(&quot;</span><span style="color:#a3be8c;">env</span><span style="color:#c0c5ce;">&quot;);
+        </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">environments </span><span style="color:#c0c5ce;">= new Dictionary&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">, Settings&gt; {
+            [&quot;</span><span style="color:#a3be8c;">counterra</span><span style="color:#c0c5ce;">&quot;] = new Settings {
+                </span><span style="color:#bf616a;">SshAddress </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">root@83.220.171.23</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">SshPort </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">22</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">HomePath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">/root/Templates</span><span style="color:#c0c5ce;">&quot;
+            },
+            [&quot;</span><span style="color:#a3be8c;">tj</span><span style="color:#c0c5ce;">&quot;] = new Settings{
+                </span><span style="color:#bf616a;">SshAddress </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">vorsa@195.14.96.218</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">SshPort </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">26</span><span style="color:#c0c5ce;">&quot;,
+                </span><span style="color:#bf616a;">HomePath </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">/home/vorsa</span><span style="color:#c0c5ce;">&quot;
+            }
+        };
+        </span><span style="color:#bf616a;">sets </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">environments</span><span style="color:#c0c5ce;">[</span><span style="color:#bf616a;">env</span><span style="color:#c0c5ce;">];
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Publish</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">SelectEnvironment</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckAllCommitted</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutTag</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// build angular
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build Angular</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">BuildDocker</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutBranch</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PushToGitLab</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PublishService</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;
+    {
+        </span><span style="color:#bf616a;">Information</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Finished!</span><span style="color:#c0c5ce;">&quot;);
+    });
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Release</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">SetVersion</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ReleaseNotes</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Commit</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PushTagToGit</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;
+    {
+        </span><span style="color:#bf616a;">Information</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Finished!</span><span style="color:#c0c5ce;">&quot;);
+    });
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Publish</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// check that current &#39;master&#39; branch hasn&#39;t uncommitted changes
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckAllCommitted</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// checkout release tag
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutTag</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// build angular
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build Angular</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// build release 
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// return &#39;master&#39; to HEAD as we have published release in artifacts folder
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutBranch</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// create docker image using published release
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">BuildDocker</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// copy image to remote server
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ExportDocker</span><span style="color:#c0c5ce;">&quot;)
+    </span><span style="color:#65737e;">// import new image, replace running container
+    </span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsDependentOn</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PublishService</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(()=&gt;
+    {
+        </span><span style="color:#bf616a;">Information</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Finished!</span><span style="color:#c0c5ce;">&quot;);
+    });
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build Angular</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ng</span><span style="color:#c0c5ce;">&quot;, &quot;</span><span style="color:#a3be8c;">build</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Build</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">DotNetCoreRestore</span><span style="color:#c0c5ce;">($ &quot;</span><span style="color:#a3be8c;">./src/{Settings.ProjectName}</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#bf616a;">CleanDirectory</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./artifacts</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">settings </span><span style="color:#c0c5ce;">= new DotNetCorePublishSettings
+    {
+        </span><span style="color:#bf616a;">Framework </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">netcoreapp1.1</span><span style="color:#c0c5ce;">&quot;,
+        </span><span style="color:#bf616a;">Configuration </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">Release</span><span style="color:#c0c5ce;">&quot;,
+        </span><span style="color:#bf616a;">OutputDirectory </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">./artifacts/</span><span style="color:#c0c5ce;">&quot;
+    };
+    </span><span style="color:#bf616a;">DotNetCorePublish</span><span style="color:#c0c5ce;">($ &quot;</span><span style="color:#a3be8c;">./src/{Settings.ProjectName}</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#bf616a;">settings</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#65737e;">// clean up artifacts folder
+    </span><span style="color:#bf616a;">DeleteDirectory</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./artifacts/e2e</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#bf616a;">recursive</span><span style="color:#c0c5ce;">:</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#bf616a;">DeleteDirectory</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./artifacts/src</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#bf616a;">recursive</span><span style="color:#c0c5ce;">:</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#bf616a;">DeleteFiles</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./artifacts/ts*.json</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">BuildDocker</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">settings </span><span style="color:#c0c5ce;">= new DockerBuildSettings {
+        </span><span style="color:#bf616a;">Tag </span><span style="color:#c0c5ce;">= new []{ $ &quot;</span><span style="color:#a3be8c;">{Settings.ContainerName}:{version}</span><span style="color:#c0c5ce;">&quot; }
+    };
+    </span><span style="color:#bf616a;">DockerBuild</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">settings</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">.</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ExportDocker</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">settings </span><span style="color:#c0c5ce;">= new DockerSaveSettings {
+        </span><span style="color:#bf616a;">Output </span><span style="color:#c0c5ce;">= $ &quot;</span><span style="color:#a3be8c;">./artifacts/{Settings.ContainerName}.{version}.tar</span><span style="color:#c0c5ce;">&quot;
+    };
+    </span><span style="color:#65737e;">// save docker image to tar archive
+    </span><span style="color:#bf616a;">DockerSave</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">settings</span><span style="color:#c0c5ce;">, new[] { $ &quot;</span><span style="color:#a3be8c;">{Settings.ContainerName}:{version}</span><span style="color:#c0c5ce;">&quot;});
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">PublishService</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#65737e;">// cope docker image to remote server
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">scp</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">-P {Settings.SshPort} ./artifacts/{Settings.ContainerName}.{version}.tar {Settings.SshAddress}:{Settings.HomePath}/</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#65737e;">// load copied image to docker on remote server
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">-p {Settings.SshPort} {Settings.SshAddress} docker load &lt; {Settings.HomePath}/{Settings.ContainerName}.{version}.tar</span><span style="color:#c0c5ce;">&quot;);
+
+    </span><span style="color:#65737e;">// copy docker-compose configuration from remote server to artifacts folder
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">scp</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">-P {Settings.SshPort} {Settings.SshAddress}:{Settings.HomePath}/docker-compose.yml ./artifacts/</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#65737e;">// replace the version of docker image in docker-compose configuration
+    </span><span style="color:#bf616a;">ReplaceRegexInFiles</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">./artifacts/docker-compose.yml</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">{Settings.ContainerName}:</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">d+</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">.</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">d+</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">.</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">d+</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">.</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">d+</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">{Settings.ContainerName}:{version}</span><span style="color:#c0c5ce;">&quot;);
+
+    </span><span style="color:#65737e;">// stop old docker container on server
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose stop {Settings.ContainerName}</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#65737e;">// delete old container
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose rm -f {Settings.ContainerName}</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#65737e;">// copy new docker-compose configuration to remote server
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">scp</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">-P {Settings.SshPort} ./artifacts/docker-compose.yml {Settings.SshAddress}:{Settings.HomePath}/</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#65737e;">// recreate docker container, it will create a new version
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose create {Settings.ContainerName}</span><span style="color:#c0c5ce;">&quot;);
+    </span><span style="color:#65737e;">// start new docker container
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">ssh</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">-p {Settings.SshPort} {Settings.SshAddress} cd {Settings.HomePath}/; docker-compose start {Settings.ContainerName}</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutTag</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">checkout tags/v{version}</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckoutBranch</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, $ &quot;</span><span style="color:#a3be8c;">checkout master</span><span style="color:#c0c5ce;">&quot;);
+});
+
+</span><span style="color:#bf616a;">Task</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">CheckAllCommitted</span><span style="color:#c0c5ce;">&quot;)
+    .</span><span style="color:#bf616a;">Does</span><span style="color:#c0c5ce;">(() </span><span style="color:#b48ead;">=&gt;
+</span><span style="color:#c0c5ce;">{
+    IEnumerable&lt;</span><span style="color:#b48ead;">string</span><span style="color:#c0c5ce;">&gt; </span><span style="color:#bf616a;">redirectedOutput</span><span style="color:#c0c5ce;">;
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">exitCodeWithArgument </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">StartProcess</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">git</span><span style="color:#c0c5ce;">&quot;, new ProcessSettings{
+    </span><span style="color:#bf616a;">Arguments </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">status</span><span style="color:#c0c5ce;">&quot;,
+    </span><span style="color:#bf616a;">RedirectStandardOutput </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">true
+    </span><span style="color:#c0c5ce;">},
+    </span><span style="color:#b48ead;">out </span><span style="color:#bf616a;">redirectedOutput
+    </span><span style="color:#c0c5ce;">);
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(!</span><span style="color:#bf616a;">redirectedOutput</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">LastOrDefault</span><span style="color:#c0c5ce;">().</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">nothing to commit</span><span style="color:#c0c5ce;">&quot;))
+    {
+        </span><span style="color:#b48ead;">throw </span><span style="color:#c0c5ce;">new Exception(&quot;</span><span style="color:#a3be8c;">Exists uncommitted changes</span><span style="color:#c0c5ce;">&quot;);
+    }
+});
+
+</span><span style="color:#bf616a;">RunTarget</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">target</span><span style="color:#c0c5ce;">);
+</span></pre>
+<p>I am running service using docker compose like:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">: &#39;</span><span style="color:#a3be8c;">2</span><span style="color:#c0c5ce;">&#39;
+</span><span style="color:#bf616a;">services</span><span style="color:#c0c5ce;">:
+    </span><span style="color:#bf616a;">ContainerName</span><span style="color:#c0c5ce;">:
+        </span><span style="color:#bf616a;">image</span><span style="color:#c0c5ce;">: </span><span style="color:#a3be8c;">ContainerName:x.x.x.x
+</span></pre>
+<p>Thanks.</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;docker&#x2F;">#docker</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;cake&#x2F;">#cake</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;cron-schedule-using-fsharp&#x2F;">‹ Cron schedule using F#</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;personal-mobile-radio-application-using-ionic&#x2F;">Personal mobile radio application using Ionic ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Notes - Octave Tutorial</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="https://eapyl.github.io/octave-tutorial/#basic-operations" class="toc-link">Basic operations</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/octave-tutorial/#moving-data-around" class="toc-link">Moving Data Around</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/octave-tutorial/#computing-on-data" class="toc-link">Computing on Data</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/octave-tutorial/#plotting-data" class="toc-link">Plotting Data</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/octave-tutorial/#control-statements-for-while-if-statements" class="toc-link">Control statements: for, while, if statements</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://eapyl.github.io/octave-tutorial/#functions" class="toc-link">Functions</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;octave-tutorial&#x2F;">Octave Tutorial</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2016-10-26</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>Information is from this wonderful <a href="https://www.coursera.org/learn/machine-learning/">course</a>.</p>
+<h3 id="basic-operations">Basic operations</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">%% Change Octave prompt  
+PS1(&#39;&gt;&gt; &#39;);
+%% Change working directory in windows example:
+cd &#39;c:/path/to/desired/directory name&#39;
+%% Note that it uses normal slashes and does not use escape characters for the empty spaces.
+
+%% elementary operations
+5+6
+3-2
+5*8
+1/2
+2^6
+1 == 2 % false
+1 ~= 2 % true.  note, not &quot;!=&quot;
+1 &amp;&amp; 0
+1 || 0
+xor(1,0)
+
+
+%% variable assignment
+a = 3; % semicolon suppresses output
+b = &#39;hi&#39;;
+c = 3&gt;=1;
+
+% Displaying them:
+a = pi
+disp(a)
+disp(sprintf(&#39;2 decimals: %0.2f&#39;, a))
+disp(sprintf(&#39;6 decimals: %0.6f&#39;, a))
+format long
+a
+format short
+a
+
+
+%%  vectors and matrices
+A = [1 2; 3 4; 5 6]
+
+
+v = [1 2 3]
+v = [1; 2; 3]
+v = 1:0.1:2   % from 1 to 2, with stepsize of 0.1. Useful for plot axes
+v = 1:6       % from 1 to 6, assumes stepsize of 1 (row vector)
+
+C = 2*ones(2,3) % same as C = [2 2 2; 2 2 2]
+w = ones(1,3)   % 1x3 vector of ones
+w = zeros(1,3)
+w = rand(1,3) % drawn from a uniform distribution 
+w = randn(1,3)% drawn from a normal distribution (mean=0, var=1)
+w = -6 + sqrt(10)*(randn(1,10000));  % (mean = -6, var = 10) - note: add the semicolon
+hist(w)    % plot histogram using 10 bins (default)
+hist(w,50) % plot histogram using 50 bins
+% note: if hist() crashes, try &quot;graphics_toolkit(&#39;gnu_plot&#39;)&quot; 
+
+I = eye(4)   % 4x4 identity matrix
+
+% help function
+help eye
+help rand
+help help
+</span></pre><h3 id="moving-data-around">Moving Data Around</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">%% dimensions
+sz = size(A) % 1x2 matrix: [(number of rows) (number of columns)]
+size(A,1) % number of rows
+size(A,2) % number of cols
+length(v) % size of longest dimension
+
+
+%% loading data
+pwd   % show current directory (current path)
+cd &#39;C:\Users\ang\Octave files&#39;  % change directory 
+ls    % list files in current directory 
+load q1y.dat   % alternatively, load(&#39;q1y.dat&#39;)
+load q1x.dat
+who   % list variables in workspace
+whos  % list variables in workspace (detailed view) 
+clear q1y      % clear command without any args clears all vars
+v = q1x(1:10); % first 10 elements of q1x (counts down the columns)
+save hello.mat v;  % save variable v into file hello.mat
+save hello.txt v -ascii; % save as ascii
+% fopen, fread, fprintf, fscanf also work  [[not needed in class]]
+
+%% indexing
+A(3,2)  % indexing is (row,col)
+A(2,:)  % get the 2nd row. 
+        % &quot;:&quot; means every element along that dimension
+A(:,2)  % get the 2nd col
+A([1 3],:) % print all  the elements of rows 1 and 3
+
+A(:,2) = [10; 11; 12]     % change second column
+A = [A, [100; 101; 102]]; % append column vec
+A(:) % Select all elements as a column vector.
+
+% Putting data together 
+A = [1 2; 3 4; 5 6]
+B = [11 12; 13 14; 15 16] % same dims as A
+C = [A B]  % concatenating A and B matrices side by side
+C = [A, B] % concatenating A and B matrices side by side
+C = [A; B] % Concatenating A and B top and bottom
+</span></pre><h3 id="computing-on-data">Computing on Data</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">%% initialize variables
+A = [1 2;3 4;5 6]
+B = [11 12;13 14;15 16]
+C = [1 1;2 2]
+v = [1;2;3]
+
+%% matrix operations
+A * C  % matrix multiplication
+A .* B % element-wise multiplication
+% A .* C  or A * B gives error - wrong dimensions
+A .^ 2 % element-wise square of each element in A
+1./v   % element-wise reciprocal
+log(v)  % functions like this operate element-wise on vecs or matrices 
+exp(v)
+abs(v)
+
+-v  % -1*v
+
+v + ones(length(v), 1)  
+% v + 1  % same
+
+A&#39;  % matrix transpose
+
+%% misc useful functions
+
+% max  (or min)
+a = [1 15 2 0.5]
+val = max(a)
+[val,ind] = max(a) % val -  maximum element of the vector a and index - index value where maximum occur
+val = max(A) % if A is matrix, returns max from each column
+
+% compare values in a matrix &amp; find
+a &lt; 3 % checks which values in a are less than 3
+find(a &lt; 3) % gives location of elements less than 3
+A = magic(3) % generates a magic matrix - not much used in ML algorithms
+[r,c] = find(A&gt;=7)  % row, column indices for values matching comparison
+
+% sum, prod
+sum(a)
+prod(a)
+floor(a) % or ceil(a)
+max(rand(3),rand(3))
+max(A,[],1) -  maximum along columns(defaults to columns - max(A,[]))
+max(A,[],2) - maximum along rows
+A = magic(9)
+sum(A,1)
+sum(A,2)
+sum(sum( A .* eye(9) ))
+sum(sum( A .* flipud(eye(9)) ))
+
+
+% Matrix inverse (pseudo-inverse)
+pinv(A)        % inv(A&#39;*A)*A&#39;
+</span></pre><h3 id="plotting-data">Plotting Data</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">%% plotting
+t = [0:0.01:0.98];
+y1 = sin(2*pi*4*t); 
+plot(t,y1);
+y2 = cos(2*pi*4*t);
+hold on;  % &quot;hold off&quot; to turn off
+plot(t,y2,&#39;r&#39;);
+xlabel(&#39;time&#39;);
+ylabel(&#39;value&#39;);
+legend(&#39;sin&#39;,&#39;cos&#39;);
+title(&#39;my plot&#39;);
+print -dpng &#39;myPlot.png&#39;
+close;           % or,  &quot;close all&quot; to close all figs
+figure(1); plot(t, y1);
+figure(2); plot(t, y2);
+figure(2), clf;  % can specify the figure number
+subplot(1,2,1);  % Divide plot into 1x2 grid, access 1st element
+plot(t,y1);
+subplot(1,2,2);  % Divide plot into 1x2 grid, access 2nd element
+plot(t,y2);
+axis([0.5 1 -1 1]);  % change axis scale
+
+%% display a matrix (or image) 
+figure;
+imagesc(magic(15)), colorbar, colormap gray;
+% comma-chaining function calls.  
+a=1,b=2,c=3
+a=1;b=2;c=3;
+</span></pre><h3 id="control-statements-for-while-if-statements">Control statements: for, while, if statements</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">v = zeros(10,1);
+for i=1:10, 
+    v(i) = 2^i;
+end;
+% Can also use &quot;break&quot; and &quot;continue&quot; inside for and while loops to control execution.
+
+i = 1;
+while i &lt;= 5,
+  v(i) = 100; 
+  i = i+1;
+end
+
+i = 1;
+while true, 
+  v(i) = 999; 
+  i = i+1;
+  if i == 6,
+    break;
+  end;
+end
+
+if v(1)==1,
+  disp(&#39;The value is one!&#39;);
+elseif v(1)==2,
+  disp(&#39;The value is two!&#39;);
+else
+  disp(&#39;The value is not one or two!&#39;);
+end
+</span></pre><h3 id="functions">Functions</h3>
+<p>To create a function, type the function code in a text editor (e.g. gedit or notepad), and save the file as &quot;functionName.m&quot;</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">function y = squareThisNumber(x)
+
+y = x^2;
+</span></pre><pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">function [y1, y2] = squareandCubeThisNo(x)
+y1 = x^2
+y2 = x^3
+</span></pre>
+<p>More info:
+<a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;octava&#x2F;">#octava</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;use-websql-and-indexeddb-in-typescript&#x2F;">‹ Use WebSQL and IndexedDB in Typescript</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;implementing-async-queue-using-rxjs&#x2F;">Implementing async.queue using rxjs ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

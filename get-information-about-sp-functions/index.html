@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Notes - Get information about all stored procedures, views and functions</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;get-information-about-sp-functions&#x2F;">Get information about all stored procedures, views and functions</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-12-18</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>When your primary work is adding functionality to MSSQL database (like implementing business logic in stored procedures, functions and view) it is very useful to have the list of all SP, functions and views with their description, name of authors, created dates and input/output parameters.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>In this small article I will describer how to create a small console application which will get information from DB and create a list with this information in memory. Later I am creating HTML report using this information. But creating HTML report is not described in this article.</p>
+<p>One note: each SP, function and view should have the next comment in their code:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">-- =============================================
+-- Author:      FirstName LastName
+-- Create date = &quot;yyyyMMdd
+-- Description: Short description
+-- =============================================
+</span></pre>
+<p>SQL query which shows information about SP, functions and views is:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">const string </span><span style="color:#bf616a;">GetAllObjects </span><span style="color:#c0c5ce;">= @&quot;</span><span style="color:#a3be8c;">
+DECLARE @StopString nvarchar(MAX) = &#39;-- =============================================&#39;;
+
+SELECT DISTINCT
+o.name,
+o.type_desc as Type,
+s.name as [Schema],
+m.definition,
+o.create_date as Created,
+o.modify_date as Modified,
+CASE WHEN CHARINDEX(@StopString, m.definition, CHARINDEX(@StopString, m.definition, 0)+1)-CHARINDEX(@StopString, m.definition, 0)-LEN(@StopString) &gt; CHARINDEX(@StopString, m.definition, 0) + LEN(@StopString)
+    THEN
+        SUBSTRING(m.definition, CHARINDEX(@StopString, m.definition, 0) + LEN(@StopString), CHARINDEX(@StopString, m.definition, CHARINDEX(@StopString, m.definition, 0)+1)-CHARINDEX(@StopString, m.definition, 0)-LEN(@StopString))
+    ELSE 
+        &#39;No description&#39;
+END
+AS Description
+FROM sys.sql_modules m 
+    INNER JOIN sys.objects o ON m.object_id = o.object_id
+    INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+WHERE 
+    s.name = &#39;dbo&#39; and
+    (o.type_desc = &#39;VIEW&#39; or o.type_desc = &#39;SQL_STORED_PROCEDURE&#39; or o.type_desc = &#39;SQL_INLINE_TABLE_VALUED_FUNCTION&#39; or o.type_desc = &#39;SQL_SCALAR_FUNCTION&#39;)
+</span><span style="color:#c0c5ce;">&quot;;
+</span></pre>
+<p>As I usully use <a href="https://github.com/StackExchange/Dapper">Dapper</a> to work with DB there is a list of DTOs:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">internal class </span><span style="color:#ebcb8b;">DBObject
+</span><span style="color:#eff1f5;">{
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Name </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Schema </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Type </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Definition </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">DateTime </span><span style="color:#bf616a;">Created </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">DateTime </span><span style="color:#bf616a;">Modified </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Description </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+}
+
+</span><span style="color:#b48ead;">internal class </span><span style="color:#ebcb8b;">HelpInfo
+</span><span style="color:#eff1f5;">{
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Name </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Owner </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Type </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">DateTime </span><span style="color:#bf616a;">Created_datetime </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+}
+
+</span><span style="color:#b48ead;">internal class </span><span style="color:#ebcb8b;">Parameter
+</span><span style="color:#eff1f5;">{
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Parameter_name </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Type </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public int </span><span style="color:#bf616a;">Length </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Prec </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public int </span><span style="color:#bf616a;">Param_oder </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Collation </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+}
+
+</span><span style="color:#b48ead;">internal class </span><span style="color:#ebcb8b;">Table
+</span><span style="color:#eff1f5;">{
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Column_name </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Type </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Computed </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public int </span><span style="color:#bf616a;">Length </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Prec </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Scale </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Nullable </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">TrimTrailingBlanks </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">FixedLenNullInSource </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+    </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Collation </span><span style="color:#eff1f5;">{ </span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">; </span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+}
+</span></pre>
+<p>And to get the list of SP, functions and views we can use the next method:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">public </span><span style="color:#c0c5ce;">IEnumerable&lt;(DBObject </span><span style="color:#bf616a;">Object</span><span style="color:#c0c5ce;">, HelpInfo </span><span style="color:#bf616a;">Info</span><span style="color:#c0c5ce;">, IEnumerable&lt;Parameter&gt; </span><span style="color:#bf616a;">Parameters</span><span style="color:#c0c5ce;">, IEnumerable&lt;Table&gt; </span><span style="color:#bf616a;">OutputTables</span><span style="color:#c0c5ce;">)&gt; </span><span style="color:#bf616a;">GetAllDbObjects</span><span style="color:#c0c5ce;">(</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#c0c5ce;">
+{
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">objs </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">_sqlExecutor</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Query</span><span style="color:#c0c5ce;">&lt;DBObject&gt;(</span><span style="color:#bf616a;">GetAllObjects</span><span style="color:#c0c5ce;">);
+    </span><span style="color:#b48ead;">foreach </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">data </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">objs</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">OrderBy</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">x </span><span style="color:#c0c5ce;">=&gt; </span><span style="color:#bf616a;">x</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Created</span><span style="color:#c0c5ce;">))
+    {
+        </span><span style="color:#b48ead;">switch </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">data</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Type</span><span style="color:#c0c5ce;">)
+        {
+            </span><span style="color:#b48ead;">case </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">SQL_STORED_PROCEDURE</span><span style="color:#c0c5ce;">&quot;:
+            </span><span style="color:#b48ead;">case </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">SQL_SCALAR_FUNCTION</span><span style="color:#c0c5ce;">&quot;:
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">infoAboutSPOrScalarFunction </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">_sqlExecutor</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">QueryMultiple</span><span style="color:#c0c5ce;">&lt;HelpInfo, Parameter&gt;(&quot;</span><span style="color:#a3be8c;">sp_help</span><span style="color:#c0c5ce;">&quot;,
+                    new </span><span style="color:#eff1f5;">{ </span><span style="color:#bf616a;">@objname </span><span style="color:#c0c5ce;">= $&quot;</span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">data</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Schema</span><span style="color:#eff1f5;">}</span><span style="color:#a3be8c;">.</span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">data</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Name</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot; </span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">CommandType</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">StoredProcedure</span><span style="color:#c0c5ce;">);
+                </span><span style="color:#b48ead;">yield return </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">data</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">infoAboutSPOrScalarFunction</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Item1</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">infoAboutSPOrScalarFunction</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Item2</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">null</span><span style="color:#c0c5ce;">);
+                </span><span style="color:#b48ead;">break</span><span style="color:#c0c5ce;">;
+            </span><span style="color:#b48ead;">case </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">SQL_INLINE_TABLE_VALUED_FUNCTION</span><span style="color:#c0c5ce;">&quot;:
+            </span><span style="color:#b48ead;">case </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">VIEW</span><span style="color:#c0c5ce;">&quot;:
+                </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">inforAboutViewOrInlineFunction </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">_sqlExecutor</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">QueryMultiple</span><span style="color:#c0c5ce;">&lt;HelpInfo, Table, Parameter&gt;(&quot;</span><span style="color:#a3be8c;">sp_help</span><span style="color:#c0c5ce;">&quot;,
+                    new </span><span style="color:#eff1f5;">{ </span><span style="color:#bf616a;">@objname </span><span style="color:#c0c5ce;">= $&quot;</span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">data</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Schema</span><span style="color:#eff1f5;">}</span><span style="color:#a3be8c;">.</span><span style="color:#eff1f5;">{</span><span style="color:#bf616a;">data</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">Name</span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">&quot; </span><span style="color:#eff1f5;">}</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">CommandType</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">StoredProcedure</span><span style="color:#c0c5ce;">);
+                </span><span style="color:#b48ead;">yield return </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">data</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">inforAboutViewOrInlineFunction</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Item1</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">inforAboutViewOrInlineFunction</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Item3</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">inforAboutViewOrInlineFunction</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Item2</span><span style="color:#c0c5ce;">);
+                </span><span style="color:#b48ead;">break</span><span style="color:#c0c5ce;">;
+        }
+    }
+}
+
+</span><span style="color:#65737e;">/// where Query and QueryMultiple methods look like
+public IEnumerable&lt;</span><span style="color:#bf616a;">T</span><span style="color:#65737e;">&gt; Query&lt;</span><span style="color:#bf616a;">T</span><span style="color:#65737e;">&gt;(string query)
+</span><span style="color:#c0c5ce;">{
+    </span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">connection </span><span style="color:#c0c5ce;">= new SqlConnection(</span><span style="color:#bf616a;">connectionString</span><span style="color:#c0c5ce;">))
+    {
+        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">connection</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Query</span><span style="color:#c0c5ce;">&lt;T&gt;(</span><span style="color:#bf616a;">query</span><span style="color:#c0c5ce;">);
+    }
+}
+
+</span><span style="color:#b48ead;">public </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">T</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">IEnumerable</span><span style="color:#c0c5ce;">&lt;K&gt;</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#c0c5ce;"> </span><span style="color:#bf616a;">QueryMultiple</span><span style="color:#c0c5ce;">&lt;T, K&gt;(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">query</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">object </span><span style="color:#bf616a;">param</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">CommandType commandType</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#c0c5ce;">
+{
+    </span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">connection </span><span style="color:#c0c5ce;">= new SqlConnection(</span><span style="color:#bf616a;">connectionString</span><span style="color:#c0c5ce;">))
+    {
+        </span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">multi </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">connection</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">QueryMultiple</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">query</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">param</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">commandType</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">CommandType</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">StoredProcedure</span><span style="color:#c0c5ce;">))
+        {
+            </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">(
+                </span><span style="color:#bf616a;">multi</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Read</span><span style="color:#c0c5ce;">&lt;T&gt;().</span><span style="color:#bf616a;">Single</span><span style="color:#c0c5ce;">(),
+                </span><span style="color:#bf616a;">multi</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsConsumed </span><span style="color:#c0c5ce;">? </span><span style="color:#d08770;">null </span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">multi</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Read</span><span style="color:#c0c5ce;">&lt;K&gt;()
+            );
+        }
+    }
+}
+
+</span><span style="color:#b48ead;">public </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">T</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">IEnumerable</span><span style="color:#c0c5ce;">&lt;K&gt;, </span><span style="color:#bf616a;">IEnumerable</span><span style="color:#c0c5ce;">&lt;M&gt;</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#c0c5ce;"> </span><span style="color:#bf616a;">QueryMultiple</span><span style="color:#c0c5ce;">&lt;T, K, M&gt;(</span><span style="color:#b48ead;">string </span><span style="color:#bf616a;">query</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">object </span><span style="color:#bf616a;">param</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">CommandType commandType</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#c0c5ce;">
+{
+    </span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">connection </span><span style="color:#c0c5ce;">= new SqlConnection(</span><span style="color:#bf616a;">connectionString</span><span style="color:#c0c5ce;">))
+    {
+        </span><span style="color:#b48ead;">using </span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">multi </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">connection</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">QueryMultiple</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">query</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">param</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">commandType</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">CommandType</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">StoredProcedure</span><span style="color:#c0c5ce;">))
+        {
+            </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">(
+                </span><span style="color:#bf616a;">multi</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Read</span><span style="color:#c0c5ce;">&lt;T&gt;().</span><span style="color:#bf616a;">Single</span><span style="color:#c0c5ce;">(),
+                </span><span style="color:#bf616a;">multi</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Read</span><span style="color:#c0c5ce;">&lt;K&gt;(),
+                </span><span style="color:#bf616a;">multi</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">IsConsumed </span><span style="color:#c0c5ce;">? </span><span style="color:#d08770;">null</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">multi</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Read</span><span style="color:#c0c5ce;">&lt;M&gt;()
+            );
+        }
+    }
+}
+</span></pre>
+<p>So mentioned GetAllDbObjects returns a list of tuples, where DBObject contains general information about SP, function or view; HelpInfo contains additional information about DBObject; IEnumerable<Parameter> contains information about input/output parameters for SP and functions; IEnumerable<Table> contains information about a view design (as view returns data in table format).</p>
+<p>We can use this list to create different kinds of report like HTML report or delta report which shows only modified db objects.</p>
+<p>Thanks!</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;sql&#x2F;">#sql</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;how-to-sql-code-coverage&#x2F;">‹ How to set up SQL code coverage</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;remote-mssql-to-local-server&#x2F;">Copy remote MSSQL DB to local server ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

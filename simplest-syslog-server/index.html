@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Notes - Simplest syslog server for rfc5424 (TCP)</title>
+
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+      
+
+      
+          <link rel="stylesheet" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;site.css">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Notes</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">Notes</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;simplest-syslog-server&#x2F;">Simplest syslog server for rfc5424 (TCP)</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2017-09-12</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <p>I am working on onside project where we have more than 5 docker containers. Previously we used just serilog to do our logging in all our containers. So each project had his own logging mechanism. Finally we decided to centralize our logging system ans start using docker logs. There are a lot of solutions using clouds (e.g. <a href="https://www.loggly.com/">loggly</a>) or quite complex systems to grab, analyze and show your logs (like <a href="https://kafka.apache.org">kafka</a>, <a href="https://www.elastic.co/products/kibana">kibana</a>). But we wanted to save our logs to simple txt files without any additional complex stuff.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>There are nice project which allows automatically read docker container logs and push them to one syslog server - <a href="https://github.com/gliderlabs/logspout">logspout</a>.</p>
+<p>We tried to find simple syslog server without success. So there is a <a href="https://github.com/eapyl/syslog-collector">small syslog server</a> written in dotnet core. I used serilog to write logs to files (<a href="https://github.com/serilog/serilog-sinks-rollingfile">Rolling File</a>).</p>
+<p>So docker-compose configuration looks like:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">  </span><span style="color:#65737e;">#another containers
+  </span><span style="color:#bf616a;">logspout</span><span style="color:#c0c5ce;">:
+    </span><span style="color:#bf616a;">image</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">gliderlabs/logspout
+    command</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">syslog+tcp://logcollector:5000
+    volumes</span><span style="color:#c0c5ce;">:
+      - </span><span style="color:#bf616a;">/var/run/docker.sock:/var/run/docker.sock
+    depends_on</span><span style="color:#c0c5ce;">:
+      - </span><span style="color:#bf616a;">logcollector
+  logcollector</span><span style="color:#c0c5ce;">:
+    </span><span style="color:#bf616a;">image</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">eapyl/syslog-collector
+    volumes</span><span style="color:#c0c5ce;">: 
+      - </span><span style="color:#a3be8c;">$PWD/../logs:/log/logs
+</span></pre>
+<p>After that logs from all our containers are in logs folder! Very simple and easy!</p>
+<p>Please find docker image <a href="https://hub.docker.com/r/eapyl/syslog-collector/">here</a>.</p>
+<p>P.S. We started to write log message to stdout or stderr using <a href="https://github.com/serilog/serilog-sinks-literate">serilog</a>. So it was just small configuration change in all our projects to use Serilog.Literate instead of Serilog.RollingFile .</p>
+<p>Thanks!</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;dotnet&#x2F;">#dotnet</a>
+                    
+                        <a href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;tags&#x2F;docker&#x2F;">#docker</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;restore-influxdb-in-docker&#x2F;">‹ Restore InfluxDB in Docker</a>
+                    
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;eapyl.github.io&#x2F;auto-deployment-for-ssrs-reports&#x2F;">Auto deployment for SSRS reports ›</a>
+                    
+                    
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="https:&#x2F;&#x2F;eapyl.github.io&#x2F;even.js" ></script>
+      
+    </body>
+
+</html>

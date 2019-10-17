@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://eapyl.github.io/sitemap.xml
